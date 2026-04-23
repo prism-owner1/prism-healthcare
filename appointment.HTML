@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Best Physiotherapy Center in Patna | Prism Healthcare</title>
+<meta name="description" content="Schedule your session at Prism Healthcare, the best physiotherapy center in Patna (Gola Road). Expert neuro physiotherapy, orthopaedic rehab, and pain management by Dr. Ravi Kumar. Book your clinic or home visit today.">
+<meta name="keywords" content="best physiotherapy center in Patna, physiotherapy near me Patna, neuro physiotherapy Patna, orthopaedic physiotherapy Patna, pain management clinic Patna, back pain treatment Patna, stroke rehabilitation Patna, physical therapy appointment Patna">
+<link rel="canonical" href="https://prismhealthcare.in/appointment.html">
+
+<!-- Geo Location Meta Tags -->
+<meta name="geo.region" content="IN-BR" />
+<meta name="geo.placename" content="Patna" />
+<meta name="geo.position" content="25.612674;85.064562" />
+<meta name="ICBM" content="25.612674, 85.064562" />
+
+<!-- Open Graph / Social Media (WhatsApp/Social Sharing) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Book Appointment | Prism Healthcare Patna">
+<meta property="og:description" content="Advanced Neurological & Orthopaedic Rehabilitation at Gola Road, Patna. Book your consultation with Dr. Ravi Kumar (MPT Neuro).">
+<meta property="og:url" content="https://prismhealthcare.in/appointment.html">
+<meta property="og:image" content="Prism logo.jpeg">
+<meta property="og:site_name" content="Prism Healthcare">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PhysiotherapyClinic",
+  "name": "Prism Healthcare",
+  "image": "https://prismhealthcare.in/Prism%20logo.jpeg",
+  "@id": "https://prismhealthcare.in/appointment.html",
+  "url": "https://prismhealthcare.in/appointment.html",
+  "telephone": "+919708059081",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Orthocare Hospital, Gola Road",
+    "addressLocality": "Patna",
+    "addressRegion": "Bihar",
+    "postalCode": "801503",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.612674,
+    "longitude": 85.064562
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Patna"
+  },
+  "medicalSpecialty": [
+    "Neurological Rehabilitation",
+    "Orthopaedic Physiotherapy",
+    "Pain Management",
+    "Stroke Rehabilitation",
+    "Back Pain Treatment"
+  ],
+  "availableService": [
+    {
+      "@type": "Service",
+      "name": "Clinic Visit Consultation"
+    },
+    {
+      "@type": "Service",
+      "name": "Home Visit Physiotherapy"
+    },
+    {
+      "@type": "Service",
+      "name": "Online Physiotherapy Consultation"
+    }
+  ]
+}
+</script>
+
+<link rel="icon" type="image/jpg" href="Logo3.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .clinical-blue {
+        color: #0056b3;
+    }
+
+    .bg-clinical-blue {
+        background-color: #0056b3;
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .whatsapp-float {
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-10px);
+        }
+
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+
+    #chat-window {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(20px) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #chat-window.open {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .chat-bubble {
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .bot-msg {
+        background: #f1f5f9;
+        color: #1e293b;
+        border-bottom-left-radius: 4px;
+    }
+
+    .user-msg {
+        background: #0056b3;
+        color: white;
+        border-bottom-right-radius: 4px;
+        align-self: flex-end;
+    }
+
+    .form-input {
+        transition: all 0.3s ease;
+        border: 1px solid #e2e8f0;
+    }
+
+    .form-input:focus {
+        border-color: #0056b3;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.1);
+    }
+
+    #mobile-nav-overlay {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(100%);
+    }
+
+    #mobile-nav-overlay.open {
+        transform: translateX(0);
+    }
+
+    .pay-proof-btn {
+        background: #059669;
+        color: white;
+        font-weight: 800;
+        padding: 12px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 8px;
+        width: 100%;
+        border: none;
+    }
+
+    #home-visit-details {
+        display: none;
+        overflow: hidden;
+        transition: all 0.5s ease;
+    }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+    <!-- Sticky Navbar -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
+        <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center group">
+                <div class="relative flex-shrink-0 mr-3">
+                   <img src="Prism logo.jpeg"
+                        alt="Prism Logo"
+                        class="h-11 w-11 object-cover rounded-xl shadow-sm border border-slate-100 group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-clinical-blue/10 rounded-xl blur-md -z-10"></div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="text-2xl font-black tracking-tighter text-gray-900 leading-none">P R I S M</span>
+                    <div class="flex items-center">
+                        <p
+                            class="text-[10px] uppercase tracking-[0.3em] text-clinical-blue font-extrabold leading-none">
+                            Healthcare</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
+                <a href="index.html" class="hover:text-clinical-blue transition">Home</a>
+                <a href="about.html" class="hover:text-clinical-blue transition">About</a>
+                <a href="services.html" class="hover:text-clinical-blue transition">Services</a>
+                <a href="careers.html" class="hover:text-clinical-blue transition">Careers</a>
+                <a href="appointment.html"
+                    class="text-clinical-blue border-b-2 border-clinical-blue pb-1">Appointment</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/919708059081"
+                    class="bg-green-600 text-white px-5 py-2 rounded-full hidden md:flex items-center gap-2 font-bold text-sm hover:scale-105 transition-transform shadow-md">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+                </a>
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700 focus:outline-none">
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Slide-out Menu -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 z-[100] bg-white lg:hidden flex flex-col p-8 text-slate-900">
+        <div class="flex justify-between items-center mb-12">
+            <span class="font-black text-xl text-clinical-blue uppercase tracking-tighter">Prism</span>
+            <button id="mobile-menu-close" class="p-2 text-slate-500"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </div>
+        <div class="flex flex-col gap-8 text-3xl font-extrabold uppercase italic text-slate-900">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="careers.html">Careers</a>
+            <a href="appointment.html" class="text-clinical-blue underline underline-offset-4">Appointment</a>
+            <a href="https://wa.me/919708059081" class="text-green-600 flex items-center gap-2">WhatsApp <i
+                    data-lucide="external-link"></i></a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-40 pb-24 px-4">
+        <!-- WHY CHOOSE SECTION -->
+        <div class="max-w-6xl mx-auto mb-16">
+            <div class="text-center mb-12">
+                <h2
+                    class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-slate-900 leading-tight">
+                    Why &nbsp; <span class="clinical-blue">Choose &nbsp;</span> Prism &nbsp; Healthcare &nbsp; ?</h2>
+                <p class="text-slate-500 font-medium mt-4 max-w-2xl mx-auto italic">Experience clinical excellence and
+                    advanced recovery protocols.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 hover:-translate-y-2 transition-all">
+                    <i data-lucide="award" class="text-clinical-blue w-8 h-8 mb-4"></i>
+                    <h3 class="font-bold italic uppercase text-sm mb-2">Expert Team</h3>
+                    <p class="text-xs text-slate-500 italic leading-relaxed">Specialized MPT (Neuro) care for critical
+                        recovery cases.</p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 hover:-translate-y-2 transition-all">
+                    <i data-lucide="zap" class="text-green-600 w-8 h-8 mb-4"></i>
+                    <h3 class="font-bold italic uppercase text-sm mb-2">Modern Tech</h3>
+                    <p class="text-xs text-slate-500 italic leading-relaxed">Dry Needling, Cupping, and Bio-Mechanical
+                        Correction.</p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 hover:-translate-y-2 transition-all">
+                    <i data-lucide="home" class="text-purple-600 w-8 h-8 mb-4"></i>
+                    <h3 class="font-bold italic uppercase text-sm mb-2">Home Rehab</h3>
+                    <p class="text-xs text-slate-500 italic leading-relaxed">Specialized home service for stroke and
+                        paralysis patients.</p>
+                </div>
+                <div
+                    class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 hover:-translate-y-2 transition-all">
+                    <i data-lucide="shield-check" class="text-orange-600 w-8 h-8 mb-4"></i>
+                    <h3 class="font-bold italic uppercase text-sm mb-2">Safe Slots</h3>
+                    <p class="text-xs text-slate-500 italic leading-relaxed">UPI-verified booking for guaranteed
+                        consultation time.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            <div
+                class="bg-white rounded-[3.5rem] shadow-3xl overflow-hidden flex flex-col lg:flex-row border border-slate-100">
+                <div class="lg:w-2/5 bg-clinical-blue p-12 lg:p-16 text-white flex flex-col justify-between">
+                    <div>
+                        <span
+                            class="text-blue-200 font-extrabold uppercase tracking-widest text-xs block mb-4 italic underline underline-offset-4">Scheduling</span>
+                        <h1 class="text-5xl font-black mb-8 italic tracking-tighter leading-none uppercase">Book &nbsp; Your
+                            <br>Session.
+                        </h1>
+                        <div class="space-y-10">
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/20">
+                                    1</div>
+                                <div>
+                                    <h4 class="font-bold text-lg uppercase">Select &nbsp; Slot</h4>
+                                    <p class="text-xs text-blue-100 opacity-70 leading-relaxed mt-1">Pick a date and
+                                        time that suits your schedule.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/20">
+                                    2</div>
+                                <div>
+                                    <h4 class="font-bold text-lg uppercase">Enter  &nbsp;  Details</h4>
+                                    <p class="text-xs text-blue-100 opacity-70 leading-relaxed mt-1">Provide your basic information and select the type of consultation or treatment you need.</p>
+                                </div>
+                            </div>
+                         <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/20">
+                                    3</div>
+                                <div>
+                                    <h4 class="font-bold text-lg uppercase">Secure &nbsp; Slot</h4>
+                                    <p class="text-xs text-blue-100 opacity-70 leading-relaxed mt-1">Complete the payment and enter your transaction ID to finalize your appointment</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-16 pt-8 border-t border-white/10 italic text-sm">
+                        <p class="text-blue-200 font-bold uppercase tracking-widest text-xs">Clinical Support</p>
+                        <p class="font-bold mt-1 text-lg">+91 97080 59081</p>
+                    </div>
+                </div>
+
+                <!-- FORM SECTION -->
+                <div class="lg:w-3/5 p-10 lg:p-16">
+                    <h2 class="text-3xl font-extrabold text-slate-900 mb-8 italic uppercase tracking-tighter">
+                        Appointment &nbsp; Details</h2>
+                    <form id="appointmentPageForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Patient
+                                    Name</label>
+                                <input type="text" id="ap-name" required
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Mobile
+                                    No.</label>
+                                <input type="tel" id="ap-phone" required maxlength="10"
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm">
+                            </div>
+                        </div>
+
+                        <!-- DATE & TIME SECTION -->
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Preferred
+                                    Date</label>
+                                <input type="date" id="ap-date" required
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm font-semibold text-clinical-blue">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Time
+                                    Slot</label>
+                                <select id="ap-time" required
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm font-semibold text-clinical-blue">
+                                    <option value="">Choose Time</option>
+                                    <option value="10:00 AM - 12:00 PM">Morning (10:00 AM - 12:00 PM)</option>
+                                    <option value="12:00 PM - 02:00 PM">Noon (12:00 PM - 02:00 PM)</option>
+                                    <option value="04:00 PM - 06:00 PM">Evening (04:00 PM - 06:00 PM)</option>
+                                    <option value="06:00 PM - 08:00 PM">Night (06:00 PM - 08:00 PM)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Appointment
+                                    Type</label>
+                                <select id="ap-type" onchange="toggleHomeFields()"
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm font-semibold text-clinical-blue">
+                                    <option value="Clinic Visit">Clinic Visit (Center)</option>
+                                    <option value="Home Visit">Home Visit (Specialized)</option>
+                                    <option value="Online Consultation">Online Consultation</option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Condition</label>
+                                <input id="ap-cat" type="text" placeholder="e.g. Stroke, Back Pain" required
+                                    class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm font-semibold text-slate-600">
+                            </div>
+                        </div>
+
+                        <div id="home-visit-details" class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase text-red-500 tracking-widest ml-1">Full Home
+                                Address</label>
+                            <input type="text" id="ap-address" placeholder="Enter complete address for home visit"
+                                class="w-full p-4 bg-slate-50 border-red-100 border rounded-2xl form-input text-sm">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase text-slate-400 tracking-widest ml-1">Brief
+                                Medical Details</label>
+                            <textarea id="ap-msg" rows="2" class="w-full p-4 bg-slate-50 rounded-2xl form-input text-sm"
+                                placeholder="Previous treatment?"></textarea>
+                        </div>
+
+                        <!-- PAYMENT SECTION -->
+                        <div class="bg-blue-50 border border-blue-100 p-6 rounded-[2rem] space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 bg-clinical-blue text-white rounded-lg"><i data-lucide="qr-code"
+                                        class="w-5 h-5"></i></div>
+                                <h4 class="font-extrabold text-clinical-blue uppercase text-sm italic">Payment Required
+                                </h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">Pay **₹500** consultation fee to lock
+                                slot. <br>UPI ID: <span class="font-bold text-slate-900">dr.raviphysio01@oksbi</span></p>
+
+                            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                                <a href="upi://pay?pa=dr.raviphysio01@oksbi&pn=Prism%20Healthcare&am=500&cu=INR"
+                                    class="flex-1 bg-green-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-green-700 transition flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                                    <i data-lucide="smartphone" class="w-4 h-4"></i> Pay via UPI App
+                                </a>
+                                <button type="button" onclick="toggleQRModal()"
+                                    class="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-slate-800 transition flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                                    <i data-lucide="maximize" class="w-4 h-4"></i> Scan to Pay
+                                </button>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label
+                                    class="text-[10px] font-bold uppercase text-clinical-blue tracking-widest ml-1">Transaction
+                                    ID</label>
+                                <input type="text" id="ap-payment" required
+                                    placeholder="Enter 12-digit UPI Transaction ID"
+                                    class="w-full p-4 bg-white border-blue-200 border rounded-2xl form-input text-sm font-bold text-slate-900">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn"
+                            class="w-full bg-clinical-blue text-white font-black py-5 rounded-2xl shadow-xl hover:bg-blue-800 transition transform hover:-translate-y-1 uppercase tracking-widest italic flex items-center justify-center gap-3">
+                            Confirm Appointment <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- QR MODAL POPUP -->
+    <div id="qr-modal" class="fixed inset-0 z-[200] bg-black/80 hidden items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-[2.5rem] max-w-sm w-full text-center relative">
+            <button onclick="toggleQRModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-900">
+                <i data-lucide="x-circle" class="w-8 h-8"></i>
+            </button>
+            <h3 class="font-black italic uppercase text-clinical-blue mb-4 tracking-tighter text-xl">Scan to Pay</h3>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=dr.raviphysio01@oksbi%26pn=Prism%20Healthcare%26am=500%26cu=INR"
+                class="w-full h-auto rounded-3xl border-4 border-slate-50 shadow-inner mb-6" alt="UPI QR Code">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Fee: ₹500 | Prism Healthcare</p>
+        </div>
+    </div>
+
+    <!-- SUCCESS POPUP MODAL -->
+    <div id="success-modal" class="fixed inset-0 z-[300] bg-slate-900/90 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[3rem] max-w-md w-full p-10 text-center shadow-2xl border border-slate-100">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+            </div>
+            <h2 class="text-3xl font-black italic uppercase tracking-tighter text-slate-900 mb-2">Request Sent!</h2>
+            <p class="text-slate-500 text-sm font-medium mb-8 leading-relaxed">Your appointment data is logged. Click below to get a confirmation copy on WhatsApp.</p>
+            
+            <button onclick="triggerWAConfirmation()" class="w-full bg-green-600 text-white font-black py-4 rounded-2xl shadow-lg hover:bg-green-700 transition flex items-center justify-center gap-3 uppercase tracking-widest italic mb-4">
+                <i data-lucide="message-circle" class="w-5 h-5"></i> Get WA Confirmation
+            </button>
+            
+            <button onclick="closeSuccessModal()" class="text-slate-400 text-[10px] font-bold uppercase tracking-widest hover:text-slate-600 transition">
+                Close and Finish
+            </button>
+        </div>
+    </div>
+
+<!-- Map & Footer -->
+    <footer class="bg-slate-900 text-white pt-20 pb-12 rounded-t-[4rem]">
+<div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-3 gap-12 mb-16">
+        <div>
+            <!-- Wrap the image in a link -->
+            <a href="about.html" class="inline-block transition-transform duration-300 hover:scale-110 active:scale-95">
+                <img src="PrismLogo.png" alt="Prism Logo" class="w-42 h-auto rounded-md">
+            </a>
+
+            <p class="text-slate-400 text-sm leading-relaxed mb-8 italic mt-4">
+                Redefining recovery through specialized care across orthopedic injuries, athletes, geriatrics, post operative cases, and overall well being, using advanced interventions beyond routine outpatient care.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                        <a href="https://www.linkedin.com/company/prismphysiotherapy/?viewAsMember=true" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                        </a>
+                        <a href="https://instagram.com/prismphysiotherapy" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="instagram" class="w-4 h-4"></i> Instagram
+                        </a>
+                        <a href="#" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Begusarai
+                            (HQ)</h5>
+                        <p class="text-sm text-slate-400">Main Road, Begusarai, Bihar</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">Orthocare Hospital, Gola road Patna</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">MG Nagar, Kanti Factory Rd, Patna</p>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <a href="tel:+919708059081"
+                            class="flex items-center gap-2 text-white font-bold hover:text-clinical-blue transition-colors">
+                            <i data-lucide="phone-call" class="text-clinical-blue w-5 h-5"></i>
+                            <span>+91 97080 59081</span>
+                        </a>
+                        <!-- Added Footer WhatsApp QR -->
+                        <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10 w-fit">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/919708059081" 
+                                 alt="WhatsApp QR" class="w-12 h-12 rounded-lg border border-white/20">
+                            <div>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-blue-100">Scan to Chat</p>
+                                <p class="text-[8px] opacity-60">WhatsApp Support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl overflow-hidden h-48 border border-slate-800 shadow-xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.6!2d85.13!3d25.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed5842f03901b5%3A0x747209930f78a2!2sPatna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1704543200000"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div
+                class="border-t border-slate-800 pt-10 text-center text-slate-500 text-[10px] uppercase tracking-[0.3em] font-bold">
+                &copy; 2024 Prism Healthcare. Developed by Clinical Architect.
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/919708059081"
+        class="fixed bottom-6 right-6 z-[100] bg-green-500 text-white p-4 rounded-full shadow-2xl whatsapp-float"><i
+            data-lucide="message-circle" class="w-8 h-8"></i></a>
+    <div class="fixed bottom-6 left-6 z-[100]"><button id="chat-toggle"
+            class="bg-clinical-blue text-white p-4 rounded-full shadow-2xl"><i data-lucide="bot"
+                class="w-8 h-8"></i></button></div>
+
+    <!-- Chatbot Window -->
+    <div id="chat-window"
+        class="fixed bottom-24 left-6 w-[350px] h-[550px] bg-white shadow-2xl rounded-2xl z-[100] flex flex-col border border-slate-100 overflow-hidden">
+        <div class="bg-clinical-blue p-4 text-white flex justify-between items-center shadow-md">
+            <span class="font-bold text-sm uppercase tracking-widest">Assistant</span>
+            <button id="close-chat"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-content" class="flex-1 overflow-y-auto p-4 flex flex-col bg-slate-50"></div>
+        <div id="chat-input-area" class="hidden p-3 bg-white border-t flex gap-2">
+            <input type="text" id="bot-input" class="flex-1 text-sm p-3 bg-slate-100 rounded-xl outline-none"
+                placeholder="Type answer...">
+            <button id="send-btn" class="bg-clinical-blue text-white p-3 rounded-xl"><i data-lucide="send"
+                    class="w-4 h-4"></i></button>
+        </div>
+    </div>
+
+<script>
+    lucide.createIcons();
+
+    // Helper Variables for Success Modal
+    let currentAppointmentData = null;
+
+    function closeSuccessModal() {
+        document.getElementById('success-modal').classList.add('hidden');
+        document.getElementById('success-modal').classList.remove('flex');
+        document.getElementById('appointmentPageForm').reset();
+    }
+
+    // --- UPDATED FORM WHATSAPP SUMMARY ---
+    function triggerWAConfirmation() {
+        if (!currentAppointmentData) return;
+        const msg = window.encodeURIComponent(
+            `*PRISM APPOINTMENT SUMMARY*\n` +
+            `*Name:* ${currentAppointmentData.name}\n` +
+            `*Type:* ${currentAppointmentData.type}\n` +
+            `*Number:* ${currentAppointmentData.phone}\n` +
+            `*Date:* ${currentAppointmentData.date}\n` +
+            `*Location:* ${currentAppointmentData.location}\n` +
+            `*Time:* ${currentAppointmentData.time}\n` +
+            `*Problem:* ${currentAppointmentData.condition}\n` +
+            `*TXN ID:* ${currentAppointmentData.txn}`
+        );
+        window.open(`https://wa.me/919708059081?text=${msg}`, '_blank');
+        closeSuccessModal();
+    }
+
+    // Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-nav-overlay');
+    const closeMenu = document.getElementById('mobile-menu-close');
+    menuBtn.onclick = () => mobileMenu.classList.add('open');
+    closeMenu.onclick = () => mobileMenu.classList.remove('open');
+
+    // Form Logic
+    function toggleHomeFields() {
+        const type = document.getElementById('ap-type').value;
+        const homeFields = document.getElementById('home-visit-details');
+        homeFields.style.display = (type === 'Home Visit') ? 'block' : 'none';
+    }
+
+    function toggleQRModal() {
+        const modal = document.getElementById('qr-modal');
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQmrjUara4qVeEMua8JA3jFnUguv2O0tUyF5P0arjeuFlDwfTNkCZGoLxyaCGNbLG-/exec';
+
+    document.getElementById('appointmentPageForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+
+        const type = document.getElementById('ap-type').value;
+        let finalLocation = 'Clinic';
+        if (type === 'Home Visit') finalLocation = document.getElementById('ap-address').value;
+        else if (type === 'Online Consultation') finalLocation = 'Online';
+
+        currentAppointmentData = {
+            name: document.getElementById('ap-name').value,
+            phone: document.getElementById('ap-phone').value,
+            type: type,
+            date: document.getElementById('ap-date').value,
+            time: document.getElementById('ap-time').value,
+            location: finalLocation,
+            condition: document.getElementById('ap-cat').value,
+            message: document.getElementById('ap-msg').value || "N/A",
+            txn: document.getElementById('ap-payment').value
+        };
+
+        const formData = {
+            source: "Appointment Page Form",
+            ...currentAppointmentData,
+            paymentProof: currentAppointmentData.txn
+        };
+
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) });
+            const modal = document.getElementById('success-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } catch (err) {
+            alert("Request logged!");
+        } finally {
+            btn.innerText = "Confirm Appointment";
+            btn.disabled = false;
+        }
+    };
+
+    // --- 3. UNIFIED BOT LOGIC ---
+    const prismData = {
+        teamInfo: "Our clinical team is led by **Dr. Ravi Kumar (MPT Neuro)**. We specialize in advanced Neurological, Orthopaedic, and Women's health rehabilitation.",
+        services: "**Our Specializations:**\n• Neuro Rehab\n• Ortho & Spine Care\n• Pediatric Physio\n• Sports Injury\n• Women's Health",
+        locations: "**Unit 1 (HQ):** Main Road, Begusarai\n**Unit 2:** Kankarbagh Colony Road, Patna",
+        treatments: {
+            neuro: { title: "Neurological Rehab", info: "Specialized recovery for Stroke, Parkinson's, and SCI." },
+            ortho: { title: "Ortho & Spine", info: "Mechanical treatment for Slip Disc and Sciatica." },
+            peds: { title: "Pediatric Physio", info: "Helping children achieve milestones." },
+            women: { title: "Women's Health", info: "Dedicated care for Pelvic Floor and Post-Natal recovery." }
+        }
+    };
+
+    const chatWindow = document.getElementById('chat-window');
+    const chatContent = document.getElementById('chat-content');
+    const botInput = document.getElementById('bot-input');
+    const botInputArea = document.getElementById('chat-input-area');
+
+    let bookingStep = 0;
+    let userData = {
+        source: 'Assistant Bot', name: '', phone: '', location: '', visitType: '',
+        date: '', time: '', address: '', condition: '', paymentProof: '', message: ''
+    };
+
+    document.getElementById('chat-toggle').onclick = () => {
+        chatWindow.classList.add('open');
+        if (chatContent.innerHTML === "") {
+            appendMsg('bot', "Hi! 👋 I am your **Prism Assistant**. How can I help you today?");
+            showBotMenu();
+        }
+    };
+    document.getElementById('close-chat').onclick = () => chatWindow.classList.remove('open');
+
+    function appendMsg(sender, text) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${sender === 'bot' ? 'bot-msg' : 'user-msg'}`;
+        let formatted = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        div.innerHTML = formatted;
+        chatContent.appendChild(div);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    function showBotMenu() {
+        const div = document.createElement('div');
+        div.id = "bot-options";
+        div.className = "flex flex-col gap-2 mt-2";
+        div.innerHTML = `
+        <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-md italic">📅 Diagnostic Booking</button>
+        <button onclick="handleBotAction('doctor')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">👨‍⚕️ Our Specialized Team</button>
+        <button onclick="handleBotAction('services')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">🏥 Service Details</button>
+        <button onclick="handleBotAction('loc')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">📍 Clinic Locations</button>
+        <button onclick="handleBotAction('help')" class="text-left text-xs bg-slate-800 text-white p-3 rounded-xl font-bold uppercase">💬 Message Us</button>
+    `;
+        chatContent.appendChild(div);
+        botInputArea.classList.add('hidden');
+    }
+
+    function handleBotAction(type) {
+        if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        if (type === 'book') {
+            appendMsg('bot', "Select the type of Consultation you prefer:");
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+            div.innerHTML = `
+            <button onclick="startBooking('Clinic')" class="bg-clinical-blue text-white p-3 rounded-xl text-xs font-bold uppercase">🏥 Clinic Visit</button>
+            <button onclick="startBooking('Home')" class="bg-slate-800 text-white p-3 rounded-xl text-xs font-bold uppercase">🏠 Home Visit</button>
+            <button onclick="startBooking('Online')" class="bg-purple-600 text-white p-3 rounded-xl text-xs font-bold uppercase">💻 Online Consultation</button>
+        `;
+            chatContent.appendChild(div);
+        } else if (type === 'doctor') { appendMsg('bot', prismData.teamInfo); setTimeout(showBotMenu, 3000); }
+        else if (type === 'services') { appendMsg('bot', prismData.services); setTimeout(showBotMenu, 3000); }
+        else if (type === 'loc') { appendMsg('bot', prismData.locations); setTimeout(showBotMenu, 3000); }
+        else if (type === 'help') { appendMsg('bot', "Type your message:"); bookingStep = 50; botInputArea.classList.remove('hidden'); botInput.focus(); }
+    }
+
+    function startBooking(type) {
+        if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        userData.visitType = type;
+        appendMsg('user', `I want a ${type} Session`);
+        appendMsg('bot', "What is the **Patient's Full Name**?");
+        bookingStep = 1; botInputArea.classList.remove('hidden'); botInput.focus();
+    }
+
+    async function handleBotInput() {
+        const val = botInput.value.trim();
+        if (!val) return;
+        appendMsg('user', val);
+        botInput.value = "";
+
+        switch (bookingStep) {
+            case 1: userData.name = val; appendMsg('bot', "10-digit **Mobile Number**?"); bookingStep = 2; break;
+            case 2: userData.phone = val;
+                if (userData.visitType === 'Clinic') {
+                    appendMsg('bot', "Preferred Location? (**Begusarai** or **Patna**)"); bookingStep = 3;
+                } else if (userData.visitType === 'Online') {
+                    appendMsg('bot', "Preferred **Date**? (e.g. 25th Dec)"); bookingStep = 4;
+                } else {
+                    appendMsg('bot', "Provide your **Full Home Address**:"); bookingStep = 10;
+                } break;
+            case 3: userData.location = val; appendMsg('bot', "Preferred **Date**? (e.g. 25th Dec)"); bookingStep = 4; break;
+            case 4: userData.date = val; appendMsg('bot', "Preferred **Time Slot**?"); bookingStep = 5; break;
+            case 5: userData.time = val; appendMsg('bot', "Briefly describe the **Medical Condition**:"); bookingStep = 6; break;
+            case 6: userData.condition = val; askPayment(); break;
+            case 10: userData.address = val; appendMsg('bot', "Requested **Date** for visit?"); bookingStep = 11; break;
+            case 11: userData.date = val; appendMsg('bot', "Describe the **Medical Condition**:"); bookingStep = 12; break;
+            case 12: userData.condition = val; askPayment(); break;
+            case 20: userData.paymentProof = val; saveAndConfirm("✅ Booking confirmed!"); break;
+        }
+    }
+
+    function askPayment() {
+        const payDiv = document.createElement('div');
+        payDiv.className = "bot-msg chat-bubble mb-4";
+        payDiv.innerHTML = `
+        <p class="mb-3">To finalize slot, pay the **₹500** booking fee.</p>
+        <p class="mb-3">UPI ID: <strong style="font-size:15px; color:#0056b3;">dr.raviphysio01@oksbi</strong></p>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 mb-3 flex flex-col items-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=dr.raviphysio01@oksbi%26pn=Prism%20Healthcare%26am=500%26cu=INR" 
+                 alt="UPI QR Code" class="w-32 h-32">
+            <p class="text-[9px] text-slate-400 mt-2 uppercase font-bold">Scan with Any UPI App</p>
+        </div>
+        <button onclick="paymentPaidDone()" class="bg-clinical-blue text-white p-3 rounded-xl text-[10px] font-black uppercase">✅ I Have Paid</button>
+    `;
+        chatContent.appendChild(payDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        botInputArea.classList.add('hidden');
+    }
+
+    function paymentPaidDone() {
+        appendMsg('user', "I have paid");
+        appendMsg('bot', "Enter your **12-digit UPI Transaction ID**:");
+        bookingStep = 20; botInputArea.classList.remove('hidden'); botInput.focus();
+    }
+
+    // --- UPDATED BOT WHATSAPP SUMMARY ---
+    async function saveAndConfirm(successText) {
+        appendMsg('bot', "Syncing clinical data...");
+        userData.message = `Visit: ${userData.visitType} | Problem: ${userData.condition}`;
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(userData) });
+            
+            let finalLoc = userData.visitType === 'Home' ? userData.address : (userData.visitType === 'Online' ? 'Online' : (userData.location || 'Clinic'));
+            
+            const waSlip = window.encodeURIComponent(
+                `*PRISM APPOINTMENT SUMMARY*\n` +
+                `*Name:* ${userData.name}\n` +
+                `*Type:* ${userData.visitType}\n` +
+                `*Number:* ${userData.phone}\n` +
+                `*Date:* ${userData.date}\n` +
+                `*Location:* ${finalLoc}\n` +
+                `*Time:* ${userData.time || 'N/A'}\n` +
+                `*Problem:* ${userData.condition}\n` +
+                `*TXN ID:* ${userData.paymentProof}`
+            );
+
+            appendMsg('bot', successText);
+            const waDiv = document.createElement('div');
+            waDiv.innerHTML = `<a href="https://wa.me/919708059081?text=${waSlip}" target="_blank" class="mt-2 bg-green-600 text-white p-4 rounded-2xl text-center text-[10px] font-black uppercase block shadow-lg">📲 Get WhatsApp Confirmation</a>`;
+            chatContent.appendChild(waDiv);
+        } catch (e) { appendMsg('bot', "Success!"); }
+        bookingStep = 0; botInputArea.classList.add('hidden');
+    }
+
+    document.getElementById('send-btn').onclick = handleBotInput;
+    botInput.onkeypress = (e) => { if (e.key === 'Enter') handleBotInput(); };
+
+    window.onscroll = () => {
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+        });
+    };
+</script>
+</body>
+
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prism | Clinical Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        
+        .bg-logo-image {
+            position: fixed; top: 50%; left: 55%; transform: translate(-50%, -50%);
+            width: 500px; opacity: 0.4; z-index: -1; pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .sidebar-active {
+            background: #0f172a;
+            color: white !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-hidden { display: none; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .animate-slide { animation: slideIn 0.4s ease-out forwards; }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen flex">
+
+    <!-- BACKGROUND LOGO -->
+    <img src="Prism logo.jpeg" class="bg-logo-image" alt="Prism Logo">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-2xl z-[1000] flex items-center justify-center p-4">
+        <div class="bg-white p-10 rounded-[3rem] shadow-2xl max-w-sm w-full text-center">
+            <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="shield-check" class="w-10 h-10 text-white"></i>
+            </div>
+            <h1 class="text-2xl font-black mb-1 tracking-tight">Staff Access</h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-8">Clinical Intelligence Portal</p>
+            <input type="password" id="adminPass" placeholder="Access Code" class="w-full px-6 py-4 bg-slate-50 border rounded-2xl mb-4 outline-none focus:ring-4 focus:ring-slate-900/5 transition-all text-center font-bold">
+            <button onclick="attemptLogin()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-slate-800 transition-all shadow-xl">Unlock Dashboard</button>
+        </div>
+    </div>
+
+    <!-- SIDE NAVIGATION -->
+    <aside id="sidebar" class="hidden w-72 h-screen sticky top-0 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col p-6 z-50">
+        <div class="flex items-center gap-3 mb-10 px-2">
+            <img src="Prism logo.jpeg" class="w-10 h-10 rounded-xl shadow-sm" alt="Logo">
+            <span class="text-xl font-black tracking-tighter uppercase italic">Prism</span>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-slate-500 transition-all">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> Overview
+            </button>
+            <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i data-lucide="users" class="w-5 h-5"></i> Patient Records
+            </button>
+            <button onclick="switchTab('analytics', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Analytics
+            </button>
+        </nav>
+
+        <div class="pt-6 border-t border-slate-100">
+            <button onclick="location.reload()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content" class="hidden flex-1 p-8 lg:p-12 relative">
+        
+        <!-- HEADER -->
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 id="tab-title" class="text-3xl font-black tracking-tight text-slate-900">Dashboard Overview</h1>
+                <p class="text-slate-400 text-sm font-medium">Welcome back, Admin.</p>
+            </div>
+            <button onclick="loadAdminData()" class="p-3 bg-white border border-slate-200 rounded-2xl shadow-sm hover:rotate-180 transition-all duration-500">
+                <i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i>
+            </button>
+        </header>
+
+        <!-- SECTION: OVERVIEW -->
+        <section id="tab-overview" class="animate-slide">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-card p-8 rounded-[2.5rem] shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl"><i data-lucide="calendar-check" class="w-6 h-6"></i></div>
+                    </div>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Lifetime Bookings</p>
+                    <h3 id="stat-total" class="text-4xl font-black mt-1">0</h3>
+                </div>
+                <div class="glass-card p-8 rounded-[2.5rem] shadow-sm">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-2xl"><i data-lucide="wallet" class="w-6 h-6"></i></div>
+                    </div>
+                    <p class="text-emerald-600/60 text-[10px] font-bold uppercase tracking-widest">Lifetime Collection</p>
+                    <h3 id="stat-revenue" class="text-4xl font-black mt-1">₹0</h3>
+                </div>
+                <div class="bg-slate-900 p-8 rounded-[2.5rem] text-white relative overflow-hidden flex flex-col justify-center">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2 italic">Latest Update</p>
+                    <h3 id="last-booking-name" class="text-2xl font-bold z-10">...</h3>
+                    <p id="last-booking-info" class="text-sm text-slate-400 mt-1 z-10"></p>
+                    <i data-lucide="activity" class="absolute right-[-10px] bottom-[-10px] w-32 h-32 text-white/5 -rotate-12"></i>
+                </div>
+            </div>
+
+            <!-- Recently Added Table (Small) -->
+            <div class="glass-card rounded-[2.5rem] overflow-hidden p-2">
+                <div class="p-6 flex justify-between items-center">
+                    <h4 class="font-black uppercase text-xs tracking-widest text-slate-400">Recent Appointments</h4>
+                    <button onclick="switchTab('patients')" class="text-blue-600 text-xs font-bold">View All</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <tbody id="overview-table" class="divide-y divide-slate-100">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: PATIENTS -->
+        <section id="tab-patients" class="section-hidden animate-slide">
+            <div class="flex flex-col md:flex-row gap-4 mb-8">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="adminSearch" onkeyup="filterTable()" placeholder="Filter by name, phone or problem..." class="w-full pl-12 pr-4 py-4 glass-card border-none rounded-2xl outline-none focus:ring-4 focus:ring-slate-900/5 text-sm font-medium shadow-sm">
+                </div>
+                <div class="glass-card p-2 rounded-2xl shadow-sm flex items-center gap-2">
+                    <input type="date" id="dayFilter" onchange="filterByDay()" class="outline-none text-xs font-bold px-3 text-slate-700 bg-transparent">
+                    <button onclick="clearFilter()" class="text-red-500 p-2 hover:bg-red-50 rounded-xl transition-colors"><i data-lucide="filter-x" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[3rem] shadow-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-900/5 text-[10px] uppercase font-black text-slate-500 tracking-[0.15em]">
+                                <th class="p-6">No.</th>
+                                <th class="p-6">Patient</th>
+                                <th class="p-6">Case Info</th>
+                                <th class="p-6">Transaction</th>
+                                <th class="p-6 text-center">Engagement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- JS Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: ANALYTICS -->
+        <section id="tab-analytics" class="section-hidden animate-slide">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Monthly Stat -->
+                <div class="glass-card p-10 rounded-[3rem]">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-4 bg-indigo-50 text-indigo-600 rounded-3xl"><i data-lucide="calendar-days" class="w-8 h-8"></i></div>
+                        <div>
+                            <h4 class="text-2xl font-black">Monthly Report</h4>
+                            <p id="curr-month-name" class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">October 2023</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-end border-b pb-4">
+                            <span class="text-slate-400 font-bold text-xs uppercase">Bookings</span>
+                            <span id="month-count" class="text-3xl font-black">0</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b pb-4">
+                            <span class="text-slate-400 font-bold text-xs uppercase">Revenue</span>
+                            <span id="month-rev" class="text-3xl font-black text-emerald-600">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yearly Stat -->
+                <div class="glass-card p-10 rounded-[3rem]">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-4 bg-orange-50 text-orange-600 rounded-3xl"><i data-lucide="trending-up" class="w-8 h-8"></i></div>
+                        <div>
+                            <h4 class="text-2xl font-black">Yearly Performance</h4>
+                            <p id="curr-year-name" class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">2023</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-end border-b pb-4">
+                            <span class="text-slate-400 font-bold text-xs uppercase">Total Patients</span>
+                            <span id="year-count" class="text-3xl font-black">0</span>
+                        </div>
+                        <div class="flex justify-between items-end border-b pb-4">
+                            <span class="text-slate-400 font-bold text-xs uppercase">Total Revenue</span>
+                            <span id="year-rev" class="text-3xl font-black text-emerald-600">₹0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWUmQYSn3zsPX0TsxPEXQV5l314OirxscWt1fL1MS8uFdAHNNLSNO4XFZMvMo2PV9-/exec';
+        let globalData = [];
+
+        async function attemptLogin() {
+            const pass = document.getElementById('adminPass').value;
+            const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "adminLogin", password: pass }) });
+            if (await res.text() === "SUCCESS") {
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('sidebar').classList.remove('hidden');
+                document.getElementById('sidebar').classList.add('flex');
+                document.getElementById('main-content').classList.remove('hidden');
+                loadAdminData();
+            } else { alert("❌ Unauthorized access."); }
+        }
+
+        async function loadAdminData() {
+            const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "fetchAdminData" }) });
+            globalData = await res.json();
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const total = globalData.length;
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-revenue').innerText = "₹" + (total * 500).toLocaleString();
+
+            const latest = globalData[globalData.length - 1];
+            if(latest) {
+                document.getElementById('last-booking-name').innerText = latest[2];
+                document.getElementById('last-booking-info').innerText = `${latest[8]} • Slot ${latest[9]}`;
+            }
+
+            renderTable([...globalData].reverse());
+            calculateAnalytics();
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('admin-table-body');
+            const overviewTbody = document.getElementById('overview-table');
+            tbody.innerHTML = "";
+            overviewTbody.innerHTML = "";
+
+            data.forEach((row, index) => {
+                const rowHtml = `
+                    <tr class="hover:bg-white/50 transition-colors">
+                        <td class="p-6"><span class="font-black text-slate-300">#${data.length - index}</span></td>
+                        <td class="p-6">
+                            <p class="font-black text-slate-900 text-base uppercase tracking-tight">${row[2]}</p>
+                            <p class="text-[11px] text-slate-400 font-bold tracking-widest">${row[3]}</p>
+                        </td>
+                        <td class="p-6">
+                            <p class="font-semibold text-slate-600 line-clamp-1 italic mb-1">"${row[6]}"</p>
+                            <div class="flex gap-2">
+                                <span class="text-[9px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-black tracking-widest uppercase border border-blue-100">${row[4]}</span>
+                                <span class="text-[9px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-bold">${row[8]} | ${row[9]}</span>
+                            </div>
+                        </td>
+                        <td class="p-6"><span class="font-mono text-[10px] text-red-500 font-bold bg-red-50/50 px-3 py-1.5 rounded-xl border border-red-100">${row[7]}</span></td>
+                        <td class="p-6">
+                            <div class="flex gap-2 justify-center">
+                                <button onclick="sendWA('${row[3]}', '${row[2]}', '${row[8]}', '${row[9]}')" class="bg-emerald-500 text-white p-2.5 rounded-xl hover:scale-110 shadow-lg shadow-emerald-100 transition-all"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                                <button onclick="deleteRow('${row[0]}')" class="bg-white border text-slate-300 p-2.5 rounded-xl hover:text-red-500 hover:border-red-100 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', rowHtml);
+                if(index < 5) overviewTbody.insertAdjacentHTML('beforeend', rowHtml);
+            });
+            lucide.createIcons();
+        }
+
+        function calculateAnalytics() {
+            const now = new Date();
+            const currMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const currYearStr = `${now.getFullYear()}`;
+
+            const monthData = globalData.filter(r => r[8].startsWith(currMonthStr));
+            const yearData = globalData.filter(r => r[8].startsWith(currYearStr));
+
+            document.getElementById('curr-month-name').innerText = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+            document.getElementById('month-count').innerText = monthData.length;
+            document.getElementById('month-rev').innerText = "₹" + (monthData.length * 500).toLocaleString();
+
+            document.getElementById('curr-year-name').innerText = currYearStr;
+            document.getElementById('year-count').innerText = yearData.length;
+            document.getElementById('year-rev').innerText = "₹" + (yearData.length * 500).toLocaleString();
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('section-hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('section-hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active'));
+            if(btn) btn.classList.add('sidebar-active');
+
+            const titles = { overview: 'Dashboard Overview', patients: 'Patient Records', analytics: 'Data Analytics' };
+            document.getElementById('tab-title').innerText = titles[tabId];
+        }
+
+        function filterByDay() {
+            const val = document.getElementById('dayFilter').value;
+            renderTable(val ? globalData.filter(r => r[8] === val).reverse() : [...globalData].reverse());
+        }
+
+        function clearFilter() { document.getElementById('dayFilter').value = ""; renderTable([...globalData].reverse()); }
+
+        function filterTable() {
+            const term = document.getElementById('adminSearch').value.toUpperCase();
+            document.querySelectorAll('#admin-table-body tr').forEach(r => r.style.display = r.innerText.toUpperCase().includes(term) ? '' : 'none');
+        }
+
+        function sendWA(phone, name, date, time) {
+            const msg = `*Prism Healthcare*\nHi ${name}, your session is booked for *${date}* at *${time}*.`;
+            window.open(`https://wa.me/91${phone.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function deleteRow(id) {
+            if(!confirm("⚠️ Permenantly delete this record?")) return;
+            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "deleteAppointment", id: id }) });
+            loadAdminData();
+        }
+    </script>
+</body>
+</html>

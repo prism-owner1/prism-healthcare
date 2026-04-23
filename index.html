@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Dr. Ravi Kumar & Team | Best Physiotherapy Center in Patna | Prism Healthcare</title>
+<meta name="description" content="Meet Dr. Ravi Kumar and our expert team at Prism Healthcare, Gola Road, Patna. We are the leading clinic for neuro physiotherapy, stroke rehabilitation, and orthopaedic physiotherapy in Bihar. Transforming lives through evidence-based care.">
+<meta name="keywords" content="best physiotherapy center in Patna, physiotherapy near me Patna, neuro physiotherapy Patna, orthopaedic physiotherapy Patna, pain management clinic Patna, back pain treatment Patna, stroke rehabilitation Patna, Dr. Ravi Kumar physiotherapist, Prism Healthcare About">
+<link rel="canonical" href="https://prismhealthcare.in/about.html">
+
+<!-- Geo Location Tags -->
+<meta name="geo.region" content="IN-BR" />
+<meta name="geo.placename" content="Patna" />
+<meta name="geo.position" content="25.612674;85.064562" />
+<meta name="ICBM" content="25.612674, 85.064562" />
+
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Meet the Experts | Best Physiotherapy Center in Patna | Prism Healthcare">
+<meta property="og:description" content="Led by Dr. Ravi Kumar (MPT Neuro), Prism Healthcare is Patna's premier center for Neurological and Orthopaedic excellence.">
+<meta property="og:url" content="https://prismhealthcare.in/about.html">
+<meta property="og:image" content="drRavi.jpeg">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PhysiotherapyClinic",
+  "name": "Prism Healthcare",
+  "image": "https://prismhealthcare.in/drRavi.jpeg",
+  "@id": "https://prismhealthcare.in/about.html",
+  "url": "https://prismhealthcare.in/about.html",
+  "telephone": "+919708059081",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Orthocare Hospital, Gola Road",
+    "addressLocality": "Patna",
+    "addressRegion": "Bihar",
+    "postalCode": "801503",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.612674,
+    "longitude": 85.064562
+  },
+  "areaServed": "Patna, Bihar",
+  "employee": [
+    {
+      "@type": "Person",
+      "name": "Dr. Ravi Kumar",
+      "jobTitle": "Director & Lead Neuro-Rehab Specialist",
+      "description": "MPT (Neurology), specialist in advanced manual therapy and neurological conditions."
+    },
+    {
+      "@type": "Person",
+      "name": "Dr. Supriya",
+      "jobTitle": "Consultant Physiotherapist",
+      "description": "BPT, Specialist in Women Health & orthopedic rehabilitation."
+    },
+    {
+      "@type": "Person",
+      "name": "Dr. Puja",
+      "jobTitle": "Consultant Physiotherapist",
+      "description": "BPT, Specialist in Pediatric and Neurological Rehabilitation."
+    }
+  ],
+  "medicalSpecialty": [
+    "Neurological Rehabilitation",
+    "Orthopaedic Physiotherapy",
+    "Stroke Rehabilitation",
+    "Pediatric Physiotherapy",
+    "Women's Health"
+  ]
+}
+</script>
+
+<link rel="icon" type="image/jpg" href="Logo3.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .clinical-blue {
+        color: #0056b3;
+    }
+
+    .bg-clinical-blue {
+        background-color: #0056b3;
+    }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .hero-gradient {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    /* Expert Image Uniformity */
+    .expert-frame {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 3rem;
+    }
+
+
+    /* Floating Buttons */
+    .whatsapp-float {
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-10px);
+        }
+
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+
+    /* Chatbot UI Styles */
+    #chat-window {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(20px) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #chat-window.open {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .chat-bubble {
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    .bot-msg {
+        background: #f1f5f9;
+        color: #1e293b;
+        border-bottom-left-radius: 4px;
+    }
+
+    .user-msg {
+        background: #0056b3;
+        color: white;
+        border-bottom-right-radius: 4px;
+        align-self: flex-end;
+    }
+
+    /* Mobile Nav */
+    #mobile-nav-overlay {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateX(100%);
+    }
+
+    #mobile-nav-overlay.open {
+        transform: translateX(0);
+    }
+</style>
+</head>
+
+<body class="bg-white text-slate-900 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
+        <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center group">
+                <div class="relative flex-shrink-0 mr-3">
+                    <img src="Prism logo.jpeg" alt="Prism Logo"
+                        class="h-11 w-11 object-cover rounded-xl shadow-sm border border-slate-100 group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-clinical-blue/10 rounded-xl blur-md -z-10"></div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <span class="text-2xl font-black tracking-tighter text-gray-900 leading-none">P R I S M</span>
+                    <p class="text-[10px] uppercase tracking-[0.3em] text-clinical-blue font-extrabold leading-none">
+                        Healthcare</p>
+                </div>
+            </a>
+            <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
+                <a href="index.html" class="hover:text-clinical-blue transition">Home</a>
+                <a href="about.html" class="text-clinical-blue border-b-2 border-clinical-blue pb-1">About</a>
+                <a href="services.html" class="hover:text-clinical-blue transition">Services</a>
+                <a href="careers.html" class="hover:text-clinical-blue transition">Careers</a>
+                <a href="appointment.html"
+                    class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition">Make
+                    Appointment</a>
+            </div>
+            <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700"><i data-lucide="menu"
+                    class="w-8 h-8"></i></button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-nav-overlay" class="fixed inset-0 z-[100] bg-white lg:hidden flex flex-col p-8">
+        <div class="flex justify-end"><button id="mobile-menu-close"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </div>
+        <div class="flex flex-col gap-8 mt-12 text-3xl font-bold">
+            <a href="index.html">Home</a>
+            <a href="about.html" class="text-clinical-blue underline">About</a>
+            <a href="services.html">Services</a>
+            <a href="careers.html" class="mobile-link">Careers</a>
+            <a href="appointment.html" class="bg-clinical-blue text-white p-4 rounded-2xl text-center text-lg">Make Appointment</a>
+            <a href="https://wa.me/919708059081" class="text-green-600 flex items-center gap-2">WhatsApp Us <i
+                    data-lucide="external-link"></i></a>
+        </div>
+    </div>
+
+    <!-- About Hero: Specialized Institution Profile -->
+    <section class="pt-40 pb-24 hero-gradient overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2 reveal">
+                <span
+                    class="text-clinical-blue font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Institutional
+                    Profile</span>
+                <h1 class="text-5xl lg:text-6xl font-black leading-tight mb-6 tracking-tighter uppercase italic">
+                    Redefining <br>Clinical <span class="clinical-blue italic">Standards.</span>
+                </h1>
+
+                <!-- Requested Lead Line -->
+                <p
+                    class="text-xl font-bold text-slate-800 leading-snug mb-6 italic border-l-4 border-clinical-blue pl-4">
+                    Bihar's premier ecosystem for Neurological excellence and advanced physical rehabilitation.
+                </p>
+
+                <!-- Detailed Institution Description -->
+                <div class="space-y-4 text-slate-600 leading-relaxed text-base font-medium mb-8">
+                    <p>
+                        Prism Healthcare and Rehabilitation Center represents a paradigm shift in the landscape of
+                        physical therapy. We are an integrated clinical ecosystem dedicated to bridging the critical gap
+                        between acute medical discharge and a patient's full return to functional independence.
+                    </p>
+                    <p>
+                        Our practice is built on the foundation of <strong>Evidence-Based Clinical Reasoning</strong>.
+                        Unlike traditional physiotherapy, we utilize a specialized "Movement Science" approach,
+                        integrating advanced protocols like NDT (Neuro-Developmental Treatment), PNF, and high-velocity
+                        manual manipulation to treat complex neurological and orthopedic conditions.
+                    </p>
+                    <p>
+                        At Prism, our mission is to provide metropolitan-standard care locally. By combining
+                        compassionate patient-centric care with cutting-edge therapeutic modalities, we ensure that
+                        every recovery blueprint is as unique as the patient we serve.
+                    </p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="flex gap-4">
+                    <div class="flex flex-col">
+                        <span class="text-3xl font-black text-slate-900">4+</span>
+                        <span class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Years of
+                            Excellence</span>
+                    </div>
+                    <div class="w-[1px] h-12 bg-slate-300 mx-4"></div>
+                    <div class="flex flex-col">
+                        <span class="text-3xl font-black text-slate-900">2000+</span>
+                        <span class="text-[10px] font-bold uppercase text-slate-400 tracking-widest">Lives
+                            Transformed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Functional Imagery -->
+            <div class="md:w-1/2 relative reveal" style="transition-delay: 200ms;">
+                <div class="absolute inset-0 bg-clinical-blue/10 rounded-full blur-3xl -z-10"></div>
+                <div class="relative">
+                    <img src="doctor.png"
+                        class="rounded-[3rem] shadow-2xl expert-frame border-8 border-white"
+                        alt="Advanced Clinical Environment">
+                    <!-- Subtle Floating Badge -->
+                    <div
+                        class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-white px-8 py-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <span
+                            class="text-[10px] font-black uppercase tracking-widest text-slate-700 whitespace-nowrap">Gloabal
+                            Standards / Research Driven</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aim & Mission Section -->
+    <section class="py-24 bg-white max-w-7xl mx-auto px-4">
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="reveal bg-slate-300 p-12 rounded-[3rem] border border-slate-100">
+                <div
+                    class="w-14 h-14 bg-clinical-blue text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                    <i data-lucide="target" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-3xl font-black uppercase italic italic tracking-tighter mb-4">Our &nbsp;<span
+                        class="clinical-blue">Aim</span></h3>
+                <p class="text-slate-600 leading-relaxed font-medium italic text-lg">Our aim is to create a pain free
+                    Bihar by becoming a trusted center of clinical excellence where every patient, regardless of how
+                    serious their condition may be, can access high quality rehabilitation. We strive to deliver care
+                    that matches the standards of major cities, while helping individuals recover effectively, restore
+                    function, and return to an independent and active life.</p>
+            </div>
+            <div class="reveal bg-slate-900 p-12 rounded-[3rem] text-white" style="transition-delay: 150ms;">
+                <div
+                    class="w-14 h-14 bg-white/10 text-clinical-blue rounded-2xl flex items-center justify-center mb-6 border border-white/10">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-3xl font-black uppercase italic italic tracking-tighter mb-4">Our &nbsp; <span
+                        class="clinical-blue">Mission</span></h3>
+                <p class="text-slate-300 leading-relaxed font-medium italic text-lg">Our mission is to provide research
+                    driven and patient centered physiotherapy through compassionate care and advanced global treatment
+                    approaches such as Neuro Developmental Treatment, Proprioceptive Neuromuscular Facilitation, and
+                    specialized manual therapy techniques. We are committed to delivering effective, evidence based care
+                    that reduces pain, restores function, and improves overall quality of life for every patient.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="reveal">
+                <h2
+                    class="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-slate-900 leading-none">
+                    Meet &nbsp; Our &nbsp; <span class="text-clinical-blue">Experts</span>
+                </h2>
+                <!-- Decorative Clinical Line -->
+                <div class="flex justify-center items-center gap-3 mt-6">
+                    <div class="h-[2px] w-12 bg-slate-200"></div>
+                    <div class="h-2 w-2 rounded-full bg-clinical-blue animate-pulse"></div>
+                    <div class="h-[2px] w-48 bg-clinical-blue"></div>
+                    <div class="h-2 w-2 rounded-full bg-clinical-blue animate-pulse"></div>
+                    <div class="h-[2px] w-12 bg-slate-200"></div>
+                </div>
+                <p class="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] mt-6">
+                    Dedicated to Clinical Excellence & Patient Recovery
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experts Profiles Section -->
+    <section class="py-24 space-y-32 max-w-7xl mx-auto px-4 mb-20">
+
+        <!-- 1. Dr. Ravi Kumar -->
+        <div id="neuro" class="flex flex-col lg:flex-row gap-16 items-center scroll-mt-32">
+            <!-- Profile Photo with White Frame & Zoom Effect -->
+            <div class="lg:w-2/5 reveal group">
+                <div class="relative p-4 bg-white shadow-2xl rounded-[3.5rem] overflow-hidden border border-slate-100">
+                    <div class="overflow-hidden rounded-[2.5rem]">
+                        <img src="drRavi.jpeg"
+                            class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-in-out"
+                            alt="Dr. Ravi Kumar">
+                    </div>
+                    <div
+                        class="absolute bottom-10 right-10 bg-clinical-blue text-white p-6 rounded-2xl shadow-xl z-10 border-4 border-white">
+                        <p class="font-bold text-sm italic">Lead Clinician</p>
+                        <p class="text-[10px] opacity-80 uppercase tracking-widest font-black">Founder Director</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-3/5 reveal" style="transition-delay: 100ms;">
+                <h2 class="text-sm font-bold text-clinical-blue uppercase tracking-[0.3em] mb-4">The Director</h2>
+                <h3 class="text-4xl font-extrabold mb-6 italic uppercase tracking-tighter leading-none text-slate-900">
+                    Dr. &nbsp; Ravi &nbsp; Kumar <br>
+                    <span class="text-lg font-medium text-slate-400 block mt-2 tracking-normal italic normal-case">MPT
+                        (Neurology), MIAP, CONT, CMTP</span>
+                </h3>
+
+                <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
+                    <p class="font-semibold text-slate-800 italic">Dr. Ravi Kumar is an expert physiotherapist known for
+                        his strong clinical expertise in evidence based practice and advanced manual therapy, with hands
+                        on experience in managing a wide range of musculoskeletal, Orthopedic and neurological
+                        conditions.</p>
+
+                    <div id="dr-ravi-bio" class="hidden space-y-6 animate-detail">
+                        <p>His specializes in advanced treatment approaches including dry needling, cupping therapy, and
+                            comprehensive exercise based rehabilitation, focusing on delivering precise, result oriented
+                            care.</p>
+
+                        <p>Formerly associated with Yatharth Hospital Greater Noida, Park Hospital Gurugram, and
+                            Advanced Neuro Hospital Patna, and with experience across multiple clinics, his clinical
+                            practice is rooted in evidence based physiotherapy with a strong emphasis on manual therapy
+                            and individualized care. He has managed a wide range of cases including stroke, paralysis,
+                            and chronic musculoskeletal and spinal conditions, with a clear focus on functional recovery
+                            and restoring patient independence.</p>
+
+                        <p>He has contributed to multiple research publications covering topics such as nomophobia among
+                            Indian students, text neck syndrome, work related stress, and anxiety during the COVID 19
+                            pandemic, reflecting his interest in both physical and mental health domains.</p>
+
+                        <a href="appointment.html"
+                            class="inline-flex items-center gap-3 bg-clinical-blue text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-lg shadow-blue-500/30">
+                            <i data-lucide="calendar-check" class="w-5 h-5"></i> Book Appointment with Dr. Ravi
+                        </a>
+                    </div>
+
+                    <button onclick="toggleBio('dr-ravi-bio', this)"
+                        class="group flex items-center gap-2 text-clinical-blue font-extrabold uppercase text-xs tracking-[0.2em] border-2 border-clinical-blue px-6 py-3 rounded-xl hover:bg-clinical-blue hover:text-white transition-all mt-4">
+                        <span class="btn-text">See More Details</span>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 transition-transform group-hover:translate-y-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Dr. Supriya -->
+        <div id="supriya" class="flex flex-col lg:flex-row-reverse gap-16 items-center scroll-mt-32">
+            <!-- Profile Photo with White Frame & Zoom Effect -->
+            <div class="lg:w-2/5 reveal group">
+                <div class="relative p-4 bg-white shadow-2xl rounded-[3.5rem] overflow-hidden border border-slate-100">
+                    <div class="overflow-hidden rounded-[2.5rem]">
+                        <img src="DrSupriya.jpeg"
+                            class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-in-out"
+                            alt="Dr. Supriya">
+                    </div>
+                    <div
+                        class="absolute bottom-10 left-10 bg-clinical-blue text-white p-6 rounded-2xl shadow-xl z-10 border-4 border-white">
+                        <p class="font-bold text-sm italic">Physiotherapist</p>
+                        <p class="text-[10px] opacity-80 uppercase tracking-widest font-black">Consultant</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-3/5 reveal text-right lg:text-left">
+                <h2 class="text-sm font-bold text-clinical-blue uppercase tracking-[0.3em] mb-4">Consultant Team</h2>
+                <h3 class="text-4xl font-extrabold mb-6 italic uppercase tracking-tighter leading-none text-slate-900">
+                    Dr. &nbsp; Supriya <br>
+                    <span class="text-lg font-medium text-slate-400 block mt-2 tracking-normal italic uppercase">BPT,
+                        Specialized in Women Health & orthopedic rehabilitation</span>
+                </h3>
+
+                <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
+                    <p class="font-semibold text-slate-800 italic">Dr. Supriya is an expert physiotherapist specializing
+                        in Pain care, orthopedic rehabilitation, and women’s health, with strong expertise in post
+                        surgical recovery, pain management, and ICU based rehabilitation.</p>
+
+                    <div id="dr-supriya-bio" class="hidden space-y-6 animate-detail">
+                        <p>Dr. Supriya has clinical experience at Paras Hospital Gurugram and Paras Hospital Patna,
+                            where she has managed a wide spectrum of orthopedic and critical care cases. Her practice
+                            emphasizes pre and post operative rehabilitation, early mobilization, and restoration of
+                            functional independence.</p>
+                        <p>She has a focused expertise in post operative care, pain management, and women’s health
+                            rehabilitation. Her approach integrates structured, evidence based interventions with
+                            compassionate care to optimize recovery, improve functional outcomes, and enhance overall
+                            quality of life.</p>
+                        <a href="appointment.html"
+                            class="inline-flex items-center gap-3 bg-clinical-blue text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-lg">
+                            <i data-lucide="calendar-check" class="w-5 h-5"></i> Book Appointment with Dr. Supriya
+                        </a>
+                    </div>
+
+                    <div class="flex justify-end lg:justify-start">
+                        <button onclick="toggleBio('dr-supriya-bio', this)"
+                            class="group flex items-center gap-2 text-clinical-blue font-extrabold uppercase text-xs tracking-[0.2em] border-2 border-clinical-blue px-6 py-3 rounded-xl hover:bg-clinical-blue hover:text-white transition-all mt-4">
+                            <span class="btn-text">See More Details</span>
+                            <i data-lucide="chevron-down"
+                                class="w-4 h-4 transition-transform group-hover:translate-y-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Dr. Puja -->
+        <div id="puja" class="flex flex-col lg:flex-row gap-16 items-center scroll-mt-32">
+            <div class="lg:w-2/5 reveal group">
+                <div class="relative p-4 bg-white shadow-2xl rounded-[3.5rem] overflow-hidden border border-slate-100">
+                    <div class="overflow-hidden rounded-[2.5rem]">
+                        <img src="drpuja2.jpeg"
+                            class="w-full h-[500px] object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 ease-in-out"
+                            alt="Dr. Puja">
+                    </div>
+                    <div
+                        class="absolute bottom-10 right-10 bg-clinical-blue text-white p-6 rounded-2xl shadow-xl z-10 border-4 border-white">
+                        <p class="font-bold text-sm italic">Physiotherapist</p>
+                        <p class="text-[10px] opacity-80 uppercase tracking-widest font-black">Consultant</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-3/5 reveal" style="transition-delay: 100ms;">
+                <h2 class="text-sm font-bold text-clinical-blue uppercase tracking-[0.3em] mb-4">Consultant Team</h2>
+                <h3 class="text-4xl font-extrabold mb-6 italic uppercase tracking-tighter leading-none text-slate-900">
+                    Dr. &nbsp; Puja <br>
+                    <span class="text-lg font-medium text-slate-400 block mt-2 tracking-normal italic uppercase">BPT,
+                        Specialized in Pediatric and Neurological Rehabilitation</span>
+                </h3>
+
+                <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
+                    <p class="font-semibold text-slate-800 italic">Dr. Puja is a dedicated physiotherapist with focused
+                        expertise in neurological and pediatric rehabilitation, delivering patient centered care for
+                        improved function and long term outcomes.</p>
+
+                    <div id="dr-puja-bio" class="hidden space-y-6 animate-detail">
+                        <p>Dr. Puja has clinical experience at Paras Hospital Gurugram and Park Hospital Gurugram, and
+                            has served as the Lead Pediatric Physiotherapist at Sprouts Pediatric Center Gurugram. She
+                            has managed a wide range of neurological and pediatric cases with a focus on functional
+                            improvement and developmental progress.</p>
+                        <p>Her practice is centered on individualized, evidence based rehabilitation, with emphasis on
+                            enhancing motor skills, coordination, and independence. She is committed to supporting
+                            children in achieving developmental milestones and improving quality of life through
+                            structured and goal oriented therapy.</p>
+                        <a href="appointment.html"
+                            class="inline-flex items-center gap-3 bg-clinical-blue text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-blue-800 transition-all shadow-lg">
+                            <i data-lucide="calendar-check" class="w-5 h-5"></i> Book Appointment with Dr. Puja
+                        </a>
+                    </div>
+
+                    <button onclick="toggleBio('dr-puja-bio', this)"
+                        class="group flex items-center gap-2 text-clinical-blue font-extrabold uppercase text-xs tracking-[0.2em] border-2 border-clinical-blue px-6 py-3 rounded-xl hover:bg-clinical-blue hover:text-white transition-all mt-4">
+                        <span class="btn-text">See More Details</span>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 transition-transform group-hover:translate-y-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map & Footer -->
+    <footer class="bg-slate-900 text-white pt-20 pb-12 rounded-t-[4rem]">
+<div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-3 gap-12 mb-16">
+        <div>
+            <!-- Wrap the image in a link -->
+            <a href="about.html" class="inline-block transition-transform duration-300 hover:scale-110 active:scale-95">
+                <img src="PrismLogo.png" alt="Prism Logo" class="w-42 h-auto rounded-md">
+            </a>
+
+            <p class="text-slate-400 text-sm leading-relaxed mb-8 italic mt-4">
+                Redefining recovery through specialized care across orthopedic injuries, athletes, geriatrics, post operative cases, and overall well being, using advanced interventions beyond routine outpatient care.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                        <a href="https://www.linkedin.com/company/prismphysiotherapy/?viewAsMember=true" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                        </a>
+                        <a href="https://instagram.com/prismphysiotherapy" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="instagram" class="w-4 h-4"></i> Instagram
+                        </a>
+                        <a href="#" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Begusarai
+                            (HQ)</h5>
+                        <p class="text-sm text-slate-400">Main Road, Begusarai, Bihar</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">Orthocare Hospital, Gola road Patna</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">MG Nagar, Kanti Factory Rd, Patna</p>
+                    </div>
+                    
+                    <!-- Updated Footer Contact with WhatsApp QR -->
+                    <div class="flex flex-col gap-4">
+                        <a href="tel:+919708059081"
+                            class="flex items-center gap-2 text-white font-bold hover:text-clinical-blue transition-colors">
+                            <i data-lucide="phone-call" class="text-clinical-blue w-5 h-5"></i>
+                            <span>+91 97080 59081</span>
+                        </a>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-blue-100">Scan to Chat</p>
+                                <p class="text-[8px] opacity-60">WhatsApp Support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl overflow-hidden h-48 border border-slate-800 shadow-xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.6!2d85.13!3d25.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed5842f03901b5%3A0x747209930f78a2!2sPatna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1704543200000"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div
+                class="border-t border-slate-800 pt-10 text-center text-slate-500 text-[10px] uppercase tracking-[0.3em] font-bold">
+                &copy; 2024 Prism Healthcare. Developed by Clinical Architect.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot & Buttons -->
+    <a href="https://wa.me/919708059081"
+        class="fixed bottom-6 right-6 z-[100] bg-green-500 text-white p-4 rounded-full shadow-2xl whatsapp-float"><i
+            data-lucide="message-circle" class="w-8 h-8"></i></a>
+    <div class="fixed bottom-6 left-6 z-[100]"><button id="chat-toggle"
+            class="bg-clinical-blue text-white p-4 rounded-full shadow-2xl"><i data-lucide="bot"
+                class="w-8 h-8"></i></button></div>
+
+    <div id="chat-window"
+        class="fixed bottom-24 left-6 w-[350px] h-[550px] bg-white shadow-2xl rounded-2xl z-[100] flex flex-col border border-slate-100 overflow-hidden">
+        <div class="bg-clinical-blue p-4 text-white flex justify-between items-center"><span
+                class="font-bold text-sm uppercase tracking-widest">Assistant</span><button id="close-chat"><i
+                    data-lucide="x" class="w-5 h-5"></i></button></div>
+        <div id="chat-content" class="flex-1 overflow-y-auto p-4 flex flex-col bg-slate-50"></div>
+        <div id="chat-input-area" class="hidden p-3 bg-white border-t flex gap-2"><input type="text" id="bot-input"
+                class="flex-1 text-sm p-3 bg-slate-100 rounded-xl outline-none" placeholder="Type here..."><button
+                id="send-btn" class="bg-clinical-blue text-white p-3 rounded-xl"><i data-lucide="send"
+                    class="w-4 h-4"></i></button></div>
+    </div>
+
+<script>
+    lucide.createIcons();
+
+    // 1. Bio Toggle (Kept exactly as is)
+    function toggleBio(id, btn) {
+        const content = document.getElementById(id);
+        const btnText = btn.querySelector('.btn-text');
+        const btnIcon = btn.querySelector('i');
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            btnText.innerText = 'See Less';
+            btnIcon.style.transform = 'rotate(180deg)';
+        } else {
+            content.classList.add('hidden');
+            btnText.innerText = 'See More Details';
+            btnIcon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    // 2. Nav Logic (Kept exactly as is)
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    if (mobileMenuBtn) mobileMenuBtn.onclick = () => mobileNavOverlay.classList.add('open');
+    if (mobileMenuClose) mobileMenuClose.onclick = () => mobileNavOverlay.classList.remove('open');
+
+    // --- 3. UNIFIED BOT LOGIC ---
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQmrjUara4qVeEMua8JA3jFnUguv2O0tUyF5P0arjeuFlDwfTNkCZGoLxyaCGNbLG-/exec';
+
+    const prismData = {
+        teamInfo: "Our clinical team is led by **Dr. Ravi Kumar (MPT Neuro)**. We specialize in advanced Neurological, Orthopaedic, and Women's health rehabilitation. Click a specialist below to view their profile:",
+        services: "**Our Specializations:**\n• Neuro Rehab\n• Ortho & Spine Care\n• Pediatric Physio\n• Sports Injury\n• Women's Health",
+        locations: "**Unit 1 (HQ):** Main Road, Begusarai\n**Unit 2:** Kankarbagh Colony Road, Patna",
+        treatments: {
+            neuro: { title: "Neurological Rehab", info: "Specialized recovery for **Stroke, Parkinson's, and SCI** using NDT protocols to restore independent walking." },
+            ortho: { title: "Ortho & Spine", info: "Mechanical treatment for **Slip Disc and Sciatica** using McKenzie/Mulligan techniques." },
+            peds: { title: "Pediatric Physio", info: "Helping children achieve milestones. Specialists in **Cerebral Palsy and Delayed Milestones**." },
+            women: { title: "Women's Health", info: "Dedicated care for **Pelvic Floor, Post-Natal core restoration, and Diastasis Recti**." }
+        }
+    };
+
+    const chatWindow = document.getElementById('chat-window');
+    const chatContent = document.getElementById('chat-content');
+    const botInput = document.getElementById('bot-input');
+    const botInputArea = document.getElementById('chat-input-area');
+
+    let bookingStep = 0;
+    let userData = {
+        source: 'Assistant Bot', name: '', phone: '', location: '', visitType: '',
+        date: '', time: '', address: '', condition: '', paymentProof: '', message: ''
+    };
+
+    document.getElementById('chat-toggle').onclick = () => {
+        chatWindow.classList.add('open');
+        if (chatContent.innerHTML === "") {
+            appendMsg('bot', "Hi! 👋 I am your **Prism Assistant**. How can I help you today?");
+            showBotMenu();
+        }
+    };
+    document.getElementById('close-chat').onclick = () => chatWindow.classList.remove('open');
+
+    function appendMsg(sender, text) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${sender === 'bot' ? 'bot-msg' : 'user-msg'}`;
+        let formatted = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        div.innerHTML = formatted;
+        chatContent.appendChild(div);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    function showBotMenu() {
+        const div = document.createElement('div');
+        div.id = "bot-options";
+        div.className = "flex flex-col gap-2 mt-2";
+        div.innerHTML = `
+        <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-md italic">📅 Diagnostic Booking</button>
+        <button onclick="handleBotAction('doctor')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold hover:border-clinical-blue transition">👨‍⚕️ Our Specialized Team</button>
+        <button onclick="handleBotAction('services')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold hover:border-clinical-blue transition">🏥 Service Details</button>
+        <button onclick="handleBotAction('browse')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">🏥 Browse Treatments</button>
+        <button onclick="handleBotAction('loc')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">📍 Clinic Locations</button>
+        <button onclick="handleBotAction('help')" class="text-left text-xs bg-slate-800 text-white p-3 rounded-xl font-bold uppercase shadow-md">💬 Need Help / Message Us</button>
+    `;
+        chatContent.appendChild(div);
+        botInputArea.classList.add('hidden');
+    }
+
+    function handleBotAction(type) {
+        if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+
+        if (type === 'doctor') {
+            appendMsg('bot', prismData.teamInfo);
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+            div.innerHTML = `
+            <a href="about.html#neuro" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👨‍⚕️ Dr. Ravi Kumar (Director)</a>
+            <a href="about.html#supriya" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Supriya (Consultant)</a>
+            <a href="about.html#puja" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Puja (Consultant)</a>
+            <button onclick="showBotMenu()" class="text-center text-[10px] font-bold text-slate-400 uppercase mt-2">🔙 Back to Menu</button>
+        `;
+            chatContent.appendChild(div);
+        }
+        else if (type === 'services') { appendMsg('bot', prismData.services); setTimeout(showBotMenu, 2000); }
+        else if (type === 'loc') { appendMsg('bot', prismData.locations); setTimeout(showBotMenu, 2000); }
+        else if (type === 'browse') {
+            appendMsg('bot', "Select a treatment category:");
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "grid grid-cols-2 gap-2 mt-2";
+            Object.keys(prismData.treatments).forEach(k => {
+                div.innerHTML += `<button onclick="showTreatmentInfo('${k}')" class="bg-slate-100 p-2 rounded-lg text-[10px] font-bold border uppercase hover:bg-clinical-blue hover:text-white">${prismData.treatments[k].title}</button>`;
+            });
+            chatContent.appendChild(div);
+        }
+        else if (type === 'help') { appendMsg('bot', "Please type your query:"); bookingStep = 50; botInputArea.classList.remove('hidden'); botInput.focus(); }
+        else if (type === 'book') {
+            appendMsg('bot', "Would you like to book a **Clinic Visit**, **Home Visit**, or **Online Consultation**?");
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+            div.innerHTML = `
+            <button onclick="startBooking('Clinic')" class="bg-clinical-blue text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏥 Clinic Visit</button>
+            <button onclick="startBooking('Home')" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏠 Home Visit</button>
+            <button onclick="startBooking('Online')" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">💻 Online Consultation</button>
+        `;
+            chatContent.appendChild(div);
+        }
+    }
+
+    function showTreatmentInfo(key) {
+        if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        const treat = prismData.treatments[key];
+        appendMsg('bot', `**${treat.title}**\n\n${treat.info}\n\nWould you like to schedule a session?`);
+        const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+        div.innerHTML = `
+        <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-sm italic">📅 Start Booking Now</button>
+        <button onclick="showBotMenu()" class="bg-slate-200 p-3 rounded-xl text-xs font-bold uppercase">🔙 Back to Menu</button>
+    `;
+        chatContent.appendChild(div);
+    }
+
+    function startBooking(type) {
+        if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        userData.visitType = type;
+        appendMsg('user', `I want a ${type} Session`);
+        appendMsg('bot', "What is the **Patient's Full Name**?");
+        bookingStep = 1; botInputArea.classList.remove('hidden'); botInput.focus();
+    }
+
+    async function handleBotInput() {
+        const val = botInput.value.trim();
+        if (!val) return;
+        appendMsg('user', val);
+        botInput.value = "";
+
+        if (bookingStep === 50) { userData.message = val; appendMsg('bot', "Mobile Number?"); bookingStep = 51; return; }
+        if (bookingStep === 51) { userData.phone = val; saveAndConfirm("Message Sent!"); return; }
+
+        switch (bookingStep) {
+            case 1: userData.name = val; appendMsg('bot', "10-digit **Mobile Number**?"); bookingStep = 2; break;
+            case 2: userData.phone = val;
+                if (userData.visitType === 'Clinic') {
+                    appendMsg('bot', "Preferred Location? (**Begusarai** or **Patna**)"); bookingStep = 3;
+                } else if (userData.visitType === 'Online') {
+                    appendMsg('bot', "Requested **Date** for Online Consultation?"); bookingStep = 4;
+                } else {
+                    appendMsg('bot', "Provide your **Full Home Address**:"); bookingStep = 10;
+                } break;
+            case 3: userData.location = val; appendMsg('bot', "Preferred **Date**? (e.g. 25th Dec)"); bookingStep = 4; break;
+            case 4: userData.date = val; appendMsg('bot', "Preferred **Time Slot**?"); bookingStep = 5; break;
+            case 5: userData.time = val; appendMsg('bot', "Briefly describe the **Medical Condition**:"); bookingStep = 6; break;
+            case 6: userData.condition = val; askPayment(); break;
+            case 10: userData.address = val; appendMsg('bot', "Requested **Date** for visit?"); bookingStep = 11; break;
+            case 11: userData.date = val; appendMsg('bot', "Describe the **Medical Condition**:"); bookingStep = 12; break;
+            case 12: userData.condition = val; askPayment(); break;
+            case 20: userData.paymentProof = val; saveAndConfirm("✅ Booking confirmed!"); break;
+        }
+    }
+
+    function askPayment() {
+        const payDiv = document.createElement('div');
+        payDiv.className = "bot-msg chat-bubble mb-4";
+        payDiv.innerHTML = `
+        <p class="mb-3">To finalize slot, pay the **₹500** booking fee.</p>
+        <p class="mb-3">UPI ID: <strong style="font-size:15px; color:#0056b3;">dr.raviphysio01@oksbi</strong></p>
+        <div class="bg-white p-3 rounded-xl border border-slate-200 mb-3 flex flex-col items-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=dr.raviphysio01@oksbi%26pn=Prism%20Healthcare%26am=500%26cu=INR" 
+                 alt="UPI QR Code" class="w-32 h-32">
+            <p class="text-[9px] text-slate-400 mt-2 uppercase font-bold">Scan with Any UPI App</p>
+        </div>
+        <div class="flex flex-col gap-2">
+            <a href="upi://pay?pa=dr.raviphysio01@oksbi&pn=Prism%20Healthcare&am=500&cu=INR" class="bg-green-600 text-white p-3 rounded-xl text-center text-[10px] font-black uppercase">🚀 Pay via UPI App</a>
+            <button onclick="paymentPaidDone()" class="bg-clinical-blue text-white p-3 rounded-xl text-[10px] font-black uppercase">✅ I Have Paid</button>
+        </div>
+    `;
+        chatContent.appendChild(payDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        botInputArea.classList.add('hidden');
+    }
+
+    function paymentPaidDone() {
+        appendMsg('user', "I have paid");
+        setTimeout(() => {
+            appendMsg('bot', "Please enter your **12-digit UPI Transaction ID**:");
+            bookingStep = 20; botInputArea.classList.remove('hidden'); botInput.focus();
+        }, 600);
+    }
+
+    async function saveAndConfirm(successText) {
+        appendMsg('bot', "Syncing clinical data...");
+        userData.message = `Visit: ${userData.visitType} | Date: ${userData.date} | Time: ${userData.time || 'N/A'} | Address: ${userData.address || 'N/A'} | Problem: ${userData.condition}`;
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(userData) });
+            
+            // Logic to determine final location for the summary
+            let finalLoc = 'Clinic';
+            if(userData.visitType === 'Home') finalLoc = userData.address;
+            else if(userData.visitType === 'Online') finalLoc = 'Online Session';
+            else finalLoc = userData.location || 'Clinic';
+
+            const waSlip = window.encodeURIComponent(
+                `*PRISM APPOINTMENT SUMMARY*\n` +
+                `*Name:* ${userData.name}\n` +
+                `*Type:* ${userData.visitType}\n` +
+                `*Number:* ${userData.phone}\n` +
+                `*Date:* ${userData.date}\n` +
+                `*Location:* ${finalLoc}\n` +
+                `*Time:* ${userData.time || 'N/A'}\n` +
+                `*Problem:* ${userData.condition}\n` +
+                `*TXN ID:* ${userData.paymentProof}`
+            );
+
+            appendMsg('bot', successText);
+            const waDiv = document.createElement('div');
+            waDiv.innerHTML = `<a href="https://wa.me/919708059081?text=${waSlip}" target="_blank" class="mt-2 bg-green-600 text-white p-4 rounded-2xl text-center text-[10px] font-black uppercase block shadow-lg">📲 Get WhatsApp Confirmation</a>`;
+            chatContent.appendChild(waDiv);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        } catch (e) { appendMsg('bot', "Details recorded successfully."); }
+        bookingStep = 0; botInputArea.classList.add('hidden');
+    }
+
+    document.getElementById('send-btn').onclick = handleBotInput;
+    botInput.onkeypress = (e) => { if (e.key === 'Enter') handleBotInput(); };
+
+    // --- 4. SCROLL ANIMATIONS (Kept exactly as is) ---
+    window.onscroll = () => {
+        document.querySelectorAll('.reveal').forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+        });
+    };
+    window.dispatchEvent(new Event('scroll'));
+</script>
+</body>
+
+</html>
