@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physiotherapy Services in Patna | Neuro, Ortho & Stroke Rehab | Prism Healthcare</title>
+<meta name="description" content="Explore advanced physiotherapy services in Patna at Prism Healthcare (Gola Road). Specializing in neuro rehabilitation, stroke recovery, orthopaedic care, back pain treatment, and sports injury. Expert care by Dr. Ravi Kumar.">
+<meta name="keywords" content="best physiotherapy center in Patna, physiotherapy near me Patna, neuro physiotherapy Patna, orthopaedic physiotherapy Patna, pain management clinic Patna, back pain treatment Patna, stroke rehabilitation Patna, sports injury rehab Patna, pediatric physiotherapy Patna, Dr. Ravi Kumar Patna">
+<link rel="canonical" href="https://prismhealthcare.in/services.html">
+
+<!-- Geo Location Meta Tags -->
+<meta name="geo.region" content="IN-BR" />
+<meta name="geo.placename" content="Patna" />
+<meta name="geo.position" content="25.612674;85.064562" />
+<meta name="ICBM" content="25.612674, 85.064562" />
+
+<!-- Open Graph / Social Media -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Advanced Physiotherapy Services in Patna | Prism Healthcare">
+<meta property="og:description" content="Specialized Neuro, Orthopaedic & Pain Management at Gola Road, Patna. Evidence-based stroke recovery and back pain treatment.">
+<meta property="og:url" content="https://prismhealthcare.in/services.html">
+<meta property="og:image" content="Prism logo.jpeg">
+<meta property="og:site_name" content="Prism Healthcare">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PhysiotherapyClinic",
+  "name": "Prism Healthcare",
+  "url": "https://prismhealthcare.in/services.html",
+  "logo": "https://prismhealthcare.in/Prism%20logo.jpeg",
+  "image": "https://prismhealthcare.in/neuro.png",
+  "description": "Providing specialized Neurological Rehabilitation, Orthopaedic Therapy, and Pain Management services in Patna.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Orthocare Hospital, Gola Road",
+    "addressLocality": "Patna",
+    "addressRegion": "Bihar",
+    "postalCode": "801503",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 25.612674,
+    "longitude": 85.064562
+  },
+  "telephone": "+919708059081",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Physiotherapy Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Neurological Rehabilitation",
+          "description": "Specialized recovery for Stroke, Parkinson's, and Spinal Cord Injury."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Orthopaedic & Spine Care",
+          "description": "Advanced treatment for Slip Disc, Sciatica, and joint pain."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Pain Management",
+          "description": "Dry needling, Cupping therapy, and advanced modalities for pain relief."
+        }
+      }
+    ]
+  },
+  "areaServed": "Patna, Bihar"
+}
+</script>
+
+<link rel="icon" type="image/png" href="Logo3.jpg">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .clinical-blue { color: #0056b3; }
+    .bg-clinical-blue { background-color: #0056b3; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+    
+    /* Floating Buttons */
+    .whatsapp-float { animation: bounce 2s infinite; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+    
+    /* Chatbot UI Styles */
+    #chat-window { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px) scale(0.9); opacity: 0; pointer-events: none; }
+    #chat-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+    .bot-msg { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; }
+    .user-msg { background: #0056b3; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+    .pay-proof-btn { background: #059669; color: white; font-weight: 800; padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; margin-top: 8px; width: 100%; }
+
+    /* FAQ Styling */
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    .faq-item.active .faq-content { max-height: 500px; }
+    .faq-item.active i { transform: rotate(180deg); }
+
+    #mobile-menu { transition: 0.4s ease; transform: translateX(100%); }
+    #mobile-menu.open { transform: translateX(0); }
+        html {
+    scroll-behavior: smooth;
+}
+
+/* This ensures the scroll doesn't stop exactly at the top, 
+   giving some breathing room (matching the scroll-mt-20 class) */
+#detailed-services {
+    scroll-margin-top: 5rem; 
+}
+
+    </style>
+</head>
+<body class="bg-white text-slate-900 overflow-x-hidden">
+
+<!-- Sticky Navbar -->
+    <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
+        <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
+            
+            <!-- Professional Branding -->
+            <a href="index.html" class="flex items-center group">
+                <div class="relative flex-shrink-0 mr-2 sm:mr-3">
+                    <img src="Prism logo.jpeg" 
+                         alt="Prism Logo" 
+                         class="h-9 w-9 sm:h-11 sm:w-11 object-cover rounded-xl shadow-sm border border-slate-100">
+                    <div class="absolute inset-0 bg-clinical-blue/10 rounded-xl blur-md -z-10"></div>
+                </div>
+
+                <div class="flex flex-col justify-center">
+                    <span class="text-xl sm:text-2xl font-black tracking-tighter text-gray-900 leading-none">P R I S M</span>
+                    <div class="flex items-center">
+                        <p class="text-[8px] sm:text-[10px] uppercase tracking-[0.3em] text-clinical-blue font-extrabold leading-none">Healthcare</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex space-x-6 items-center font-bold text-sm text-slate-600">
+                <a href="index.html" class="hover:text-clinical-blue transition">Home</a>
+                <a href="about.html" class="hover:text-clinical-blue transition">About</a>
+                <a href="services.html" class="text-clinical-blue hover:opacity-80 transition-all border-b-2 border-clinical-blue pb-1">Services</a>
+                <a href="careers.html" class="hover:text-clinical-blue transition">Careers</a>
+                <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:scale-95">
+                    Make Appointment
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" class="lg:hidden p-2 text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+        </div>
+    </nav>
+
+             <!-- Logo in mobile menu for context -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col p-8 lg:hidden">
+        <div class="flex justify-end">
+            <button id="close-menu" class="p-2 text-slate-500"><i data-lucide="x" class="w-10 h-10"></i></button>
+        </div>
+        <div class="flex flex-col gap-8 mt-12 text-3xl font-bold">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="services.html" class="mobile-link text-clinical-blue underline">Services</a>
+            <a href="careers.html" class="mobile-linke">Careers</a>
+            <a href="appointment.html" class="bg-clinical-blue text-white p-4 rounded-2xl text-center text-lg">Make Appointment</a>
+            <a href="https://wa.me/919708059081" class="text-green-600 flex items-center gap-2">WhatsApp Us <i
+                    data-lucide="external-link"></i></a>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/919708059081" class="fixed bottom-6 right-6 z-[100] bg-green-500 text-white p-4 rounded-full shadow-2xl whatsapp-float"><i data-lucide="message-circle" class="w-8 h-8"></i></a>
+    <div class="fixed bottom-6 left-6 z-[100]"><button id="chat-toggle" class="bg-clinical-blue text-white p-4 rounded-full shadow-2xl"><i data-lucide="bot" class="w-8 h-8"></i></button></div>
+
+    <!-- Chatbot Window -->
+    <div id="chat-window" class="fixed bottom-24 left-6 w-[320px] sm:w-[350px] h-[500px] sm:h-[550px] bg-white shadow-2xl rounded-2xl z-[100] flex flex-col border border-slate-100 overflow-hidden">
+        <div class="bg-clinical-blue p-4 text-white flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                <span class="font-bold text-sm uppercase tracking-widest">Prism Assistant</span>
+            </div>
+            <button id="close-chat"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div id="chat-content" class="flex-1 overflow-y-auto p-4 flex flex-col bg-slate-50"></div>
+        <div id="chat-input-area" class="hidden p-3 bg-white border-t flex gap-2">
+            <input type="text" id="bot-input" class="flex-1 text-sm p-3 bg-slate-100 rounded-xl outline-none border" placeholder="Type here...">
+            <button id="send-btn" class="bg-clinical-blue text-white p-3 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
+        </div>
+    </div>
+
+<!-- Services Hero -->
+<section class="pt-32 sm:pt-48 pb-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-6 uppercase italic leading-tight">
+            Our <span class="clinical-blue">&nbsp;Clinical</span> &nbsp;Specializations.
+        </h1>
+    </div>
+</section>
+
+<!-- EYE-CATCHY BRIDGE SECTION -->
+<section class="bg-slate-50 pb-24 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+        
+        <!-- Main Feature Card -->
+        <div class="bg-white rounded-[2rem] shadow-2xl shadow-blue-900/5 border border-slate-200 overflow-hidden">
+            <div class="grid lg:grid-cols-12 items-stretch">
+                
+                <!-- Left Side: The List -->
+                <div class="lg:col-span-7 p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-slate-100">
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-blue-600 mb-6 flex items-center">
+                        <span class="w-8 h-px bg-blue-600 mr-3"></span> Our Scope of Treatment
+                    </h3>
+                    <p class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight mb-8">
+                        The <span class="&nbsp; clinical-blue italic">TEAM</span> &nbsp; treats &nbsp; all &nbsp; conditions, &nbsp; including &nbsp; but &nbsp; not &nbsp; limited &nbsp; to:
+                    </p>
+                    
+                    <!-- Specialty Tags -->
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Orthopedic Injuries</span>
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Professional Athletes</span>
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Geriatrics</span>
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Post-Op Recovery</span>
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Overall Well Being</span>
+                        <span class="px-5 py-2 bg-slate-100 rounded-full text-slate-700 font-semibold text-sm hover:bg-clinical-blue hover:text-white transition-colors cursor-default">Neurological Rehabilitation</span>
+                    </div>
+
+                    <!-- Unique Selling Point -->
+                    <div class="mt-10 p-6 bg-blue-50 rounded-2xl border-l-4 border-blue-600">
+                        <p class="text-blue-900 font-medium italic">
+                            "Utilizing &nbsp; advanced &nbsp; clinical &nbsp; interventions <span class="font-bold underline decoration-2"> &nbsp; NOT found</span> &nbsp; at &nbsp; any &nbsp; standard &nbsp; outpatient &nbsp; physical &nbsp; therapy &nbsp; clinics."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Side: The Mission -->
+                <div class="lg:col-span-5 bg-slate-900 p-8 md:p-12 flex flex-col justify-center relative">
+                    <!-- Subtle background decoration -->
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-24 h-24 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H16.017C14.9124 8 14.017 7.10457 14.017 6V3L10.017 3V21H14.017ZM4.017 21L4.017 18C4.017 16.8954 4.91243 16 6.017 16H9.017C9.56928 16 10.017 15.5523 10.017 15V9C10.017 8.44772 9.56928 8 9.017 8H6.017C4.91243 8 4.017 7.10457 4.017 6V3L0.017 3V21H4.017Z" /></svg>
+                    </div>
+
+                    <p class="text-xl md:text-2xl text-white font-light leading-relaxed relative z-10">
+                        Our  &nbsp; <span class="text-blue-400 font-bold">TEAM</span> &nbsp; of &nbsp; dedicated &nbsp specialists &nbsp is &nbsp committed &nbsp to &nbsp helping &nbsp our &nbsp patients &nbsp achieve 
+                        <span class="text-white font-black underline decoration-blue-500 decoration-4 underline-offset-8 uppercase tracking-widest">  &nbsp YOUR</span> &nbsp goals &nbsp
+                        and &nbsp improve 
+                        <span class="text-white font-black underline decoration-blue-500 decoration-4 underline-offset-8 uppercase tracking-widest"> &nbsp YOUR</span> quality of life.
+                    </p>
+                </div>
+            </div>
+        </div>
+<!-- THE SIGNATURE SLASH SEPARATOR -->
+<section class="relative py-24 overflow-hidden bg-white">
+    <div class="max-w-5xl mx-auto px-4 relative z-10 text-center">
+        <div class="inline-block px-4 py-1 rounded-full bg-blue-100 text-clinical-blue text-xs font-bold uppercase tracking-widest mb-6">
+            Clinical Excellence
+        </div>
+        
+        <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-8 leading-[1.1]">
+            Experience &nbsp a &nbsp different &nbsp standard &nbsp of &nbsp <span class="clinical-blue italic"> Physical Therapy.</span>
+        </h2>
+
+        <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10">
+            At &nbsp PRISM &nbsp Healthcare, &nbsp we &nbsp offer &nbsp a &nbsp wide &nbsp range &nbsp of &nbsp services &nbsp to &nbsp help &nbsp you &nbsp recove &nbspr from &nbsp injuries &nbsp and &nbsp improve &nbsp your &nbsp overall &nbsp physical &nbsp health. 
+        </p>
+
+        <!-- FUNCTIONAL SCROLL BUTTON -->
+        <div class="flex flex-col items-center">
+            <a href="#detailed-services" class="bg-white shadow-xl rounded-full px-8 py-4 border border-slate-100 flex items-center gap-4 group hover:scale-105 hover:border-clinical-blue transition-all duration-300 cursor-pointer">
+                <span class="text-slate-900 font-bold uppercase tracking-widest text-sm">Explore Our Services</span>
+                <div class="w-8 h-8 bg-clinical-blue text-white rounded-full flex items-center justify-center animate-bounce group-hover:bg-slate-900 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+    
+<!-- Detailed Service Section - Add the ID here -->
+<section id="detailed-services" class="py-24 bg-white scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-4">
+        
+        <!-- 01. Neurological Rehabilitation -->
+        <div id="neuro" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">01. Specialty Core</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Neurological Rehabilitation</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Our primary expertise focuses on rebuilding brain-body connections using Neuro-Developmental Treatment (NDT).</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Stroke Recovery</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Parkinson's Rehab</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Spinal Cord Injury</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Facial Palsy Care</li>
+                </ul>
+                <div id="extra-neuro" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We utilize <strong>PNF (Proprioceptive Neuromuscular Facilitation)</strong> to stimulate motor learning. Our focus is on spasticity management and gait training to restore independent walking.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-neuro', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal">
+                <img src="neuro.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Neurological Rehab India">
+            </div>
+        </div>
+
+        <!-- 02. Orthopaedic & Spine Care -->
+        <div id="ortho" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-2">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">02. Manual Excellence</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Orthopaedic & Spine Care</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Advanced biomechanical assessment for musculoskeletal disorders, utilizing Mulligan and McKenzie methods.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Slip Disc (IVDP)</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> TKR Post-Op Rehab</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Sciatica Treatment</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Frozen Shoulder</li>
+                </ul>
+                <div id="extra-ortho" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">Our spine care center employs <strong>Mechanical Diagnosis and Therapy (MDT)</strong> to treat nerve root compressions and restore joint arthrokinematics without surgery.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-ortho', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-1">
+                <img src="ortho2.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Spine Care India">
+            </div>
+        </div>
+
+        <!-- 03. Pediatric Physiotherapy -->
+        <div id="pediatric" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">03. Pediatric Care</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Pediatric Physiotherapy</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Early intervention programs designed to help children achieve milestones and improve functional independence.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Cerebral Palsy</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Delayed Milestones</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Autism Support</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Down Syndrome</li>
+                </ul>
+                <div id="extra-pediatric" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We use <strong>Sensory Integration Therapy</strong> and NDT for children with congenital disorders, ensuring they achieve head control, sitting, and walking milestones.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-pediatric', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal">
+                <img src="pedia2.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Pediatric Physio India">
+            </div>
+        </div>
+
+        <!-- 04. Sports Injury Rehab -->
+        <div id="sports" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-2">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">04. Peak Performance</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Sports Injury Rehab</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Specialized protocols for athletes to return to sport faster. Focus on strength and agility.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> ACL Reconstruction</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Tennis Elbow</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Ligament Tears</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Ankle Sprains</li>
+                </ul>
+                <div id="extra-sports" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">Our <strong>Return-to-Play</strong> protocol includes kinetic chain assessment and plyometric training to prevent re-injury and enhance explosive power.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-sports', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-1">
+                <img src="sports.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Sports Rehab India">
+            </div>
+        </div>
+
+        <!-- 05. Geriatric Physiotherapy -->
+        <div id="geriatric" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">05. Active Aging</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Geriatric Physiotherapy</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Focusing on fall prevention, balance, and bone health for our senior community.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Arthritis Care</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Balance Training</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Fall Prevention</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Osteoporosis</li>
+                </ul>
+                <div id="extra-geriatric" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We provide <strong>Vestibular Rehabilitation</strong> for dizziness and gentle strength conditioning to ensure seniors remain independent and mobile.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-geriatric', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal">
+                <img src="geriatrics.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Elderly Care India">
+            </div>
+        </div>
+
+        <!-- 06. Athlete Training -->
+        <div id="athlete" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-2">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">06. Performance</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Athlete Conditioning</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Advanced strength and conditioning for Indian sports professionals and youth athletes.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Power Training</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Speed Drills</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Kinetic Chain</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Load Mgmt</li>
+                </ul>
+                <div id="extra-athlete" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We use <strong>Biomechanical Video Analysis</strong> to optimize sport-specific movements and improve explosive power for cricketers and athletes.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-athlete', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-1">
+                <img src="athlete.webp" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Athlete Performance India">
+            </div>
+        </div>
+        
+        <!-- 07. Women’s Health -->
+<div id="women" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+    
+    <!-- Text Column (Now lg:order-1 to appear on the Left) -->
+    <div class="reveal lg:order-1">
+        <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">07. Specialized Wellness</span>
+        <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Women’s Health</h2>
+        <p class="text-slate-500 mb-8 leading-relaxed">Comprehensive care for postnatal recovery and pelvic floor health in a private setting.</p>
+        
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Pelvic Strength</li>
+            <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Post-Natal Rehab</li>
+            <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Diastasis Recti</li>
+            <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Core Restore</li>
+        </ul>
+
+        <div id="extra-women" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+            <p class="text-sm text-slate-700 leading-relaxed mb-4">We address postnatal abdominal separation and pelvic girdle pain through <strong>Evidence-Based Core Restoration</strong> programs tailored for Indian mothers.</p>
+            <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+        </div>
+
+        <button onclick="toggleService('extra-women', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+            <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+        </button>
+    </div>
+
+    <!-- Image Column (Now lg:order-2 to appear on the Right) -->
+    <div class="reveal lg:order-2">
+        <img src="women.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Women Health India">
+    </div>
+
+</div>
+        <!-- 08. Advanced Dry Needling (NOW: Image Left, Text Right) -->
+        <div id="dry" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-2">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">08. Trigger Release</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Advanced Dry Needling</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Precision treatment for myofascial trigger points and chronic muscle knots.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Chronic Tension</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Muscle Knots</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Neck & Calf Pain</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Fibromyalgia</li>
+                </ul>
+                <div id="extra-dry" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We target deep trigger points to induce a <strong>Local Twitch Response (LTR)</strong>, which resets muscle spindles and provides instant pain relief.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-dry', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-1">
+                <img src="Dryneedle.jpg" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Dry Needling India">
+            </div>
+        </div>
+
+        <!-- 09. Cupping Therapy (NOW: Text Left, Image Right) -->
+        <div id="cup" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-1">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">09. Myofascial Release</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Cupping Therapy</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Medical-grade cupping for rapid muscle recovery and lymphatic drainage.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Detoxification</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Blood Flow</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Fascial Stretch</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Post-Gym Recovery</li>
+                </ul>
+                <div id="extra-cup" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We use <strong>Negative Pressure Decompression</strong> to lift tissue layers, flushing out lactic acid and metabolic waste from overused muscles.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-cup', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-2">
+                <img src="cupping.png" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Cupping India">
+            </div>
+        </div>
+
+        <!-- 10. Kinesio Taping (NOW: Image Left, Text Right) -->
+        <div id="tape" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-2">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">10. Dynamic Support</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Kinesio Taping</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Supporting movement and stabilizing joints without limiting range of motion.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Joint Stability</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Swelling Control</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Proprioception</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Weak Support</li>
+                </ul>
+                <div id="extra-tape" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">Our taping provides constant <strong>Sensory Feedback</strong> to the brain, stabilizing joints during movement while facilitating lymphatic drainage.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-tape', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-1">
+                <img src="kinesioTape.jpg" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Taping India">
+            </div>
+        </div>
+
+        <!-- 11. Advanced Modalities (NOW: Text Left, Image Right) -->
+        <div id="modalities" class="grid lg:grid-cols-2 gap-12 items-center mb-32 scroll-mt-24">
+            <div class="reveal lg:order-1">
+                <span class="text-clinical-blue font-bold uppercase tracking-widest text-xs mb-4 block">11. Advanced Treatment Modalities</span>
+                <h2 class="text-4xl font-extrabold mb-8 uppercase italic leading-tight">Advanced Modalities</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed">Imported global standard treatment modalities to enhance recovery outcomes.</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Spine Decompression</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Interferential Therapy</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Ultrasound therapy</li>
+                    <li class="flex items-center gap-2 font-semibold"><i data-lucide="check-circle" class="text-clinical-blue"></i> Tecar therapy</li>
+                </ul>
+                <!-- Changed ID to extra-modalities to avoid duplication with Cupping -->
+                <div id="extra-modalities" class="hidden mb-8 p-6 bg-blue-50/50 rounded-3xl border border-blue-100 shadow-inner animate-detail">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">We utilize advanced physiotherapy modalities to target pain, reduce inflammation, and accelerate tissue healing, ensuring faster and more effective recovery.</p>
+                    <a href="appointment.html" class="inline-flex items-center gap-2 bg-clinical-blue text-white px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-800 transition shadow-lg">Book Appointment</a>
+                </div>
+                <button onclick="toggleService('extra-modalities', this)" class="text-clinical-blue font-black uppercase tracking-widest text-xs flex items-center gap-2 group">
+                    <span class="btn-text">SEE MORE DETAILS</span> <i data-lucide="plus-circle" class="w-4 h-4 transition-transform group-hover:rotate-90"></i>
+                </button>
+            </div>
+            <div class="reveal lg:order-2">
+                <img src="electro.jpg" class="rounded-[2.5rem] shadow-2xl w-full aspect-[4/3] object-cover border-8 border-slate-50" alt="Advanced Modalities">
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+        
+<!-- Advanced Modalities Section -->
+<section id="modalities" class="py-24 bg-slate-900 text-white rounded-[4rem] mx-4 mb-32 scroll-mt-24">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        <!-- Blue Heading -->
+        <h2 class="text-4xl font-extrabold mb-6 uppercase text-clinical-blue"> <span class="clinical-blue">Specialized Care Modalities</span></h2>
+        
+        <!-- Description below heading -->
+        <p class="text-slate-300 max-w-3xl mx-auto italic text-lg leading-relaxed mb-16">
+            At <strong><span class="clinical-blue">Prism Healthcare</span></strong>, We combine advanced therapeutic modalities with evidence-based care to restore your independence and accelerate recovery.
+        </p>
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Card 1: Dry Needling -->
+            <div class="group reveal bg-white/5 p-8 rounded-3xl border border-white/10 transition-all duration-500 hover:border-clinical-blue hover:shadow-[0_0_40px_rgba(0,86,179,0.6)] hover:-translate-y-2">
+                <i data-lucide="zap" class="text-clinical-blue mx-auto mb-4 w-12 h-12 transition-transform duration-500 group-hover:rotate-12"></i>
+                <h4 class="font-bold mb-2 text-xl">Dry Needling</h4>
+                <p class="text-sm text-slate-400 mb-6">Targeting deep trigger points.</p>
+                <button onclick="openModal('dry-needling')" class="inline-block bg-clinical-blue/20 border border-clinical-blue text-clinical-blue px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-clinical-blue hover:text-white transition-all">View Details</button>
+            </div>
+
+            <!-- Card 2: IASTM -->
+            <div class="group reveal bg-white/5 p-8 rounded-3xl border border-white/10 transition-all duration-500 hover:border-clinical-blue hover:shadow-[0_0_40px_rgba(0,86,179,0.6)] hover:-translate-y-2" style="transition-delay: 100ms;">
+                <i data-lucide="database" class="text-clinical-blue mx-auto mb-4 w-12 h-12 transition-transform duration-500 group-hover:rotate-12"></i>
+                <h4 class="font-bold mb-2 text-xl">IASTM</h4>
+                <p class="text-sm text-slate-400 mb-6">Scar tissue mobilization.</p>
+                <button onclick="openModal('iastm')" class="inline-block bg-clinical-blue/20 border border-clinical-blue text-clinical-blue px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-clinical-blue hover:text-white transition-all">View Details</button>
+            </div>
+
+            <!-- Card 3: Cupping -->
+            <div class="group reveal bg-white/5 p-8 rounded-3xl border border-white/10 transition-all duration-500 hover:border-clinical-blue hover:shadow-[0_0_40px_rgba(0,86,179,0.6)] hover:-translate-y-2" style="transition-delay: 200ms;">
+                <i data-lucide="heart" class="text-clinical-blue mx-auto mb-4 w-12 h-12 transition-transform duration-500 group-hover:rotate-12"></i>
+                <h4 class="font-bold mb-2 text-xl">Cupping</h4>
+                <p class="text-sm text-slate-400 mb-6">Myofascial decompression.</p>
+                <button onclick="openModal('cupping')" class="inline-block bg-clinical-blue/20 border border-clinical-blue text-clinical-blue px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-clinical-blue hover:text-white transition-all">View Details</button>
+            </div>
+
+            <!-- Card 4: Combo Therapy -->
+            <div class="group reveal bg-white/5 p-8 rounded-3xl border border-white/10 transition-all duration-500 hover:border-clinical-blue hover:shadow-[0_0_40px_rgba(0,86,179,0.6)] hover:-translate-y-2" style="transition-delay: 300ms;">
+                <i data-lucide="activity" class="text-clinical-blue mx-auto mb-4 w-12 h-12 transition-transform duration-500 group-hover:rotate-12"></i>
+                <h4 class="font-bold mb-2 text-xl">Combo Therapy</h4>
+                <p class="text-sm text-slate-400 mb-6">Advanced electro-modality.</p>
+                <button onclick="openModal('combo')" class="inline-block bg-clinical-blue/20 border border-clinical-blue text-clinical-blue px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-clinical-blue hover:text-white transition-all">View Details</button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Modal (Popup) Structure -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/80 z-[200] opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="bg-white text-slate-900 max-w-lg w-full rounded-[2.5rem] overflow-hidden relative transform scale-90 transition-transform duration-300 shadow-2xl" id="modal-box">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-900 transition-colors">
+            <i data-lucide="x-circle" class="w-8 h-8"></i>
+        </button>
+        <div class="p-10">
+            <div id="modal-icon" class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-6"></div>
+            <h3 id="modal-title" class="text-2xl font-black uppercase italic mb-4"></h3>
+            <p id="modal-text" class="text-slate-600 leading-relaxed mb-8"></p>
+            <button onclick="closeModal()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl hover:bg-clinical-blue transition-colors uppercase tracking-widest text-sm">Close Window</button>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Expanded FAQ Section -->
+<section class="py-24 bg-white max-w-4xl mx-auto px-4">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-extrabold uppercase italic tracking-tighter">Clinical <span class="text-clinical-blue">FAQs</span></h2>
+        <p class="text-slate-400 mt-2">Everything you need to know about starting your rehabilitation journey.</p>
+    </div>
+
+    <div class="space-y-4">
+        <!-- FAQ 1 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">What is the consultation fee at Prism Healthcare?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                The initial clinical assessment and consultation fee is ₹500. This includes a detailed diagnostic review of your condition, physical tests, and the creation of a personalized recovery plan.
+            </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">Does Dr. Ravi Kumar provide home visit services?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Yes, we provide specialized home rehabilitation for patients with severe neurological mobility issues (like acute stroke or spinal cord injuries) in Begusarai and Patna units.
+            </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">What should I bring for my first appointment?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Please bring all relevant medical documents, including recent X-rays, MRI reports, or prescriptions. We also recommend wearing comfortable, loose-fitting clothing that allows easy access to the area being treated.
+            </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">Are advanced treatments like Dry Needling or Cupping painful?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Most patients feel only a minor sensation. Dry needling may cause a brief "twitch response," and cupping may leave temporary marks, but these are generally not painful and are highly effective for rapid muscle release.
+            </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">How many sessions will I need for recovery?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Simple musculoskeletal issues may take 5-10 sessions. However, neurological conditions (like Stroke or CP) or post-surgical rehab are milestone-based and may require long-term consistent therapy.
+            </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">Do you treat children with developmental delays (Cerebral Palsy)?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Yes, Pediatric Physiotherapy is one of our core specialties. We use Neuro-Developmental Treatment (NDT) to help children with CP, delayed milestones, and other congenital conditions achieve better mobility.
+            </div>
+        </div>
+
+        <!-- FAQ 7 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">Can I return to sports after an ACL injury without surgery?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                Depending on the grade of the tear, many athletes successfully return to sport through our "Prehab" and specific strengthening protocols. We evaluate your stability before suggesting a conservative or surgical path.
+            </div>
+        </div>
+
+        <!-- FAQ 8 -->
+        <div class="faq-item border border-slate-100 rounded-2xl bg-slate-50 hover:bg-white transition-all">
+            <button class="w-full flex justify-between items-center p-6 text-left" onclick="toggleFaq(this)">
+                <span class="font-bold text-slate-800">Do I need a doctor's referral to start physiotherapy?</span>
+                <i data-lucide="chevron-down" class="transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-500 leading-relaxed">
+                No, you can book an appointment directly. Physiotherapists are primary healthcare practitioners. However, if we identify a condition that requires surgical or medical intervention, we will refer you to the appropriate specialist.
+            </div>
+        </div>
+    </div>
+</section>
+<!-- High-Impact Contact Section -->
+<section id="contact-section" class="py-24 bg-slate-50 relative overflow-hidden">
+    <!-- Decorative background element -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-clinical-blue/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+    
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+        <!-- Eyecatchy Heading -->
+        <div class="text-center mb-16">
+            <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-clinical-blue text-xs font-bold uppercase tracking-widest mb-4">
+                Don't Delay Your Recovery
+            </span>
+            <h2 class="text-4xl md:text-6xl font-black text-gray-900 mb-6 uppercase tracking-tighter italic">
+                Still having <span class="text-clinical-blue relative">any doubt?
+                    <svg class="absolute -bottom-2 left-0 w-full h-2 text-clinical-blue/20" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 25 0 50 5 T 100 5" stroke="currentColor" stroke-width="5" fill="none"/></svg>
+                </span>
+            </h2>
+            <p class="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl font-medium">
+                Your journey from <span class="text-slate-900 font-bold">Pain to Power</span> starts with a simple conversation. Contact us today.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-[4rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row border border-slate-100">
+            <!-- Left Info Panel: Clinical Blue -->
+            <div class="md:w-2/5 bg-clinical-blue p-12 text-white flex flex-col justify-between">
+                <div>
+                    <h3 class="text-3xl font-extrabold mb-6 leading-tight">Expert Consultation <br>is Just a Click Away.</h3>
+                    <p class="text-blue-100 mb-10 leading-relaxed opacity-90">
+                        Drop your details and <strong class="text-white">Dr. Ravi Kumar's</strong> specialized team will perform a preliminary review of your case.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <!-- Phone -->
+                        <a href="tel:+919708059081" class="group flex items-center gap-5 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-all">
+                            <div class="w-12 h-12 bg-white text-clinical-blue rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
+                                <i data-lucide="phone-call" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest opacity-60">Call Specialist</p>
+                                <p class="font-bold text-lg">+91 97080 59081</p>
+                            </div>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:info@prism.com" class="group flex items-center gap-5 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-all">
+                            <div class="w-12 h-12 bg-white text-clinical-blue rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
+                                <i data-lucide="mail" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest opacity-60">Email Support</p>
+                                <p class="font-bold text-lg">info@prism.com</p>
+                            </div>
+                        </a>
+
+                        <!-- WhatsApp QR -->
+                        <div class="mt-4 flex items-center gap-4 bg-white/5 p-3 rounded-2xl border border-white/10 w-fit">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/919708059081" 
+                                 alt="WhatsApp QR" class="w-14 h-14 rounded-lg border-2 border-white/20">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-blue-100">Scan to Chat</p>
+                                <p class="text-[9px] opacity-70">Direct WhatsApp</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-clinical-blue"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-300 border-2 border-clinical-blue"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-400 border-2 border-clinical-blue"></div>
+                        </div>
+                        <p class="text-xs font-bold uppercase tracking-wider">Joined by 2000+ Recovered Patients</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Form -->
+            <div class="md:w-3/5 p-12 bg-white">
+                <form id="homeContactForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-2">Full Name</label>
+                            <input type="text" id="fc-name" placeholder="John Doe" required
+                                class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-2">Phone Number</label>
+                            <input type="tel" id="fc-phone" placeholder="+91 00000 00000" required
+                                class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all">
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-2">How can we help?</label>
+                        <textarea id="fc-message" rows="4" placeholder="Describe your condition (e.g., Back Pain, Stroke Recovery)..."
+                            class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="group w-full bg-clinical-blue text-white font-black py-5 rounded-2xl shadow-xl hover:bg-blue-800 transition transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3">
+                        SUBMIT INQUIRY 
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    
+                    <p class="text-center text-[10px] text-slate-400 uppercase tracking-widest font-bold">
+                        <i data-lucide="shield-check" class="inline w-3 h-3 mr-1"></i> Your data is encrypted & secure
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Map & Footer -->
+    <footer class="bg-slate-900 text-white pt-20 pb-12 rounded-t-[4rem]">
+<div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-3 gap-12 mb-16">
+        <div>
+            <!-- Wrap the image in a link -->
+            <a href="about.html" class="inline-block transition-transform duration-300 hover:scale-110 active:scale-95">
+                <img src="PrismLogo.png" alt="Prism Logo" class="w-42 h-auto rounded-md">
+            </a>
+
+            <p class="text-slate-400 text-sm leading-relaxed mb-8 italic mt-4">
+                Redefining recovery through specialized care across orthopedic injuries, athletes, geriatrics, post operative cases, and overall well being, using advanced interventions beyond routine outpatient care.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                        <a href="https://www.linkedin.com/company/prismphysiotherapy/?viewAsMember=true" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
+                        </a>
+                        <a href="https://instagram.com/prismphysiotherapy" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="instagram" class="w-4 h-4"></i> Instagram
+                        </a>
+                        <a href="#" target="_blank"
+                            class="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                            <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
+                        </a>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Begusarai
+                            (HQ)</h5>
+                        <p class="text-sm text-slate-400">Main Road, Begusarai, Bihar</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">Orthocare Hospital, Gola road Patna</p>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
+                            Unit</h5>
+                        <p class="text-sm text-slate-400">MG Nagar, Kanti Factory Rd, Patna</p>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <a href="tel:+919708059081"
+                            class="flex items-center gap-2 text-white font-bold hover:text-clinical-blue transition-colors">
+                            <i data-lucide="phone-call" class="text-clinical-blue w-5 h-5"></i>
+                            <span>+91 97080 59081</span>
+                        </a>
+                        <!-- Footer WhatsApp QR -->
+                        <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/10 w-fit">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/919708059081" 
+                                 alt="WhatsApp QR" class="w-10 h-10 rounded-lg border border-white/20">
+                            <div>
+                                <p class="text-[8px] font-bold uppercase tracking-wider text-blue-100">Quick Scan</p>
+                                <p class="text-[7px] opacity-60">WhatsApp Support</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl overflow-hidden h-48 border border-slate-800 shadow-xl">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.6!2d85.13!3d25.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed5842f03901b5%3A0x747209930f78a2!2sPatna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1704543200000"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div
+                class="border-t border-slate-800 pt-10 text-center text-slate-500 text-[10px] uppercase tracking-[0.3em] font-bold">
+                &copy; 2024 Prism Healthcare. Developed by Clinical Architect.
+            </div>
+        </div>
+    </footer>
+
+
+<script>
+    // Initialize Icons
+    lucide.createIcons();
+
+    // FAQ Toggle Function (FIXED)
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const content = item.querySelector('.faq-content');
+        
+        // Toggle the 'active' class to trigger rotation and height in CSS
+        const isActive = item.classList.toggle('active');
+        
+        // Handle 'hidden' visibility
+        if (isActive) {
+            content.classList.remove('hidden');
+        } else {
+            // Wait for transition to finish before hiding display
+            setTimeout(() => {
+                if (!item.classList.contains('active')) {
+                    content.classList.add('hidden');
+                }
+            }, 300);
+        }
+    }
+
+    // 1. Service Section Toggle Expansion (Untouched)
+    function toggleService(id, btn) {
+        const element = document.getElementById(id);
+        const isHidden = element.classList.contains('hidden');
+        const icon = btn.querySelector('i');
+        const btnText = btn.querySelector('.btn-text') || btn;
+
+        if (isHidden) {
+            element.classList.remove('hidden');
+            element.classList.add('animate-detail'); 
+            if (btnText.innerText) btnText.innerText = "HIDE DETAILS";
+            else btn.innerHTML = `HIDE DETAILS <i data-lucide="minus-circle" class="w-4 h-4"></i>`;
+        } else {
+            element.classList.add('hidden');
+            if (btnText.innerText) btnText.innerText = "SEE MORE DETAILS";
+            else btn.innerHTML = `SEE MORE DETAILS <i data-lucide="plus-circle" class="w-4 h-4"></i>`;
+        }
+        lucide.createIcons();
+    }
+
+    // 2. Advanced Modalities Modal Logic (Untouched)
+    const modalData = {
+        'dry-needling': { title: 'Advanced Dry Needling', text: 'Precision clinical intervention using monofilament needles to induce a Local Twitch Response (LTR), resetting muscle spindles for immediate chronic pain relief.', icon: 'zap' },
+        'iastm': { title: 'IASTM Excellence', text: 'Instrument Assisted Soft Tissue Mobilization using specialized tools to detect and treat fascial restrictions and scar tissue efficiently.', icon: 'database' },
+        'cupping': { title: 'Clinical Cupping', text: 'Utilizes negative pressure decompression to lift tissue layers, enhancing lymphatic drainage and flushing out metabolic waste (Lactic Acid).', icon: 'heart' },
+        'combo': { title: 'Combo Electro-Therapy', text: 'Dual-action integration of Ultrasound and TENS/IFT to reduce deep-seated inflammation while providing immediate neural pain modulation.', icon: 'activity' }
+    };
+
+    function openModal(type) {
+        const data = modalData[type];
+        const overlay = document.getElementById('modal-overlay');
+        document.getElementById('modal-title').innerText = data.title;
+        document.getElementById('modal-text').innerText = data.text;
+        document.getElementById('modal-icon').innerHTML = `<i data-lucide="${data.icon}" class="w-8 h-8"></i>`;
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        lucide.createIcons();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+    }
+
+    // 3. Navigation & Mobile Menu (Untouched)
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if(menuBtn) menuBtn.onclick = () => mobileMenu.classList.add('open');
+    if(closeMenu) closeMenu.onclick = () => mobileMenu.classList.remove('open');
+
+    // 4. INTEGRATED UNIFIED CHATBOT LOGIC
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQmrjUara4qVeEMua8JA3jFnUguv2O0tUyF5P0arjeuFlDwfTNkCZGoLxyaCGNbLG-/exec';
+    
+    const prismData = {
+        team: "Our clinical team is led by **Dr. Ravi Kumar (MPT Neuro)**. We specialize in advanced Neurological, Orthopaedic, and Women's health. Click below to view a specific expert:",
+        services: "**Our Specializations:**\n• Neuro Rehab\n• Ortho & Spine Care\n• Pediatric Physio\n• Sports Injury\n• Women's Health",
+        locations: "**Unit 1 (HQ):** Main Road, Begusarai\n**Unit 2:** Kankarbagh Colony Road, Patna",
+        treatments: {
+            neuro: { title: "Neuro Rehab", info: "Stroke, Parkinson's, and SCI recovery using NDT protocols." },
+            ortho: { title: "Ortho & Spine", info: "Treatment for Slip Disc & Sciatica using McKenzie methods." },
+            kids: { title: "Pediatric Physio", info: "Specialists in Cerebral Palsy and delayed milestones." },
+            women: { title: "Women's Health", info: "Pelvic floor and post-natal core restoration." }
+        }
+    };
+
+    const chatWindow = document.getElementById('chat-window');
+    const chatContent = document.getElementById('chat-content');
+    const botInput = document.getElementById('bot-input');
+    const botInputArea = document.getElementById('chat-input-area');
+    
+    let bookingStep = 0; 
+    let userData = { source: 'Unified Bot', name: '', phone: '', location: '', visitType: '', date: '', time: '', address: '', condition: '', paymentProof: '', message: '' };
+
+    function openChat() {
+        chatWindow.classList.add('open');
+        if(chatContent.innerHTML === "") {
+            appendMsg('bot', "Hi! 👋 I am your **Prism Assistant**. How can I help you today?");
+            showMainMenu();
+        }
+    }
+    document.getElementById('chat-toggle').onclick = openChat;
+    document.getElementById('close-chat').onclick = () => chatWindow.classList.remove('open');
+
+    function appendMsg(sender, text) {
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${sender === 'bot' ? 'bot-msg' : 'user-msg'}`;
+        let formatted = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        div.innerHTML = formatted;
+        chatContent.appendChild(div);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    function showMainMenu() {
+        const div = document.createElement('div');
+        div.id = "bot-options";
+        div.className = "flex flex-col gap-2 mt-2";
+        div.innerHTML = `
+            <button onclick="handleBotAction('book')" class="text-left bg-clinical-blue text-white p-3 rounded-xl text-xs font-bold uppercase shadow-md italic">📅 Diagnostic Booking</button>
+            <button onclick="handleBotAction('doctor')" class="text-left bg-white border border-slate-200 p-3 rounded-xl text-xs font-semibold hover:border-clinical-blue transition">👨‍⚕️ Our Specialized Team</button>
+            <button onclick="handleBotAction('services')" class="text-left bg-white border border-slate-200 p-3 rounded-xl text-xs font-semibold">🏥 Service Details</button>
+            <button onclick="handleBotAction('browse')" class="text-left bg-white border border-slate-200 p-3 rounded-xl text-xs font-semibold">🏥 Browse Treatments</button>
+            <button onclick="handleBotAction('loc')" class="text-left bg-white border border-slate-200 p-3 rounded-xl text-xs font-semibold">📍 Clinic Locations</button>
+            <button onclick="handleBotAction('help')" class="text-left bg-slate-800 text-white p-3 rounded-xl text-xs font-bold uppercase shadow-md">💬 Need Help / Message Us</button>
+        `;
+        chatContent.appendChild(div);
+        botInputArea.classList.add('hidden');
+    }
+
+    function handleBotAction(type) {
+        if(document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        
+        if(type === 'doctor') {
+            appendMsg('bot', prismData.team);
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+            div.innerHTML = `
+                <a href="about.html#neuro" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👨‍⚕️ Dr. Ravi Kumar (Director)</a>
+                <a href="about.html#supriya" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Supriya (Consultant)</a>
+                <a href="about.html#puja" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Puja (Consultant)</a>
+                <button onclick="showMainMenu()" class="text-center text-[10px] font-bold text-slate-400 uppercase mt-2">🔙 Back to Menu</button>
+            `;
+            chatContent.appendChild(div);
+        }
+        else if(type === 'services') { appendMsg('bot', prismData.services); setTimeout(showMainMenu, 2000); }
+        else if(type === 'loc') { appendMsg('bot', prismData.locations); setTimeout(showMainMenu, 2000); }
+        else if(type === 'browse') {
+            appendMsg('bot', "Which category are you interested in?");
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "grid grid-cols-2 gap-2 mt-2";
+            Object.keys(prismData.treatments).forEach(k => {
+                div.innerHTML += `<button onclick="showTreatmentInfo('${k}')" class="bg-slate-100 p-2 rounded-lg text-[10px] font-bold border uppercase hover:bg-clinical-blue hover:text-white">${prismData.treatments[k].title}</button>`;
+            });
+            chatContent.appendChild(div);
+        }
+        else if(type === 'help') { appendMsg('bot', "Please type your query:"); bookingStep = 50; botInputArea.classList.remove('hidden'); botInput.focus(); }
+        else if(type === 'book') {
+            appendMsg('bot', "Would you like to book a **Clinic Visit**, **Home Visit**, or **Online Consultation**?");
+            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+            div.innerHTML = `
+                <button onclick="startBooking('Clinic')" class="bg-clinical-blue text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏥 Clinic Visit</button>
+                <button onclick="startBooking('Home')" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏠 Home Visit</button>
+                <button onclick="startBooking('Online')" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">💻 Online Consultation</button>
+            `;
+            chatContent.appendChild(div);
+        }
+    }
+
+    function showTreatmentInfo(key) {
+        if(document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        const treat = prismData.treatments[key];
+        appendMsg('bot', `**${treat.title}**\n\n${treat.info}\n\nWould you like to schedule a session?`);
+        const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
+        div.innerHTML = `
+            <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-sm italic">📅 Start Booking Now</button>
+            <button onclick="showMainMenu()" class="bg-slate-200 p-3 rounded-xl text-xs font-bold uppercase">🔙 Back to Menu</button>
+        `;
+        chatContent.appendChild(div);
+    }
+
+    function startBooking(type) {
+        if(document.getElementById('bot-options')) document.getElementById('bot-options').remove();
+        userData.visitType = type;
+        appendMsg('user', `I want an ${type} Session`);
+        appendMsg('bot', "What is the **Patient's Full Name**?");
+        bookingStep = 1; botInputArea.classList.remove('hidden'); botInput.focus();
+    }
+
+    async function processBotInput() {
+        const val = botInput.value.trim();
+        if(!val) return;
+        appendMsg('user', val);
+        botInput.value = "";
+
+        if(bookingStep === 50) { userData.message = val; appendMsg('bot', "Your mobile number?"); bookingStep = 51; return; }
+        if(bookingStep === 51) { userData.phone = val; saveAndConfirm("Message Sent!"); return; }
+
+        switch(bookingStep) {
+            case 1: userData.name = val; appendMsg('bot', "Please enter a 10-digit **Mobile Number**?"); bookingStep = 2; break;
+            case 2: userData.phone = val; 
+                if(userData.visitType === 'Clinic') {
+                    appendMsg('bot', "Preferred Location? (**Begusarai** or **Patna**)"); bookingStep = 3;
+                } else if(userData.visitType === 'Online') {
+                    appendMsg('bot', "Requested **Date** for Online Consultation?"); bookingStep = 4;
+                } else {
+                    appendMsg('bot', "Please provide your **Full Home Address**:"); bookingStep = 10;
+                } break;
+            case 3: userData.location = val; appendMsg('bot', "Preferred **Date**? (e.g. 25th Dec)"); bookingStep = 4; break;
+            case 4: userData.date = val; appendMsg('bot', "Preferred **Time Slot**? (e.g. 11:00 AM)"); bookingStep = 5; break;
+            case 5: userData.time = val; appendMsg('bot', "Describe the **Medical Condition**:"); bookingStep = 6; break;
+            case 6: userData.condition = val; askPayment(); break;
+            case 10: userData.address = val; appendMsg('bot', "Requested **Date** for visit?"); bookingStep = 11; break;
+            case 11: userData.date = val; appendMsg('bot', "Describe the **Medical Condition**:"); bookingStep = 12; break;
+            case 12: userData.condition = val; askPayment(); break;
+            case 20: userData.paymentProof = val; saveAndConfirm("✅ Booking confirmed!"); break;
+        }
+    }
+
+    function askPayment() {
+        const payDiv = document.createElement('div');
+        payDiv.className = "bot-msg chat-bubble mb-4";
+        payDiv.innerHTML = `
+            <p class="mb-3">To finalize slot, pay the **₹500** booking fee.</p>
+            <p class="mb-3">UPI ID: <strong style="font-size:15px; color:#0056b3;">dr.raviphysio01@oksbi</strong></p>
+            <div class="bg-white p-3 rounded-xl border border-slate-200 mb-3 flex flex-col items-center">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=dr.raviphysio01@oksbi%26pn=Prism%20Healthcare%26am=500%26cu=INR" 
+                     alt="UPI QR Code" class="w-32 h-32">
+                <p class="text-[9px] text-slate-400 mt-2 uppercase font-bold">Scan with Any UPI App</p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <a href="upi://pay?pa=dr.raviphysio01@oksbi&pn=Prism%20Healthcare&am=500&cu=INR" class="bg-green-600 text-white p-3 rounded-xl text-center text-[10px] font-black uppercase">🚀 Pay via UPI App</a>
+                <button onclick="paymentPaidDone()" class="bg-clinical-blue text-white p-3 rounded-xl text-[10px] font-black uppercase">✅ I Have Paid</button>
+            </div>
+        `;
+        chatContent.appendChild(payDiv);
+        chatContent.scrollTop = chatContent.scrollHeight;
+        botInputArea.classList.add('hidden');
+    }
+
+    function paymentPaidDone() {
+        appendMsg('user', "I have paid");
+        setTimeout(() => {
+            appendMsg('bot', "Great! Enter your **12-digit Transaction ID**:");
+            bookingStep = 20; botInputArea.classList.remove('hidden'); botInput.focus();
+        }, 600);
+    }
+
+    async function saveAndConfirm(successText) {
+        appendMsg('bot', "Syncing clinical records...");
+        userData.message = `Visit: ${userData.visitType} | Date: ${userData.date} | Time: ${userData.time || 'N/A'} | Address: ${userData.address || 'N/A'} | Problem: ${userData.condition}`;
+        try {
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(userData) });
+            
+            // Define final location based on visit type
+            let finalLoc = 'Clinic';
+            if(userData.visitType === 'Home') finalLoc = 'Home Visit';
+            else if(userData.visitType === 'Online') finalLoc = 'Online Consultation';
+            else finalLoc = userData.location || 'Clinic';
+
+            const waSlip = window.encodeURIComponent(
+                `*PRISM APPOINTMENT SUMMARY*\n` +
+                `*Name:* ${userData.name}\n` +
+                `*Type:* ${userData.visitType}\n` +
+                `*Number:* ${userData.phone}\n` +
+                `*Date:* ${userData.date}\n` +
+                `*Location:* ${finalLoc}\n` +
+                `*Time:* ${userData.time || 'N/A'}\n` +
+                `*Problem:* ${userData.condition}\n` +
+                `*TXN ID:* ${userData.paymentProof}`
+            );
+            
+            appendMsg('bot', successText);
+            const waDiv = document.createElement('div');
+            waDiv.innerHTML = `<a href="https://wa.me/919708059081?text=${waSlip}" target="_blank" class="mt-2 bg-green-600 text-white p-4 rounded-2xl text-center text-[10px] font-black uppercase block shadow-lg">📲 Get WhatsApp Confirmation</a>`;
+            chatContent.appendChild(waDiv);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        } catch (e) { appendMsg('bot', "Details recorded successfully."); }
+        bookingStep = 0; botInputArea.classList.add('hidden');
+    }
+
+    document.getElementById('send-btn').onclick = processBotInput;
+    botInput.onkeypress = (e) => { if(e.key === 'Enter') processBotInput(); };
+
+    // 5. Scroll Reveal (Untouched)
+    window.onscroll = () => { 
+        document.querySelectorAll('.reveal').forEach(el => { 
+            if(el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active'); 
+        }); 
+    };
+    window.dispatchEvent(new Event('scroll'));
+
+    // 6. Form Submission Logic (Untouched)
+    const homeForm = document.getElementById('homeContactForm');
+    if(homeForm) {
+        homeForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = homeForm.querySelector('button');
+            const data = { source: "Inquiry Form", name: document.getElementById('fc-name').value, phone: document.getElementById('fc-phone').value, message: document.getElementById('fc-message').value };
+            btn.innerText = "Sending...";
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                alert('Sent Successfully!'); homeForm.reset();
+            } catch (e) { alert('Details recorded.'); }
+            btn.innerText = "Submit Inquiry";
+        };
+    }
+</script>
+</body>
+</html>
