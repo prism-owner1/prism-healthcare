@@ -282,6 +282,10 @@
                             <input type="number" id="en-age" placeholder="Age" class="p-3 bg-slate-50 rounded-xl font-bold outline-none">
                             <select id="en-gender" class="p-3 bg-slate-50 rounded-xl font-bold outline-none"><option>Male</option><option>Female</option></select>
                         </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Registration Date</label>
+                            <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
+                        </div>
                         <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                         <input type="tel" id="en-phone" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                         <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
@@ -472,6 +476,26 @@
         </div>
     </div>
 
+    <!-- PATIENT DETAIL MODAL -->
+    <div id="patient-detail-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="pd-name" class="text-xl font-black uppercase truncate pr-4"></h3>
+                <button onclick="closePatientDetailModal()" class="p-2 hover:bg-slate-100 rounded-full flex-shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div class="p-5 bg-indigo-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-[10px] font-black uppercase text-indigo-500">Sessions Attended</span>
+                    <span id="pd-sessions" class="text-xl font-black text-indigo-700"></span>
+                </div>
+                <div class="p-5 bg-emerald-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-[10px] font-black uppercase text-emerald-600">Total Payment</span>
+                    <span id="pd-payment" class="text-xl font-black text-emerald-700"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- BILL MODAL -->
     <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[500] flex flex-col items-center justify-start p-6 overflow-y-auto">
         <div class="flex flex-col items-center gap-2 mb-6 no-print">
@@ -500,6 +524,8 @@
             root.style.display = 'flex';
             root.classList.remove('hidden');
             try { sessionStorage.setItem('prism_unlocked', '1'); } catch (e) {}
+            // Set current date to Enrollment Date field
+            document.getElementById('en-reg-date').value = new Date().toISOString().split('T')[0];
             lucide.createIcons();
             loadAdminData(false);
         }
@@ -556,7 +582,7 @@
         });
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
-        const VERIFY_BASE_URL = 'https://prismphysiotherapy.in/verify.html';
+        const VERIFY_BASE_URL = 'https://prismhealthcare.in/verify.html';
         
         // LOGO SRC UPDATED HERE
         const PRISM_LOGO_SRC = "https://prismhealthcare.in/prism1.png";
@@ -838,7 +864,8 @@
             if (!name) { showToast("Enter the patient's name first", 'warning'); return; }
             const rate = Number(document.getElementById('en-rate').value) || 0;
             if (!rate) { showToast("Enter cost per session", 'warning'); return; }
-            const dateStr = new Date().toISOString().split('T')[0];
+            // Using the chosen date field
+            const dateStr = document.getElementById('en-reg-date').value || new Date().toISOString().split('T')[0];
             const address = document.getElementById('en-address').value.trim();
             const row = [
                 new Date().toISOString(),
@@ -880,6 +907,7 @@
             document.getElementById('en-discount').value = "0";
             document.getElementById('en-gender').value = "Male";
             document.getElementById('en-branch').value = "POC";
+            document.getElementById('en-reg-date').value = new Date().toISOString().split('T')[0];
             document.getElementById('enroll-summary').innerText = "₹0";
             generateClinicalID();
         }
@@ -1059,7 +1087,7 @@
                         : (rem > 0 ? `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>` : `<span class="bg-slate-100 text-slate-400 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`);
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'opacity-50' : ''}">
                         <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
-                        <td class="p-5 font-bold uppercase text-xs">${name}</td>
+                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions attended and payment">${name}</td>
                         <td class="p-5 italic text-slate-400 text-xs">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
@@ -1080,6 +1108,19 @@
             });
             pBody.innerHTML = pHtml; bBody.innerHTML = bHtml; lucide.createIcons();
         }
+
+        function viewPatientDetail(name) {
+            const p = patientLookup[name];
+            if (!p) return;
+            const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+            const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+            document.getElementById('pd-name').innerText = name;
+            document.getElementById('pd-sessions').innerText = consumed;
+            document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
+            document.getElementById('patient-detail-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+        function closePatientDetailModal() { document.getElementById('patient-detail-modal').classList.add('hidden'); }
 
         function generateClinicalID() {
             const b = document.getElementById('en-branch').value, y = new Date().getFullYear().toString().slice(-2);
@@ -1131,7 +1172,7 @@
             billEditMode = !billEditMode;
             document.querySelectorAll('#bill-content-pages .editable').forEach(el => { el.contentEditable = billEditMode; });
             document.getElementById('bill-content-pages').classList.toggle('edit-mode', billEditMode);
-            document.getElementById('edit-hint').classList.toggle('hidden', !billEditMode);
+            document.getElementById('edit-hint').classList.toggle('hidden', billEditMode);
             const btn = document.getElementById('edit-bill-btn');
             btn.innerHTML = billEditMode
                 ? `<i data-lucide="check" class="w-4 h-4"></i> Done Editing`
@@ -1189,7 +1230,7 @@
                     <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
                 </div>`;
             });
-            const verifyUrl = `${VERIFY_BASE_URL}?billNo=${encodeURIComponent(stmtNo)}`;
+            const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
             const firstDate = logs.length ? formatDateDMY(logs[0][8]) : '';
             const lastDate = logs.length ? formatDateDMY(logs[logs.length - 1][8]) : '';
             const ageGenderLine = `Gender: ${p.gender || '-'} | Age: ${p.age || '-'} Y`;
