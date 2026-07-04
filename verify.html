@@ -4,74 +4,89 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prism | Bill Verification</title>
+<link rel="icon" href="https://prismhealthcare.in/prism1.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   * { box-sizing: border-box; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 24px; }
-  
-  .card { background: #fff; border-radius: 28px; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12); max-width: 460px; width: 100%; padding: 40px 36px; text-align: center; }
-  
-  .logo-img { height: 60px; width: auto; margin-bottom: 24px; object-fit: contain; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+    max-width: 460px;
+    width: 100%;
+    padding: 40px 36px;
+    text-align: center;
+  }
+  .brand { display: flex; align-items: center; justify-content: center; margin-bottom: 28px; }
+  .brand img { height: 40px; width: auto; object-fit: contain; }
 
-  .icon-wrap { width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 38px; }
+  .icon-wrap {
+    width: 84px; height: 84px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 38px;
+  }
   .icon-wrap.valid { background: #d1fae5; }
   .icon-wrap.invalid { background: #fee2e2; }
   .icon-wrap.loading { background: #eef2ff; }
-  
-  .spinner { width: 36px; height: 36px; border: 4px solid #c7d2fe; border-top-color: #4f46e5; border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+  .spinner {
+    width: 36px; height: 36px; border: 4px solid #c7d2fe; border-top-color: #4f46e5;
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
   @keyframes spin { to { transform: rotate(360deg); } }
-  
+
   h1 { font-size: 19px; font-weight: 900; margin: 0 0 6px; letter-spacing: -0.3px; }
   h1.valid { color: #059669; }
   h1.invalid { color: #dc2626; }
   h1.loading { color: #4338ca; }
-  
   p.sub { color: #64748b; font-size: 13px; margin: 0 0 26px; line-height: 1.6; }
-  
+
   .details { background: #f8fafc; border-radius: 18px; padding: 18px 22px; text-align: left; margin-bottom: 20px; }
   .row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #eef0f5; font-size: 13px; }
   .row:last-child { border-bottom: none; }
   .row .label { color: #94a3b8; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; white-space: nowrap; }
   .row .value { color: #0f172a; font-weight: 800; text-align: right; }
 
-  /* SUPPORT SECTION STYLING */
-  .support-container { margin-top: 24px; padding-top: 20px; border-top: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-  
-  .support-text { font-size: 12px; color: #64748b; margin-bottom: 4px; }
-  .support-text strong { color: #4f46e5; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 800; }
-  
-  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  
-  .contact-btn { 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 8px; 
-    padding: 10px 20px; 
-    border-radius: 50px; 
-    font-size: 12px; 
-    font-weight: 700; 
-    text-decoration: none; 
-    transition: all 0.2s; 
-    color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  .search-box { margin-top: 6px; }
+  .search-box label {
+    display: block; font-size: 10px; font-weight: 800; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; text-align: left;
   }
-  
-  .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-  .btn-whatsapp { background: #25D366; }
-  .btn-email { background: #0f172a; } /* Dark navy for contrast */
-  
-  .footer-note { font-size: 10.5px; color: #94a3b8; line-height: 1.6; margin-top: 25px; }
+  .search-box input {
+    width: 100%; padding: 14px 16px; border-radius: 14px; border: 1.5px solid #e2e8f0;
+    font-size: 14px; font-weight: 700; margin-bottom: 14px; box-sizing: border-box; color: #0f172a;
+  }
+  .search-box input:focus { outline: none; border-color: #4f46e5; }
+  .search-box button {
+    width: 100%; padding: 14px; border: none; border-radius: 14px; background: #4f46e5;
+    color: #fff; font-weight: 800; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.5px; cursor: pointer;
+  }
+  .search-box button:hover { background: #4338ca; }
+
+  .footer-note { font-size: 10.5px; color: #94a3b8; line-height: 1.6; margin-top: 20px; }
 </style>
 </head>
 <body>
 
 <div class="card">
-  <img src="prism1.png" alt="Prism Physiotherapy Logo" class="logo-img">
+  <div class="brand">
+    <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy">
+  </div>
 
   <div id="result-icon" class="icon-wrap loading"><div class="spinner"></div></div>
   <h1 id="result-title" class="loading">Checking records…</h1>
-  <p class="sub" id="result-sub">Contacting Prism Physiotherapy's clinical database to verify this document.</p>
+  <p class="sub" id="result-sub">Contacting Prism Physiotherapy's clinical database to verify this document. This only takes a moment.</p>
 
   <div class="details" id="details-block" style="display:none">
     <div class="row"><span class="label">Patient</span><span class="value" id="d-name">-</span></div>
@@ -82,34 +97,33 @@
     <div class="row"><span class="label">Date</span><span class="value" id="d-date">-</span></div>
   </div>
 
-  <!-- Updated Support Section -->
-  <div id="support-section" class="support-container" style="display:none">
-    <div class="support-text">Having trouble? <strong>Contact Clinical Support</strong></div>
-    <div class="btn-group">
-        <a href="https://wa.me/919708059081" class="contact-btn btn-whatsapp">
-            <i data-lucide="message-circle" style="width:16px; height:16px;"></i> WhatsApp
-        </a>
-        <a href="mailto:Prismphysiotherapyindia@gmail.com" class="contact-btn btn-email">
-            <i data-lucide="mail" style="width:16px; height:16px;"></i> Email
-        </a>
-    </div>
+  <div class="search-box" id="search-box" style="display:none">
+    <label for="manual-billno">Bill / Statement Number</label>
+    <input type="text" id="manual-billno" placeholder="Recipt Number">
+    <button onclick="manualLookup()">Verify Now</button>
   </div>
 
   <p class="footer-note">Verified live against Prism Physiotherapy &amp; Rehabilitation Center's clinical records.</p>
 </div>
 
 <script>
+    // Must match the Apps Script Web App URL used in the dashboard (SCRIPT_URL)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
 
-    function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+    function getParam(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
 
     function setState(type, title, sub) {
         const iconWrap = document.getElementById('result-icon');
         const titleEl = document.getElementById('result-title');
         const subEl = document.getElementById('result-sub');
         iconWrap.className = 'icon-wrap ' + type;
-        iconWrap.innerHTML = type === 'valid' ? '&#9989;' : (type === 'invalid' ? '&#10060;' : '');
-        if (type === 'loading') iconWrap.innerHTML = '<div class="spinner"></div>';
+        if (type === 'loading') {
+            iconWrap.innerHTML = '<div class="spinner"></div>';
+        } else {
+            iconWrap.innerHTML = type === 'valid' ? '&#9989;' : '&#10060;';
+        }
         titleEl.className = type;
         titleEl.innerText = title;
         subEl.innerText = sub;
@@ -137,48 +151,52 @@
         document.getElementById('d-date').innerText = formatDateDMY(info.dateStr);
     }
 
-    function showSupport() {
-        document.getElementById('support-section').style.display = 'flex';
-        lucide.createIcons();
-    }
+    async function lookup(billNo) {
+        setState('loading', 'Checking records…', 'Contacting Prism Physiotherapy\'s clinical database to verify this document.');
+        document.getElementById('details-block').style.display = 'none';
+        document.getElementById('search-box').style.display = 'none';
 
-    async function runVerification() {
-        const billNo = getParam('billNo');
-        const id = getParam('id');
-        const stmt = getParam('stmt');
-        const sum = getParam('sum');
-        const pid = getParam('pid');
-
-        if (!billNo && !pid && !(id && stmt && sum)) {
-            setState('invalid', 'Incomplete Link', 'Required data is missing. Please re-scan the original QR code.');
-            showSupport();
-            return;
-        }
-
-        const query = new URLSearchParams(window.location.search);
-        query.set('format', 'json');
-        const requestUrl = `${SCRIPT_URL}?${query.toString()}`;
-
+        const url = `${SCRIPT_URL}?billNo=${encodeURIComponent(billNo)}&format=json`;
         try {
-            const res = await fetch(requestUrl, { method: 'GET' });
-            if (!res.ok) throw new Error('Bad response');
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Bad response: ' + res.status);
             const result = await res.json();
 
             renderDetails(result.info);
 
             if (result.valid) {
-                setState('valid', 'Verified Genuine', result.message || 'This document matches Prism Physiotherapy\'s records.');
+                setState('valid', 'Verified Genuine', result.message || 'This bill matches Prism Physiotherapy\'s records.');
             } else {
-                setState('invalid', 'Verification Failed', result.message || 'This document could not be verified.');
-                showSupport();
+                setState('invalid', 'Verification Failed', result.message || 'This bill could not be verified against Prism\'s records.');
+                document.getElementById('search-box').style.display = 'block';
             }
         } catch (err) {
-            setState('invalid', 'Connection Error', 'Unable to reach the database. Please try again later.');
-            showSupport();
+            setState('invalid', 'Could Not Reach Verification Server', 'We were unable to contact Prism\'s clinical database right now. Please check your connection and try again.');
+            document.getElementById('search-box').style.display = 'block';
         }
     }
 
-    runVerification();
+    function manualLookup() {
+        const val = document.getElementById('manual-billno').value.trim();
+        if (!val) return;
+        history.replaceState(null, '', `?billNo=${encodeURIComponent(val)}`);
+        lookup(val);
+    }
+
+    document.getElementById('manual-billno').addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') manualLookup();
+    });
+
+    (function init() {
+        const billNo = getParam('billNo');
+        if (billNo) {
+            lookup(billNo);
+        } else {
+            setState('loading', 'Verify a Bill', 'Enter the Bill/Statement Number printed on your document below to check its authenticity.');
+            document.getElementById('result-icon').innerHTML = '';
+            document.getElementById('search-box').style.display = 'block';
+        }
+    })();
 </script>
 
 </body>
