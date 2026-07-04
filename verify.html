@@ -91,6 +91,7 @@
   <div class="details" id="details-block" style="display:none">
     <div class="row"><span class="label">Patient</span><span class="value" id="d-name">-</span></div>
     <div class="row"><span class="label">Patient ID</span><span class="value" id="d-id">-</span></div>
+    <!-- Condition Row Removed -->
     <div class="row"><span class="label">Bill / Ref No.</span><span class="value" id="d-stmt">-</span></div>
     <div class="row"><span class="label">Amount / Status</span><span class="value" id="d-total">-</span></div>
     <div class="row"><span class="label">Date</span><span class="value" id="d-date">-</span></div>
@@ -98,7 +99,7 @@
 
   <div class="search-box" id="search-box" style="display:none">
     <label for="manual-billno">Bill / Statement Number</label>
-    <input type="text" id="manual-billno" placeholder="Recipt Number">
+    <input type="text" id="manual-billno" placeholder="Receipt Number">
     <button onclick="manualLookup()">Verify Now</button>
   </div>
 
@@ -106,7 +107,6 @@
 </div>
 
 <script>
-    // Must match the Apps Script Web App URL used in the dashboard (SCRIPT_URL)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
 
     function getParam(name) {
@@ -140,10 +140,7 @@
         document.getElementById('details-block').style.display = 'block';
         document.getElementById('d-name').innerText = info.name || '-';
         document.getElementById('d-id').innerText = info.id || '-';
-        if (info.diagnosis) {
-            document.getElementById('d-diag-row').style.display = 'flex';
-            document.getElementById('d-diag').innerText = info.diagnosis;
-        }
+        // Logic to display diagnosis row has been removed
         document.getElementById('d-stmt').innerText = info.stmt || '-';
         const isNumericTotal = !isNaN(parseFloat(info.total)) && isFinite(info.total);
         document.getElementById('d-total').innerText = isNumericTotal ? ('₹' + Number(info.total).toLocaleString()) : String(info.total || '-');
