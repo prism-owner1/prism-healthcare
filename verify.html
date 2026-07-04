@@ -5,42 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prism | Bill Verification</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Added Lucide Icons for the buttons -->
+<script src="https://unpkg.com/lucide@latest"></script>
 <style>
   * { box-sizing: border-box; }
   body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; padding: 24px; }
+  
   .card { background: #fff; border-radius: 28px; box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12); max-width: 460px; width: 100%; padding: 40px 36px; text-align: center; }
-  .brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 28px; }
-  .brand .logo-badge { width: 32px; height: 32px; background: #4f46e5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-style: italic; font-size: 16px; }
-  .brand span { font-weight: 900; letter-spacing: -0.5px; font-size: 18px; text-transform: uppercase; font-style: italic; color: #0f172a; }
+  
+  /* Fixed Logo Styling */
+  .logo-img { height: 60px; width: auto; margin-bottom: 24px; object-fit: contain; }
+
   .icon-wrap { width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 38px; }
   .icon-wrap.valid { background: #d1fae5; }
   .icon-wrap.invalid { background: #fee2e2; }
   .icon-wrap.loading { background: #eef2ff; }
+  
   .spinner { width: 36px; height: 36px; border: 4px solid #c7d2fe; border-top-color: #4f46e5; border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  
   h1 { font-size: 19px; font-weight: 900; margin: 0 0 6px; letter-spacing: -0.3px; }
   h1.valid { color: #059669; }
   h1.invalid { color: #dc2626; }
   h1.loading { color: #4338ca; }
+  
   p.sub { color: #64748b; font-size: 13px; margin: 0 0 26px; line-height: 1.6; }
+  
   .details { background: #f8fafc; border-radius: 18px; padding: 18px 22px; text-align: left; margin-bottom: 20px; }
   .row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #eef0f5; font-size: 13px; }
   .row:last-child { border-bottom: none; }
   .row .label { color: #94a3b8; font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; white-space: nowrap; }
   .row .value { color: #0f172a; font-weight: 800; text-align: right; }
-  .fallback { font-size: 11.5px; color: #94a3b8; margin-top: 6px; }
-  .fallback a { color: #4f46e5; font-weight: 700; text-decoration: none; }
-  .footer-note { font-size: 10.5px; color: #94a3b8; line-height: 1.6; }
+
+  /* Support Button Styling */
+  .support-container { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .support-label { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  
+  .btn-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  
+  .contact-btn { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 10px 18px; 
+    border-radius: 50px; 
+    font-size: 12px; 
+    font-weight: 700; 
+    text-decoration: none; 
+    transition: all 0.2s; 
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  .contact-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.12); }
+  .btn-whatsapp { background: #25D366; }
+  .btn-email { background: #4f46e5; }
+  
+  .footer-note { font-size: 10.5px; color: #94a3b8; line-height: 1.6; margin-top: 25px; border-top: 1px solid #f1f5f9; pt: 15px; padding-top: 15px;}
 </style>
 </head>
 <body>
 
 <div class="card">
-  <img src="prism1.png" alt="Prism Physiotherapy Logo" class="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+  <!-- Logo Fixed -->
+  <img src="prism1.png" alt="Prism Physiotherapy Logo" class="logo-img">
 
   <div id="result-icon" class="icon-wrap loading"><div class="spinner"></div></div>
   <h1 id="result-title" class="loading">Checking records…</h1>
-  <p class="sub" id="result-sub">Contacting Prism Physiotherapy's clinical database to verify this document. This only takes a moment.</p>
+  <p class="sub" id="result-sub">Contacting Prism Physiotherapy's clinical database to verify this document.</p>
 
   <div class="details" id="details-block" style="display:none">
     <div class="row"><span class="label">Patient</span><span class="value" id="d-name">-</span></div>
@@ -51,7 +83,19 @@
     <div class="row"><span class="label">Date</span><span class="value" id="d-date">-</span></div>
   </div>
 
-  <p class="fallback" id="fallback-link" style="display:none"></p>
+  <!-- Support Section -->
+  <div id="support-section" class="support-container" style="display:none">
+    <span class="support-label">Clinical Support</span>
+    <div class="btn-group">
+        <a href="https://wa.me/919708059081" class="contact-btn btn-whatsapp">
+            <i data-lucide="message-circle" style="width:16px; height:16px;"></i> WhatsApp
+        </a>
+        <a href="mailto:Prismphysiotherapyindia@gmail.com" class="contact-btn btn-email">
+            <i data-lucide="mail" style="width:16px; height:16px;"></i> Email
+        </a>
+    </div>
+  </div>
+
   <p class="footer-note">Verified live against Prism Physiotherapy &amp; Rehabilitation Center's clinical records.</p>
 </div>
 
@@ -94,17 +138,10 @@
         document.getElementById('d-date').innerText = formatDateDMY(info.dateStr);
     }
 
-    function buildFallbackLink() {
-        const url = new URL(SCRIPT_URL);
-        const currentParams = new URLSearchParams(window.location.search);
-        currentParams.forEach((v, k) => url.searchParams.set(k, v));
-        const el = document.getElementById('fallback-link');
-        el.innerHTML = `Having trouble? <a <p class="text-blue-200 font-bold uppercase tracking-widest text-xs"> Contact Clinical Support</p>
-                        <div class="flex items-center gap-4">
-                <a href="https://wa.me/919708059081"
-                    class="bg-green-600 text-white px-5 py-2 rounded-full hidden md:flex items-center gap-2 font-bold text-sm hover:scale-105 transition-transform shadow-md">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp`;
-        el.style.display = 'block';
+    function showSupport() {
+        document.getElementById('support-section').style.display = 'flex';
+        // Initialize icons
+        lucide.createIcons();
     }
 
     async function runVerification() {
@@ -115,8 +152,8 @@
         const pid = getParam('pid');
 
         if (!billNo && !pid && !(id && stmt && sum)) {
-            setState('invalid', 'Incomplete Verification Link', 'This QR code or link is missing required data and cannot be checked. Please re-scan the original document.');
-            buildFallbackLink();
+            setState('invalid', 'Incomplete Link', 'This QR code or link is missing required data. Please re-scan the original document.');
+            showSupport();
             return;
         }
 
@@ -126,7 +163,7 @@
 
         try {
             const res = await fetch(requestUrl, { method: 'GET' });
-            if (!res.ok) throw new Error('Bad response: ' + res.status);
+            if (!res.ok) throw new Error('Bad response');
             const result = await res.json();
 
             renderDetails(result.info);
@@ -134,12 +171,12 @@
             if (result.valid) {
                 setState('valid', 'Verified Genuine', result.message || 'This document matches Prism Physiotherapy\'s records.');
             } else {
-                setState('invalid', 'Verification Failed', result.message || 'This document could not be verified against Prism\'s records.');
-                buildFallbackLink();
+                setState('invalid', 'Verification Failed', result.message || 'This document could not be verified against clinical records.');
+                showSupport();
             }
         } catch (err) {
-            setState('invalid', 'Could Not Reach Verification Server', 'We were unable to contact Prism\'s clinical database right now. Please check your connection and try again, or use the link below.');
-            buildFallbackLink();
+            setState('invalid', 'Server Error', 'Unable to reach the clinical database. Please check your connection.');
+            showSupport();
         }
     }
 
