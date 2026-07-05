@@ -368,6 +368,14 @@
 
         <!-- RECORDS -->
         <section id="tab-patients" class="section-hidden animate-slide">
+            <!-- Search Bar for Patient Records -->
+            <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6">
+                <div class="relative">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-full pl-11 pr-4 py-3 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm shadow-inner">
+                </div>
+            </div>
+
             <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
@@ -746,6 +754,9 @@
                 } else if (type === "case closed") {
                     patientLookup[name].closed = true;
                     patientLookup[name].closedDate = dateStr;
+                } else if (type === "case restarted") {
+                    patientLookup[name].closed = false;
+                    patientLookup[name].closedDate = null;
                 } else if (type === "bill issued") {
                     billCounter[name] = (billCounter[name] || 0) + 1;
                 } else {
@@ -827,6 +838,33 @@
                     action: "logAppointment", id: p.id, name: name, phone: p.phone,
                     condition: p.diag, fee: 0, purchased: 0, advance: 0, type: "Case Closed", date: dateStr
                 }).catch(() => {});
+            });
+        }
+
+        async function restartPatientCase(name, event) {
+            const btn = event.currentTarget;
+            armConfirm(btn, 'Confirm Restart?', async () => {
+                const p = patientLookup[name];
+                const dateStr = new Date().toISOString().split('T')[0];
+                const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
+                globalData.push(row);
+                p.closed = false;
+                p.closedDate = null;
+                processData();
+                showToast(`${name}'s case restarted`, 'success');
+                syncToBackend({
+                    action: "logAppointment", id: p.id, name: name, phone: p.phone,
+                    condition: p.diag, fee: 0, purchased: 0, advance: 0, type: "Case Restarted", date: dateStr
+                }).catch(() => {});
+            });
+        }
+
+        function filterRecordTable() {
+            const val = document.getElementById('record-search-input').value.toUpperCase();
+            const rows = document.querySelectorAll('#patient-table-body tr');
+            rows.forEach(row => {
+                const tag = row.getAttribute('data-search-tag') || "";
+                row.style.display = tag.includes(val) ? "" : "none";
             });
         }
 
@@ -1085,16 +1123,21 @@
                     const statusBadge = p.closed
                         ? `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`
                         : (rem > 0 ? `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>` : `<span class="bg-slate-100 text-slate-400 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`);
-                    pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'opacity-50' : ''}">
+                    
+                    pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
                         <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
                         <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions attended and payment">${name}</td>
                         <td class="p-5 italic text-slate-400 text-xs">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
                             <button onclick="sendWhatsApp('${p.phone}', '${name}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
-                            ${!p.closed ? `<button onclick="openCaseModal(); setTimeout(() => { const btn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Close Case') && b.closest('tr')?.textContent.includes('${name}')); if(btn) btn.click(); }, 100);" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>` : ''}
+                            ${p.closed 
+                                ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
+                                : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
+                            }
                         </td>
                     </tr>`;
+                    
                     bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
                         <td class="p-5 font-bold uppercase text-xs">${name}</td>
                         <td class="p-5 font-black text-xs text-slate-500">${p.id}</td>
