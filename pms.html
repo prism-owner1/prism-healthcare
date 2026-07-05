@@ -204,39 +204,43 @@
 
         <!-- OVERVIEW -->
         <section id="tab-overview" class="animate-slide">
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="glass-card p-6 rounded-[2rem] shadow-sm"><p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Session Count</p><h3 id="stat-total" class="text-2xl font-black">0</h3></div>
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm"><p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Registered Patients</p><h3 id="stat-registered" class="text-2xl font-black">0</h3></div>
                 <div class="glass-card p-6 rounded-[2rem] border-indigo-100 bg-indigo-50/10">
                     <p class="text-indigo-600 text-[10px] font-bold uppercase mb-1">Total Collection (₹)</p>
                     <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700">₹0</h3>
                 </div>
-                <div class="glass-card p-6 rounded-[2rem] border-emerald-100 bg-emerald-50/10">
-                    <p class="text-emerald-600 text-[10px] font-bold uppercase mb-1">Total Net Income</p>
-                    <h3 id="stat-income" class="text-2xl font-black text-emerald-700">₹0</h3>
-                    <p class="text-[9px] text-emerald-500 font-bold mt-1">Fee - ₹100 / session</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="glass-card p-6 rounded-[2rem] border-blue-100 bg-blue-50/10">
+                    <p class="text-blue-600 text-[10px] font-bold uppercase mb-1">Prism Orthocare (POC)</p>
+                    <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-700">₹0</h3>
                 </div>
-                <button onclick="openAdvanceModal()" class="glass-card p-6 rounded-[2rem] border-orange-100 bg-orange-50/10 text-left hover:scale-[1.02] transition-all group">
-                    <div class="flex justify-between items-center">
-                        <p class="text-orange-600 text-[10px] font-bold uppercase mb-1">Advance Patients</p>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-orange-400 group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h3 id="stat-advance-count" class="text-2xl font-black text-orange-700">0</h3>
-                </button>
+                <div class="glass-card p-6 rounded-[2rem] border-emerald-100 bg-emerald-50/10">
+                    <p class="text-emerald-600 text-[10px] font-bold uppercase mb-1">Homecare (PHC)</p>
+                    <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-700">₹0</h3>
+                </div>
+                <div class="glass-card p-6 rounded-[2rem] border-orange-100 bg-orange-50/10">
+                    <p class="text-orange-600 text-[10px] font-bold uppercase mb-1">Prism Rehab Clinic (PRC)</p>
+                    <h3 id="stat-prc-revenue" class="text-2xl font-black text-orange-700">₹0</h3>
+                </div>
                 <button onclick="openCaseModal()" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all group">
                     <div class="flex justify-between items-center">
                         <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Active Cases</p>
                         <i data-lucide="chevron-right" class="w-4 h-4 text-rose-400 group-hover:translate-x-1 transition-all"></i>
                     </div>
-                    <h3 id="stat-closed-count" class="text-2xl font-black text-rose-700">0</h3>
+                    <h3 id="stat-active-count" class="text-2xl font-black text-rose-700">0</h3>
                     <p class="text-[9px] text-rose-500 font-bold mt-1">Under Treatment</p>
                 </button>
             </div>
 
             <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-center gap-3">
                 <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">View Patients:</span>
-                <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Orthocare</button>
+                <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare</button>
                 <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
-                <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab</button>
+                <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic</button>
                 <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white transition-all">Show All</button>
             </div>
 
@@ -368,12 +372,14 @@
 
         <!-- RECORDS -->
         <section id="tab-patients" class="section-hidden animate-slide">
-            <!-- Search Bar for Patient Records -->
-            <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6">
-                <div class="relative">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                    <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-full pl-11 pr-4 py-3 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm shadow-inner">
+            <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-2"></i>
+                    <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
                 </div>
+                <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
+                    <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
+                </button>
             </div>
 
             <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
@@ -491,7 +497,7 @@
                 <h3 id="pd-name" class="text-xl font-black uppercase truncate pr-4"></h3>
                 <button onclick="closePatientDetailModal()" class="p-2 hover:bg-slate-100 rounded-full flex-shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="space-y-4">
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto">
                 <div class="p-5 bg-indigo-50 rounded-2xl flex justify-between items-center">
                     <span class="text-[10px] font-black uppercase text-indigo-500">Sessions Attended</span>
                     <span id="pd-sessions" class="text-xl font-black text-indigo-700"></span>
@@ -499,6 +505,10 @@
                 <div class="p-5 bg-emerald-50 rounded-2xl flex justify-between items-center">
                     <span class="text-[10px] font-black uppercase text-emerald-600">Total Payment</span>
                     <span id="pd-payment" class="text-xl font-black text-emerald-700"></span>
+                </div>
+                <div class="mt-4">
+                    <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Session Dates</h5>
+                    <div id="pd-dates-list" class="space-y-1"></div>
                 </div>
             </div>
         </div>
@@ -597,17 +607,19 @@
 
         let globalData = [], patientLookup = {}, selectedDates = [], selectedPatientName = "", currentViewDate = new Date(), currentBranchFilter = 'ALL';
         let myChart = null, dailyChartInstance = null, searchDebounce = null, billCounter = {};
-        let currentBillContext = null;
+        let currentBillContext = null, recordSortLatest = true;
 
         const statEl = {
             total: document.getElementById('stat-total'),
+            registered: document.getElementById('stat-registered'),
             revenue: document.getElementById('stat-revenue'),
-            income: document.getElementById('stat-income'),
+            pocRev: document.getElementById('stat-poc-revenue'),
+            phcRev: document.getElementById('stat-phc-revenue'),
+            prcRev: document.getElementById('stat-prc-revenue'),
+            activeCount: document.getElementById('stat-active-count'),
             daily: document.getElementById('stat-daily'),
             monthly: document.getElementById('stat-monthly'),
-            yearly: document.getElementById('stat-yearly'),
-            advance: document.getElementById('stat-advance-count'),
-            closed: document.getElementById('stat-closed-count')
+            yearly: document.getElementById('stat-yearly')
         };
 
         function showToast(message, type = 'info') {
@@ -717,67 +729,77 @@
         function processData() {
             patientLookup = {};
             billCounter = {};
-            let totalRawCol = 0, sessionCount = 0, advPatientCount = 0, activeCount = 0;
+            let totalRawCol = 0, sessionCount = 0;
+            let pocRevenue = 0, phcRevenue = 0, prcRevenue = 0;
             let dailyCol = 0, monthlyCol = 0, yearlyCol = 0;
             let chartData = {}, dailyMap = {};
             const today = new Date().toISOString().split('T')[0];
             const currMonth = today.substring(0, 7);
             const currYear = today.substring(0, 4);
 
-            function countAsSession(fee, dateStr) {
-                sessionCount++;
-                totalRawCol += fee;
-                if (dateStr === today) dailyCol += fee;
-                if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
-                if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
-                const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
-                chartData[mKey] = (chartData[mKey] || 0) + (fee - 100);
-                if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
-            }
-
             globalData.forEach(r => {
-                const name = r[2], fee = toNum(r[9]), type = String(r[7] || '').trim().toLowerCase(), dateStr = r[8];
+                const id = String(r[1] || ''), name = r[2], fee = toNum(r[9]), type = String(r[7] || '').trim().toLowerCase(), dateStr = r[8];
                 if (!name) return;
+                
                 if (!patientLookup[name]) {
-                    patientLookup[name] = { id: r[1], phone: r[3], diag: r[6], logs: [], baseRate: 0, purchased: 0, advance: 0, closed: false, closedDate: null, age: '', gender: '', address: '' };
+                    patientLookup[name] = { id: id, phone: r[3], diag: r[6], logs: [], baseRate: 0, purchased: 0, advance: 0, closed: false, closedDate: null, age: '', gender: '', address: '', enrollTime: new Date(r[0] || 0).getTime() };
                     billCounter[name] = 0;
                 }
+
+                const p = patientLookup[name];
+
                 if (type === "enrollment") {
-                    patientLookup[name].purchased += toNum(r[10]);
-                    patientLookup[name].advance += toNum(r[11]);
-                    patientLookup[name].baseRate = fee;
-                    if (r[4]) patientLookup[name].age = r[4];
-                    if (r[5]) patientLookup[name].gender = r[5];
-                    if (r[14]) patientLookup[name].address = r[14];
-                    patientLookup[name].logs.push(r);
-                    countAsSession(fee, dateStr);
+                    p.purchased += toNum(r[10]);
+                    p.advance += toNum(r[11]);
+                    p.baseRate = fee;
+                    if (r[4]) p.age = r[4];
+                    if (r[5]) p.gender = r[5];
+                    if (r[14]) p.address = r[14];
                 } else if (type === "case closed") {
-                    patientLookup[name].closed = true;
-                    patientLookup[name].closedDate = dateStr;
+                    p.closed = true;
+                    p.closedDate = dateStr;
                 } else if (type === "case restarted") {
-                    patientLookup[name].closed = false;
-                    patientLookup[name].closedDate = null;
+                    p.closed = false;
+                    p.closedDate = null;
                 } else if (type === "bill issued") {
                     billCounter[name] = (billCounter[name] || 0) + 1;
-                } else {
-                    patientLookup[name].logs.push(r);
-                    countAsSession(fee, dateStr);
+                }
+                
+                if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
+                    totalRawCol += fee;
+                    sessionCount++;
+                    
+                    if (id.startsWith('POC')) pocRevenue += fee;
+                    else if (id.startsWith('PHC')) phcRevenue += fee;
+                    else if (id.startsWith('PRC')) prcRevenue += fee;
+
+                    if (dateStr === today) dailyCol += fee;
+                    if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
+                    if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
+
+                    const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
+                    chartData[mKey] = (chartData[mKey] || 0) + fee;
+                    if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
+                    
+                    p.logs.push(r);
                 }
             });
 
+            let activeCount = 0;
             Object.values(patientLookup).forEach(p => {
-                if (p.advance > 0 && (p.purchased - p.logs.length) > 0 && !p.closed) advPatientCount++;
                 if (!p.closed) activeCount++;
             });
 
             statEl.total.innerText = sessionCount;
+            statEl.registered.innerText = Object.keys(patientLookup).length;
             statEl.revenue.innerText = "₹" + totalRawCol.toLocaleString();
-            statEl.income.innerText = "₹" + (totalRawCol - (sessionCount * 100)).toLocaleString();
+            statEl.pocRev.innerText = "₹" + pocRevenue.toLocaleString();
+            statEl.phcRev.innerText = "₹" + phcRevenue.toLocaleString();
+            statEl.prcRev.innerText = "₹" + prcRevenue.toLocaleString();
+            statEl.activeCount.innerText = activeCount;
             statEl.daily.innerText = "₹" + dailyCol.toLocaleString();
             statEl.monthly.innerText = "₹" + monthlyCol.toLocaleString();
             statEl.yearly.innerText = "₹" + yearlyCol.toLocaleString();
-            statEl.advance.innerText = advPatientCount;
-            statEl.closed.innerText = activeCount;
 
             renderCharts(chartData);
             renderDailyChart(dailyMap);
@@ -859,6 +881,13 @@
             });
         }
 
+        function toggleRecordSort() {
+            recordSortLatest = !recordSortLatest;
+            const btnSpan = document.querySelector('#record-sort-btn span');
+            btnSpan.innerText = recordSortLatest ? 'Sort: Newest First' : 'Sort: Oldest First';
+            renderTables();
+        }
+
         function filterRecordTable() {
             const val = document.getElementById('record-search-input').value.toUpperCase();
             const rows = document.querySelectorAll('#patient-table-body tr');
@@ -902,7 +931,6 @@
             if (!name) { showToast("Enter the patient's name first", 'warning'); return; }
             const rate = Number(document.getElementById('en-rate').value) || 0;
             if (!rate) { showToast("Enter cost per session", 'warning'); return; }
-            // Using the chosen date field
             const dateStr = document.getElementById('en-reg-date').value || new Date().toISOString().split('T')[0];
             const address = document.getElementById('en-address').value.trim();
             const row = [
@@ -1115,10 +1143,21 @@
         function renderTables() {
             const pBody = document.getElementById('patient-table-body'), bBody = document.getElementById('billing-table-body');
             let pHtml = "", bHtml = "";
-            Object.keys(patientLookup).forEach(name => {
-                const p = patientLookup[name], consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+            
+            let names = Object.keys(patientLookup);
+            
+            names.sort((a, b) => {
+                return recordSortLatest ? 
+                       (patientLookup[b].enrollTime - patientLookup[a].enrollTime) : 
+                       (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
+            });
+
+            names.forEach(name => {
+                const p = patientLookup[name];
+                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
                 const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
                 const rem = p.purchased - consumed;
+                
                 if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
                     const statusBadge = p.closed
                         ? `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`
@@ -1155,11 +1194,15 @@
         function viewPatientDetail(name) {
             const p = patientLookup[name];
             if (!p) return;
-            const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
             const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+            
             document.getElementById('pd-name').innerText = name;
-            document.getElementById('pd-sessions').innerText = consumed;
+            document.getElementById('pd-sessions').innerText = p.logs.length;
             document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
+            
+            const datesList = document.getElementById('pd-dates-list');
+            datesList.innerHTML = p.logs.map(l => `<div class="p-2 bg-slate-50 rounded-lg text-[10px] font-bold text-slate-600 flex justify-between"><span>${formatDateDMY(l[8])}</span><span class="text-indigo-400">₹${l[9]}</span></div>`).join('');
+            
             document.getElementById('patient-detail-modal').classList.remove('hidden');
             lucide.createIcons();
         }
