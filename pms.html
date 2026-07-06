@@ -1450,6 +1450,7 @@
         function generateBill(name) {
             const p = patientLookup[name];
             if (!p) return;
+            const prefix = (p.gender === 'Male') ? 'Mr. ' : 'Ms. ';
             const docName = document.getElementById('bill-cfg-doc').value;
             const docReg = document.getElementById('bill-cfg-reg').value;
             const docPhone = document.getElementById('bill-cfg-phone').value;
@@ -1511,7 +1512,7 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:26px">
                         <div>
                             <p class="section-label2">Patient Information</p>
-                            <strong class="editable" style="font-size:20px; color:#0f172a; display:block; margin-bottom:4px">${name}</strong>
+                            <strong class="editable" style="font-size:20px; color:#0f172a; display:block; margin-bottom:4px">${prefix}${name}</strong>
                             <p style="margin:2px 0; font-size:12px; color:#475569">ID: <span class="editable" style="font-weight:800; color:#0f172a">${p.id}</span></p>
                             <p class="editable" style="margin:2px 0; font-size:12px; color:#475569">${ageGenderLine}</p>
                             ${patientAddrHtml}
@@ -1554,13 +1555,13 @@
                     ${buildDocHeader(stmtNo)}
                     <h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2>
                     <p class="editable" style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">
-                        This is to certify that <strong>${name}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} has been under our care for the clinical diagnosis of <strong>${p.diag}</strong>.
+                        This is to certify that <strong>${prefix}${name}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} under the professional care of <strong>Prism Physiotherapy & Rehabilitation Center</strong> for the clinical diagnosis of <strong>${p.diag}</strong>.
                         <br><br>
-                        The patient has successfully completed <strong>${logs.length}</strong> session(s) of ${getSessionTypeLabel(p.id)} by ${docName}.
+                        The patient has successfully completed <strong>${logs.length}</strong> session(s) of ${getSessionTypeLabel(p.id)} under the professional supervision of <strong>${docName}.</strong> The treatment program was planned and delivered following a comprehensive clinical assessment, incorporating evidence-based physiotherapy practice and an individualized rehabilitation plan. 
                         <br><br>
-                        These therapeutic sessions were administered during the period from <strong>${firstDate}</strong> to <strong>${lastDate}</strong>.
+                        The prescribed physiotherapy rehabilitation program was provided from <strong>${firstDate}</strong> to <strong>${lastDate}</strong> .
                         <br><br>
-                        This certificate is issued at the request of the patient for records and health insurance claim purposes.
+                        This certificate is issued upon the patient's request as an official record of the physiotherapy treatment received at our center and may be presented wherever appropriate for verification and official documentation purposes.
                     </p>
                     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px;">
                         <div style="text-align:center">
@@ -1620,7 +1621,7 @@
             const { name, phone, stmtNo, total, verifyUrl } = currentBillContext;
             const waNumber = getWhatsAppNumber(phone);
             if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
-            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your prescribed exercises. Please find your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou can verify the authenticity of this document here: ${verifyUrl}\n\Please find the attached PDF copy of your bill. Kindly review it and let us know if you have any questions.\n\nYour feedback is important to us and helps us continue providing the highest quality of care. We would greatly appreciate it if you could share your experience by leaving us a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism Physiotherapy & Rehabilitation Center. We wish you a smooth and speedy recovery!
+            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your prescribed exercises. Please find your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou can verify the authenticity of this document here: ${verifyUrl}\n\nPlease find the attached PDF copy of your bill. Kindly review it and let us know if you have any questions.\n\nYour feedback is important to us and helps us continue providing the highest quality of care. We would greatly appreciate it if you could share your experience by leaving us a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism Physiotherapy & Rehabilitation Center. We wish you a smooth and speedy recovery!
 `);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
