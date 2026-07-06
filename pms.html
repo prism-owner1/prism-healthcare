@@ -435,7 +435,15 @@
             <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                 <table class="w-full text-left text-sm">
                     <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
-                        <tr><th class="p-5">ID</th><th class="p-5">Name</th><th class="p-5">Condition</th><th class="p-5">Status / Bal.</th><th class="p-5 text-center">Action</th></tr>
+                        <tr>
+                            <th class="p-5">ID</th>
+                            <th class="p-5">Patient Name</th>
+                            <th class="p-5">Demographics</th>
+                            <th class="p-5">Contact</th>
+                            <th class="p-5">Condition</th>
+                            <th class="p-5">Status / Bal.</th>
+                            <th class="p-5 text-center">Action</th>
+                        </tr>
                     </thead>
                     <tbody id="patient-table-body" class="divide-y divide-slate-100"></tbody>
                 </table>
@@ -461,7 +469,7 @@
     </div>
     <div>
         <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Website</label>
-        <input type="text" id="bill-cfg-web" value="prismphysiotherapy.in" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+        <input type="text" id="bill-cfg-web" value="Prismhealthcare.in" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
     </div>
     <div>
         <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Udayam Registration</label>
@@ -1326,8 +1334,10 @@
                     
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
                         <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
-                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions attended and payment">${name}</td>
-                        <td class="p-5 italic text-slate-400 text-xs">${p.diag}</td>
+                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
+                        <td class="p-5 text-xs font-bold text-slate-600 italic">${p.age || '—'}Y / ${p.gender || '—'}</td>
+                        <td class="p-5 text-xs font-black text-slate-700">${p.phone || '—'}</td>
+                        <td class="p-5 italic text-slate-400 text-xs truncate max-w-[150px]">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
                             <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
@@ -1610,7 +1620,8 @@
             const { name, phone, stmtNo, total, verifyUrl } = currentBillContext;
             const waNumber = getWhatsAppNumber(phone);
             if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
-            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your exercises. Here is your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou may verify the document here: ${verifyUrl}\n\nIf you'd like a PDF copy of this bill, please let us know and we'll share it separately.\n\nYour feedback helps us provide the best care possible. If you have a moment, please share a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism!`);
+            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your prescribed exercises. Please find your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou can verify the authenticity of this document here: ${verifyUrl}\n\Please find the attached PDF copy of your bill. Kindly review it and let us know if you have any questions.\n\nYour feedback is important to us and helps us continue providing the highest quality of care. We would greatly appreciate it if you could share your experience by leaving us a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism Physiotherapy & Rehabilitation Center. We wish you a smooth and speedy recovery!
+`);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
