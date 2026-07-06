@@ -188,6 +188,7 @@
             <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
             <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
             <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
+            <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
             <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
             <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
         </nav>
@@ -291,7 +292,7 @@
                             <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
                         </div>
                         <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
-                        <input type="tel" id="en-phone" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
+                        <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                         <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                     </div>
                     <div class="space-y-5">
@@ -366,6 +367,55 @@
                         <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm">
                         <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all">Submit Session(s)</button>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DAILY VISIT REGISTRY -->
+        <section id="tab-visit-registry" class="section-hidden animate-slide">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Select Visit Date</label>
+                        <input type="date" id="registry-date-input" onchange="renderDailyRegistry()" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Search Patient</label>
+                        <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 rounded-[2rem] shadow-sm border-indigo-50">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Total Visits</p>
+                        <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600">0</h3>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2rem] shadow-sm border-emerald-50">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Collection for this Date</p>
+                        <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600">₹0</h3>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                            <tr>
+                                <th class="p-5">#</th>
+                                <th class="p-5">Patient Name</th>
+                                <th class="p-5">Clinical ID</th>
+                                <th class="p-5 text-center">Branch</th>
+                                <th class="p-5">Diagnosis/Note</th>
+                                <th class="p-5 text-right">Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registry-table-body" class="divide-y divide-slate-100"></tbody>
+                        <tfoot class="bg-slate-50/50">
+                            <tr>
+                                <td colspan="5" class="p-5 text-right font-black text-slate-500 uppercase text-[10px]">Daily Collection Total:</td>
+                                <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 text-base">₹0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </section>
@@ -519,8 +569,8 @@
         <div class="flex flex-col items-center gap-2 mb-6 no-print">
             <div class="flex gap-4">
                 <button id="edit-bill-btn" onclick="toggleBillEditMode()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill</button>
+                <button onclick="downloadBillPDF()" class="bg-slate-700 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Download PDF</button>
                 <button onclick="sendBillToPatient()" class="bg-[#25D366] text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i> Send Bill to Patient</button>
-                <button onclick="window.print()" class="bg-emerald-600 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="printer" class="w-4 h-4"></i> Print Document (3 Pages)</button>
                 <button onclick="closeBillModal()" class="bg-white text-slate-900 px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl">Close Preview</button>
             </div>
             <p id="edit-hint" class="hidden text-white/80 text-[10px] font-bold uppercase tracking-wider">Dashed fields are editable — click any value to change it, then print</p>
@@ -536,14 +586,19 @@
         // ---------- LOCK SCREEN LOGIC ----------
         const APP_LOCK_PASSWORD = "PrismAdmin@2024";
 
+        // ADDED HELPER: Returns "YYYY-MM-DD" based on local device time
+        const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
+
         function unlockApp() {
             document.getElementById('lock-screen').style.display = 'none';
             const root = document.getElementById('app-root');
             root.style.display = 'flex';
             root.classList.remove('hidden');
             try { sessionStorage.setItem('prism_unlocked', '1'); } catch (e) {}
-            // Set current date to Enrollment Date field
-            document.getElementById('en-reg-date').value = new Date().toISOString().split('T')[0];
+            // Set current date to inputs using local helper
+            const todayStr = getLocalISOString();
+            document.getElementById('en-reg-date').value = todayStr;
+            document.getElementById('registry-date-input').value = todayStr;
             lucide.createIcons();
             loadAdminData(false);
         }
@@ -684,18 +739,46 @@
             }
         }
 
+        // ---------- OPTIMIZED: loadAdminData (FASTER REFRESH) ----------
         async function loadAdminData(isManual) {
             const syncBtn = document.getElementById('sync-indicator');
-            syncBtn.classList.add('animate-spin');
-            try {
-                const res = await fetchWithRetry(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "fetchAdminData" }) }, 2);
-                globalData = await res.json();
-                processData();
-                if (isManual) showToast('Data refreshed', 'success');
-            } catch (e) {
-                showToast('Could not refresh data — check your connection', 'error');
+            if (syncBtn) syncBtn.classList.add('animate-spin');
+
+            // Initial view from cache
+            if (!isManual) {
+                try {
+                    const cached = localStorage.getItem('prism_cache');
+                    if (cached) {
+                        globalData = JSON.parse(cached);
+                        processData();
+                    }
+                } catch (e) {}
             }
-            syncBtn.classList.remove('animate-spin');
+
+            try {
+                const res = await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ action: "fetchAdminData" }),
+                    priority: 'high'
+                });
+                const newData = await res.json();
+                
+                const cachedStr = localStorage.getItem('prism_cache');
+                const newDataStr = JSON.stringify(newData);
+
+                // Only process and render if the data is actually different
+                if (cachedStr !== newDataStr) {
+                    globalData = newData;
+                    localStorage.setItem('prism_cache', newDataStr);
+                    processData();
+                    if (isManual) showToast('Data refreshed', 'success');
+                } else {
+                    if (isManual) showToast('Data already current', 'info');
+                }
+            } catch (e) {
+                if (isManual) showToast('Connection failed', 'error');
+            }
+            if (syncBtn) syncBtn.classList.remove('animate-spin');
         }
 
         function toNum(v) {
@@ -733,7 +816,7 @@
             let pocRevenue = 0, phcRevenue = 0, prcRevenue = 0;
             let dailyCol = 0, monthlyCol = 0, yearlyCol = 0;
             let chartData = {}, dailyMap = {};
-            const today = new Date().toISOString().split('T')[0];
+            const today = getLocalISOString(); // Fixed with local helper
             const currMonth = today.substring(0, 7);
             const currYear = today.substring(0, 4);
 
@@ -804,8 +887,71 @@
             renderCharts(chartData);
             renderDailyChart(dailyMap);
             renderTables();
+            renderDailyRegistry();
             generateClinicalID();
             renderActiveCasesForLog();
+        }
+
+        function renderDailyRegistry() {
+            const dateVal = document.getElementById('registry-date-input').value;
+            const tbody = document.getElementById('registry-table-body');
+            const totalVisitsEl = document.getElementById('reg-total-visits');
+            const totalFeeEl = document.getElementById('reg-total-fee');
+            const footerTotalEl = document.getElementById('registry-footer-total');
+
+            if (!dateVal) return;
+
+            let html = "";
+            let visitCount = 0;
+            let collectionSum = 0;
+
+            // Fetch records for the selected day from globalData
+            const dayRecords = globalData.filter(r => {
+                const type = String(r[7] || '').toLowerCase();
+                const rDate = r[8];
+                const fee = toNum(r[9]);
+                // Filter sessions: not admin status, and is either a Rehab visit or enrollment with session payment
+                return rDate === dateVal && 
+                       fee > 0 && 
+                       type !== "case closed" && 
+                       type !== "case restarted" && 
+                       type !== "bill issued";
+            });
+
+            if (dayRecords.length === 0) {
+                html = `<tr><td colspan="6" class="p-10 text-center text-slate-400 italic">No clinical visits recorded for this date.</td></tr>`;
+            } else {
+                dayRecords.forEach((r, idx) => {
+                    const cid = r[1], name = r[2], diag = r[6], fee = toNum(r[9]);
+                    const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
+                    
+                    visitCount++;
+                    collectionSum += fee;
+
+                    html += `<tr class="hover:bg-slate-50 transition-colors" data-search-tag="${name.toUpperCase()} ${cid.toUpperCase()}">
+                        <td class="p-5 font-bold text-slate-400">${idx + 1}</td>
+                        <td class="p-5 font-black uppercase text-indigo-700">${name}</td>
+                        <td class="p-5 font-bold text-slate-500">${cid}</td>
+                        <td class="p-5 text-center"><span class="bg-slate-100 text-[10px] font-black uppercase px-3 py-1 rounded-lg">${branch}</span></td>
+                        <td class="p-5 text-slate-500 italic truncate max-w-[200px]">${diag || '-'}</td>
+                        <td class="p-5 text-right font-black text-slate-800">₹${fee.toLocaleString()}</td>
+                    </tr>`;
+                });
+            }
+
+            tbody.innerHTML = html;
+            totalVisitsEl.innerText = visitCount;
+            totalFeeEl.innerText = "₹" + collectionSum.toLocaleString();
+            footerTotalEl.innerText = "₹" + collectionSum.toLocaleString();
+        }
+
+        function filterRegistryTable() {
+            const val = document.getElementById('registry-search-input').value.toUpperCase();
+            const rows = document.querySelectorAll('#registry-table-body tr[data-search-tag]');
+            rows.forEach(row => {
+                const tag = row.getAttribute('data-search-tag');
+                row.style.display = tag.includes(val) ? "" : "none";
+            });
         }
 
         function openAdvanceModal() {
@@ -850,7 +996,7 @@
             const btn = event.target.closest('button');
             armConfirm(btn, 'Confirm Close?', async () => {
                 const p = patientLookup[name];
-                const dateStr = new Date().toISOString().split('T')[0];
+                const dateStr = getLocalISOString(); // Fixed with local helper
                 const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", dateStr, 0, 0, 0, 0, ""];
                 globalData.push(row);
                 processData();
@@ -867,7 +1013,7 @@
             const btn = event.currentTarget;
             armConfirm(btn, 'Confirm Restart?', async () => {
                 const p = patientLookup[name];
-                const dateStr = new Date().toISOString().split('T')[0];
+                const dateStr = getLocalISOString(); // Fixed with local helper
                 const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
                 globalData.push(row);
                 p.closed = false;
@@ -931,7 +1077,7 @@
             if (!name) { showToast("Enter the patient's name first", 'warning'); return; }
             const rate = Number(document.getElementById('en-rate').value) || 0;
             if (!rate) { showToast("Enter cost per session", 'warning'); return; }
-            const dateStr = document.getElementById('en-reg-date').value || new Date().toISOString().split('T')[0];
+            const dateStr = document.getElementById('en-reg-date').value || getLocalISOString(); // Fixed with local helper
             const address = document.getElementById('en-address').value.trim();
             const row = [
                 new Date().toISOString(),
@@ -965,7 +1111,7 @@
             document.getElementById('en-name').value = "";
             document.getElementById('en-age').value = "";
             document.getElementById('en-condition').value = "";
-            document.getElementById('en-phone').value = "";
+            document.getElementById('en-phone').value = "+91";
             document.getElementById('en-address').value = "";
             document.getElementById('en-rate').value = "";
             document.getElementById('en-sessions').value = "0";
@@ -973,7 +1119,7 @@
             document.getElementById('en-discount').value = "0";
             document.getElementById('en-gender').value = "Male";
             document.getElementById('en-branch').value = "POC";
-            document.getElementById('en-reg-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('en-reg-date').value = getLocalISOString(); // Fixed with local helper
             document.getElementById('enroll-summary').innerText = "₹0";
             generateClinicalID();
         }
@@ -992,7 +1138,7 @@
             const rate = Number(document.getElementById('mi-rate').value) || 0;
             const advance = Number(document.getElementById('mi-advance').value) || 0;
             if (!sessions || !rate) { showToast('Enter sessions and rate', 'warning'); return; }
-            const dateStr = new Date().toISOString().split('T')[0];
+            const dateStr = getLocalISOString(); // Fixed with local helper
             const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Enrollment", dateStr, rate, sessions, advance, 0, ""];
             globalData.push(row);
             processData();
@@ -1021,17 +1167,21 @@
             const ctx = document.getElementById('dailyChart').getContext('2d');
             const days = [];
             const todayD = new Date();
+            // Start with today in Local Time
+            const localToday = getLocalISOString();
+            
             for (let i = 13; i >= 0; i--) {
                 const d = new Date(todayD);
                 d.setDate(d.getDate() - i);
-                days.push(d.toISOString().split('T')[0]);
+                // Correctly map days to local format YYYY-MM-DD
+                days.push(d.toLocaleDateString('sv-SE'));
             }
             const labels = days.map(ds => {
                 const d = new Date(ds + 'T00:00:00');
                 return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
             });
             const values = days.map(ds => dailyMap[ds] || 0);
-            const todayStr = todayD.toISOString().split('T')[0];
+            const todayStr = getLocalISOString();
             if (dailyChartInstance) dailyChartInstance.destroy();
             dailyChartInstance = new Chart(ctx, {
                 type: 'bar',
@@ -1045,8 +1195,19 @@
             document.getElementById(`tab-${id}`).classList.remove('section-hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active'));
             btn.classList.add('sidebar-active');
-            document.getElementById('tab-title').innerText = id === 'log-session' ? 'LOG SESSIONS' : (id === 'billing' ? 'BILLING' : id.toUpperCase());
+            
+            const titles = {
+                'overview': 'DASHBOARD',
+                'enroll': 'ENROLL PATIENT',
+                'log-session': 'LOG SESSIONS',
+                'visit-registry': 'DAILY VISIT REGISTRY',
+                'patients': 'PATIENT RECORDS',
+                'billing': 'BILLING'
+            };
+            document.getElementById('tab-title').innerText = titles[id] || 'PRISM';
+            
             if (id === 'log-session') renderActiveCasesForLog();
+            if (id === 'visit-registry') renderDailyRegistry();
             closeSidebar();
         }
 
@@ -1169,7 +1330,7 @@
                         <td class="p-5 italic text-slate-400 text-xs">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
-                            <button onclick="sendWhatsApp('${p.phone}', '${name}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                            <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
                             ${p.closed 
                                 ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
                                 : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
@@ -1215,11 +1376,21 @@
 
         function changeMonth(o) { currentViewDate.setMonth(currentViewDate.getMonth() + o); renderCalendar(); }
 
+        // ---------- OPTIMIZED: MESSAGING HELPER (Normalizes Phone Numbers) ----------
+        function getWhatsAppNumber(phone) {
+            let digits = (phone || '').replace(/\D/g, ''); 
+            digits = digits.replace(/^0+/, ''); 
+            if (digits.length === 12 && digits.startsWith('91')) return digits; 
+            if (digits.length === 10) return '91' + digits; 
+            if (digits.length > 10) return digits; 
+            return digits ? '91' + digits : '';
+        }
+
         function sendWhatsApp(phone, name) {
-            const cleanPhone = (phone || '').replace(/\D/g, '');
-            if (!cleanPhone) { showToast('No phone number on file for this patient', 'warning'); return; }
-            const msg = encodeURIComponent(`Hi ${name},\n\nThis is from Prism Physiotherapy Center. How can we assist you today?\n\nFor queries, please let us know.`);
-            window.open(`https://wa.me/91${cleanPhone}?text=${msg}`, '_blank');
+            const waNumber = getWhatsAppNumber(phone);
+            if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
+            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
         function buildDocHeader(stmtNo, udyam) {
@@ -1235,10 +1406,10 @@
             </div>`;
         }
 
-        function buildPageFooter(qrId, docName) {
+        function buildPageFooter(qrId, docName, verifyUrl) {
             return `<div class="doc-footer3">
                 <div class="doc-qr-box">
-                    <div id="${qrId}" class="qr-slot"></div>
+                    <img id="${qrId}" src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(verifyUrl)}" class="qr-slot" style="width:80px;height:80px;display:block;" alt="Verification QR">
                     <small>Scan this to verify this bill</small>
                 </div>
                 <div class="doc-cert-text">
@@ -1360,14 +1531,14 @@
                             <td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px" class="editable">₹${total.toLocaleString()}</td>
                         </tr></tfoot>
                     </table>
-                    ${buildPageFooter('qr-inv', docName)}
+                    ${buildPageFooter('qr-inv', docName, verifyUrl)}
                 </div>
                 <div class="bill-page page-break">
                     ${buildDocHeader(stmtNo)}
                     <h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER</h2>
                     <div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div>
                     <div style="margin-bottom:30px; margin-top:14px">${ledgerRowsHtml}</div>
-                    ${buildPageFooter('qr-receipt', docName)}
+                    ${buildPageFooter('qr-receipt', docName, verifyUrl)}
                 </div>
                 <div class="bill-page">
                     ${buildDocHeader(stmtNo)}
@@ -1383,8 +1554,7 @@
                     </p>
                     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px;">
                         <div style="text-align:center">
-                            <div id="qr-cert-mid" class="qr-slot" style="padding:4px; background:#fff; border:1px solid #eee; display:inline-block; border-radius:6px;"></div>
-                            <p style="font-size:9px; color:#64748b; font-weight:700; margin-top:6px; max-width:110px; line-height:1.3;">Scan this QR to check authenticity of bill</p>
+
                         </div>
                         <div style="text-align:right">
                             <strong class="editable" style="display:block; font-size:14px; color:#0f172a">${docName}</strong>
@@ -1392,7 +1562,7 @@
                             <span class="editable" style="display:block; font-size:10px; color:#64748b">Reg No: ${docReg}</span>
                         </div>
                     </div>
-                    ${buildPageFooter('qr-cert', docName)}
+                    ${buildPageFooter('qr-cert', docName, verifyUrl)}
                 </div>
             `;
             document.getElementById('bill-content-pages').innerHTML = pagesHtml;
@@ -1403,29 +1573,21 @@
             document.getElementById('edit-bill-btn').innerHTML = `<i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill`;
             currentBillContext = { name, phone: p.phone, stmtNo, total, verifyUrl };
             setTimeout(() => {
-                ['qr-inv', 'qr-receipt', 'qr-cert', 'qr-cert-mid'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        new QRCode(el, { text: verifyUrl, width: 80, height: 80, colorDark: "#1e293b", colorLight: "#ffffff" });
-                    }
-                });
                 lucide.createIcons();
             }, 300);
             syncToBackend({
                 action: "logAppointment", id: p.id, name: name, phone: p.phone,
                 condition: `Bill Issued: ${stmtNo}`, fee: total, billNo: stmtNo,
-                type: "Bill Issued", date: new Date().toISOString().split('T')[0]
+                type: "Bill Issued", date: getLocalISOString() // Fixed with local helper
             }).catch(() => {});
         }
 
-        function sendBillToPatient() {
+        function downloadBillPDF() {
             if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
-            const { name, phone, stmtNo, total, verifyUrl } = currentBillContext;
-            const cleanPhone = (phone || '').replace(/\D/g, '');
-            if (!cleanPhone) { showToast('No phone number on file for this patient', 'warning'); return; }
+            const { name, stmtNo } = currentBillContext;
             const el = document.getElementById('bill-content-pages');
             if (!el || typeof html2pdf === 'undefined') {
-                openWhatsAppWithBillText(name, cleanPhone, stmtNo, total, verifyUrl);
+                showToast('PDF library not available', 'error');
                 return;
             }
             showToast('Preparing PDF for download…', 'info');
@@ -1433,22 +1595,23 @@
                 margin: 0,
                 filename: `${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
+                html2canvas: { scale: 2, useCORS: true, allowTaint: true, logging: false },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             html2pdf().set(opt).from(el).save().then(() => {
-                showToast('PDF downloaded — attach it in WhatsApp', 'success');
-                openWhatsAppWithBillText(name, cleanPhone, stmtNo, total, verifyUrl, true);
+                showToast('PDF downloaded successfully', 'success');
             }).catch(() => {
-                showToast('Could not generate PDF, sending text only', 'error');
-                openWhatsAppWithBillText(name, cleanPhone, stmtNo, total, verifyUrl);
+                showToast('Could not generate PDF', 'error');
             });
         }
 
-        function openWhatsAppWithBillText(name, cleanPhone, stmtNo, total, verifyUrl, pdfDownloaded) {
-            const pdfNote = pdfDownloaded ? "\n\nWe've also downloaded a PDF copy for you — please attach it to this chat." : "";
-            const msg = encodeURIComponent(`Hi ${name},\n\nYour Prism Physiotherapy bill (Statement No: ${stmtNo}) for ₹${total.toLocaleString()} is ready.\n\nVerify here: ${verifyUrl}${pdfNote}\n\nThank you!`);
-            window.open(`https://wa.me/91${cleanPhone}?text=${msg}`, '_blank');
+        function sendBillToPatient() {
+            if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
+            const { name, phone, stmtNo, total, verifyUrl } = currentBillContext;
+            const waNumber = getWhatsAppNumber(phone);
+            if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your exercises. Here is your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou may verify the document here: ${verifyUrl}\n\nIf you'd like a PDF copy of this bill, please let us know and we'll share it separately.\n\nYour feedback helps us provide the best care possible. If you have a moment, please share a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism!`);
+            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
         function filterBillingTable() {
