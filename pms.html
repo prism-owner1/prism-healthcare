@@ -1227,6 +1227,15 @@
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(() => {
                 const val = document.getElementById('patient-search-input').value.toUpperCase(), res = document.getElementById('search-results');
+                
+                // BUG FIX: Hide active cases container while searching
+                const activeCasesContainer = document.getElementById('active-cases-grid').parentElement;
+                if (val) {
+                    activeCasesContainer.classList.add('hidden');
+                } else {
+                    activeCasesContainer.classList.remove('hidden');
+                }
+
                 if (!val) { res.classList.add('hidden'); return; }
                 const matches = Object.keys(patientLookup)
                     .filter(n => n.toUpperCase().includes(val) || patientLookup[n].id.toUpperCase().includes(val))
@@ -1240,6 +1249,10 @@
             selectedPatientName = n; const p = patientLookup[n];
             document.getElementById('patient-search-input').value = n;
             document.getElementById('search-results').classList.add('hidden');
+            
+            // BUG FIX: Ensure active cases grid is visible again after selection
+            document.getElementById('active-cases-grid').parentElement.classList.remove('hidden');
+
             document.getElementById('active-patient-name').innerText = n;
             document.getElementById('base-rate-display').value = p.baseRate;
             document.getElementById('patient-workspace').classList.remove('hidden');
