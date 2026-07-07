@@ -29,6 +29,10 @@
         .sidebar-active { background: #0f172a; color: white !important; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .section-hidden { display: none; }
         .calendar-day-selected { background-color: #4f46e5 !important; color: white !important; transform: scale(0.9); }
+        /* Style for logged sessions on calendar */
+        .calendar-day-logged { border: 2px solid #10b981 !important; color: #059669 !important; position: relative; font-weight: 800 !important; }
+        .calendar-day-logged::after { content: ''; position: absolute; bottom: 3px; width: 4px; height: 4px; background: #10b981; border-radius: 50%; }
+        
         .calendar-day-disabled { opacity: 0.15; cursor: not-allowed !important; background-color: #f1f5f9 !important; }
         .log-card { background: #f8fafc; border: 1px solid #edf2f7; border-radius: 1.2rem; padding: 1rem; margin-bottom: 0.6rem; transition: 0.2s; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -1263,15 +1267,22 @@
 
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
+            if (!selectedPatientName) return;
+            const p = patientLookup[selectedPatientName];
+            const logDates = new Set(p.logs.map(l => l[8]));
             const yr = currentViewDate.getFullYear(), mt = currentViewDate.getMonth();
             document.getElementById('calendar-month-year').innerText = currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
             const first = new Date(yr, mt, 1).getDay(), total = new Date(yr, mt + 1, 0).getDate(), today = new Date();
             today.setHours(0, 0, 0, 0);
             for (let i = 0; i < first; i++) grid.innerHTML += `<div></div>`;
             for (let d = 1; d <= total; d++) {
-                const ds = `${yr}-${String(mt + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`, dateObj = new Date(yr, mt, d), isFuture = dateObj > today, sel = selectedDates.includes(ds);
+                const ds = `${yr}-${String(mt + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`, dateObj = new Date(yr, mt, d), isFuture = dateObj > today, sel = selectedDates.includes(ds), isLogged = logDates.has(ds);
                 const btn = document.createElement('div');
-                btn.className = `h-10 flex items-center justify-center rounded-xl border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} ${sel ? 'calendar-day-selected' : (!isFuture ? 'bg-white border-slate-100 hover:border-indigo-300' : '')}`;
+                let dayClass = `h-10 flex items-center justify-center rounded-xl border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
+                if (sel) dayClass += 'calendar-day-selected ';
+                else if (isLogged) dayClass += 'calendar-day-logged bg-emerald-50/50 ';
+                else if (!isFuture) dayClass += 'bg-white border-slate-100 hover:border-indigo-300 ';
+                btn.className = dayClass;
                 btn.innerText = d;
                 if (!isFuture) btn.onclick = () => { if (selectedDates.includes(ds)) selectedDates = selectedDates.filter(x => x !== ds); else selectedDates.push(ds); renderCalendar(); };
                 grid.appendChild(btn);
