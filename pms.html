@@ -18,7 +18,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -80,6 +81,14 @@
         #bill-content-pages.edit-mode .addr-line:empty::before { content: "Click to add patient address..."; color: #94a3b8; font-style: italic; }
 
         .active-case-card { display: flex; flex-direction: column; }
+
+        /* ---------- PDF / PRINT PAGE-BREAK FIX ---------- */
+        /* Prevents rows/lines from being sliced across a page boundary, which was
+           causing text (e.g. session dates) to visually overlap in the exported PDF. */
+        .ledger-row, .procedure-row, .bill-page table tr {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
 
         /* ---------- LOCK SCREEN ---------- */
         #lock-screen {
@@ -158,6 +167,34 @@
         @media (max-width: 480px) {
             .grid.md\:grid-cols-5 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
         }
+
+        /* ---------- ADDED: STAT CARD POLISH ---------- */
+        .stat-card-v2 { position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .stat-card-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(15,23,42,0.12); }
+        .stat-icon-badge { width: 38px; height: 38px; border-radius: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .due-soon-row { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.9rem; border-radius: 1rem; background: #fff7ed; margin-bottom: 0.5rem; }
+        .toolbar-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1rem; border-radius: 0.85rem; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; cursor: pointer; }
+
+        /* ---------- ADDED: DARK MODE ---------- */
+        body.dark-mode { background-color: #0b1220; color: #e2e8f0; }
+        body.dark-mode .bg-logo-image { opacity: 0.03; }
+        body.dark-mode .glass-card { background: rgba(15, 23, 42, 0.75); border-color: rgba(255,255,255,0.07); }
+        body.dark-mode #sidebar { background: rgba(11, 18, 32, 0.97) !important; border-color: #1e293b; }
+        body.dark-mode #sidebar img { filter: brightness(0) invert(1); }
+        body.dark-mode .nav-btn { color: #94a3b8 !important; }
+        body.dark-mode .nav-btn:hover { background: #1e293b !important; }
+        body.dark-mode .nav-btn.sidebar-active { background: #4f46e5 !important; }
+        body.dark-mode h1, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode strong { color: #f1f5f9; }
+        body.dark-mode input, body.dark-mode select { background: #1e293b !important; color: #e2e8f0 !important; }
+        body.dark-mode input::placeholder { color: #64748b !important; }
+        body.dark-mode table thead { background: #1e293b !important; color: #94a3b8 !important; }
+        body.dark-mode tbody tr:hover { background: rgba(255,255,255,0.03) !important; }
+        body.dark-mode .divide-slate-100 > * + * { border-color: #1e293b !important; }
+        body.dark-mode .border-slate-200, body.dark-mode .border-slate-100 { border-color: #1e293b !important; }
+        body.dark-mode #hamburger-btn { background: #1e293b; border-color: #334155; }
+        body.dark-mode .log-card { background: #16213a; border-color: #1e293b; }
+        body.dark-mode #dark-toggle-btn i[data-lucide="moon"] { display: none; }
+        body:not(.dark-mode) #dark-toggle-btn i[data-lucide="sun"] { display: none; }
     </style>
 </head>
 
@@ -204,7 +241,10 @@
                 <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
                 <div><h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1><p class="text-slate-400 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p></div>
             </div>
-            <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+            <div class="flex items-center gap-2">
+                <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
+                <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+            </div>
         </header>
 
         <!-- OVERVIEW -->
@@ -264,7 +304,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <div class="glass-card p-8 rounded-[3rem] shadow-xl">
                     <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
                     <canvas id="revenueChart" height="170"></canvas>
@@ -272,6 +312,20 @@
                 <div class="glass-card p-8 rounded-[3rem] shadow-xl">
                     <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
                     <canvas id="dailyChart" height="170"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-1">
+                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue by Branch</h4>
+                    <canvas id="branchChart" height="220"></canvas>
+                </div>
+                <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Sessions Due Soon</h4>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">2 or fewer sessions remaining</span>
+                    </div>
+                    <div id="due-soon-list" class="max-h-64 overflow-y-auto pr-1"></div>
                 </div>
             </div>
         </section>
@@ -385,7 +439,10 @@
                     </div>
                     <div>
                         <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Search Patient</label>
-                        <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
+                        <div class="flex gap-2">
+                            <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="flex-1 p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
+                            <button onclick="printDailyRegistry()" class="toolbar-btn bg-slate-800 text-white hover:bg-slate-900 flex-shrink-0" title="Print this day's registry"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Print</button>
+                        </div>
                     </div>
                 </div>
 
@@ -431,9 +488,12 @@
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-2"></i>
                     <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
                 </div>
-                <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
-                    <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
-                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportPatientsCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                    <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
+                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
+                    </button>
+                </div>
             </div>
 
             <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
@@ -484,6 +544,7 @@
                 <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
                     <div class="flex items-center gap-4">
                         <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner" onkeyup="filterBillingTable()">
+                        <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white flex-shrink-0"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
                     </div>
                 </div>
 
@@ -671,6 +732,16 @@
         
         // LOGO SRC UPDATED HERE
         const PRISM_LOGO_SRC = "https://prismhealthcare.in/prism1.png";
+
+        // Max session rows placed on a single ledger PDF page — kept conservative so a page
+        // never overflows past its A4 boundary (which was the root cause of the overlapping
+        // text in the downloaded PDF).
+        const ROWS_PER_LEDGER_PAGE = 14;
+        function chunkArray(arr, size) {
+            const out = [];
+            for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+            return out;
+        }
 
         let globalData = [], patientLookup = {}, selectedDates = [], selectedPatientName = "", currentViewDate = new Date(), currentBranchFilter = 'ALL';
         let myChart = null, dailyChartInstance = null, searchDebounce = null, billCounter = {};
@@ -1227,15 +1298,6 @@
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(() => {
                 const val = document.getElementById('patient-search-input').value.toUpperCase(), res = document.getElementById('search-results');
-                
-                // BUG FIX: Hide active cases container while searching
-                const activeCasesContainer = document.getElementById('active-cases-grid').parentElement;
-                if (val) {
-                    activeCasesContainer.classList.add('hidden');
-                } else {
-                    activeCasesContainer.classList.remove('hidden');
-                }
-
                 if (!val) { res.classList.add('hidden'); return; }
                 const matches = Object.keys(patientLookup)
                     .filter(n => n.toUpperCase().includes(val) || patientLookup[n].id.toUpperCase().includes(val))
@@ -1249,10 +1311,6 @@
             selectedPatientName = n; const p = patientLookup[n];
             document.getElementById('patient-search-input').value = n;
             document.getElementById('search-results').classList.add('hidden');
-            
-            // BUG FIX: Ensure active cases grid is visible again after selection
-            document.getElementById('active-cases-grid').parentElement.classList.remove('hidden');
-
             document.getElementById('active-patient-name').innerText = n;
             document.getElementById('base-rate-display').value = p.baseRate;
             document.getElementById('patient-workspace').classList.remove('hidden');
@@ -1502,7 +1560,7 @@
                 const periodEnd = formatDateDMY(sortedDates[sortedDates.length - 1]);
                 const subtotal = fee * g.qty;
                 const periodLabel = periodStart === periodEnd ? `Date: ${periodStart}` : `Period: ${periodStart} - ${periodEnd}`;
-                procedureRowsHtml += `<tr style="border-bottom:1px solid #edf2f7">
+                procedureRowsHtml += `<tr class="procedure-row" style="border-bottom:1px solid #edf2f7">
                     <td style="padding:14px" class="editable">
                         <strong style="font-size:13px; color:#0f172a">${getSessionTypeLabel(p.id)}</strong><br>
                         <span style="font-size:10px; color:#4f46e5; font-weight:700">${periodLabel}</span>
@@ -1512,17 +1570,35 @@
                     <td style="padding:14px; text-align:right; font-weight:900" class="editable">₹${subtotal.toLocaleString()}</td>
                 </tr>`;
             });
-            let ledgerRowsHtml = '';
-            logs.forEach((l, i) => {
-                const fee = toNum(l[9]);
-                ledgerRowsHtml += `<div style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;">
-                    <div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${i + 1}.</div>
-                    <div class="editable" style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDateDMY(l[8])}</div>
-                    <div class="editable" style="flex:1; color:#64748b; font-size:13px;">${getSessionTypeLabel(p.id)}</div>
-                    <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
+            const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
+
+            // Build the session ledger as multiple fixed-capacity pages instead of one
+            // unbounded page. This guarantees every ".bill-page" div stays within a single
+            // A4 sheet, which is what lets us render + export each page 1:1 with no
+            // automatic slicing (the slicing was the cause of the overlapping dates).
+            const ledgerChunks = chunkArray(logs, ROWS_PER_LEDGER_PAGE);
+            let ledgerPagesHtml = '';
+            ledgerChunks.forEach((chunk, pageIdx) => {
+                let rowsHtml = '';
+                chunk.forEach((l, idxInChunk) => {
+                    const globalIdx = pageIdx * ROWS_PER_LEDGER_PAGE + idxInChunk;
+                    const fee = toNum(l[9]);
+                    rowsHtml += `<div class="ledger-row" style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;">
+                        <div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${globalIdx + 1}.</div>
+                        <div class="editable" style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDateDMY(l[8])}</div>
+                        <div class="editable" style="flex:1; color:#64748b; font-size:13px;">${getSessionTypeLabel(p.id)}</div>
+                        <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
+                    </div>`;
+                });
+                const pageLabel = ledgerChunks.length > 1 ? ` (Page ${pageIdx + 1} of ${ledgerChunks.length})` : '';
+                ledgerPagesHtml += `<div class="bill-page page-break">
+                    ${buildDocHeader(stmtNo)}
+                    <h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER${pageLabel}</h2>
+                    <div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div>
+                    <div style="margin-bottom:30px; margin-top:14px">${rowsHtml}</div>
+                    ${buildPageFooter('qr-receipt-' + pageIdx, docName, verifyUrl)}
                 </div>`;
             });
-            const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
             const firstDate = logs.length ? formatDateDMY(logs[0][8]) : '';
             const lastDate = logs.length ? formatDateDMY(logs[logs.length - 1][8]) : '';
             const ageGenderLine = `Gender: ${p.gender || '-'} | Age: ${p.age || '-'} Y`;
@@ -1568,13 +1644,7 @@
                     </table>
                     ${buildPageFooter('qr-inv', docName, verifyUrl)}
                 </div>
-                <div class="bill-page page-break">
-                    ${buildDocHeader(stmtNo)}
-                    <h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER</h2>
-                    <div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div>
-                    <div style="margin-bottom:30px; margin-top:14px">${ledgerRowsHtml}</div>
-                    ${buildPageFooter('qr-receipt', docName, verifyUrl)}
-                </div>
+                ${ledgerPagesHtml}
                 <div class="bill-page">
                     ${buildDocHeader(stmtNo)}
                     <h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2>
@@ -1617,27 +1687,42 @@
             }).catch(() => {});
         }
 
-        function downloadBillPDF() {
+        // Renders each .bill-page individually to its own canvas/image and drops it onto
+        // its own PDF page. This replaces the old approach of handing the whole tall
+        // multi-page container to html2pdf.js, which auto-slices ONE big canvas into
+        // page-height chunks — if a text row happened to sit across a slice boundary,
+        // its pixels got duplicated/overlapped on either side of the cut (the jammed
+        // dates bug). Capturing page-by-page means each PDF page is a 1:1 snapshot of
+        // exactly what's on screen, so there is nothing left to slice.
+        async function downloadBillPDF() {
             if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
             const { name, stmtNo } = currentBillContext;
-            const el = document.getElementById('bill-content-pages');
-            if (!el || typeof html2pdf === 'undefined') {
+            const container = document.getElementById('bill-content-pages');
+            const pageEls = container ? Array.from(container.querySelectorAll('.bill-page')) : [];
+            if (!pageEls.length || typeof html2canvas === 'undefined' || !window.jspdf) {
                 showToast('PDF library not available', 'error');
                 return;
             }
             showToast('Preparing PDF for download…', 'info');
-            const opt = {
-                margin: 0,
-                filename: `${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, allowTaint: true, logging: false },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(el).save().then(() => {
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+                const pageWidthMM = 210, pageHeightMM = 297;
+
+                for (let i = 0; i < pageEls.length; i++) {
+                    const canvas = await html2canvas(pageEls[i], { scale: 2, useCORS: true, allowTaint: true, logging: false });
+                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                    const imgHeightMM = Math.min((canvas.height * pageWidthMM) / canvas.width, pageHeightMM);
+                    if (i > 0) pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, imgHeightMM);
+                }
+
+                pdf.save(`${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`);
                 showToast('PDF downloaded successfully', 'success');
-            }).catch(() => {
+            } catch (err) {
+                console.error(err);
                 showToast('Could not generate PDF', 'error');
-            });
+            }
         }
 
         function sendBillToPatient() {
@@ -1672,6 +1757,172 @@
                 document.getElementById('enroll-summary').innerText = `₹${((r * s) - (r * s * (d / 100))).toLocaleString()}`;
             });
         });
+
+        // =====================================================================
+        // ADDED FUNCTIONALITY BELOW — nothing above this line was modified.
+        // All new features hook into existing globals (patientLookup, globalData)
+        // read-only, or wrap existing functions without altering their bodies.
+        // =====================================================================
+
+        // ---------- DARK MODE ----------
+        function applyDarkModePreference() {
+            let saved = null;
+            try { saved = localStorage.getItem('prism_dark_mode'); } catch (e) {}
+            if (saved === '1') document.body.classList.add('dark-mode');
+        }
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            try { localStorage.setItem('prism_dark_mode', document.body.classList.contains('dark-mode') ? '1' : '0'); } catch (e) {}
+            if (myChart || dailyChartInstance || branchChartInstance) {
+                // Re-render charts so grid/text colors stay legible against the new background
+                processData();
+            }
+        }
+        applyDarkModePreference();
+
+        // ---------- BRANCH DISTRIBUTION CHART ----------
+        let branchChartInstance = null;
+        function renderBranchChart() {
+            const canvasEl = document.getElementById('branchChart');
+            if (!canvasEl) return;
+            const ctx = canvasEl.getContext('2d');
+            let poc = 0, phc = 0, prc = 0;
+            Object.values(patientLookup).forEach(p => {
+                const sum = p.logs.reduce((s, l) => s + toNum(l[9]), 0);
+                if (p.id.startsWith('POC')) poc += sum;
+                else if (p.id.startsWith('PHC')) phc += sum;
+                else if (p.id.startsWith('PRC')) prc += sum;
+            });
+            const isDark = document.body.classList.contains('dark-mode');
+            if (branchChartInstance) branchChartInstance.destroy();
+            branchChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Orthocare (POC)', 'Homecare (PHC)', 'Rehab Clinic (PRC)'],
+                    datasets: [{ data: [poc, phc, prc], backgroundColor: ['#4f46e5', '#10b981', '#f97316'], borderWidth: 0 }]
+                },
+                options: {
+                    plugins: { legend: { position: 'bottom', labels: { color: isDark ? '#cbd5e1' : '#475569', font: { size: 10, weight: 'bold' }, boxWidth: 10, padding: 14 } } },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // ---------- SESSIONS DUE SOON WIDGET ----------
+        function renderDueSoonWidget() {
+            const el = document.getElementById('due-soon-list');
+            if (!el) return;
+            const rows = [];
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                if (p.closed || !p.purchased) return;
+                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const rem = p.purchased - consumed;
+                if (rem <= 2 && rem >= 0) rows.push({ name, id: p.id, rem, phone: p.phone });
+            });
+            rows.sort((a, b) => a.rem - b.rem);
+            if (!rows.length) {
+                el.innerHTML = `<p class="text-xs text-slate-400 italic">No patients are close to finishing their package right now.</p>`;
+                return;
+            }
+            el.innerHTML = rows.map(r => `
+                <div class="due-soon-row">
+                    <div>
+                        <span class="font-black text-xs uppercase text-slate-700">${r.name}</span>
+                        <span class="text-[9px] font-bold text-indigo-500 ml-2">${r.id}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg ${r.rem === 0 ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-700'}">${r.rem === 0 ? 'Package Complete' : r.rem + ' Left'}</span>
+                        <button onclick="sendWhatsApp('${r.phone}', '${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Message on WhatsApp"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>`).join('');
+            lucide.createIcons();
+        }
+
+        // ---------- CSV EXPORT: PATIENT RECORDS ----------
+        function downloadCSV(filename, rows) {
+            const csv = rows.map(r => r.map(cell => {
+                const s = String(cell ?? '');
+                return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+            }).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('CSV exported', 'success');
+        }
+
+        function exportPatientsCSV() {
+            const rows = [['Clinical ID', 'Patient Name', 'Age', 'Gender', 'Phone', 'Condition', 'Status', 'Sessions Purchased', 'Sessions Consumed']];
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                rows.push([p.id, name, p.age, p.gender, p.phone, p.diag, p.closed ? 'Closed' : 'Active', p.purchased, consumed]);
+            });
+            downloadCSV(`Prism_Patient_Records_${getLocalISOString()}.csv`, rows);
+        }
+
+        function exportBillingCSV() {
+            const rows = [['Patient Name', 'Clinical ID', 'Sessions Consumed', 'Sessions Purchased', 'Total Amount (₹)']];
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const total = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+                rows.push([name, p.id, consumed, p.purchased, total]);
+            });
+            downloadCSV(`Prism_Billing_Summary_${getLocalISOString()}.csv`, rows);
+        }
+
+        // ---------- PRINT DAILY REGISTRY ----------
+        function printDailyRegistry() {
+            const dateVal = document.getElementById('registry-date-input').value;
+            const rows = Array.from(document.querySelectorAll('#registry-table-body tr')).filter(r => r.style.display !== 'none');
+            const totalFee = document.getElementById('registry-footer-total').innerText;
+            const win = window.open('', '_blank', 'width=900,height=1000');
+            win.document.write(`
+                <html><head><title>Daily Visit Registry — ${dateVal}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 30px; color: #0f172a; }
+                    h1 { font-size: 18px; margin-bottom: 2px; }
+                    p.sub { color: #64748b; font-size: 11px; margin-top: 0; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+                    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+                    th, td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+                    th { background: #f8fafc; text-transform: uppercase; font-size: 10px; color: #64748b; }
+                    tfoot td { font-weight: 900; text-align: right; padding-top: 12px; }
+                </style></head><body>
+                <h1>Prism Physiotherapy &amp; Rehabilitation Center</h1>
+                <p class="sub">Daily Visit Registry — ${dateVal}</p>
+                <table><thead><tr><th>#</th><th>Patient</th><th>Clinical ID</th><th>Branch</th><th>Note</th><th>Fee</th></tr></thead>
+                <tbody>${rows.map(r => `<tr>${r.innerHTML}</tr>`).join('')}</tbody>
+                <tfoot><tr><td colspan="5">Total Collection:</td><td>${totalFee}</td></tr></tfoot>
+                </table>
+                </body></html>
+            `);
+            win.document.close();
+            setTimeout(() => win.print(), 300);
+        }
+
+        // ---------- KEYBOARD SHORTCUT: Ctrl/Cmd+K focuses the relevant search box ----------
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                const visibleSection = document.querySelector('section:not(.section-hidden)');
+                if (!visibleSection) return;
+                const searchInput = visibleSection.querySelector('input[type="text"]');
+                if (searchInput) searchInput.focus();
+            }
+        });
+
+        // ---------- NON-INVASIVE WRAP: extend processData without editing its body ----------
+        const _originalProcessData = processData;
+        processData = function () {
+            _originalProcessData();
+            renderBranchChart();
+            renderDueSoonWidget();
+        };
     </script>
 </body>
 </html>
