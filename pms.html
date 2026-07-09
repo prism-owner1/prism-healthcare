@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -83,8 +82,6 @@
         .active-case-card { display: flex; flex-direction: column; }
 
         /* ---------- PDF / PRINT PAGE-BREAK FIX ---------- */
-        /* Prevents rows/lines from being sliced across a page boundary, which was
-           causing text (e.g. session dates) to visually overlap in the exported PDF. */
         .ledger-row, .procedure-row, .bill-page table tr {
             page-break-inside: avoid;
             break-inside: avoid;
@@ -168,14 +165,14 @@
             .grid.md\:grid-cols-5 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
         }
 
-        /* ---------- ADDED: STAT CARD POLISH ---------- */
+        /* ---------- STAT CARD POLISH ---------- */
         .stat-card-v2 { position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .stat-card-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(15,23,42,0.12); }
         .stat-icon-badge { width: 38px; height: 38px; border-radius: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .due-soon-row { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.9rem; border-radius: 1rem; background: #fff7ed; margin-bottom: 0.5rem; }
         .toolbar-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1rem; border-radius: 0.85rem; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; cursor: pointer; }
 
-        /* ---------- ADDED: DARK MODE ---------- */
+        /* ---------- DARK MODE ---------- */
         body.dark-mode { background-color: #0b1220; color: #e2e8f0; }
         body.dark-mode .bg-logo-image { opacity: 0.03; }
         body.dark-mode .glass-card { background: rgba(15, 23, 42, 0.75); border-color: rgba(255,255,255,0.07); }
@@ -215,7 +212,6 @@
     <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div id="app-root" class="min-h-screen flex w-full">
-    <!-- BACKGROUND LOGO UPDATED -->
     <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
 
     <!-- SIDE NAVIGATION -->
@@ -233,6 +229,9 @@
             <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
             <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
         </nav>
+        <div class="pt-4 mt-4 border-t border-slate-100">
+            <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
+        </div>
     </aside>
 
     <main class="flex-1 p-8 lg:p-10 relative overflow-y-auto h-screen">
@@ -242,6 +241,10 @@
                 <div><h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1><p class="text-slate-400 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p></div>
             </div>
             <div class="flex items-center gap-2">
+                <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
+                    <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span id="connection-text" class="text-emerald-600">Online</span>
+                </div>
                 <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
                 <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
             </div>
@@ -332,8 +335,8 @@
 
         <!-- ENROLL -->
         <section id="tab-enroll" class="section-hidden animate-slide">
-            <div class="max-w-4xl glass-card p-10 rounded-[3rem] shadow-2xl">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="w-full glass-card p-10 rounded-[3rem] shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
                     <div class="space-y-5">
                         <h4 class="text-[10px] font-black uppercase text-indigo-500 tracking-widest border-b pb-2">1. Identity</h4>
                         <div class="grid grid-cols-2 gap-4">
@@ -446,6 +449,18 @@
                     </div>
                 </div>
 
+                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end border-indigo-100">
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">From Date</label>
+                        <input type="date" id="registry-range-from" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">To Date</label>
+                        <input type="date" id="registry-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                    </div>
+                    <button onclick="downloadRegistryRangeCSV()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="glass-card p-6 rounded-[2rem] shadow-sm border-indigo-50">
                         <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Total Visits</p>
@@ -517,7 +532,6 @@
         <!-- BILLING -->
         <section id="tab-billing" class="section-hidden animate-slide">
             <div class="max-w-7xl mx-auto space-y-6">
-<!-- Update the configuration row inside <section id="tab-billing"> -->
 <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 border-indigo-100">
     <div>
         <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Treating Doctor</label>
@@ -637,6 +651,53 @@
         </div>
     </div>
 
+    <!-- EDIT PATIENT MODAL (NEW) -->
+    <div id="edit-patient-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-black">Edit Patient Details</h3>
+                <button onclick="closeEditPatientModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <input type="hidden" id="ep-original-name">
+            <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical ID</label>
+                    <input type="text" id="ep-id" readonly class="w-full mt-1 p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Full Patient Name</label>
+                    <input type="text" id="ep-name" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Age</label>
+                        <input type="number" id="ep-age" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Gender</label>
+                        <select id="ep-gender" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none"><option>Male</option><option>Female</option></select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Phone / WhatsApp Number</label>
+                    <input type="tel" id="ep-phone" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical Diagnosis / Condition</label>
+                    <input type="text" id="ep-condition" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                </div>
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Address</label>
+                    <input type="text" id="ep-address" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                </div>
+            </div>
+            <div class="flex gap-3 pt-6">
+                <button onclick="closeEditPatientModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                <button onclick="saveEditPatient()" class="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- BILL MODAL -->
     <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[500] flex flex-col items-center justify-start p-6 overflow-y-auto">
         <div class="flex flex-col items-center gap-2 mb-6 no-print">
@@ -659,7 +720,6 @@
         // ---------- LOCK SCREEN LOGIC ----------
         const APP_LOCK_PASSWORD = "PrismAdmin@2024";
 
-        // ADDED HELPER: Returns "YYYY-MM-DD" based on local device time
         const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
 
         function unlockApp() {
@@ -668,7 +728,6 @@
             root.style.display = 'flex';
             root.classList.remove('hidden');
             try { sessionStorage.setItem('prism_unlocked', '1'); } catch (e) {}
-            // Set current date to inputs using local helper
             const todayStr = getLocalISOString();
             document.getElementById('en-reg-date').value = todayStr;
             document.getElementById('registry-date-input').value = todayStr;
@@ -729,13 +788,8 @@
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
         const VERIFY_BASE_URL = 'https://prismhealthcare.in/verify.html';
-        
-        // LOGO SRC UPDATED HERE
         const PRISM_LOGO_SRC = "https://prismhealthcare.in/prism1.png";
 
-        // Max session rows placed on a single ledger PDF page — kept conservative so a page
-        // never overflows past its A4 boundary (which was the root cause of the overlapping
-        // text in the downloaded PDF).
         const ROWS_PER_LEDGER_PAGE = 14;
         function chunkArray(arr, size) {
             const out = [];
@@ -822,12 +876,10 @@
             }
         }
 
-        // ---------- OPTIMIZED: loadAdminData (FASTER REFRESH) ----------
         async function loadAdminData(isManual) {
             const syncBtn = document.getElementById('sync-indicator');
             if (syncBtn) syncBtn.classList.add('animate-spin');
 
-            // Initial view from cache
             if (!isManual) {
                 try {
                     const cached = localStorage.getItem('prism_cache');
@@ -849,7 +901,6 @@
                 const cachedStr = localStorage.getItem('prism_cache');
                 const newDataStr = JSON.stringify(newData);
 
-                // Only process and render if the data is actually different
                 if (cachedStr !== newDataStr) {
                     globalData = newData;
                     localStorage.setItem('prism_cache', newDataStr);
@@ -899,7 +950,7 @@
             let pocRevenue = 0, phcRevenue = 0, prcRevenue = 0;
             let dailyCol = 0, monthlyCol = 0, yearlyCol = 0;
             let chartData = {}, dailyMap = {};
-            const today = getLocalISOString(); // Fixed with local helper
+            const today = getLocalISOString();
             const currMonth = today.substring(0, 7);
             const currYear = today.substring(0, 4);
 
@@ -988,12 +1039,10 @@
             let visitCount = 0;
             let collectionSum = 0;
 
-            // Fetch records for the selected day from globalData
             const dayRecords = globalData.filter(r => {
                 const type = String(r[7] || '').toLowerCase();
                 const rDate = r[8];
                 const fee = toNum(r[9]);
-                // Filter sessions: not admin status, and is either a Rehab visit or enrollment with session payment
                 return rDate === dateVal && 
                        fee > 0 && 
                        type !== "case closed" && 
@@ -1079,7 +1128,7 @@
             const btn = event.target.closest('button');
             armConfirm(btn, 'Confirm Close?', async () => {
                 const p = patientLookup[name];
-                const dateStr = getLocalISOString(); // Fixed with local helper
+                const dateStr = getLocalISOString();
                 const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", dateStr, 0, 0, 0, 0, ""];
                 globalData.push(row);
                 processData();
@@ -1096,7 +1145,7 @@
             const btn = event.currentTarget;
             armConfirm(btn, 'Confirm Restart?', async () => {
                 const p = patientLookup[name];
-                const dateStr = getLocalISOString(); // Fixed with local helper
+                const dateStr = getLocalISOString();
                 const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
                 globalData.push(row);
                 p.closed = false;
@@ -1160,7 +1209,7 @@
             if (!name) { showToast("Enter the patient's name first", 'warning'); return; }
             const rate = Number(document.getElementById('en-rate').value) || 0;
             if (!rate) { showToast("Enter cost per session", 'warning'); return; }
-            const dateStr = document.getElementById('en-reg-date').value || getLocalISOString(); // Fixed with local helper
+            const dateStr = document.getElementById('en-reg-date').value || getLocalISOString();
             const address = document.getElementById('en-address').value.trim();
             const row = [
                 new Date().toISOString(),
@@ -1202,7 +1251,7 @@
             document.getElementById('en-discount').value = "0";
             document.getElementById('en-gender').value = "Male";
             document.getElementById('en-branch').value = "POC";
-            document.getElementById('en-reg-date').value = getLocalISOString(); // Fixed with local helper
+            document.getElementById('en-reg-date').value = getLocalISOString();
             document.getElementById('enroll-summary').innerText = "₹0";
             generateClinicalID();
         }
@@ -1221,7 +1270,7 @@
             const rate = Number(document.getElementById('mi-rate').value) || 0;
             const advance = Number(document.getElementById('mi-advance').value) || 0;
             if (!sessions || !rate) { showToast('Enter sessions and rate', 'warning'); return; }
-            const dateStr = getLocalISOString(); // Fixed with local helper
+            const dateStr = getLocalISOString();
             const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Enrollment", dateStr, rate, sessions, advance, 0, ""];
             globalData.push(row);
             processData();
@@ -1250,13 +1299,11 @@
             const ctx = document.getElementById('dailyChart').getContext('2d');
             const days = [];
             const todayD = new Date();
-            // Start with today in Local Time
             const localToday = getLocalISOString();
             
             for (let i = 13; i >= 0; i--) {
                 const d = new Date(todayD);
                 d.setDate(d.getDate() - i);
-                // Correctly map days to local format YYYY-MM-DD
                 days.push(d.toLocaleDateString('sv-SE'));
             }
             const labels = days.map(ds => {
@@ -1423,6 +1470,7 @@
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
                             <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                            <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
                             ${p.closed 
                                 ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
                                 : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
@@ -1461,6 +1509,70 @@
         }
         function closePatientDetailModal() { document.getElementById('patient-detail-modal').classList.add('hidden'); }
 
+        // ---------- EDIT PATIENT (NEW) ----------
+        function openEditPatientModal(name) {
+            const p = patientLookup[name];
+            if (!p) { showToast('Patient not found', 'error'); return; }
+            document.getElementById('ep-original-name').value = name;
+            document.getElementById('ep-id').value = p.id;
+            document.getElementById('ep-name').value = name;
+            document.getElementById('ep-phone').value = p.phone || '';
+            document.getElementById('ep-age').value = p.age || '';
+            document.getElementById('ep-gender').value = p.gender || 'Male';
+            document.getElementById('ep-condition').value = p.diag || '';
+            document.getElementById('ep-address').value = p.address || '';
+            document.getElementById('edit-patient-modal').classList.remove('hidden');
+        }
+        function closeEditPatientModal() { document.getElementById('edit-patient-modal').classList.add('hidden'); }
+
+        async function saveEditPatient() {
+            const oldName = document.getElementById('ep-original-name').value;
+            const p = patientLookup[oldName];
+            if (!p) { showToast('Patient not found', 'error'); return; }
+
+            const newName = document.getElementById('ep-name').value.trim();
+            const newPhone = document.getElementById('ep-phone').value.trim();
+            const newAge = document.getElementById('ep-age').value.trim();
+            const newGender = document.getElementById('ep-gender').value;
+            const newCondition = document.getElementById('ep-condition').value.trim();
+            const newAddress = document.getElementById('ep-address').value.trim();
+
+            if (!newName) { showToast('Patient name cannot be empty', 'warning'); return; }
+
+            // Update every row in globalData that belongs to this patient (matched by Clinical ID,
+            // since the name itself might be one of the fields being changed).
+            globalData.forEach(r => {
+                if (String(r[1]) === p.id) {
+                    r[2] = newName;
+                    r[3] = newPhone;
+                    r[4] = newAge;
+                    r[5] = newGender;
+                    r[6] = newCondition;
+                    r[14] = newAddress;
+                }
+            });
+
+            processData();
+            closeEditPatientModal();
+            showToast('Patient details updated', 'success');
+
+            // NOTE: this calls a new "updatePatient" action. Your Google Apps Script backend
+            // needs a matching handler that finds rows by ID and overwrites name/phone/age/
+            // gender/condition/address, otherwise this sync will silently fail server-side
+            // (the local UI update above will still work either way).
+            syncToBackend({
+                action: "updatePatient",
+                id: p.id,
+                oldName: oldName,
+                name: newName,
+                phone: newPhone,
+                age: newAge,
+                gender: newGender,
+                condition: newCondition,
+                address: newAddress
+            }).catch(() => {});
+        }
+
         function generateClinicalID() {
             const b = document.getElementById('en-branch').value, y = new Date().getFullYear().toString().slice(-2);
             document.getElementById('en-id').value = `${b}${y}/${1001 + Object.keys(patientLookup).length}`;
@@ -1468,7 +1580,6 @@
 
         function changeMonth(o) { currentViewDate.setMonth(currentViewDate.getMonth() + o); renderCalendar(); }
 
-        // ---------- OPTIMIZED: MESSAGING HELPER (Normalizes Phone Numbers) ----------
         function getWhatsAppNumber(phone) {
             let digits = (phone || '').replace(/\D/g, ''); 
             digits = digits.replace(/^0+/, ''); 
@@ -1488,7 +1599,6 @@
         function buildDocHeader(stmtNo, udyam) {
             return `<div class="doc-header2">
                 <div>
-                    <!-- Logo Sized for Letterhead -->
                     <img src="${PRISM_LOGO_SRC}" style="height: 50px; width: auto; display: block; object-fit: contain;" alt="Prism Physiotherapy">
                 </div>
                 <div class="doc-meta2">
@@ -1572,10 +1682,6 @@
             });
             const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
 
-            // Build the session ledger as multiple fixed-capacity pages instead of one
-            // unbounded page. This guarantees every ".bill-page" div stays within a single
-            // A4 sheet, which is what lets us render + export each page 1:1 with no
-            // automatic slicing (the slicing was the cause of the overlapping dates).
             const ledgerChunks = chunkArray(logs, ROWS_PER_LEDGER_PAGE);
             let ledgerPagesHtml = '';
             ledgerChunks.forEach((chunk, pageIdx) => {
@@ -1683,17 +1789,10 @@
             syncToBackend({
                 action: "logAppointment", id: p.id, name: name, phone: p.phone,
                 condition: `Bill Issued: ${stmtNo}`, fee: total, billNo: stmtNo,
-                type: "Bill Issued", date: getLocalISOString() // Fixed with local helper
+                type: "Bill Issued", date: getLocalISOString()
             }).catch(() => {});
         }
 
-        // Renders each .bill-page individually to its own canvas/image and drops it onto
-        // its own PDF page. This replaces the old approach of handing the whole tall
-        // multi-page container to html2pdf.js, which auto-slices ONE big canvas into
-        // page-height chunks — if a text row happened to sit across a slice boundary,
-        // its pixels got duplicated/overlapped on either side of the cut (the jammed
-        // dates bug). Capturing page-by-page means each PDF page is a 1:1 snapshot of
-        // exactly what's on screen, so there is nothing left to slice.
         async function downloadBillPDF() {
             if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
             const { name, stmtNo } = currentBillContext;
@@ -1758,12 +1857,6 @@
             });
         });
 
-        // =====================================================================
-        // ADDED FUNCTIONALITY BELOW — nothing above this line was modified.
-        // All new features hook into existing globals (patientLookup, globalData)
-        // read-only, or wrap existing functions without altering their bodies.
-        // =====================================================================
-
         // ---------- DARK MODE ----------
         function applyDarkModePreference() {
             let saved = null;
@@ -1774,7 +1867,6 @@
             document.body.classList.toggle('dark-mode');
             try { localStorage.setItem('prism_dark_mode', document.body.classList.contains('dark-mode') ? '1' : '0'); } catch (e) {}
             if (myChart || dailyChartInstance || branchChartInstance) {
-                // Re-render charts so grid/text colors stay legible against the new background
                 processData();
             }
         }
@@ -1904,6 +1996,52 @@
             win.document.close();
             setTimeout(() => win.print(), 300);
         }
+
+        function downloadRegistryRangeCSV() {
+            const from = document.getElementById('registry-range-from').value;
+            const to = document.getElementById('registry-range-to').value;
+            if (!from || !to) { showToast('Select both From and To dates', 'warning'); return; }
+            if (from > to) { showToast('From date must be before To date', 'warning'); return; }
+            const rows = [['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Fee']];
+            let total = 0;
+            globalData.filter(r => {
+                const type = String(r[7] || '').toLowerCase();
+                const rDate = r[8];
+                const fee = toNum(r[9]);
+                return rDate >= from && rDate <= to && fee > 0 && type !== "case closed" && type !== "case restarted" && type !== "bill issued";
+            }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
+                const cid = r[1], name = r[2], diag = r[6], fee = toNum(r[9]);
+                const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
+                rows.push([formatDateDMY(r[8]), name, cid, branch, diag || '-', fee]);
+                total += fee;
+            });
+            if (rows.length === 1) { showToast('No visits found in this range', 'warning'); return; }
+            rows.push(['', '', '', '', 'Total Collection', total]);
+            downloadCSV(`Prism_Visit_Registry_${from}_to_${to}.csv`, rows);
+        }
+
+        function logoutApp() {
+            try { sessionStorage.removeItem('prism_unlocked'); } catch (e) {}
+            location.reload();
+        }
+
+        function updateConnectionStatus() {
+            const dot = document.getElementById('connection-dot');
+            const text = document.getElementById('connection-text');
+            if (!dot || !text) return;
+            if (navigator.onLine) {
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+                text.className = 'text-emerald-600';
+                text.innerText = 'Online';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                text.className = 'text-rose-600';
+                text.innerText = 'Offline';
+            }
+        }
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        document.addEventListener('DOMContentLoaded', updateConnectionStatus);
 
         // ---------- KEYBOARD SHORTCUT: Ctrl/Cmd+K focuses the relevant search box ----------
         document.addEventListener('keydown', (e) => {
