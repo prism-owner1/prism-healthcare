@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -23,175 +24,689 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; overflow: hidden; }
-        .bg-logo-image { position: fixed; top: 50%; left: 55%; transform: translate(-50%, -50%); width: 500px; opacity: 0.05; z-index: -1; pointer-events: none; }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); }
-        .sidebar-active { background: #0f172a; color: white !important; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .section-hidden { display: none; }
-        .calendar-day-selected { background-color: #4f46e5 !important; color: white !important; transform: scale(0.9); }
-        /* Style for logged sessions on calendar */
-        .calendar-day-logged { border: 2px solid #10b981 !important; color: #059669 !important; position: relative; font-weight: 800 !important; }
-        .calendar-day-logged::after { content: ''; position: absolute; bottom: 3px; width: 4px; height: 4px; background: #10b981; border-radius: 50%; }
-        
-        .calendar-day-disabled { opacity: 0.15; cursor: not-allowed !important; background-color: #f1f5f9 !important; }
-        .log-card { background: #f8fafc; border: 1px solid #edf2f7; border-radius: 1.2rem; padding: 1rem; margin-bottom: 0.6rem; transition: 0.2s; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-slide { animation: slideIn 0.25s ease-out forwards; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .qr-container { display: flex; align-items: center; justify-content: center; padding: 1rem; background: white; border-radius: 1rem; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            overflow: hidden;
+        }
+
+        .bg-logo-image {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .sidebar-active {
+            background: #0f172a;
+            color: white !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        .calendar-day-selected {
+            background-color: #4f46e5 !important;
+            color: white !important;
+            transform: scale(0.9);
+        }
+
+        .calendar-day-logged {
+            border: 2px solid #10b981 !important;
+            color: #059669 !important;
+            position: relative;
+            font-weight: 800 !important;
+        }
+
+        .calendar-day-logged::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .calendar-day-disabled {
+            opacity: 0.15;
+            cursor: not-allowed !important;
+            background-color: #f1f5f9 !important;
+        }
+
+        .log-card {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-bottom: 0.6rem;
+            transition: 0.2s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.25s ease-out forwards;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .qr-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 1rem;
+        }
 
         @media print {
-            .no-print { display: none !important; }
-            .page-break { page-break-after: always; }
-            body { background: white; overflow: visible !important; }
-            main { overflow: visible !important; height: auto !important; }
-            #sidebar, header, .nav-btn { display: none !important; }
-            #bill-modal { position: absolute !important; inset: 0 !important; background: white !important; padding: 0 !important; overflow: visible !important; display: block !important; }
-            .bill-page { box-shadow: none !important; margin: 0 !important; border: none !important; }
+            .no-print {
+                display: none !important;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+
+            body {
+                background: white;
+                overflow: visible !important;
+            }
+
+            main {
+                overflow: visible !important;
+                height: auto !important;
+            }
+
+            #sidebar,
+            header,
+            .nav-btn {
+                display: none !important;
+            }
+
+            #bill-modal {
+                position: absolute !important;
+                inset: 0 !important;
+                background: white !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+
+            .bill-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                border: none !important;
+            }
         }
-        .bill-page { width: 210mm; min-height: 297mm; background: white; padding: 20mm; margin-bottom: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; }
 
-        .doc-header2 { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:4px solid #4f46e5; padding-bottom:16px; margin-bottom:30px; }
-        .doc-header2 .doc-logo2 { height:75px; width:auto; max-width:320px; object-fit:contain; display:block; filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.2)); }
-        .doc-header2 .doc-subtitle { margin:6px 0 0; font-size:11px; font-weight:800; color:#4f46e5; letter-spacing:1.5px; text-transform:uppercase; }
-        .doc-header2 .doc-meta2 { text-align:right; }
-        .doc-header2 .meta-label { margin:0; font-size:9px; font-weight:800; color:#94a3b8; letter-spacing:1px; text-transform:uppercase; }
-        .doc-header2 .meta-value { margin:2px 0 0; font-size:16px; font-weight:900; color:#0f172a; }
-        .section-label2 { font-size:10px; font-weight:900; letter-spacing:1px; color:#4f46e5; text-transform:uppercase; margin:0 0 6px; }
+        .bill-page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 20mm;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
 
-        .doc-footer3 { position:absolute; bottom:14mm; left:20mm; right:20mm; display:flex; align-items:flex-start; gap:22px; border-top:1px solid #eef0f5; padding-top:14px; }
-        .doc-footer3 .doc-qr-box { text-align:center; flex-shrink:0; }
-        .doc-footer3 .doc-qr-box .qr-slot { padding:4px; background:#fff; border:1px solid #eee; display:inline-block; border-radius:6px; }
-        .doc-footer3 .doc-qr-box small { display:block; font-size:8px; color:#94a3b8; margin-top:4px; max-width:74px; line-height:1.3; }
-        .doc-footer3 .doc-cert-text { flex:1; }
-        .doc-footer3 .cert-title { font-size:10px; font-weight:900; letter-spacing:0.5px; color:#4f46e5; text-transform:uppercase; margin:0 0 4px; }
-        .doc-footer3 .cert-body { font-size:9.5px; color:#64748b; line-height:1.5; margin:0; }
-        .doc-footer3 .doc-sign2 { text-align:right; flex-shrink:0; min-width:160px; }
-        .doc-footer3 .doc-sign2 strong { display:block; font-size:12px; color:#0f172a; }
-        .doc-footer3 .doc-sign2 .sign-sub { display:block; font-size:8px; color:#94a3b8; letter-spacing:0.5px; margin-top:2px; }
-        .doc-footer3 .doc-sign2 .sign-auth { display:block; font-size:9px; font-weight:800; color:#4f46e5; letter-spacing:0.5px; margin-top:2px; }
+        .doc-header2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 4px solid #4f46e5;
+            padding-bottom: 16px;
+            margin-bottom: 30px;
+        }
 
-        #bill-content-pages.edit-mode .editable { outline:1.5px dashed #6366f1; outline-offset:2px; background:rgba(99,102,241,0.05); border-radius:4px; cursor:text; }
-        #bill-content-pages .editable:focus { outline:1.5px solid #4f46e5 !important; background:rgba(99,102,241,0.09) !important; }
+        .doc-header2 .doc-logo2 {
+            height: 75px;
+            width: auto;
+            max-width: 320px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.2));
+        }
 
-        .addr-line:empty { display: none; }
-        #bill-content-pages.edit-mode .addr-line:empty { display: block; min-height: 14px; }
-        #bill-content-pages.edit-mode .addr-line:empty::before { content: "Click to add patient address..."; color: #94a3b8; font-style: italic; }
+        .doc-header2 .doc-subtitle {
+            margin: 6px 0 0;
+            font-size: 11px;
+            font-weight: 800;
+            color: #4f46e5;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
 
-        .active-case-card { display: flex; flex-direction: column; }
+        .doc-header2 .doc-meta2 {
+            text-align: right;
+        }
 
-        /* ---------- PDF / PRINT PAGE-BREAK FIX ---------- */
-        .ledger-row, .procedure-row, .bill-page table tr {
+        .doc-header2 .meta-label {
+            margin: 0;
+            font-size: 9px;
+            font-weight: 800;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .doc-header2 .meta-value {
+            margin: 2px 0 0;
+            font-size: 16px;
+            font-weight: 900;
+            color: #0f172a;
+        }
+
+        .section-label2 {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #4f46e5;
+            text-transform: uppercase;
+            margin: 0 0 6px;
+        }
+
+        .doc-footer3 {
+            position: absolute;
+            bottom: 14mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            align-items: flex-start;
+            gap: 22px;
+            border-top: 1px solid #eef0f5;
+            padding-top: 14px;
+        }
+
+        .doc-footer3 .doc-qr-box {
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .doc-footer3 .doc-qr-box .qr-slot {
+            padding: 4px;
+            background: #fff;
+            border: 1px solid #eee;
+            display: inline-block;
+            border-radius: 6px;
+        }
+
+        .doc-footer3 .doc-qr-box small {
+            display: block;
+            font-size: 8px;
+            color: #94a3b8;
+            margin-top: 4px;
+            max-width: 74px;
+            line-height: 1.3;
+        }
+
+        .doc-footer3 .doc-cert-text {
+            flex: 1;
+        }
+
+        .doc-footer3 .cert-title {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            color: #4f46e5;
+            text-transform: uppercase;
+            margin: 0 0 4px;
+        }
+
+        .doc-footer3 .cert-body {
+            font-size: 9.5px;
+            color: #64748b;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .doc-footer3 .doc-sign2 {
+            text-align: right;
+            flex-shrink: 0;
+            min-width: 160px;
+        }
+
+        .doc-footer3 .doc-sign2 strong {
+            display: block;
+            font-size: 12px;
+            color: #0f172a;
+        }
+
+        .doc-footer3 .doc-sign2 .sign-sub {
+            display: block;
+            font-size: 8px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .doc-footer3 .doc-sign2 .sign-auth {
+            display: block;
+            font-size: 9px;
+            font-weight: 800;
+            color: #4f46e5;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        #bill-content-pages.edit-mode .editable {
+            outline: 1.5px dashed #6366f1;
+            outline-offset: 2px;
+            background: rgba(99, 102, 241, 0.05);
+            border-radius: 4px;
+            cursor: text;
+        }
+
+        #bill-content-pages .editable:focus {
+            outline: 1.5px solid #4f46e5 !important;
+            background: rgba(99, 102, 241, 0.09) !important;
+        }
+
+        .addr-line:empty {
+            display: none;
+        }
+
+        #bill-content-pages.edit-mode .addr-line:empty {
+            display: block;
+            min-height: 14px;
+        }
+
+        #bill-content-pages.edit-mode .addr-line:empty::before {
+            content: "Click to add patient address...";
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .active-case-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ledger-row,
+        .procedure-row,
+        .bill-page table tr {
             page-break-inside: avoid;
             break-inside: avoid;
         }
 
-        /* ---------- LOCK SCREEN ---------- */
         #lock-screen {
-            position: fixed; inset: 0; z-index: 9999;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
             background: #0f172a;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         #lock-screen .lock-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 2rem;
             padding: 3rem 2.5rem;
-            width: 100%; max-width: 360px;
+            width: 100%;
+            max-width: 360px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
         }
-        #lock-screen .lock-icon {
-            width: 56px; height: 56px; border-radius: 1.2rem;
-            background: #4f46e5; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.25rem; color: white;
-        }
-        #lock-screen h2 { color: white; font-weight: 900; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; }
-        #lock-screen p { color: #94a3b8; font-size: 0.75rem; margin-bottom: 1.5rem; }
-        #lock-password {
-            width: 100%; padding: 0.9rem 1rem; border-radius: 1rem; border: none;
-            background: rgba(255,255,255,0.08); color: white; font-weight: 700;
-            outline: none; margin-bottom: 0.9rem; text-align: center; letter-spacing: 1px;
-        }
-        #lock-password::placeholder { color: #64748b; }
-        #lock-submit {
-            width: 100%; padding: 0.9rem; border-radius: 1rem; border: none;
-            background: #4f46e5; color: white; font-weight: 900; text-transform: uppercase;
-            font-size: 0.7rem; letter-spacing: 1px; cursor: pointer; transition: 0.2s;
-        }
-        #lock-submit:hover { background: #4338ca; }
-        #lock-error { color: #fb7185; font-size: 0.7rem; font-weight: 700; margin-top: 0.8rem; min-height: 14px; }
-        #app-root { display: none; }
 
-        /* ---------- MOBILE RESPONSIVE ---------- */
-        #hamburger-btn { display: none; }
-        #sidebar-overlay { display: none; }
+        #lock-screen .lock-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 1.2rem;
+            background: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            color: white;
+        }
+
+        #lock-screen h2 {
+            color: white;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        #lock-screen p {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #lock-password {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border-radius: 1rem;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-weight: 700;
+            outline: none;
+            margin-bottom: 0.9rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        #lock-password::placeholder {
+            color: #64748b;
+        }
+
+        #lock-submit {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 1rem;
+            border: none;
+            background: #4f46e5;
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #lock-submit:hover {
+            background: #4338ca;
+        }
+
+        #lock-error {
+            color: #fb7185;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-top: 0.8rem;
+            min-height: 14px;
+        }
+
+        #app-root {
+            display: none;
+        }
+
+        #hamburger-btn {
+            display: none;
+        }
+
+        #sidebar-overlay {
+            display: none;
+        }
 
         @media (max-width: 1024px) {
-            body { overflow: auto; }
+            body {
+                overflow: auto;
+            }
+
             #hamburger-btn {
-                display: flex; align-items: center; justify-content: center;
-                width: 42px; height: 42px; border-radius: 0.9rem;
-                background: white; border: 1px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 42px;
+                height: 42px;
+                border-radius: 0.9rem;
+                background: white;
+                border: 1px solid #e2e8f0;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
                 flex-shrink: 0;
             }
+
             #sidebar {
-                position: fixed; top: 0; left: 0; height: 100vh;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
                 transform: translateX(-105%);
-                transition: transform 0.25s ease; z-index: 1000;
-                width: 80%; max-width: 300px;
-                box-shadow: 0 0 40px rgba(0,0,0,0.25);
+                transition: transform 0.25s ease;
+                z-index: 1000;
+                width: 80%;
+                max-width: 300px;
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
             }
-            #sidebar.sidebar-open { transform: translateX(0); }
+
+            #sidebar.sidebar-open {
+                transform: translateX(0);
+            }
+
             #sidebar-overlay.active {
-                display: block; position: fixed; inset: 0; z-index: 999;
-                background: rgba(15,23,42,0.5); backdrop-filter: blur(2px);
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 999;
+                background: rgba(15, 23, 42, 0.5);
+                backdrop-filter: blur(2px);
             }
-            main { padding: 1.25rem !important; height: auto !important; overflow-y: visible !important; }
-            #app-root { min-height: 100vh; }
-            header h1 { font-size: 1.25rem !important; }
-            .grid.md\:grid-cols-5 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-            .grid.md\:grid-cols-3, .grid.lg\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
-            .glass-card.p-8, .glass-card.p-10 { padding: 1.25rem !important; }
-            .glass-card.rounded-\[3rem\] { border-radius: 1.5rem !important; }
-            table { min-width: 640px; }
-            .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            #bill-modal .flex.gap-4 { flex-wrap: wrap; justify-content: center; }
-            #bill-modal .flex.gap-4 button { flex: 1 1 auto; font-size: 10px !important; padding: 0.65rem 1rem !important; }
-            .bill-page { width: 100%; min-height: auto; padding: 6mm; transform-origin: top center; }
+
+            main {
+                padding: 1.25rem !important;
+                height: auto !important;
+                overflow-y: visible !important;
+            }
+
+            #app-root {
+                min-height: 100vh;
+            }
+
+            header h1 {
+                font-size: 1.25rem !important;
+            }
+
+            .grid.md\:grid-cols-5 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            .grid.md\:grid-cols-3,
+            .grid.lg\:grid-cols-2 {
+                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            }
+
+            .glass-card.p-8,
+            .glass-card.p-10 {
+                padding: 1.25rem !important;
+            }
+
+            .glass-card.rounded-\[3rem\] {
+                border-radius: 1.5rem !important;
+            }
+
+            table {
+                min-width: 640px;
+            }
+
+            .table-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #bill-modal .flex.gap-4 {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            #bill-modal .flex.gap-4 button {
+                flex: 1 1 auto;
+                font-size: 10px !important;
+                padding: 0.65rem 1rem !important;
+            }
+
+            .bill-page {
+                width: 100%;
+                min-height: auto;
+                padding: 6mm;
+                transform-origin: top center;
+            }
         }
+
         @media (max-width: 480px) {
-            .grid.md\:grid-cols-5 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+            .grid.md\:grid-cols-5 {
+                grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            }
         }
 
-        /* ---------- STAT CARD POLISH ---------- */
-        .stat-card-v2 { position: relative; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .stat-card-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(15,23,42,0.12); }
-        .stat-icon-badge { width: 38px; height: 38px; border-radius: 0.9rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .due-soon-row { display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.9rem; border-radius: 1rem; background: #fff7ed; margin-bottom: 0.5rem; }
-        .toolbar-btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.55rem 1rem; border-radius: 0.85rem; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; cursor: pointer; }
+        .stat-card-v2 {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-        /* ---------- DARK MODE ---------- */
-        body.dark-mode { background-color: #0b1220; color: #e2e8f0; }
-        body.dark-mode .bg-logo-image { opacity: 0.03; }
-        body.dark-mode .glass-card { background: rgba(15, 23, 42, 0.75); border-color: rgba(255,255,255,0.07); }
-        body.dark-mode #sidebar { background: rgba(11, 18, 32, 0.97) !important; border-color: #1e293b; }
-        body.dark-mode #sidebar img { filter: brightness(0) invert(1); }
-        body.dark-mode .nav-btn { color: #94a3b8 !important; }
-        body.dark-mode .nav-btn:hover { background: #1e293b !important; }
-        body.dark-mode .nav-btn.sidebar-active { background: #4f46e5 !important; }
-        body.dark-mode h1, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode strong { color: #f1f5f9; }
-        body.dark-mode input, body.dark-mode select { background: #1e293b !important; color: #e2e8f0 !important; }
-        body.dark-mode input::placeholder { color: #64748b !important; }
-        body.dark-mode table thead { background: #1e293b !important; color: #94a3b8 !important; }
-        body.dark-mode tbody tr:hover { background: rgba(255,255,255,0.03) !important; }
-        body.dark-mode .divide-slate-100 > * + * { border-color: #1e293b !important; }
-        body.dark-mode .border-slate-200, body.dark-mode .border-slate-100 { border-color: #1e293b !important; }
-        body.dark-mode #hamburger-btn { background: #1e293b; border-color: #334155; }
-        body.dark-mode .log-card { background: #16213a; border-color: #1e293b; }
-        body.dark-mode #dark-toggle-btn i[data-lucide="moon"] { display: none; }
-        body:not(.dark-mode) #dark-toggle-btn i[data-lucide="sun"] { display: none; }
+        .stat-card-v2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.12);
+        }
+
+        .stat-icon-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .due-soon-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.65rem 0.9rem;
+            border-radius: 1rem;
+            background: #fff7ed;
+            margin-bottom: 0.5rem;
+        }
+
+        .toolbar-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.55rem 1rem;
+            border-radius: 0.85rem;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        body.dark-mode {
+            background-color: #0b1220;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .bg-logo-image {
+            opacity: 0.03;
+        }
+
+        body.dark-mode .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            border-color: rgba(255, 255, 255, 0.07);
+        }
+
+        body.dark-mode #sidebar {
+            background: rgba(11, 18, 32, 0.97) !important;
+            border-color: #1e293b;
+        }
+
+        body.dark-mode #sidebar img {
+            filter: brightness(0) invert(1);
+        }
+
+        body.dark-mode .nav-btn {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .nav-btn:hover {
+            background: #1e293b !important;
+        }
+
+        body.dark-mode .nav-btn.sidebar-active {
+            background: #4f46e5 !important;
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode strong {
+            color: #f1f5f9;
+        }
+
+        body.dark-mode input,
+        body.dark-mode select {
+            background: #1e293b !important;
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode input::placeholder {
+            color: #64748b !important;
+        }
+
+        body.dark-mode table thead {
+            background: #1e293b !important;
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        body.dark-mode .divide-slate-100>*+* {
+            border-color: #1e293b !important;
+        }
+
+        body.dark-mode .border-slate-200,
+        body.dark-mode .border-slate-100 {
+            border-color: #1e293b !important;
+        }
+
+        body.dark-mode #hamburger-btn {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.dark-mode .log-card {
+            background: #16213a;
+            border-color: #1e293b;
+        }
+
+        body.dark-mode #dark-toggle-btn i[data-lucide="moon"] {
+            display: none;
+        }
+
+        body:not(.dark-mode) #dark-toggle-btn i[data-lucide="sun"] {
+            display: none;
+        }
     </style>
 </head>
 
@@ -212,507 +727,668 @@
     <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <div id="app-root" class="min-h-screen flex w-full">
-    <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
+        <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
 
-    <!-- SIDE NAVIGATION -->
-    <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50">
-        <div class="flex items-center gap-3 mb-10 px-2">
-<div class="mb-10 px-2">
-    <img src="https://prismhealthcare.in/prism1.png" class="h-12 w-auto object-contain" alt="Prism Logo">
-</div>
-        </div>
-        <nav class="flex-1 space-y-1">
-            <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
-            <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
-            <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
-            <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
-            <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
-            <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
-        </nav>
-        <div class="pt-4 mt-4 border-t border-slate-100">
-            <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
-        </div>
-    </aside>
-
-    <main class="flex-1 p-8 lg:p-10 relative overflow-y-auto h-screen">
-        <header class="flex justify-between items-center mb-8">
-            <div class="flex items-center gap-3">
-                <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
-                <div><h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1><p class="text-slate-400 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p></div>
-            </div>
-            <div class="flex items-center gap-2">
-                <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
-                    <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span id="connection-text" class="text-emerald-600">Online</span>
-                </div>
-                <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
-                <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
-            </div>
-        </header>
-
-        <!-- OVERVIEW -->
-        <section id="tab-overview" class="animate-slide">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="glass-card p-6 rounded-[2rem] shadow-sm"><p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Session Count</p><h3 id="stat-total" class="text-2xl font-black">0</h3></div>
-                <div class="glass-card p-6 rounded-[2rem] shadow-sm"><p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Registered Patients</p><h3 id="stat-registered" class="text-2xl font-black">0</h3></div>
-                <div class="glass-card p-6 rounded-[2rem] border-indigo-100 bg-indigo-50/10">
-                    <p class="text-indigo-600 text-[10px] font-bold uppercase mb-1">Total Collection (₹)</p>
-                    <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700">₹0</h3>
+        <!-- SIDE NAVIGATION -->
+        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50">
+            <div class="flex items-center gap-3 mb-10 px-2">
+                <div class="mb-10 px-2">
+                    <img src="https://prismhealthcare.in/prism1.png" class="h-12 w-auto object-contain" alt="Prism Logo">
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                <div class="glass-card p-6 rounded-[2rem] border-blue-100 bg-blue-50/10">
-                    <p class="text-blue-600 text-[10px] font-bold uppercase mb-1">Prism Orthocare (POC)</p>
-                    <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-700">₹0</h3>
-                </div>
-                <div class="glass-card p-6 rounded-[2rem] border-emerald-100 bg-emerald-50/10">
-                    <p class="text-emerald-600 text-[10px] font-bold uppercase mb-1">Homecare (PHC)</p>
-                    <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-700">₹0</h3>
-                </div>
-                <div class="glass-card p-6 rounded-[2rem] border-orange-100 bg-orange-50/10">
-                    <p class="text-orange-600 text-[10px] font-bold uppercase mb-1">Prism Rehab Clinic (PRC)</p>
-                    <h3 id="stat-prc-revenue" class="text-2xl font-black text-orange-700">₹0</h3>
-                </div>
-                <button onclick="openCaseModal()" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all group">
-                    <div class="flex justify-between items-center">
-                        <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Active Cases</p>
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-rose-400 group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <h3 id="stat-active-count" class="text-2xl font-black text-rose-700">0</h3>
-                    <p class="text-[9px] text-rose-500 font-bold mt-1">Under Treatment</p>
-                </button>
+            <nav class="flex-1 space-y-1">
+                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
+                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
+                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
+                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
+                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
+                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
+            </nav>
+            <div class="pt-4 mt-4 border-t border-slate-100">
+                <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
             </div>
+        </aside>
 
-            <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-center gap-3">
-                <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">View Patients:</span>
-                <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare</button>
-                <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
-                <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic</button>
-                <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white transition-all">Show All</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Daily Collection</p>
-                    <h4 id="stat-daily" class="text-3xl font-black text-slate-800">₹0</h4>
-                </div>
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Monthly Collection</p>
-                    <h4 id="stat-monthly" class="text-3xl font-black text-indigo-600">₹0</h4>
-                </div>
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Yearly Collection</p>
-                    <h4 id="stat-yearly" class="text-3xl font-black text-slate-800">₹0</h4>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
-                    <canvas id="revenueChart" height="170"></canvas>
-                </div>
-                <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
-                    <canvas id="dailyChart" height="170"></canvas>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-1">
-                    <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue by Branch</h4>
-                    <canvas id="branchChart" height="220"></canvas>
-                </div>
-                <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-2">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Sessions Due Soon</h4>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase">2 or fewer sessions remaining</span>
-                    </div>
-                    <div id="due-soon-list" class="max-h-64 overflow-y-auto pr-1"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ENROLL -->
-        <section id="tab-enroll" class="section-hidden animate-slide">
-            <div class="w-full glass-card p-10 rounded-[3rem] shadow-2xl">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
-                    <div class="space-y-5">
-                        <h4 class="text-[10px] font-black uppercase text-indigo-500 tracking-widest border-b pb-2">1. Identity</h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <select id="en-branch" onchange="generateClinicalID()" class="p-3 bg-slate-50 rounded-xl border-none font-bold outline-none text-sm"><option value="POC">Orthocare (POC)</option><option value="PHC">Homecare (PHC)</option><option value="PRC">Rehab (PRC)</option></select>
-                            <input type="text" id="en-id" readonly class="p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
-                        </div>
-                        <input type="text" id="en-name" placeholder="Full Patient Name" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="number" id="en-age" placeholder="Age" class="p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                            <select id="en-gender" class="p-3 bg-slate-50 rounded-xl font-bold outline-none"><option>Male</option><option>Female</option></select>
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Registration Date</label>
-                            <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
-                        </div>
-                        <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
-                        <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
-                        <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
-                    </div>
-                    <div class="space-y-5">
-                        <h4 class="text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-2">2. Package Configuration</h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[9px] font-black text-emerald-500 uppercase ml-1">Cost / Session (₹)</label>
-                                <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full mt-1 p-3 bg-emerald-50 rounded-xl font-bold outline-none text-emerald-700">
-                            </div>
-                            <div>
-                                <label class="text-[9px] font-black text-blue-500 uppercase ml-1">Sessions</label>
-                                <input type="number" id="en-sessions" value="0" class="w-full mt-1 p-3 bg-blue-50 rounded-xl font-bold outline-none text-blue-700">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Advance Paid (₹)</label>
-                                <input type="number" id="en-advance" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                            </div>
-                            <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Discount (%)</label>
-                                <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                            </div>
-                        </div>
-                        <div class="p-5 bg-slate-900 rounded-2xl text-white">
-                            <p class="text-[9px] font-bold uppercase text-slate-400 mb-1">Total Package Value</p>
-                            <h5 id="enroll-summary" class="text-xl font-black">₹0</h5>
-                        </div>
-                        <button onclick="saveEnrollment()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl hover:bg-indigo-700 transition-all">Enroll Patient</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- LOG SESSIONS -->
-        <section id="tab-log-session" class="section-hidden animate-slide">
-            <div class="max-w-6xl mx-auto space-y-6">
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 relative">
-                    <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner">
-                    <div id="search-results" class="hidden absolute top-24 left-6 right-6 bg-white border rounded-2xl shadow-2xl max-h-56 overflow-y-auto p-2 z-[100]"></div>
-                </div>
-
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
-                    <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Active Cases — Tap "Log Session" To Add A Visit</h4>
-                    <div id="active-cases-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1"></div>
-                </div>
-
-                <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <main class="flex-1 p-8 lg:p-10 relative overflow-y-auto h-screen">
+            <header class="flex justify-between items-center mb-8">
+                <div class="flex items-center gap-3">
+                    <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
                     <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
-                            <div class="flex gap-2">
-                                <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Add Package</button>
-                                <div id="ws-rem-container">
-                                    <div class="bg-slate-900 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-indigo-100" id="workspace-remaining">REGULAR</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="recent-logs-cards" class="max-h-[500px] overflow-y-auto pr-3"></div>
+                        <h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1>
+                        <p class="text-slate-400 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p>
                     </div>
-                    <div class="glass-card p-10 rounded-[3rem] shadow-2xl sticky top-0 h-fit border-white">
-                        <div class="flex justify-between items-center mb-6 px-2">
-                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-                            <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-500"></h4>
-                            <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
-                        </div>
-                        <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-8"></div>
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div><label class="text-[9px] font-black text-slate-400 uppercase ml-1">Base Rate</label><input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black"></div>
-                            <div><label class="text-[9px] font-black text-indigo-500 uppercase ml-1">Add-on Fee</label><input type="number" id="session-add-fee" value="0" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black outline-none"></div>
-                        </div>
-                        <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm">
-                        <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all">Submit Session(s)</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- DAILY VISIT REGISTRY -->
-        <section id="tab-visit-registry" class="section-hidden animate-slide">
-            <div class="max-w-7xl mx-auto space-y-6">
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Select Visit Date</label>
-                        <input type="date" id="registry-date-input" onchange="renderDailyRegistry()" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Search Patient</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="flex-1 p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
-                            <button onclick="printDailyRegistry()" class="toolbar-btn bg-slate-800 text-white hover:bg-slate-900 flex-shrink-0" title="Print this day's registry"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Print</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end border-indigo-100">
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">From Date</label>
-                        <input type="date" id="registry-range-from" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">To Date</label>
-                        <input type="date" id="registry-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
-                    </div>
-                    <button onclick="downloadRegistryRangeCSV()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 rounded-[2rem] shadow-sm border-indigo-50">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Total Visits</p>
-                        <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600">0</h3>
-                    </div>
-                    <div class="glass-card p-6 rounded-[2rem] shadow-sm border-emerald-50">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Collection for this Date</p>
-                        <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600">₹0</h3>
-                    </div>
-                </div>
-
-                <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
-                            <tr>
-                                <th class="p-5">#</th>
-                                <th class="p-5">Patient Name</th>
-                                <th class="p-5">Clinical ID</th>
-                                <th class="p-5 text-center">Branch</th>
-                                <th class="p-5">Diagnosis/Note</th>
-                                <th class="p-5 text-right">Fee</th>
-                            </tr>
-                        </thead>
-                        <tbody id="registry-table-body" class="divide-y divide-slate-100"></tbody>
-                        <tfoot class="bg-slate-50/50">
-                            <tr>
-                                <td colspan="5" class="p-5 text-right font-black text-slate-500 uppercase text-[10px]">Daily Collection Total:</td>
-                                <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 text-base">₹0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- RECORDS -->
-        <section id="tab-patients" class="section-hidden animate-slide">
-            <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-2"></i>
-                    <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="exportPatientsCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
-                    <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
-                        <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
+                    <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
+                        <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span id="connection-text" class="text-emerald-600">Online</span>
+                    </div>
+                    <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
+                    <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+                </div>
+            </header>
+
+            <!-- OVERVIEW -->
+            <section id="tab-overview" class="animate-slide">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Session Count</p>
+                        <h3 id="stat-total" class="text-2xl font-black">0</h3>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Registered Patients</p>
+                        <h3 id="stat-registered" class="text-2xl font-black">0</h3>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2rem] border-indigo-100 bg-indigo-50/10">
+                        <p class="text-indigo-600 text-[10px] font-bold uppercase mb-1">Total Collection (₹)</p>
+                        <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700">₹0</h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+                    <div class="glass-card p-6 rounded-[2rem] border-blue-100 bg-blue-50/10">
+                        <p class="text-blue-600 text-[10px] font-bold uppercase mb-1">Prism Orthocare (POC)</p>
+                        <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-700">₹0</h3>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2rem] border-emerald-100 bg-emerald-50/10">
+                        <p class="text-emerald-600 text-[10px] font-bold uppercase mb-1">Homecare (PHC)</p>
+                        <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-700">₹0</h3>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2rem] border-orange-100 bg-orange-50/10">
+                        <p class="text-orange-600 text-[10px] font-bold uppercase mb-1">Prism Rehab Clinic (PRC)</p>
+                        <h3 id="stat-prc-revenue" class="text-2xl font-black text-orange-700">₹0</h3>
+                    </div>
+                    <button onclick="openCaseModal()" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all group">
+                        <div class="flex justify-between items-center">
+                            <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Active Cases</p>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-rose-400 group-hover:translate-x-1 transition-all"></i>
+                        </div>
+                        <h3 id="stat-active-count" class="text-2xl font-black text-rose-700">0</h3>
+                        <p class="text-[9px] text-rose-500 font-bold mt-1">Under Treatment</p>
+                    </button>
+                    <button onclick="switchTab('overview', document.querySelector('[onclick*=\'overview\']')); document.getElementById('dues-list').scrollIntoView({behavior:'smooth', block:'center'});" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all">
+                        <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Outstanding Dues (₹)</p>
+                        <h3 id="stat-outstanding" class="text-2xl font-black text-rose-700">₹0</h3>
                     </button>
                 </div>
-            </div>
 
-            <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
-                        <tr>
-                            <th class="p-5">ID</th>
-                            <th class="p-5">Patient Name</th>
-                            <th class="p-5">Demographics</th>
-                            <th class="p-5">Contact</th>
-                            <th class="p-5">Condition</th>
-                            <th class="p-5">Status / Bal.</th>
-                            <th class="p-5 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="patient-table-body" class="divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
-        </section>
+                <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-center gap-3">
+                    <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">View Patients:</span>
+                    <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare</button>
+                    <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
+                    <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic</button>
+                    <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white transition-all">Show All</button>
+                </div>
 
-        <!-- BILLING -->
-        <section id="tab-billing" class="section-hidden animate-slide">
-            <div class="max-w-7xl mx-auto space-y-6">
-<div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 border-indigo-100">
-    <div>
-        <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Treating Doctor</label>
-        <input type="text" id="bill-cfg-doc" value="Dr Ravi Kumar, PT" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
-    </div>
-    <div>
-        <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Reg No.</label>
-        <input type="text" id="bill-cfg-reg" value="" placeholder="Enter Reg. No." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
-    </div>
-    <div>
-        <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Phone</label>
-        <input type="text" id="bill-cfg-phone" value="+91 97080 59081" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
-    </div>
-    <div>
-        <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Website</label>
-        <input type="text" id="bill-cfg-web" value="Prismhealthcare.in" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
-    </div>
-    <div>
-        <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Udayam Registration</label>
-        <input type="text" id="bill-cfg-udyam" value="UDYAM-BR-06-0028454" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
-    </div>
-</div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Daily Collection</p>
+                        <h4 id="stat-daily" class="text-3xl font-black text-slate-800">₹0</h4>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Monthly Collection</p>
+                        <h4 id="stat-monthly" class="text-3xl font-black text-indigo-600">₹0</h4>
+                    </div>
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
+                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Yearly Collection</p>
+                        <h4 id="stat-yearly" class="text-3xl font-black text-slate-800">₹0</h4>
+                    </div>
+                </div>
 
-                <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
-                    <div class="flex items-center gap-4">
-                        <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner" onkeyup="filterBillingTable()">
-                        <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white flex-shrink-0"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="glass-card p-8 rounded-[3rem] shadow-xl">
+                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
+                        <canvas id="revenueChart" height="170"></canvas>
+                    </div>
+                    <div class="glass-card p-8 rounded-[3rem] shadow-xl">
+                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
+                        <canvas id="dailyChart" height="170"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-1">
+                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue by Branch</h4>
+                        <canvas id="branchChart" height="220"></canvas>
+                    </div>
+                    <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-2">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Sessions Due Soon</h4>
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">2 or fewer sessions remaining</span>
+                        </div>
+                        <div id="due-soon-list" class="max-h-64 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[3rem] shadow-xl mt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Outstanding Dues</h4>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">Patients with pending balance</span>
+                    </div>
+                    <div id="dues-list" class="max-h-64 overflow-y-auto pr-1"></div>
+                </div>
+            </section>
+
+            <!-- ENROLL -->
+            <section id="tab-enroll" class="section-hidden animate-slide">
+                <div class="w-full glass-card p-10 rounded-[3rem] shadow-2xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+                        <div class="space-y-5">
+                            <h4 class="text-[10px] font-black uppercase text-indigo-500 tracking-widest border-b pb-2">1. Identity</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <select id="en-branch" onchange="generateClinicalID()" class="p-3 bg-slate-50 rounded-xl border-none font-bold outline-none text-sm">
+                                    <option value="POC">Orthocare (POC)</option>
+                                    <option value="PHC">Homecare (PHC)</option>
+                                    <option value="PRC">Rehab (PRC)</option>
+                                </select>
+                                <input type="text" id="en-id" readonly class="p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
+                            </div>
+                            <input type="text" id="en-name" placeholder="Full Patient Name" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" id="en-age" placeholder="Age" class="p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                                <select id="en-gender" class="p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Registration Date</label>
+                                <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
+                            </div>
+                            <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
+                            <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
+                            <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
+                        </div>
+                        <div class="space-y-5">
+                            <h4 class="text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-2">2. Package Configuration</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[9px] font-black text-emerald-500 uppercase ml-1">Cost / Session (₹)</label>
+                                    <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full mt-1 p-3 bg-emerald-50 rounded-xl font-bold outline-none text-emerald-700">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-black text-blue-500 uppercase ml-1">Sessions</label>
+                                    <input type="number" id="en-sessions" value="0" class="w-full mt-1 p-3 bg-blue-50 rounded-xl font-bold outline-none text-blue-700">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Advance Paid (₹)</label>
+                                    <input type="number" id="en-advance" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Discount (%)</label>
+                                    <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                                </div>
+                            </div>
+                            <div class="p-5 bg-slate-900 rounded-2xl text-white">
+                                <p class="text-[9px] font-bold uppercase text-slate-400 mb-1">Total Package Value</p>
+                                <h5 id="enroll-summary" class="text-xl font-black">₹0</h5>
+                            </div>
+                            <button onclick="saveEnrollment()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl hover:bg-indigo-700 transition-all">Enroll Patient</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOG SESSIONS -->
+            <section id="tab-log-session" class="section-hidden animate-slide">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 relative">
+                        <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner">
+                        <div id="search-results" class="hidden absolute top-24 left-6 right-6 bg-white border rounded-2xl shadow-2xl max-h-56 overflow-y-auto p-2 z-[100]"></div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
+                        <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Active Cases — Tap "Log Session" To Add A Visit</h4>
+                        <div id="active-cases-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
+                                <div class="flex gap-2">
+                                    <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Add Package</button>
+                                    <div id="ws-rem-container">
+                                        <div class="bg-slate-900 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-indigo-100" id="workspace-remaining">REGULAR</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="recent-logs-cards" class="max-h-[500px] overflow-y-auto pr-3"></div>
+                        </div>
+                        <div class="glass-card p-10 rounded-[3rem] shadow-2xl sticky top-0 h-fit border-white">
+                            <div class="flex justify-between items-center mb-6 px-2">
+                                <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                                <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-500"></h4>
+                                <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                            </div>
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-8"></div>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Base Rate</label>
+                                    <input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-black text-indigo-500 uppercase ml-1">Add-on Fee</label>
+                                    <input type="number" id="session-add-fee" value="0" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black outline-none">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Payment Mode</label>
+                                    <select id="session-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Card">Card</option>
+                                        <option value="Pending">Pending / Due</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Amount Paid (₹)</label>
+                                    <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
+                                </div>
+                            </div>
+                            <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm">
+                            <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all">Submit Session(s)</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DAILY VISIT REGISTRY -->
+            <section id="tab-visit-registry" class="section-hidden animate-slide">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Select Visit Date</label>
+                            <input type="date" id="registry-date-input" onchange="renderDailyRegistry()" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Search Patient</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="flex-1 p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
+                                <button onclick="printDailyRegistry()" class="toolbar-btn bg-slate-800 text-white hover:bg-slate-900 flex-shrink-0" title="Print this day's registry"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Print</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end border-indigo-100">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">From Date</label>
+                            <input type="date" id="registry-range-from" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">To Date</label>
+                            <input type="date" id="registry-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                        </div>
+                        <button onclick="downloadRegistryRangeCSV()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="glass-card p-6 rounded-[2rem] shadow-sm border-indigo-50">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Total Visits</p>
+                            <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600">0</h3>
+                        </div>
+                        <div class="glass-card p-6 rounded-[2rem] shadow-sm border-emerald-50">
+                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Collection for this Date</p>
+                            <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600">₹0</h3>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                                <tr>
+                                    <th class="p-5">#</th>
+                                    <th class="p-5">Patient Name</th>
+                                    <th class="p-5">Clinical ID</th>
+                                    <th class="p-5 text-center">Branch</th>
+                                    <th class="p-5">Diagnosis/Note</th>
+                                    <th class="p-5 text-center">Payment</th>
+                                    <th class="p-5 text-right">Fee</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registry-table-body" class="divide-y divide-slate-100"></tbody>
+                            <tfoot class="bg-slate-50/50">
+                                <tr>
+                                    <td colspan="6" class="p-5 text-right font-black text-slate-500 uppercase text-[10px]">Daily Collection Total:</td>
+                                    <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 text-base">₹0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RECORDS -->
+            <section id="tab-patients" class="section-hidden animate-slide">
+                <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-2"></i>
+                        <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportPatientsCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                        <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
+                            <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
+                        </button>
                     </div>
                 </div>
 
                 <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
-                            <tr><th class="p-5">Patient Registration</th><th class="p-5">ID</th><th class="p-5">Sessions</th><th class="p-5">Total Amount</th><th class="p-5 text-center">Action</th></tr>
+                            <tr>
+                                <th class="p-5">ID</th>
+                                <th class="p-5">Patient Name</th>
+                                <th class="p-5">Demographics</th>
+                                <th class="p-5">Contact</th>
+                                <th class="p-5">Condition</th>
+                                <th class="p-5">Status / Bal.</th>
+                                <th class="p-5 text-center">Action</th>
+                            </tr>
                         </thead>
-                        <tbody id="billing-table-body" class="divide-y divide-slate-100"></tbody>
+                        <tbody id="patient-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- BILLING -->
+            <section id="tab-billing" class="section-hidden animate-slide">
+                <div class="max-w-7xl mx-auto space-y-6">
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 border-indigo-100">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Treating Doctor</label>
+                            <input type="text" id="bill-cfg-doc" value="Dr Ravi Kumar, PT" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Reg No.</label>
+                            <input type="text" id="bill-cfg-reg" value="" placeholder="Enter Reg. No." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Phone</label>
+                            <input type="text" id="bill-cfg-phone" value="+91 97080 59081" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Website</label>
+                            <input type="text" id="bill-cfg-web" value="Prismhealthcare.in" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-indigo-500 block mb-1">Udayam Registration</label>
+                            <input type="text" id="bill-cfg-udyam" value="UDYAM-BR-06-0028454" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none text-xs">
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
+                        <div class="flex items-center gap-4">
+                            <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner" onkeyup="filterBillingTable()">
+                            <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white flex-shrink-0"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                                <tr>
+                                    <th class="p-5">Patient Registration</th>
+                                    <th class="p-5">ID</th>
+                                    <th class="p-5">Sessions</th>
+                                    <th class="p-5">Total Amount</th>
+                                    <th class="p-5 text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billing-table-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ADVANCE MODAL -->
+        <div id="advance-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-xl w-full shadow-2xl flex flex-col max-h-[80vh]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black">Active Advance Packages</h3>
+                    <button onclick="closeAdvanceModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="overflow-y-auto pr-2">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
+                            <tr>
+                                <th class="p-4">Patient Name</th>
+                                <th class="p-4 text-center">Sessions Left</th>
+                                <th class="p-4 text-right">Advance Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody id="advance-list-body" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <!-- ADVANCE MODAL -->
-    <div id="advance-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-        <div class="bg-white rounded-[2.5rem] p-8 max-w-xl w-full shadow-2xl flex flex-col max-h-[80vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black">Active Advance Packages</h3>
-                <button onclick="closeAdvanceModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="overflow-y-auto pr-2">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
-                        <tr><th class="p-4">Patient Name</th><th class="p-4 text-center">Sessions Left</th><th class="p-4 text-right">Advance Paid</th></tr>
-                    </thead>
-                    <tbody id="advance-list-body" class="divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
         </div>
-    </div>
 
-    <!-- CASE MANAGEMENT MODAL -->
-    <div id="case-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-        <div class="bg-white rounded-[2.5rem] p-8 max-w-2xl w-full shadow-2xl flex flex-col max-h-[80vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black">Active Cases Under Treatment</h3>
-                <button onclick="closeCaseModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="overflow-y-auto pr-2">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
-                        <tr><th class="p-4">Patient</th><th class="p-4">ID</th><th class="p-4">Diagnosis</th><th class="p-4 text-center">Sessions</th><th class="p-4 text-center">Action</th></tr>
-                    </thead>
-                    <tbody id="case-list-body" class="divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- MID-PACKAGE MODAL -->
-    <div id="pkg-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-        <div class="bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl">
-            <h3 class="text-xl font-black mb-1">Add New Package</h3>
-            <p id="pkg-modal-name" class="text-xs text-indigo-600 font-bold mb-6 uppercase tracking-wider"></p>
-            <div class="space-y-4">
-                <input type="number" id="mi-sessions" placeholder="Number of Sessions" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
-                <input type="number" id="mi-rate" placeholder="Rate per Session (₹)" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
-                <input type="number" id="mi-advance" placeholder="Advance Paid (₹)" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
-                <div class="flex gap-3 pt-4">
-                    <button onclick="closeMidPackage()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
-                    <button onclick="saveMidPackage()" class="flex-[2] py-4 bg-slate-900 text-white rounded-2xl font-black">Save Package</button>
+        <!-- CASE MANAGEMENT MODAL -->
+        <div id="case-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-2xl w-full shadow-2xl flex flex-col max-h-[80vh]">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black">Active Cases Under Treatment</h3>
+                    <button onclick="closeCaseModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="overflow-y-auto pr-2">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
+                            <tr>
+                                <th class="p-4">Patient</th>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Diagnosis</th>
+                                <th class="p-4 text-center">Sessions</th>
+                                <th class="p-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="case-list-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- PATIENT DETAIL MODAL -->
-    <div id="patient-detail-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 id="pd-name" class="text-xl font-black uppercase truncate pr-4"></h3>
-                <button onclick="closePatientDetailModal()" class="p-2 hover:bg-slate-100 rounded-full flex-shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="space-y-4 max-h-[60vh] overflow-y-auto">
-                <div class="p-5 bg-indigo-50 rounded-2xl flex justify-between items-center">
-                    <span class="text-[10px] font-black uppercase text-indigo-500">Sessions Attended</span>
-                    <span id="pd-sessions" class="text-xl font-black text-indigo-700"></span>
-                </div>
-                <div class="p-5 bg-emerald-50 rounded-2xl flex justify-between items-center">
-                    <span class="text-[10px] font-black uppercase text-emerald-600">Total Payment</span>
-                    <span id="pd-payment" class="text-xl font-black text-emerald-700"></span>
-                </div>
-                <div class="mt-4">
-                    <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Session Dates</h5>
-                    <div id="pd-dates-list" class="space-y-1"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- EDIT PATIENT MODAL (NEW) -->
-    <div id="edit-patient-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-        <div class="bg-white rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black">Edit Patient Details</h3>
-                <button onclick="closeEditPatientModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <input type="hidden" id="ep-original-name">
-            <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
-                <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical ID</label>
-                    <input type="text" id="ep-id" readonly class="w-full mt-1 p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
-                </div>
-                <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Full Patient Name</label>
-                    <input type="text" id="ep-name" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Age</label>
-                        <input type="number" id="ep-age" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Gender</label>
-                        <select id="ep-gender" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none"><option>Male</option><option>Female</option></select>
+        <!-- MID-PACKAGE MODAL -->
+        <div id="pkg-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-10 max-w-md w-full shadow-2xl">
+                <h3 class="text-xl font-black mb-1">Add New Package</h3>
+                <p id="pkg-modal-name" class="text-xs text-indigo-600 font-bold mb-6 uppercase tracking-wider"></p>
+                <div class="space-y-4">
+                    <input type="number" id="mi-sessions" placeholder="Number of Sessions" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
+                    <input type="number" id="mi-rate" placeholder="Rate per Session (₹)" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
+                    <input type="number" id="mi-advance" placeholder="Advance Paid (₹)" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none border">
+                    <div class="flex gap-3 pt-4">
+                        <button onclick="closeMidPackage()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                        <button onclick="saveMidPackage()" class="flex-[2] py-4 bg-slate-900 text-white rounded-2xl font-black">Save Package</button>
                     </div>
                 </div>
-                <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Phone / WhatsApp Number</label>
-                    <input type="tel" id="ep-phone" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                </div>
-                <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical Diagnosis / Condition</label>
-                    <input type="text" id="ep-condition" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                </div>
-                <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Address</label>
-                    <input type="text" id="ep-address" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                </div>
-            </div>
-            <div class="flex gap-3 pt-6">
-                <button onclick="closeEditPatientModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
-                <button onclick="saveEditPatient()" class="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all">Save Changes</button>
             </div>
         </div>
-    </div>
 
-    <!-- BILL MODAL -->
-    <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[500] flex flex-col items-center justify-start p-6 overflow-y-auto">
-        <div class="flex flex-col items-center gap-2 mb-6 no-print">
-            <div class="flex gap-4">
-                <button id="edit-bill-btn" onclick="toggleBillEditMode()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill</button>
-                <button onclick="downloadBillPDF()" class="bg-slate-700 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Download PDF</button>
-                <button onclick="sendBillToPatient()" class="bg-[#25D366] text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i> Send Bill to Patient</button>
-                <button onclick="closeBillModal()" class="bg-white text-slate-900 px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl">Close Preview</button>
+        <!-- PATIENT DETAIL MODAL -->
+        <div id="patient-detail-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="pd-name" class="text-xl font-black uppercase truncate pr-4"></h3>
+                    <button onclick="closePatientDetailModal()" class="p-2 hover:bg-slate-100 rounded-full flex-shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="space-y-4 max-h-[60vh] overflow-y-auto">
+                    <div class="p-5 bg-indigo-50 rounded-2xl flex justify-between items-center">
+                        <span class="text-[10px] font-black uppercase text-indigo-500">Sessions Attended</span>
+                        <span id="pd-sessions" class="text-xl font-black text-indigo-700"></span>
+                    </div>
+                    <div class="p-5 bg-emerald-50 rounded-2xl flex justify-between items-center">
+                        <span class="text-[10px] font-black uppercase text-emerald-600">Total Payment</span>
+                        <span id="pd-payment" class="text-xl font-black text-emerald-700"></span>
+                    </div>
+                    <div class="mt-4">
+                        <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Session Dates</h5>
+                        <div id="pd-dates-list" class="space-y-1"></div>
+                    </div>
+                </div>
             </div>
-            <p id="edit-hint" class="hidden text-white/80 text-[10px] font-bold uppercase tracking-wider">Dashed fields are editable — click any value to change it, then print</p>
         </div>
-        <div id="bill-content-pages" class="w-full flex flex-col items-center"></div>
-    </div>
 
-    <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
+        <!-- EDIT PATIENT MODAL (NEW) -->
+        <div id="edit-patient-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black">Edit Patient Details</h3>
+                    <button onclick="closeEditPatientModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <input type="hidden" id="ep-original-name">
+                <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical ID</label>
+                        <input type="text" id="ep-id" readonly class="w-full mt-1 p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Full Patient Name</label>
+                        <input type="text" id="ep-name" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Age</label>
+                            <input type="number" id="ep-age" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Gender</label>
+                            <select id="ep-gender" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Phone / WhatsApp Number</label>
+                        <input type="tel" id="ep-phone" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical Diagnosis / Condition</label>
+                        <input type="text" id="ep-condition" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Address</label>
+                        <input type="text" id="ep-address" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-6">
+                    <button onclick="closeEditPatientModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                    <button onclick="saveEditPatient()" class="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BILL MODAL -->
+        <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[500] flex flex-col items-center justify-start p-6 overflow-y-auto">
+            <div class="flex flex-col items-center gap-2 mb-6 no-print">
+                <div class="flex gap-4">
+                    <button id="edit-bill-btn" onclick="toggleBillEditMode()" class="bg-indigo-600 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill</button>
+                    <button onclick="downloadBillPDF()" class="bg-slate-700 text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Download PDF</button>
+                    <button onclick="sendBillToPatient()" class="bg-[#25D366] text-white px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i> Send Bill to Patient</button>
+                    <button onclick="closeBillModal()" class="bg-white text-slate-900 px-8 py-3 rounded-2xl font-black uppercase text-xs shadow-xl">Close Preview</button>
+                </div>
+                <p id="edit-hint" class="hidden text-white/80 text-[10px] font-bold uppercase tracking-wider">Dashed fields are editable — click any value to change it, then print</p>
+            </div>
+            <div id="bill-content-pages" class="w-full flex flex-col items-center"></div>
+        </div>
+
+        <!-- PROGRESS NOTES MODAL -->
+        <div id="progress-notes-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-2xl w-full shadow-2xl flex flex-col max-h-[85vh]">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-xl font-black">SOAP Progress Notes</h3>
+                        <p id="pn-patient-name" class="text-xs text-indigo-600 font-bold uppercase tracking-wider mt-1"></p>
+                    </div>
+                    <button onclick="closeProgressNotesModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <div class="overflow-y-auto pr-2 flex-1 mb-6 space-y-4">
+                    <div id="progress-notes-timeline" class="space-y-4"></div>
+                </div>
+
+                <div class="border-t pt-6 space-y-4">
+                    <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Add New SOAP Entry</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Subjective (S)</label>
+                            <input type="text" id="pn-subjective" placeholder="Patient complaints, pain level..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Objective (O)</label>
+                            <input type="text" id="pn-objective" placeholder="ROM, strength, functional tests..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Assessment (A)</label>
+                        <input type="text" id="pn-assessment" placeholder="Clinical impression, progress toward goals..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Plan (P)</label>
+                        <input type="text" id="pn-plan" placeholder="Next steps, exercises, follow-up..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="closeProgressNotesModal()" class="flex-1 py-3 font-bold text-slate-400">Close</button>
+                        <button onclick="saveProgressNote()" class="flex-[2] py-3 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all">Save SOAP Entry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOME EXERCISE PLAN MODAL -->
+        <div id="exercise-plan-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-3xl w-full shadow-2xl flex flex-col max-h-[85vh]">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-xl font-black">Home Exercise Plan</h3>
+                        <p id="ex-patient-display-name" class="text-xs text-emerald-600 font-bold uppercase tracking-wider mt-1"></p>
+                    </div>
+                    <button onclick="closeExercisePlanModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <div class="overflow-y-auto pr-2 flex-1 mb-6">
+                    <div id="exercise-plan-list" class="space-y-3"></div>
+                </div>
+
+                <div class="border-t pt-6 space-y-4">
+                    <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Add Exercise</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Exercise Name</label>
+                            <input type="text" id="ex-input-name" placeholder="e.g., Quadriceps Strengthening" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Sets × Reps</label>
+                            <input type="text" id="ex-input-sets" placeholder="e.g., 3 × 10" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Instructions</label>
+                        <textarea id="ex-input-instructions" placeholder="Step-by-step instructions..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm" rows="2"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Video Link (Optional)</label>
+                            <input type="text" id="ex-input-video" placeholder="https://youtube.com/..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Frequency</label>
+                            <input type="text" id="ex-input-freq" placeholder="e.g., 2× daily" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="closeExercisePlanModal()" class="flex-1 py-3 font-bold text-slate-400">Close</button>
+                        <button onclick="saveExercise()" class="flex-[2] py-3 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all">Add Exercise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
 
     </div><!-- /#app-root -->
 
@@ -727,7 +1403,9 @@
             const root = document.getElementById('app-root');
             root.style.display = 'flex';
             root.classList.remove('hidden');
-            try { sessionStorage.setItem('prism_unlocked', '1'); } catch (e) {}
+            try {
+                sessionStorage.setItem('prism_unlocked', '1');
+            } catch (e) {}
             const todayStr = getLocalISOString();
             document.getElementById('en-reg-date').value = todayStr;
             document.getElementById('registry-date-input').value = todayStr;
@@ -754,7 +1432,9 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             let alreadyUnlocked = false;
-            try { alreadyUnlocked = sessionStorage.getItem('prism_unlocked') === '1'; } catch (e) {}
+            try {
+                alreadyUnlocked = sessionStorage.getItem('prism_unlocked') === '1';
+            } catch (e) {}
             if (alreadyUnlocked) {
                 unlockApp();
             } else {
@@ -767,6 +1447,7 @@
             document.getElementById('sidebar').classList.add('sidebar-open');
             document.getElementById('sidebar-overlay').classList.add('active');
         }
+
         function closeSidebar() {
             document.getElementById('sidebar').classList.remove('sidebar-open');
             document.getElementById('sidebar-overlay').classList.remove('active');
@@ -791,15 +1472,25 @@
         const PRISM_LOGO_SRC = "https://prismhealthcare.in/prism1.png";
 
         const ROWS_PER_LEDGER_PAGE = 14;
+
         function chunkArray(arr, size) {
             const out = [];
             for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
             return out;
         }
 
-        let globalData = [], patientLookup = {}, selectedDates = [], selectedPatientName = "", currentViewDate = new Date(), currentBranchFilter = 'ALL';
-        let myChart = null, dailyChartInstance = null, searchDebounce = null, billCounter = {};
-        let currentBillContext = null, recordSortLatest = true;
+        let globalData = [],
+            patientLookup = {},
+            selectedDates = [],
+            selectedPatientName = "",
+            currentViewDate = new Date(),
+            currentBranchFilter = 'ALL';
+        let myChart = null,
+            dailyChartInstance = null,
+            searchDebounce = null,
+            billCounter = {};
+        let currentBillContext = null,
+            recordSortLatest = true;
 
         const statEl = {
             total: document.getElementById('stat-total'),
@@ -816,8 +1507,18 @@
 
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
-            const colors = { success: 'bg-emerald-600', error: 'bg-rose-600', warning: 'bg-amber-500', info: 'bg-slate-900' };
-            const icons = { success: 'check-circle', error: 'alert-circle', warning: 'alert-triangle', info: 'info' };
+            const colors = {
+                success: 'bg-emerald-600',
+                error: 'bg-rose-600',
+                warning: 'bg-amber-500',
+                info: 'bg-slate-900'
+            };
+            const icons = {
+                success: 'check-circle',
+                error: 'alert-circle',
+                warning: 'alert-triangle',
+                info: 'info'
+            };
             const toast = document.createElement('div');
             toast.className = `pointer-events-auto flex items-center gap-2 ${colors[type]} text-white px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold animate-slide max-w-xs`;
             toast.innerHTML = `<i data-lucide="${icons[type]}" class="w-4 h-4 flex-shrink-0"></i><span>${message}</span>`;
@@ -866,7 +1567,10 @@
 
         async function syncToBackend(payload) {
             try {
-                const res = await fetchWithRetry(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }, 1);
+                const res = await fetchWithRetry(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                }, 1);
                 const json = await res.json();
                 if (json.status === 'error') throw new Error(json.message);
                 return json;
@@ -880,37 +1584,56 @@
             const syncBtn = document.getElementById('sync-indicator');
             if (syncBtn) syncBtn.classList.add('animate-spin');
 
-            if (!isManual) {
-                try {
-                    const cached = localStorage.getItem('prism_cache');
-                    if (cached) {
-                        globalData = JSON.parse(cached);
-                        processData();
-                    }
-                } catch (e) {}
-            }
-
             try {
-                const res = await fetch(SCRIPT_URL, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ action: "fetchAdminData" }),
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: "fetchAdminData"
+                    }),
                     priority: 'high'
                 });
-                const newData = await res.json();
-                
-                const cachedStr = localStorage.getItem('prism_cache');
-                const newDataStr = JSON.stringify(newData);
+                const result = await res.json();
 
-                if (cachedStr !== newDataStr) {
-                    globalData = newData;
-                    localStorage.setItem('prism_cache', newDataStr);
-                    processData();
-                    if (isManual) showToast('Data refreshed', 'success');
-                } else {
-                    if (isManual) showToast('Data already current', 'info');
+                // Main Records
+                globalData = result.adminData;
+
+                // Load SOAP Notes
+                progressNotes = {};
+                if (result.soapNotes) {
+                    result.soapNotes.forEach(row => {
+                        const name = row[0];
+                        if (!progressNotes[name]) progressNotes[name] = [];
+                        progressNotes[name].push({
+                            date: row[1],
+                            subjective: row[2],
+                            objective: row[3],
+                            assessment: row[4],
+                            plan: row[5]
+                        });
+                    });
                 }
+
+                // Load Exercises
+                exercisePlans = {};
+                if (result.exercisePlans) {
+                    result.exercisePlans.forEach(row => {
+                        const name = row[0];
+                        if (!exercisePlans[name]) exercisePlans[name] = [];
+                        exercisePlans[name].push({
+                            name: row[1],
+                            setsReps: row[2],
+                            instructions: row[3],
+                            videoLink: row[4],
+                            frequency: row[5]
+                        });
+                    });
+                }
+
+                processData();
+                if (isManual) showToast('Data refreshed', 'success');
             } catch (e) {
                 if (isManual) showToast('Connection failed', 'error');
+                console.error(e);
             }
             if (syncBtn) syncBtn.classList.remove('animate-spin');
         }
@@ -946,20 +1669,45 @@
         function processData() {
             patientLookup = {};
             billCounter = {};
-            let totalRawCol = 0, sessionCount = 0;
-            let pocRevenue = 0, phcRevenue = 0, prcRevenue = 0;
-            let dailyCol = 0, monthlyCol = 0, yearlyCol = 0;
-            let chartData = {}, dailyMap = {};
+            let totalRawCol = 0,
+                sessionCount = 0;
+            let pocRevenue = 0,
+                phcRevenue = 0,
+                prcRevenue = 0;
+            let dailyCol = 0,
+                monthlyCol = 0,
+                yearlyCol = 0;
+            let chartData = {},
+                dailyMap = {};
             const today = getLocalISOString();
             const currMonth = today.substring(0, 7);
             const currYear = today.substring(0, 4);
 
             globalData.forEach(r => {
-                const id = String(r[1] || ''), name = r[2], fee = toNum(r[9]), type = String(r[7] || '').trim().toLowerCase(), dateStr = r[8];
+                const id = String(r[1] || ''),
+                    name = r[2],
+                    fee = toNum(r[9]),
+                    type = String(r[7] || '').trim().toLowerCase(),
+                    dateStr = r[8];
                 if (!name) return;
-                
+
                 if (!patientLookup[name]) {
-                    patientLookup[name] = { id: id, phone: r[3], diag: r[6], logs: [], baseRate: 0, purchased: 0, advance: 0, closed: false, closedDate: null, age: '', gender: '', address: '', enrollTime: new Date(r[0] || 0).getTime() };
+                    patientLookup[name] = {
+                        id: id,
+                        phone: r[3],
+                        diag: r[6],
+                        logs: [],
+                        baseRate: 0,
+                        purchased: 0,
+                        advance: 0,
+                        closed: false,
+                        closedDate: null,
+                        age: '',
+                        gender: '',
+                        address: '',
+                        enrollTime: new Date(r[0] || 0).getTime(),
+                        outstandingDue: 0
+                    };
                     billCounter[name] = 0;
                 }
 
@@ -981,11 +1729,11 @@
                 } else if (type === "bill issued") {
                     billCounter[name] = (billCounter[name] || 0) + 1;
                 }
-                
+
                 if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
                     totalRawCol += fee;
                     sessionCount++;
-                    
+
                     if (id.startsWith('POC')) pocRevenue += fee;
                     else if (id.startsWith('PHC')) phcRevenue += fee;
                     else if (id.startsWith('PRC')) prcRevenue += fee;
@@ -997,9 +1745,23 @@
                     const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
                     chartData[mKey] = (chartData[mKey] || 0) + fee;
                     if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
-                    
+
                     p.logs.push(r);
                 }
+            });
+
+            // ---- OUTSTANDING DUES CALCULATION ----
+            let totalOutstanding = 0;
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                let due = 0;
+                p.logs.forEach(l => {
+                    const fee = toNum(l[9]);
+                    const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : fee;
+                    due += (fee - paid);
+                });
+                p.outstandingDue = due;
+                if (due > 0) totalOutstanding += due;
             });
 
             let activeCount = 0;
@@ -1043,20 +1805,25 @@
                 const type = String(r[7] || '').toLowerCase();
                 const rDate = r[8];
                 const fee = toNum(r[9]);
-                return rDate === dateVal && 
-                       fee > 0 && 
-                       type !== "case closed" && 
-                       type !== "case restarted" && 
-                       type !== "bill issued";
+                return rDate === dateVal &&
+                    fee > 0 &&
+                    type !== "case closed" &&
+                    type !== "case restarted" &&
+                    type !== "bill issued";
             });
 
             if (dayRecords.length === 0) {
-                html = `<tr><td colspan="6" class="p-10 text-center text-slate-400 italic">No clinical visits recorded for this date.</td></tr>`;
+                html = `<tr><td colspan="7" class="p-10 text-center text-slate-400 italic">No clinical visits recorded for this date.</td></tr>`;
             } else {
                 dayRecords.forEach((r, idx) => {
-                    const cid = r[1], name = r[2], diag = r[6], fee = toNum(r[9]);
+                    const cid = r[1],
+                        name = r[2],
+                        diag = r[6],
+                        fee = toNum(r[9]);
+                    const paymentMode = r[15] || 'Cash';
                     const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
-                    
+                    const modeBadgeColor = paymentMode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
+
                     visitCount++;
                     collectionSum += fee;
 
@@ -1066,6 +1833,7 @@
                         <td class="p-5 font-bold text-slate-500">${cid}</td>
                         <td class="p-5 text-center"><span class="bg-slate-100 text-[10px] font-black uppercase px-3 py-1 rounded-lg">${branch}</span></td>
                         <td class="p-5 text-slate-500 italic truncate max-w-[200px]">${diag || '-'}</td>
+                        <td class="p-5 text-center"><span class="${modeBadgeColor} text-[10px] font-black uppercase px-3 py-1 rounded-lg">${paymentMode}</span></td>
                         <td class="p-5 text-right font-black text-slate-800">₹${fee.toLocaleString()}</td>
                     </tr>`;
                 });
@@ -1090,7 +1858,8 @@
             const tbody = document.getElementById('advance-list-body');
             tbody.innerHTML = "";
             Object.keys(patientLookup).forEach(name => {
-                const p = patientLookup[name], rem = p.purchased - p.logs.length;
+                const p = patientLookup[name],
+                    rem = p.purchased - p.logs.length;
                 if (p.advance > 0 && rem > 0 && !p.closed) {
                     tbody.innerHTML += `<tr class="hover:bg-slate-50">
                         <td class="p-4 font-bold uppercase">${name}</td>
@@ -1101,7 +1870,10 @@
             });
             document.getElementById('advance-modal').classList.remove('hidden');
         }
-        function closeAdvanceModal() { document.getElementById('advance-modal').classList.add('hidden'); }
+
+        function closeAdvanceModal() {
+            document.getElementById('advance-modal').classList.add('hidden');
+        }
 
         function openCaseModal() {
             const tbody = document.getElementById('case-list-body');
@@ -1122,7 +1894,10 @@
             document.getElementById('case-modal').classList.remove('hidden');
             lucide.createIcons();
         }
-        function closeCaseModal() { document.getElementById('case-modal').classList.add('hidden'); }
+
+        function closeCaseModal() {
+            document.getElementById('case-modal').classList.add('hidden');
+        }
 
         async function closePatientCase(name, event) {
             const btn = event.target.closest('button');
@@ -1135,8 +1910,16 @@
                 showToast(`${name}'s case closed`, 'success');
                 if (!document.getElementById('case-modal').classList.contains('hidden')) openCaseModal();
                 syncToBackend({
-                    action: "logAppointment", id: p.id, name: name, phone: p.phone,
-                    condition: p.diag, fee: 0, purchased: 0, advance: 0, type: "Case Closed", date: dateStr
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: p.diag,
+                    fee: 0,
+                    purchased: 0,
+                    advance: 0,
+                    type: "Case Closed",
+                    date: dateStr
                 }).catch(() => {});
             });
         }
@@ -1153,8 +1936,16 @@
                 processData();
                 showToast(`${name}'s case restarted`, 'success');
                 syncToBackend({
-                    action: "logAppointment", id: p.id, name: name, phone: p.phone,
-                    condition: p.diag, fee: 0, purchased: 0, advance: 0, type: "Case Restarted", date: dateStr
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: p.diag,
+                    fee: 0,
+                    purchased: 0,
+                    advance: 0,
+                    type: "Case Restarted",
+                    date: dateStr
                 }).catch(() => {});
             });
         }
@@ -1182,33 +1973,67 @@
         }
 
         async function submitSessionsFast() {
-            if (!selectedPatientName || selectedDates.length === 0) { showToast('Select at least one date', 'warning'); return; }
-            const p = patientLookup[selectedPatientName], btn = document.getElementById('submit-btn');
+            if (!selectedPatientName || selectedDates.length === 0) {
+                showToast('Select at least one date', 'warning');
+                return;
+            }
+            const p = patientLookup[selectedPatientName],
+                btn = document.getElementById('submit-btn');
             const totalFee = p.baseRate + (Number(document.getElementById('session-add-fee').value) || 0);
             const note = document.getElementById('session-note').value || p.diag;
+            const paymentMode = document.getElementById('session-payment-mode').value;
+            const amountPaidInput = document.getElementById('session-amount-paid').value;
+
+            let amountPaid;
+            if (amountPaidInput !== "") {
+                amountPaid = Number(amountPaidInput);
+            } else if (paymentMode === "Pending") {
+                amountPaid = 0;
+            } else {
+                amountPaid = totalFee;
+            }
+
             const datesToSubmit = [...selectedDates];
+
             const newRows = datesToSubmit.map(dateString => ([
-                new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", note, "Rehab", dateString, totalFee, 0, 0, 0, ""
+                new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", note, "Rehab", dateString, totalFee, 0, 0, 0, "", "", paymentMode, amountPaid
             ]));
             globalData.push(...newRows);
             processData();
             selectedDates = [];
             document.getElementById('session-note').value = "";
+            document.getElementById('session-amount-paid').value = "";
             selectPatient(selectedPatientName);
             showToast(`${datesToSubmit.length} session(s) logged`, 'success');
             btn.innerText = "Saved ✓";
-            setTimeout(() => { btn.innerText = "Submit Session(s)"; }, 1200);
+            setTimeout(() => {
+                btn.innerText = "Submit Session(s)";
+            }, 1200);
             syncToBackend({
-                action: "logAppointment", name: selectedPatientName, phone: p.phone, id: p.id,
-                condition: note, type: "Rehab", dates: datesToSubmit, fee: totalFee
+                action: "logAppointment",
+                name: selectedPatientName,
+                phone: p.phone,
+                id: p.id,
+                condition: note,
+                type: "Rehab",
+                dates: datesToSubmit,
+                fee: totalFee,
+                paymentMode: paymentMode,
+                amountPaid: amountPaid
             }).catch(() => {});
         }
 
         async function saveEnrollment() {
             const name = document.getElementById('en-name').value.trim();
-            if (!name) { showToast("Enter the patient's name first", 'warning'); return; }
+            if (!name) {
+                showToast("Enter the patient's name first", 'warning');
+                return;
+            }
             const rate = Number(document.getElementById('en-rate').value) || 0;
-            if (!rate) { showToast("Enter cost per session", 'warning'); return; }
+            if (!rate) {
+                showToast("Enter cost per session", 'warning');
+                return;
+            }
             const dateStr = document.getElementById('en-reg-date').value || getLocalISOString();
             const address = document.getElementById('en-address').value.trim();
             const row = [
@@ -1233,9 +2058,20 @@
             resetEnrollForm();
             showToast(`${name} enrolled successfully`, 'success');
             syncToBackend({
-                action: "logAppointment", id: row[1], name: row[2], age: row[4], gender: row[5],
-                phone: row[3], condition: row[6], fee: row[9], purchased: row[10],
-                advance: row[11], discount: row[12], address: row[14], type: "Enrollment", date: row[8]
+                action: "logAppointment",
+                id: row[1],
+                name: row[2],
+                age: row[4],
+                gender: row[5],
+                phone: row[3],
+                condition: row[6],
+                fee: row[9],
+                purchased: row[10],
+                advance: row[11],
+                discount: row[12],
+                address: row[14],
+                type: "Enrollment",
+                date: row[8]
             }).catch(() => {});
         }
 
@@ -1262,14 +2098,20 @@
             document.getElementById('mi-rate').value = patientLookup[selectedPatientName].baseRate;
             document.getElementById('pkg-modal').classList.remove('hidden');
         }
-        function closeMidPackage() { document.getElementById('pkg-modal').classList.add('hidden'); }
+
+        function closeMidPackage() {
+            document.getElementById('pkg-modal').classList.add('hidden');
+        }
 
         async function saveMidPackage() {
             const p = patientLookup[selectedPatientName];
             const sessions = Number(document.getElementById('mi-sessions').value) || 0;
             const rate = Number(document.getElementById('mi-rate').value) || 0;
             const advance = Number(document.getElementById('mi-advance').value) || 0;
-            if (!sessions || !rate) { showToast('Enter sessions and rate', 'warning'); return; }
+            if (!sessions || !rate) {
+                showToast('Enter sessions and rate', 'warning');
+                return;
+            }
             const dateStr = getLocalISOString();
             const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Enrollment", dateStr, rate, sessions, advance, 0, ""];
             globalData.push(row);
@@ -1278,8 +2120,17 @@
             selectPatient(selectedPatientName);
             showToast('Package added', 'success');
             syncToBackend({
-                action: "logAppointment", id: p.id, name: selectedPatientName, phone: p.phone, condition: p.diag,
-                fee: rate, purchased: sessions, advance: advance, discount: 0, type: "Enrollment", date: dateStr
+                action: "logAppointment",
+                id: p.id,
+                name: selectedPatientName,
+                phone: p.phone,
+                condition: p.diag,
+                fee: rate,
+                purchased: sessions,
+                advance: advance,
+                discount: 0,
+                type: "Enrollment",
+                date: dateStr
             }).catch(() => {});
         }
 
@@ -1290,8 +2141,24 @@
             if (myChart) myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'line',
-                data: { labels: labels, datasets: [{ label: 'Income', data: values, borderColor: '#6366f1', backgroundColor: 'rgba(99, 102, 241, 0.1)', fill: true, tension: 0.4 }] },
-                options: { plugins: { legend: { display: false } } }
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Income',
+                        data: values,
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
             });
         }
 
@@ -1300,7 +2167,7 @@
             const days = [];
             const todayD = new Date();
             const localToday = getLocalISOString();
-            
+
             for (let i = 13; i >= 0; i--) {
                 const d = new Date(todayD);
                 d.setDate(d.getDate() - i);
@@ -1308,15 +2175,46 @@
             }
             const labels = days.map(ds => {
                 const d = new Date(ds + 'T00:00:00');
-                return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+                return d.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short'
+                });
             });
             const values = days.map(ds => dailyMap[ds] || 0);
             const todayStr = getLocalISOString();
             if (dailyChartInstance) dailyChartInstance.destroy();
             dailyChartInstance = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: labels, datasets: [{ label: 'Collection', data: values, backgroundColor: days.map(ds => ds === todayStr ? '#4f46e5' : 'rgba(99,102,241,0.35)'), borderRadius: 8, maxBarThickness: 26 }] },
-                options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Collection',
+                        data: values,
+                        backgroundColor: days.map(ds => ds === todayStr ? '#4f46e5' : 'rgba(99,102,241,0.35)'),
+                        borderRadius: 8,
+                        maxBarThickness: 26
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#f1f5f9'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
             });
         }
 
@@ -1325,7 +2223,7 @@
             document.getElementById(`tab-${id}`).classList.remove('section-hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active'));
             btn.classList.add('sidebar-active');
-            
+
             const titles = {
                 'overview': 'DASHBOARD',
                 'enroll': 'ENROLL PATIENT',
@@ -1335,7 +2233,7 @@
                 'billing': 'BILLING'
             };
             document.getElementById('tab-title').innerText = titles[id] || 'PRISM';
-            
+
             if (id === 'log-session') renderActiveCasesForLog();
             if (id === 'visit-registry') renderDailyRegistry();
             closeSidebar();
@@ -1344,8 +2242,12 @@
         function searchPatient() {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(() => {
-                const val = document.getElementById('patient-search-input').value.toUpperCase(), res = document.getElementById('search-results');
-                if (!val) { res.classList.add('hidden'); return; }
+                const val = document.getElementById('patient-search-input').value.toUpperCase(),
+                    res = document.getElementById('search-results');
+                if (!val) {
+                    res.classList.add('hidden');
+                    return;
+                }
                 const matches = Object.keys(patientLookup)
                     .filter(n => n.toUpperCase().includes(val) || patientLookup[n].id.toUpperCase().includes(val))
                     .slice(0, 8);
@@ -1355,7 +2257,8 @@
         }
 
         function selectPatient(n) {
-            selectedPatientName = n; const p = patientLookup[n];
+            selectedPatientName = n;
+            const p = patientLookup[n];
             document.getElementById('patient-search-input').value = n;
             document.getElementById('search-results').classList.add('hidden');
             document.getElementById('active-patient-name').innerText = n;
@@ -1363,9 +2266,16 @@
             document.getElementById('patient-workspace').classList.remove('hidden');
             const rem = p.purchased - p.logs.length;
             const badge = document.getElementById('workspace-remaining');
-            if (p.closed) { badge.innerText = "CASE CLOSED"; badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase"; }
-            else if (rem > 0) { badge.innerText = `Rem: ${rem} Sessions`; badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase"; }
-            else { badge.innerText = "REGULAR"; badge.className = "bg-slate-200 text-slate-500 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase"; }
+            if (p.closed) {
+                badge.innerText = "CASE CLOSED";
+                badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+            } else if (rem > 0) {
+                badge.innerText = `Rem: ${rem} Sessions`;
+                badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+            } else {
+                badge.innerText = "REGULAR";
+                badge.className = "bg-slate-200 text-slate-500 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+            }
             document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
                 const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
                 return `<div class="log-card">
@@ -1384,17 +2294,28 @@
         }
 
         function renderCalendar() {
-            const grid = document.getElementById('calendar-grid'); grid.innerHTML = '';
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
             if (!selectedPatientName) return;
             const p = patientLookup[selectedPatientName];
             const logDates = new Set(p.logs.map(l => l[8]));
-            const yr = currentViewDate.getFullYear(), mt = currentViewDate.getMonth();
-            document.getElementById('calendar-month-year').innerText = currentViewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-            const first = new Date(yr, mt, 1).getDay(), total = new Date(yr, mt + 1, 0).getDate(), today = new Date();
+            const yr = currentViewDate.getFullYear(),
+                mt = currentViewDate.getMonth();
+            document.getElementById('calendar-month-year').innerText = currentViewDate.toLocaleString('default', {
+                month: 'long',
+                year: 'numeric'
+            });
+            const first = new Date(yr, mt, 1).getDay(),
+                total = new Date(yr, mt + 1, 0).getDate(),
+                today = new Date();
             today.setHours(0, 0, 0, 0);
             for (let i = 0; i < first; i++) grid.innerHTML += `<div></div>`;
             for (let d = 1; d <= total; d++) {
-                const ds = `${yr}-${String(mt + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`, dateObj = new Date(yr, mt, d), isFuture = dateObj > today, sel = selectedDates.includes(ds), isLogged = logDates.has(ds);
+                const ds = `${yr}-${String(mt + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`,
+                    dateObj = new Date(yr, mt, d),
+                    isFuture = dateObj > today,
+                    sel = selectedDates.includes(ds),
+                    isLogged = logDates.has(ds);
                 const btn = document.createElement('div');
                 let dayClass = `h-10 flex items-center justify-center rounded-xl border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
                 if (sel) dayClass += 'calendar-day-selected ';
@@ -1402,7 +2323,11 @@
                 else if (!isFuture) dayClass += 'bg-white border-slate-100 hover:border-indigo-300 ';
                 btn.className = dayClass;
                 btn.innerText = d;
-                if (!isFuture) btn.onclick = () => { if (selectedDates.includes(ds)) selectedDates = selectedDates.filter(x => x !== ds); else selectedDates.push(ds); renderCalendar(); };
+                if (!isFuture) btn.onclick = () => {
+                    if (selectedDates.includes(ds)) selectedDates = selectedDates.filter(x => x !== ds);
+                    else selectedDates.push(ds);
+                    renderCalendar();
+                };
                 grid.appendChild(btn);
             }
         }
@@ -1439,15 +2364,17 @@
         }
 
         function renderTables() {
-            const pBody = document.getElementById('patient-table-body'), bBody = document.getElementById('billing-table-body');
-            let pHtml = "", bHtml = "";
-            
+            const pBody = document.getElementById('patient-table-body'),
+                bBody = document.getElementById('billing-table-body');
+            let pHtml = "",
+                bHtml = "";
+
             let names = Object.keys(patientLookup);
-            
+
             names.sort((a, b) => {
-                return recordSortLatest ? 
-                       (patientLookup[b].enrollTime - patientLookup[a].enrollTime) : 
-                       (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
+                return recordSortLatest ?
+                    (patientLookup[b].enrollTime - patientLookup[a].enrollTime) :
+                    (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
             });
 
             names.forEach(name => {
@@ -1455,12 +2382,19 @@
                 const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
                 const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
                 const rem = p.purchased - consumed;
-                
+
                 if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
-                    const statusBadge = p.closed
-                        ? `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`
-                        : (rem > 0 ? `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>` : `<span class="bg-slate-100 text-slate-400 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`);
-                    
+                    let statusBadge;
+                    if (p.closed) {
+                        statusBadge = `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`;
+                    } else if (p.outstandingDue > 0) {
+                        statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded text-[10px] font-black hover:bg-rose-600 hover:text-white transition-all cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE — Click to Clear</button>`;
+                    } else if (rem > 0) {
+                        statusBadge = `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>`;
+                    } else {
+                        statusBadge = `<span class="bg-slate-100 text-slate-400 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
+                    }
+
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
                         <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
                         <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
@@ -1477,7 +2411,7 @@
                             }
                         </td>
                     </tr>`;
-                    
+
                     bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
                         <td class="p-5 font-bold uppercase text-xs">${name}</td>
                         <td class="p-5 font-black text-xs text-slate-500">${p.id}</td>
@@ -1489,30 +2423,51 @@
                     </tr>`;
                 }
             });
-            pBody.innerHTML = pHtml; bBody.innerHTML = bHtml; lucide.createIcons();
+            pBody.innerHTML = pHtml;
+            bBody.innerHTML = bHtml;
+            lucide.createIcons();
         }
 
         function viewPatientDetail(name) {
             const p = patientLookup[name];
             if (!p) return;
             const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-            
+
             document.getElementById('pd-name').innerText = name;
             document.getElementById('pd-sessions').innerText = p.logs.length;
             document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
-            
+
             const datesList = document.getElementById('pd-dates-list');
             datesList.innerHTML = p.logs.map(l => `<div class="p-2 bg-slate-50 rounded-lg text-[10px] font-bold text-slate-600 flex justify-between"><span>${formatDateDMY(l[8])}</span><span class="text-indigo-400">₹${l[9]}</span></div>`).join('');
-            
+
+            // ADD SOAP & EXERCISE BUTTONS
+            const modal = document.getElementById('patient-detail-modal');
+            let actionButtons = modal.querySelector('.detail-action-buttons');
+            if (!actionButtons) {
+                actionButtons = document.createElement('div');
+                actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t';
+                actionButtons.innerHTML = `
+            <button onclick="openProgressNotesModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📋 SOAP Notes</button>
+            <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
+        `;
+                datesList.parentElement.appendChild(actionButtons);
+            }
+
             document.getElementById('patient-detail-modal').classList.remove('hidden');
             lucide.createIcons();
         }
-        function closePatientDetailModal() { document.getElementById('patient-detail-modal').classList.add('hidden'); }
 
-        // ---------- EDIT PATIENT (NEW) ----------
+        function closePatientDetailModal() {
+            document.getElementById('patient-detail-modal').classList.add('hidden');
+        }
+
+        // ---------- EDIT PATIENT ----------
         function openEditPatientModal(name) {
             const p = patientLookup[name];
-            if (!p) { showToast('Patient not found', 'error'); return; }
+            if (!p) {
+                showToast('Patient not found', 'error');
+                return;
+            }
             document.getElementById('ep-original-name').value = name;
             document.getElementById('ep-id').value = p.id;
             document.getElementById('ep-name').value = name;
@@ -1523,12 +2478,18 @@
             document.getElementById('ep-address').value = p.address || '';
             document.getElementById('edit-patient-modal').classList.remove('hidden');
         }
-        function closeEditPatientModal() { document.getElementById('edit-patient-modal').classList.add('hidden'); }
+
+        function closeEditPatientModal() {
+            document.getElementById('edit-patient-modal').classList.add('hidden');
+        }
 
         async function saveEditPatient() {
             const oldName = document.getElementById('ep-original-name').value;
             const p = patientLookup[oldName];
-            if (!p) { showToast('Patient not found', 'error'); return; }
+            if (!p) {
+                showToast('Patient not found', 'error');
+                return;
+            }
 
             const newName = document.getElementById('ep-name').value.trim();
             const newPhone = document.getElementById('ep-phone').value.trim();
@@ -1537,10 +2498,11 @@
             const newCondition = document.getElementById('ep-condition').value.trim();
             const newAddress = document.getElementById('ep-address').value.trim();
 
-            if (!newName) { showToast('Patient name cannot be empty', 'warning'); return; }
+            if (!newName) {
+                showToast('Patient name cannot be empty', 'warning');
+                return;
+            }
 
-            // Update every row in globalData that belongs to this patient (matched by Clinical ID,
-            // since the name itself might be one of the fields being changed).
             globalData.forEach(r => {
                 if (String(r[1]) === p.id) {
                     r[2] = newName;
@@ -1556,10 +2518,6 @@
             closeEditPatientModal();
             showToast('Patient details updated', 'success');
 
-            // NOTE: this calls a new "updatePatient" action. Your Google Apps Script backend
-            // needs a matching handler that finds rows by ID and overwrites name/phone/age/
-            // gender/condition/address, otherwise this sync will silently fail server-side
-            // (the local UI update above will still work either way).
             syncToBackend({
                 action: "updatePatient",
                 id: p.id,
@@ -1574,24 +2532,31 @@
         }
 
         function generateClinicalID() {
-            const b = document.getElementById('en-branch').value, y = new Date().getFullYear().toString().slice(-2);
+            const b = document.getElementById('en-branch').value,
+                y = new Date().getFullYear().toString().slice(-2);
             document.getElementById('en-id').value = `${b}${y}/${1001 + Object.keys(patientLookup).length}`;
         }
 
-        function changeMonth(o) { currentViewDate.setMonth(currentViewDate.getMonth() + o); renderCalendar(); }
+        function changeMonth(o) {
+            currentViewDate.setMonth(currentViewDate.getMonth() + o);
+            renderCalendar();
+        }
 
         function getWhatsAppNumber(phone) {
-            let digits = (phone || '').replace(/\D/g, ''); 
-            digits = digits.replace(/^0+/, ''); 
-            if (digits.length === 12 && digits.startsWith('91')) return digits; 
-            if (digits.length === 10) return '91' + digits; 
-            if (digits.length > 10) return digits; 
+            let digits = (phone || '').replace(/\D/g, '');
+            digits = digits.replace(/^0+/, '');
+            if (digits.length === 12 && digits.startsWith('91')) return digits;
+            if (digits.length === 10) return '91' + digits;
+            if (digits.length > 10) return digits;
             return digits ? '91' + digits : '';
         }
 
         function sendWhatsApp(phone, name) {
             const waNumber = getWhatsAppNumber(phone);
-            if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+            if (!waNumber) {
+                showToast('Invalid phone number', 'warning');
+                return;
+            }
             const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
@@ -1627,15 +2592,18 @@
         }
 
         let billEditMode = false;
+
         function toggleBillEditMode() {
             billEditMode = !billEditMode;
-            document.querySelectorAll('#bill-content-pages .editable').forEach(el => { el.contentEditable = billEditMode; });
+            document.querySelectorAll('#bill-content-pages .editable').forEach(el => {
+                el.contentEditable = billEditMode;
+            });
             document.getElementById('bill-content-pages').classList.toggle('edit-mode', billEditMode);
             document.getElementById('edit-hint').classList.toggle('hidden', billEditMode);
             const btn = document.getElementById('edit-bill-btn');
-            btn.innerHTML = billEditMode
-                ? `<i data-lucide="check" class="w-4 h-4"></i> Done Editing`
-                : `<i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill`;
+            btn.innerHTML = billEditMode ?
+                `<i data-lucide="check" class="w-4 h-4"></i> Done Editing` :
+                `<i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill`;
             lucide.createIcons();
         }
 
@@ -1658,13 +2626,17 @@
             logs.forEach(l => {
                 const fee = toNum(l[9]);
                 total += fee;
-                if (!groups[fee]) groups[fee] = { qty: 0, dates: [] };
+                if (!groups[fee]) groups[fee] = {
+                    qty: 0,
+                    dates: []
+                };
                 groups[fee].qty++;
                 groups[fee].dates.push(l[8]);
             });
             let procedureRowsHtml = '';
             Object.keys(groups).forEach(feeKey => {
-                const g = groups[feeKey], fee = Number(feeKey);
+                const g = groups[feeKey],
+                    fee = Number(feeKey);
                 const sortedDates = g.dates.slice().sort();
                 const periodStart = formatDateDMY(sortedDates[0]);
                 const periodEnd = formatDateDMY(sortedDates[sortedDates.length - 1]);
@@ -1708,9 +2680,9 @@
             const firstDate = logs.length ? formatDateDMY(logs[0][8]) : '';
             const lastDate = logs.length ? formatDateDMY(logs[logs.length - 1][8]) : '';
             const ageGenderLine = `Gender: ${p.gender || '-'} | Age: ${p.age || '-'} Y`;
-            const patientAddrHtml = p.address
-                ? `<p style="margin:2px 0; font-size:12px; color:#475569">Addr: <span class="editable">${p.address}</span></p>`
-                : `<p class="editable addr-line" style="margin:2px 0; font-size:12px; color:#475569"></p>`;
+            const patientAddrHtml = p.address ?
+                `<p style="margin:2px 0; font-size:12px; color:#475569">Addr: <span class="editable">${p.address}</span></p>` :
+                `<p class="editable addr-line" style="margin:2px 0; font-size:12px; color:#475569"></p>`;
             const certAddrClause = p.address ? `, residing at ${p.address},` : '';
             const pagesHtml = `
                 <div class="bill-page page-break">
@@ -1782,20 +2754,38 @@
             document.getElementById('bill-content-pages').classList.remove('edit-mode');
             document.getElementById('edit-hint').classList.add('hidden');
             document.getElementById('edit-bill-btn').innerHTML = `<i data-lucide="pencil" class="w-4 h-4"></i> Edit Bill`;
-            currentBillContext = { name, phone: p.phone, stmtNo, total, verifyUrl };
+            currentBillContext = {
+                name,
+                phone: p.phone,
+                stmtNo,
+                total,
+                verifyUrl
+            };
             setTimeout(() => {
                 lucide.createIcons();
             }, 300);
             syncToBackend({
-                action: "logAppointment", id: p.id, name: name, phone: p.phone,
-                condition: `Bill Issued: ${stmtNo}`, fee: total, billNo: stmtNo,
-                type: "Bill Issued", date: getLocalISOString()
+                action: "logAppointment",
+                id: p.id,
+                name: name,
+                phone: p.phone,
+                condition: `Bill Issued: ${stmtNo}`,
+                fee: total,
+                billNo: stmtNo,
+                type: "Bill Issued",
+                date: getLocalISOString()
             }).catch(() => {});
         }
 
         async function downloadBillPDF() {
-            if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
-            const { name, stmtNo } = currentBillContext;
+            if (!currentBillContext) {
+                showToast('Open a bill first', 'warning');
+                return;
+            }
+            const {
+                name,
+                stmtNo
+            } = currentBillContext;
             const container = document.getElementById('bill-content-pages');
             const pageEls = container ? Array.from(container.querySelectorAll('.bill-page')) : [];
             if (!pageEls.length || typeof html2canvas === 'undefined' || !window.jspdf) {
@@ -1804,12 +2794,24 @@
             }
             showToast('Preparing PDF for download…', 'info');
             try {
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-                const pageWidthMM = 210, pageHeightMM = 297;
+                const {
+                    jsPDF
+                } = window.jspdf;
+                const pdf = new jsPDF({
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                });
+                const pageWidthMM = 210,
+                    pageHeightMM = 297;
 
                 for (let i = 0; i < pageEls.length; i++) {
-                    const canvas = await html2canvas(pageEls[i], { scale: 2, useCORS: true, allowTaint: true, logging: false });
+                    const canvas = await html2canvas(pageEls[i], {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false
+                    });
                     const imgData = canvas.toDataURL('image/jpeg', 0.98);
                     const imgHeightMM = Math.min((canvas.height * pageWidthMM) / canvas.width, pageHeightMM);
                     if (i > 0) pdf.addPage();
@@ -1825,10 +2827,22 @@
         }
 
         function sendBillToPatient() {
-            if (!currentBillContext) { showToast('Open a bill first', 'warning'); return; }
-            const { name, phone, stmtNo, total, verifyUrl } = currentBillContext;
+            if (!currentBillContext) {
+                showToast('Open a bill first', 'warning');
+                return;
+            }
+            const {
+                name,
+                phone,
+                stmtNo,
+                total,
+                verifyUrl
+            } = currentBillContext;
             const waNumber = getWhatsAppNumber(phone);
-            if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+            if (!waNumber) {
+                showToast('Invalid phone number', 'warning');
+                return;
+            }
             const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your prescribed exercises. Please find your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou can verify the authenticity of this document here: ${verifyUrl}\n\nPlease find the attached PDF copy of your bill. Kindly review it and let us know if you have any questions.\n\nYour feedback is important to us and helps us continue providing the highest quality of care. We would greatly appreciate it if you could share your experience by leaving us a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism Physiotherapy & Rehabilitation Center. We wish you a smooth and speedy recovery!
 `);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
@@ -1843,7 +2857,9 @@
             });
         }
 
-        function closeBillModal() { document.getElementById('bill-modal').classList.add('hidden'); }
+        function closeBillModal() {
+            document.getElementById('bill-modal').classList.add('hidden');
+        }
 
         document.getElementById('bill-modal').addEventListener('click', (e) => {
             if (e.target.id === 'bill-modal') closeBillModal();
@@ -1851,8 +2867,10 @@
 
         ['en-rate', 'en-sessions', 'en-discount'].forEach(id => {
             const el = document.getElementById(id);
-            if(el) el.addEventListener('input', () => {
-                const r = Number(document.getElementById('en-rate').value) || 0, s = Number(document.getElementById('en-sessions').value) || 0, d = Number(document.getElementById('en-discount').value) || 0;
+            if (el) el.addEventListener('input', () => {
+                const r = Number(document.getElementById('en-rate').value) || 0,
+                    s = Number(document.getElementById('en-sessions').value) || 0,
+                    d = Number(document.getElementById('en-discount').value) || 0;
                 document.getElementById('enroll-summary').innerText = `₹${((r * s) - (r * s * (d / 100))).toLocaleString()}`;
             });
         });
@@ -1860,12 +2878,17 @@
         // ---------- DARK MODE ----------
         function applyDarkModePreference() {
             let saved = null;
-            try { saved = localStorage.getItem('prism_dark_mode'); } catch (e) {}
+            try {
+                saved = localStorage.getItem('prism_dark_mode');
+            } catch (e) {}
             if (saved === '1') document.body.classList.add('dark-mode');
         }
+
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
-            try { localStorage.setItem('prism_dark_mode', document.body.classList.contains('dark-mode') ? '1' : '0'); } catch (e) {}
+            try {
+                localStorage.setItem('prism_dark_mode', document.body.classList.contains('dark-mode') ? '1' : '0');
+            } catch (e) {}
             if (myChart || dailyChartInstance || branchChartInstance) {
                 processData();
             }
@@ -1874,11 +2897,14 @@
 
         // ---------- BRANCH DISTRIBUTION CHART ----------
         let branchChartInstance = null;
+
         function renderBranchChart() {
             const canvasEl = document.getElementById('branchChart');
             if (!canvasEl) return;
             const ctx = canvasEl.getContext('2d');
-            let poc = 0, phc = 0, prc = 0;
+            let poc = 0,
+                phc = 0,
+                prc = 0;
             Object.values(patientLookup).forEach(p => {
                 const sum = p.logs.reduce((s, l) => s + toNum(l[9]), 0);
                 if (p.id.startsWith('POC')) poc += sum;
@@ -1891,10 +2917,27 @@
                 type: 'doughnut',
                 data: {
                     labels: ['Orthocare (POC)', 'Homecare (PHC)', 'Rehab Clinic (PRC)'],
-                    datasets: [{ data: [poc, phc, prc], backgroundColor: ['#4f46e5', '#10b981', '#f97316'], borderWidth: 0 }]
+                    datasets: [{
+                        data: [poc, phc, prc],
+                        backgroundColor: ['#4f46e5', '#10b981', '#f97316'],
+                        borderWidth: 0
+                    }]
                 },
                 options: {
-                    plugins: { legend: { position: 'bottom', labels: { color: isDark ? '#cbd5e1' : '#475569', font: { size: 10, weight: 'bold' }, boxWidth: 10, padding: 14 } } },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: isDark ? '#cbd5e1' : '#475569',
+                                font: {
+                                    size: 10,
+                                    weight: 'bold'
+                                },
+                                boxWidth: 10,
+                                padding: 14
+                            }
+                        }
+                    },
                     cutout: '65%'
                 }
             });
@@ -1910,7 +2953,12 @@
                 if (p.closed || !p.purchased) return;
                 const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
                 const rem = p.purchased - consumed;
-                if (rem <= 2 && rem >= 0) rows.push({ name, id: p.id, rem, phone: p.phone });
+                if (rem <= 2 && rem >= 0) rows.push({
+                    name,
+                    id: p.id,
+                    rem,
+                    phone: p.phone
+                });
             });
             rows.sort((a, b) => a.rem - b.rem);
             if (!rows.length) {
@@ -1931,13 +2979,102 @@
             lucide.createIcons();
         }
 
+        // ---------- OUTSTANDING DUES WIDGET ----------
+        function renderDuesWidget() {
+            const el = document.getElementById('dues-list');
+            const statOutstandingEl = document.getElementById('stat-outstanding');
+            if (!el) return;
+
+            let total = 0;
+            const rows = [];
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                if (p.outstandingDue > 0) {
+                    total += p.outstandingDue;
+                    rows.push({
+                        name,
+                        id: p.id,
+                        phone: p.phone,
+                        due: p.outstandingDue
+                    });
+                }
+            });
+            rows.sort((a, b) => b.due - a.due);
+
+            if (statOutstandingEl) statOutstandingEl.innerText = "₹" + total.toLocaleString();
+
+            if (!rows.length) {
+                el.innerHTML = `<p class="text-xs text-slate-400 italic">No outstanding dues right now.</p>`;
+                return;
+            }
+
+            el.innerHTML = rows.map(r => `
+                <div class="due-soon-row">
+                    <div>
+                        <span class="font-black text-xs uppercase text-slate-700">${r.name}</span>
+                        <span class="text-[9px] font-bold text-indigo-500 ml-2">${r.id}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">₹${r.due.toLocaleString()} due</span>
+                        <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>`).join('');
+            lucide.createIcons();
+        }
+
+        function openMarkPaidPrompt(name) {
+            const p = patientLookup[name];
+            if (!p) return;
+            const unpaidLogs = p.logs.filter(l => {
+                const fee = toNum(l[9]);
+                const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : fee;
+                return fee - paid > 0;
+            }).sort((a, b) => new Date(b[8]) - new Date(a[8]));
+
+            if (!unpaidLogs.length) {
+                showToast('No unpaid sessions found', 'info');
+                return;
+            }
+
+            const target = unpaidLogs[0];
+            const fee = toNum(target[9]);
+            const alreadyPaid = target[16] !== undefined && target[16] !== "" ? toNum(target[16]) : 0;
+            const remaining = fee - alreadyPaid;
+
+            const amountStr = prompt(`Mark payment for ${name} — session on ${formatDateDMY(target[8])}.\nOutstanding: ₹${remaining}\n\nEnter amount received:`, remaining);
+            if (amountStr === null) return;
+            const amount = Number(amountStr);
+            if (isNaN(amount) || amount <= 0) {
+                showToast('Enter a valid amount', 'warning');
+                return;
+            }
+
+            const modeInput = prompt(`Payment mode for this ₹${amount} (Cash / UPI / Card):`, "Cash");
+            const mode = modeInput && modeInput.trim() ? modeInput.trim() : "Cash";
+
+            target[16] = mode;
+            target[17] = alreadyPaid + amount;
+            processData();
+            showToast(`₹${amount} recorded for ${name}`, 'success');
+
+            syncToBackend({
+                action: "markAsPaid",
+                id: p.id,
+                date: target[8],
+                paymentMode: mode,
+                amountPaid: alreadyPaid + amount
+            }).catch(() => {});
+        }
+
         // ---------- CSV EXPORT: PATIENT RECORDS ----------
         function downloadCSV(filename, rows) {
             const csv = rows.map(r => r.map(cell => {
                 const s = String(cell ?? '');
                 return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
             }).join(',')).join('\n');
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([csv], {
+                type: 'text/csv;charset=utf-8;'
+            });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = filename;
@@ -1948,22 +3085,26 @@
         }
 
         function exportPatientsCSV() {
-            const rows = [['Clinical ID', 'Patient Name', 'Age', 'Gender', 'Phone', 'Condition', 'Status', 'Sessions Purchased', 'Sessions Consumed']];
+            const rows = [
+                ['Clinical ID', 'Patient Name', 'Age', 'Gender', 'Phone', 'Condition', 'Status', 'Sessions Purchased', 'Sessions Consumed', 'Outstanding Due (₹)']
+            ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
-                rows.push([p.id, name, p.age, p.gender, p.phone, p.diag, p.closed ? 'Closed' : 'Active', p.purchased, consumed]);
+                rows.push([p.id, name, p.age, p.gender, p.phone, p.diag, p.closed ? 'Closed' : 'Active', p.purchased, consumed, p.outstandingDue]);
             });
             downloadCSV(`Prism_Patient_Records_${getLocalISOString()}.csv`, rows);
         }
 
         function exportBillingCSV() {
-            const rows = [['Patient Name', 'Clinical ID', 'Sessions Consumed', 'Sessions Purchased', 'Total Amount (₹)']];
+            const rows = [
+                ['Patient Name', 'Clinical ID', 'Sessions Consumed', 'Sessions Purchased', 'Total Amount (₹)', 'Outstanding Due (₹)']
+            ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
                 const total = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-                rows.push([name, p.id, consumed, p.purchased, total]);
+                rows.push([name, p.id, consumed, p.purchased, total, p.outstandingDue]);
             });
             downloadCSV(`Prism_Billing_Summary_${getLocalISOString()}.csv`, rows);
         }
@@ -1987,9 +3128,9 @@
                 </style></head><body>
                 <h1>Prism Physiotherapy &amp; Rehabilitation Center</h1>
                 <p class="sub">Daily Visit Registry — ${dateVal}</p>
-                <table><thead><tr><th>#</th><th>Patient</th><th>Clinical ID</th><th>Branch</th><th>Note</th><th>Fee</th></tr></thead>
+                <table><thead><tr><th>#</th><th>Patient</th><th>Clinical ID</th><th>Branch</th><th>Note</th><th>Payment</th><th>Fee</th></tr></thead>
                 <tbody>${rows.map(r => `<tr>${r.innerHTML}</tr>`).join('')}</tbody>
-                <tfoot><tr><td colspan="5">Total Collection:</td><td>${totalFee}</td></tr></tfoot>
+                <tfoot><tr><td colspan="6">Total Collection:</td><td>${totalFee}</td></tr></tfoot>
                 </table>
                 </body></html>
             `);
@@ -2000,9 +3141,17 @@
         function downloadRegistryRangeCSV() {
             const from = document.getElementById('registry-range-from').value;
             const to = document.getElementById('registry-range-to').value;
-            if (!from || !to) { showToast('Select both From and To dates', 'warning'); return; }
-            if (from > to) { showToast('From date must be before To date', 'warning'); return; }
-            const rows = [['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Fee']];
+            if (!from || !to) {
+                showToast('Select both From and To dates', 'warning');
+                return;
+            }
+            if (from > to) {
+                showToast('From date must be before To date', 'warning');
+                return;
+            }
+            const rows = [
+                ['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Payment Mode', 'Fee']
+            ];
             let total = 0;
             globalData.filter(r => {
                 const type = String(r[7] || '').toLowerCase();
@@ -2010,18 +3159,27 @@
                 const fee = toNum(r[9]);
                 return rDate >= from && rDate <= to && fee > 0 && type !== "case closed" && type !== "case restarted" && type !== "bill issued";
             }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
-                const cid = r[1], name = r[2], diag = r[6], fee = toNum(r[9]);
+                const cid = r[1],
+                    name = r[2],
+                    diag = r[6],
+                    fee = toNum(r[9]);
+                const paymentMode = r[15] || 'Cash';
                 const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
-                rows.push([formatDateDMY(r[8]), name, cid, branch, diag || '-', fee]);
+                rows.push([formatDateDMY(r[8]), name, cid, branch, diag || '-', paymentMode, fee]);
                 total += fee;
             });
-            if (rows.length === 1) { showToast('No visits found in this range', 'warning'); return; }
-            rows.push(['', '', '', '', 'Total Collection', total]);
+            if (rows.length === 1) {
+                showToast('No visits found in this range', 'warning');
+                return;
+            }
+            rows.push(['', '', '', '', '', 'Total Collection', total]);
             downloadCSV(`Prism_Visit_Registry_${from}_to_${to}.csv`, rows);
         }
 
         function logoutApp() {
-            try { sessionStorage.removeItem('prism_unlocked'); } catch (e) {}
+            try {
+                sessionStorage.removeItem('prism_unlocked');
+            } catch (e) {}
             location.reload();
         }
 
@@ -2043,7 +3201,7 @@
         window.addEventListener('offline', updateConnectionStatus);
         document.addEventListener('DOMContentLoaded', updateConnectionStatus);
 
-        // ---------- KEYBOARD SHORTCUT: Ctrl/Cmd+K focuses the relevant search box ----------
+        // ---------- KEYBOARD SHORTCUT ----------
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
                 e.preventDefault();
@@ -2054,13 +3212,158 @@
             }
         });
 
-        // ---------- NON-INVASIVE WRAP: extend processData without editing its body ----------
+        // ---------- WRAP PROCESS DATA ----------
         const _originalProcessData = processData;
-        processData = function () {
+        processData = function() {
             _originalProcessData();
             renderBranchChart();
             renderDueSoonWidget();
+            renderDuesWidget();
         };
+
+        // ===== PROGRESS NOTES / SOAP (FIXED) =====
+        let progressNotes = {};
+
+        function openProgressNotesModal(patientName) {
+            if (!patientName) return;
+            document.getElementById('progress-notes-timeline').innerHTML = '';
+
+            selectedPatientName = patientName;
+            document.getElementById('pn-patient-name').innerText = patientName;
+
+            if (!progressNotes[patientName]) progressNotes[patientName] = [];
+            renderProgressNotesTimeline();
+            document.getElementById('progress-notes-modal').classList.remove('hidden');
+            clearProgressNoteForm();
+        }
+
+        function renderProgressNotesTimeline() {
+            const notes = progressNotes[selectedPatientName] || [];
+            const container = document.getElementById('progress-notes-timeline');
+            if (!notes.length) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">No SOAP entries yet.</p>`;
+                return;
+            }
+            container.innerHTML = notes.slice().reverse().map((note, idx) => `
+        <div class="border-l-4 border-indigo-400 pl-4 py-3 bg-indigo-50/50 rounded-lg">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[10px] font-black uppercase text-indigo-600">${formatDateDMY(note.date)}</span>
+                <button onclick="deleteProgressNote('${selectedPatientName}', ${notes.length - 1 - idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
+            </div>
+            <div class="text-[11px] space-y-1 font-semibold text-slate-700">
+                <p><strong>S:</strong> ${note.subjective || '—'}</p>
+                <p><strong>O:</strong> ${note.objective || '—'}</p>
+                <p><strong>A:</strong> ${note.assessment || '—'}</p>
+                <p><strong>P:</strong> ${note.plan || '—'}</p>
+            </div>
+        </div>
+    `).join('');
+        }
+
+        // ===== HOME EXERCISE PLANS (FIXED IDs & STICKY DATA) =====
+        let exercisePlans = {};
+
+        function openExercisePlanModal(patientName) {
+            if (!patientName) return;
+            document.getElementById('exercise-plan-list').innerHTML = '';
+
+            selectedPatientName = patientName;
+            document.getElementById('ex-patient-display-name').innerText = patientName;
+
+            if (!exercisePlans[patientName]) exercisePlans[patientName] = [];
+            renderExercisePlanList();
+            document.getElementById('exercise-plan-modal').classList.remove('hidden');
+            clearExerciseForm();
+        }
+
+        function clearExerciseForm() {
+            document.getElementById('ex-input-name').value = '';
+            document.getElementById('ex-input-sets').value = '';
+            document.getElementById('ex-input-instructions').value = '';
+            document.getElementById('ex-input-video').value = '';
+            document.getElementById('ex-input-freq').value = '';
+        }
+
+        function renderExercisePlanList() {
+            const exercises = exercisePlans[selectedPatientName] || [];
+            const container = document.getElementById('exercise-plan-list');
+            if (!exercises.length) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">No exercises yet.</p>`;
+                return;
+            }
+            container.innerHTML = exercises.map((ex, idx) => `
+        <div class="p-4 border-2 border-emerald-200 rounded-2xl bg-emerald-50/50 space-y-2">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h5 class="font-black text-emerald-700 text-sm">${ex.name}</h5>
+                    <p class="text-[10px] font-bold text-emerald-600 uppercase">${ex.setsReps} • ${ex.frequency}</p>
+                </div>
+                <button onclick="deleteExercise('${selectedPatientName}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
+            </div>
+            <p class="text-[11px] text-slate-600">${ex.instructions}</p>
+            ${ex.videoLink ? `<a href="${ex.videoLink}" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline inline-block">🎥 Watch Demo</a>` : ''}
+        </div>
+    `).join('');
+            lucide.createIcons();
+        }
+
+        async function saveExercise() {
+            const name = document.getElementById('ex-input-name').value.trim();
+            const sets = document.getElementById('ex-input-sets').value.trim();
+            const instr = document.getElementById('ex-input-instructions').value.trim();
+            const video = document.getElementById('ex-input-video').value.trim();
+            const freq = document.getElementById('ex-input-freq').value.trim();
+
+            if (!name || !sets || !instr || !freq) {
+                showToast('Please fill Name, Sets, Instructions, and Frequency', 'warning');
+                return;
+            }
+
+            if (!exercisePlans[selectedPatientName]) exercisePlans[selectedPatientName] = [];
+            exercisePlans[selectedPatientName].push({
+                name: name,
+                setsReps: sets,
+                instructions: instr,
+                videoLink: video,
+                frequency: freq
+            });
+
+            renderExercisePlanList();
+            clearExerciseForm();
+            showToast('Saving to cloud...', 'info');
+
+            await syncToBackend({
+                action: "saveExercise",
+                name: selectedPatientName,
+                exName: name,
+                sets: sets,
+                instr: instr,
+                video: video,
+                freq: freq
+            });
+            showToast('Exercise plan updated', 'success');
+        }
+
+        function deleteProgressNote(patientName, index) {
+            if (!progressNotes[patientName] || !progressNotes[patientName][index]) return;
+            if (!confirm('Delete this entry?')) return;
+            progressNotes[patientName].splice(index, 1);
+            renderProgressNotesTimeline();
+            showToast('Deleted', 'info');
+        }
+
+        function closeExercisePlanModal() {
+            document.getElementById('exercise-plan-modal').classList.add('hidden');
+        }
+
+        function deleteExercise(patientName, index) {
+            if (!exercisePlans[patientName] || !exercisePlans[patientName][index]) return;
+            if (!confirm('Delete exercise?')) return;
+            exercisePlans[patientName].splice(index, 1);
+            renderExercisePlanList();
+            showToast('Deleted', 'info');
+        }
     </script>
 </body>
+
 </html>
