@@ -1480,6 +1480,7 @@
         }
 
         let globalData = [],
+            globalInquiryData = [],
             patientLookup = {},
             selectedDates = [],
             selectedPatientName = "",
@@ -1596,6 +1597,8 @@
 
                 // Main Records
                 globalData = result.adminData;
+                globalInquiryData = result.inquiries || []; 
+                renderIqTable();
 
                 // Load SOAP Notes
                 progressNotes = {};
@@ -2429,33 +2432,37 @@
         }
 
         function viewPatientDetail(name) {
-            const p = patientLookup[name];
-            if (!p) return;
-            const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    const p = patientLookup[name];
+    if (!p) return;
+    const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
 
-            document.getElementById('pd-name').innerText = name;
-            document.getElementById('pd-sessions').innerText = p.logs.length;
-            document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
+    document.getElementById('pd-name').innerText = name;
+    document.getElementById('pd-sessions').innerText = p.logs.length;
+    document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
 
-            const datesList = document.getElementById('pd-dates-list');
-            datesList.innerHTML = p.logs.map(l => `<div class="p-2 bg-slate-50 rounded-lg text-[10px] font-bold text-slate-600 flex justify-between"><span>${formatDateDMY(l[8])}</span><span class="text-indigo-400">₹${l[9]}</span></div>`).join('');
+    const datesList = document.getElementById('pd-dates-list');
+    datesList.innerHTML = p.logs.map(l => `<div class="p-2 bg-slate-50 rounded-lg text-[10px] font-bold text-slate-600 flex justify-between"><span>${formatDateDMY(l[8])}</span><span class="text-indigo-400">₹${l[9]}</span></div>`).join('');
 
-            // ADD SOAP & EXERCISE BUTTONS
-            const modal = document.getElementById('patient-detail-modal');
-            let actionButtons = modal.querySelector('.detail-action-buttons');
-            if (!actionButtons) {
-                actionButtons = document.createElement('div');
-                actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t';
-                actionButtons.innerHTML = `
-            <button onclick="openProgressNotesModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📋 SOAP Notes</button>
-            <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
-        `;
-                datesList.parentElement.appendChild(actionButtons);
-            }
+    // ADD SOAP, EXERCISE & PORTAL BUTTONS
+    const modal = document.getElementById('patient-detail-modal');
+    let actionButtons = modal.querySelector('.detail-action-buttons');
+    if (!actionButtons) {
+        actionButtons = document.createElement('div');
+        actionButtons.className = 'detail-action-buttons flex flex-wrap gap-2 pt-4 mt-4 border-t';
+        datesList.parentElement.appendChild(actionButtons);
+    }
 
-            document.getElementById('patient-detail-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
+    actionButtons.innerHTML = `
+        <button onclick="openProgressNotesModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📋 SOAP Notes</button>
+        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
+        <button onclick="sendPortalLogin('${name.replace(/'/g, "\\'")}')" class="w-full mt-2 bg-[#25D366] hover:bg-[#1ebc59] text-white py-3 px-3 rounded-xl text-[10px] font-black uppercase transition-all flex items-center justify-center gap-2">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i> Send Portal Login
+        </button>
+    `;
+
+    document.getElementById('patient-detail-modal').classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+}
 
         function closePatientDetailModal() {
             document.getElementById('patient-detail-modal').classList.add('hidden');
@@ -2550,46 +2557,49 @@
             if (digits.length > 10) return digits;
             return digits ? '91' + digits : '';
         }
+function sendPortalLogin(name) {
+    const p = patientLookup[name];
+    if (!p) {
+        showToast('Patient not found', 'error');
+        return;
+    }
+    // Get last 4 digits of Clinical ID for the password
+    const idDigits = String(p.id || '').replace(/\D/g, '');
+    const last4 = idDigits.slice(-4);
+    
+    if (!last4) {
+        showToast('No valid Clinical ID found', 'warning');
+        return;
+    }
 
-        function sendWhatsApp(phone, name) {
-            const waNumber = getWhatsAppNumber(phone);
-            if (!waNumber) {
-                showToast('Invalid phone number', 'warning');
-                return;
-            }
-            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
-            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
-        }
+    const msg = encodeURIComponent(
+        `Hello ${name},\n\n` +
+        `You can now view your sessions, receipts, and prescribed home exercises anytime through our Patient Portal.\n\n` +
+        `*Portal Link:* https://prismhealthcare.in/Patient%20Login.html\n\n` +
+        `*Login Details*\n` +
+        `*User Id:* ${name}\n` +
+        `*Verification ID:* ${last4}\n\n` +
+        `There you can check your sessions logs, prescribed home exercise plan, and download bills.\n\n` +
+        `Warm regards,\nPrism Physiotherapy & Rehabilitation Center`
+    );
 
-        function buildDocHeader(stmtNo, udyam) {
-            return `<div class="doc-header2">
-                <div>
-                    <img src="${PRISM_LOGO_SRC}" style="height: 50px; width: auto; display: block; object-fit: contain;" alt="Prism Physiotherapy">
-                </div>
-                <div class="doc-meta2">
-                    <p class="meta-label">Statement No.</p>
-                    <p class="meta-value editable">${stmtNo}</p>
-                </div>
-            </div>`;
-        }
+    const waNumber = getWhatsAppNumber(p.phone);
+    if (!waNumber) {
+        showToast('Invalid phone number', 'warning');
+        return;
+    }
+    window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+}
 
-        function buildPageFooter(qrId, docName, verifyUrl) {
-            return `<div class="doc-footer3">
-                <div class="doc-qr-box">
-                    <img id="${qrId}" src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(verifyUrl)}" class="qr-slot" style="width:80px;height:80px;display:block;" alt="Verification QR">
-                    <small>Scan this to verify this bill</small>
-                </div>
-                <div class="doc-cert-text">
-                    <p class="cert-title">Certification &amp; Authorization</p>
-                    <p class="cert-body editable">System-generated medical statement issued by Prism Physiotherapy &amp; Rehabilitation Center. Digitally authenticated and valid without physical signature. Verification link embedded in the QR code.</p>
-                </div>
-                <div class="doc-sign2">
-                    <strong class="editable">${docName}</strong>
-                    <span class="sign-sub">DIGITAL SIGNATURE</span>
-                    <span class="sign-auth">AUTHORIZED SIGNATORY</span>
-                </div>
-            </div>`;
-        }
+function sendWhatsApp(phone, name) {
+    const waNumber = getWhatsAppNumber(phone);
+    if (!waNumber) {
+        showToast('Invalid phone number', 'warning');
+        return;
+    }
+    const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
+    window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+}
 
         let billEditMode = false;
 
@@ -3529,39 +3539,60 @@
     };
 
     // 4. Render Table with Mobile No column
-    window.renderIqTable = function() {
-        const body = document.getElementById('iq-table-body');
-        const list = JSON.parse(localStorage.getItem('prism_iq_registry') || '[]');
-        if(!body) return;
-        
-        if (list.length === 0) {
-            body.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400 italic text-xs">No inquiries registered yet.</td></tr>';
-            return;
-        }
+window.renderIqTable = function() {
+    const body = document.getElementById('iq-table-body');
+    if(!body) return;
+    
+    // Combine Cloud Data with Local Storage (to show items not yet synced)
+    const localList = JSON.parse(localStorage.getItem('prism_iq_registry') || '[]');
+    
+    // Priority: Use Cloud data. If Cloud is empty, use local.
+    const list = (globalInquiryData && globalInquiryData.length > 0) ? globalInquiryData : localList;
 
-        body.innerHTML = list.map(i => `
+    if (list.length === 0) {
+        body.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400 italic text-xs">No inquiries found.</td></tr>';
+        return;
+    }
+
+    // Sheets columns: 0: Date, 1: Name, 2: Age, 3: Gender, 4: Phone, 5: Diagnosis, 6: Notes
+    body.innerHTML = list.slice().reverse().map(i => {
+        // Logic to detect if data is from Cloud (Array) or LocalStorage (Object)
+        const isArray = Array.isArray(i);
+        const name = isArray ? i[1] : i.name;
+        const diag = isArray ? i[5] : i.diagnosis;
+        const phone = isArray ? i[4] : i.phone;
+
+        return `
             <tr class="hover:bg-slate-50/50">
-                <td class="p-5 font-black text-indigo-700 uppercase text-xs">${i.name}</td>
-                <td class="p-5 font-bold text-slate-600 text-xs">${i.diagnosis}</td>
-                <td class="p-5 font-black text-slate-500 text-xs">${i.phone}</td>
+                <td class="p-5 font-black text-indigo-700 uppercase text-xs">${name || 'N/A'}</td>
+                <td class="p-5 font-bold text-slate-600 text-xs">${diag || 'N/A'}</td>
+                <td class="p-5 font-black text-slate-500 text-xs">${phone || 'N/A'}</td>
                 <td class="p-5 text-center">
-                    <button onclick="sendIqFollowUp('${i.name}', '${i.phone}', '${i.diagnosis}')" class="bg-[#25D366] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 mx-auto shadow-sm hover:scale-105 transition-all">
+                    <button onclick="sendIqFollowUp('${(name||"").replace(/'/g, "\\'")}', '${phone}', '${(diag||"").replace(/'/g, "\\'")}')" 
+                            class="bg-[#25D366] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 mx-auto shadow-sm hover:scale-105 transition-all">
                         <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Reminder
                     </button>
                 </td>
             </tr>
-        `).join('');
-        if(window.lucide) lucide.createIcons();
-    };
-
-    // 5. WhatsApp Action Logic
+        `;
+    }).join('');
+    
+    if(window.lucide) lucide.createIcons();
+};
+// 5. WhatsApp Action Logic
     window.sendIqFollowUp = function(name, phone, diag) {
         const msg = encodeURIComponent(
             `*Hello ${name},*\n\n` +
-            `This is a reminder from *Prism Physiotherapy & Rehabilitation Center* regarding your inquiry for _${diag}_.\n\n` +
-            `We recommend a clinical assessment to start your recovery. Are you available for a consultation this week?\n\n` +
+            `This is a gentle reminder from *Prism Physiotherapy & Rehabilitation Center* regarding your recent inquiry about _${diag}_.\n\n` +
+            `We recommend a clinical assessment to begin your recovery. Our Research-based physiotherapy approach is personalized to your individual needs following a comprehensive clinical evaluation.\n\n` +
+            `*We would be happy to schedule your consultation this week*. Simply reply with your preferred day and time, and our team will confirm your appointment.\n\n` +
+            `If you have already consulted another healthcare provider or your symptoms have improved, kindly ignore this message.\n\n` +
+            `Thank you for choosing Prism Physiotherapy & Rehabilitation Center.\n\n` +
+            `:) *Loved your experience?*\n` +
+            `Please support us by leaving a Google review:\n` +
+            `https://g.page/r/CbjaRxUysOqhEBM/review\n\n` +
             `📞 *Contact:* +91 97080 59081\n` +
-            `📍 *Location:* Prism Healthcare`
+            `🌐 *Website:* https://prismhealthcare.in/`
         );
         window.open(`https://wa.me/${getWhatsAppNumber(phone)}?text=${msg}`, '_blank');
     };
