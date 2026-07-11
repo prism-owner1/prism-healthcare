@@ -1022,7 +1022,7 @@
                             <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">To Date</label>
                             <input type="date" id="registry-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
                         </div>
-                        <button onclick="downloadRegistryRangeCSV()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
+                        <button onclick="openBranchDownloadModal()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1146,6 +1146,21 @@
         </main>
 
         <!-- ADVANCE MODAL -->
+<div id="branch-download-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+    <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-black">Download Visit Registry</h3>
+            <button onclick="closeBranchDownloadModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <p class="text-xs text-slate-400 font-bold uppercase mb-6">Choose branch for the selected date range</p>
+        <div class="space-y-3">
+            <button onclick="downloadRegistryRangeCSV('POC')" class="w-full py-4 rounded-2xl font-black uppercase text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare (POC)</button>
+            <button onclick="downloadRegistryRangeCSV('PHC')" class="w-full py-4 rounded-2xl font-black uppercase text-xs bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white transition-all">Homecare (PHC)</button>
+            <button onclick="downloadRegistryRangeCSV('PRC')" class="w-full py-4 rounded-2xl font-black uppercase text-xs bg-orange-50 text-orange-700 hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic (PRC)</button>
+            <button onclick="downloadRegistryRangeCSV('ALL')" class="w-full py-4 rounded-2xl font-black uppercase text-xs bg-slate-800 text-white hover:bg-slate-900 transition-all">Download All Branches</button>
+        </div>
+    </div>
+</div>
         <div id="advance-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
             <div class="bg-white rounded-[2.5rem] p-8 max-w-xl w-full shadow-2xl flex flex-col max-h-[80vh]">
                 <div class="flex justify-between items-center mb-6">
@@ -3148,43 +3163,67 @@ function sendWhatsApp(phone, name) {
             setTimeout(() => win.print(), 300);
         }
 
-        function downloadRegistryRangeCSV() {
-            const from = document.getElementById('registry-range-from').value;
-            const to = document.getElementById('registry-range-to').value;
-            if (!from || !to) {
-                showToast('Select both From and To dates', 'warning');
-                return;
-            }
-            if (from > to) {
-                showToast('From date must be before To date', 'warning');
-                return;
-            }
-            const rows = [
-                ['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Payment Mode', 'Fee']
-            ];
-            let total = 0;
-            globalData.filter(r => {
-                const type = String(r[7] || '').toLowerCase();
-                const rDate = r[8];
-                const fee = toNum(r[9]);
-                return rDate >= from && rDate <= to && fee > 0 && type !== "case closed" && type !== "case restarted" && type !== "bill issued";
-            }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
-                const cid = r[1],
-                    name = r[2],
-                    diag = r[6],
-                    fee = toNum(r[9]);
-                const paymentMode = r[15] || 'Cash';
-                const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
-                rows.push([formatDateDMY(r[8]), name, cid, branch, diag || '-', paymentMode, fee]);
-                total += fee;
-            });
-            if (rows.length === 1) {
-                showToast('No visits found in this range', 'warning');
-                return;
-            }
-            rows.push(['', '', '', '', '', 'Total Collection', total]);
-            downloadCSV(`Prism_Visit_Registry_${from}_to_${to}.csv`, rows);
-        }
+        function openBranchDownloadModal() {
+    const from = document.getElementById('registry-range-from').value;
+    const to = document.getElementById('registry-range-to').value;
+    if (!from || !to) {
+        showToast('Select both From and To dates', 'warning');
+        return;
+    }
+    if (from > to) {
+        showToast('From date must be before To date', 'warning');
+        return;
+    }
+    document.getElementById('branch-download-modal').classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function closeBranchDownloadModal() {
+    document.getElementById('branch-download-modal').classList.add('hidden');
+}
+
+function downloadRegistryRangeCSV(branch) {
+    branch = branch || 'ALL';
+    const from = document.getElementById('registry-range-from').value;
+    const to = document.getElementById('registry-range-to').value;
+    if (!from || !to) {
+        showToast('Select both From and To dates', 'warning');
+        return;
+    }
+    if (from > to) {
+        showToast('From date must be before To date', 'warning');
+        return;
+    }
+    const rows = [
+        ['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Payment Mode', 'Fee']
+    ];
+    let total = 0;
+    globalData.filter(r => {
+        const type = String(r[7] || '').toLowerCase();
+        const rDate = r[8];
+        const fee = toNum(r[9]);
+        const cid = String(r[1] || '');
+        const branchMatch = branch === 'ALL' || cid.startsWith(branch);
+        return rDate >= from && rDate <= to && fee > 0 && type !== "case closed" && type !== "case restarted" && type !== "bill issued" && branchMatch;
+    }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
+        const cid = r[1],
+            name = r[2],
+            diag = r[6],
+            fee = toNum(r[9]);
+        const paymentMode = r[15] || 'Cash';
+        const branchLabel = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
+        rows.push([formatDateDMY(r[8]), name, cid, branchLabel, diag || '-', paymentMode, fee]);
+        total += fee;
+    });
+    if (rows.length === 1) {
+        showToast('No visits found in this range' + (branch !== 'ALL' ? ' for ' + branch : ''), 'warning');
+        return;
+    }
+    rows.push(['', '', '', '', '', 'Total Collection', total]);
+    const branchTag = branch === 'ALL' ? 'AllBranches' : branch;
+    downloadCSV(`Prism_Visit_Registry_${branchTag}_${from}_to_${to}.csv`, rows);
+    closeBranchDownloadModal();
+}
 
         function logoutApp() {
             try {
