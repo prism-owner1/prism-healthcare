@@ -1769,18 +1769,31 @@
             });
 
             // ---- OUTSTANDING DUES CALCULATION ----
-            let totalOutstanding = 0;
-            Object.keys(patientLookup).forEach(name => {
-                const p = patientLookup[name];
-                let due = 0;
-                p.logs.forEach(l => {
-                    const fee = toNum(l[9]);
-                    const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : fee;
-                    due += (fee - paid);
-                });
-                p.outstandingDue = due;
-                if (due > 0) totalOutstanding += due;
-            });
+// ---- OUTSTANDING DUES CALCULATION ----
+let totalOutstanding = 0;
+Object.keys(patientLookup).forEach(name => {
+    const p = patientLookup[name];
+    let due = 0;
+    p.logs.forEach(l => {
+        const fee = toNum(l[9]);
+        const type = String(l[7] || '').trim().toLowerCase();
+        
+        // Skip enrollment and other non-session entries
+        if (type === 'enrollment' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
+            return;
+        }
+        
+        const paymentMode = l[15] || 'Cash';
+        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : toNum(l[9]);
+        
+        // Only mark as due if payment mode is "Pending"
+        if (paymentMode === "Pending") {
+            due += (fee - paid);
+        }
+    });
+    p.outstandingDue = due;
+    if (due > 0) totalOutstanding += due;
+});
 
             let activeCount = 0;
             Object.values(patientLookup).forEach(p => {
@@ -2468,6 +2481,12 @@
             <button onclick="openProgressNotesModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📋 SOAP Notes</button>
             <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
         `;
+                const portalBtn = document.createElement('button');
+                portalBtn.className = 'w-full mt-2 bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all';
+                portalBtn.innerHTML = '💬 Send Portal Login (WhatsApp)';
+                portalBtn.onclick = () => sendPatientPortalLink(name);
+                actionButtons.appendChild(portalBtn);
+
                 datesList.parentElement.appendChild(actionButtons);
             }
 
@@ -2477,6 +2496,31 @@
 
         function closePatientDetailModal() {
             document.getElementById('patient-detail-modal').classList.add('hidden');
+        }
+
+        function sendPatientPortalLink(name) {
+            const p = patientLookup[name];
+            if (!p) {
+                showToast('Patient not found', 'error');
+                return;
+            }
+            const waNumber = getWhatsAppNumber(p.phone);
+            if (!waNumber) {
+                showToast('Invalid phone number', 'warning');
+                return;
+            }
+            const message = encodeURIComponent(
+                `Hello ${name},\n\n` +
+                `You can now view your sessions, receipts, and prescribed home exercises anytime through our Patient Portal.\n\n` +
+                `Portal Link: https://prismhealthcare.in/Patient%20Login.html\n\n` +
+                `Login Details\n` +
+                `User Id: ${name}\n` +
+                `Verification ID: ${String(p.id).slice(-4)}\n\n` +
+                `There you can check your sessions logs, prescribed home exercise plan, and download bills.\n\n` +
+                `Warm regards,\n` +
+                `Prism Physiotherapy & Rehabilitation Center`
+            );
+            window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
         }
 
         // ---------- EDIT PATIENT ----------
@@ -3041,48 +3085,55 @@
         }
 
         function openMarkPaidPrompt(name) {
-            const p = patientLookup[name];
-            if (!p) return;
-            const unpaidLogs = p.logs.filter(l => {
-                const fee = toNum(l[9]);
-                const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : fee;
-                return fee - paid > 0;
-            }).sort((a, b) => new Date(b[8]) - new Date(a[8]));
+    const p = patientLookup[name];
+    if (!p) return;
+    const unpaidLogs = p.logs.filter(l => {
+        const fee = toNum(l[9]);
+        const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : 0;
+        return fee - paid > 0;
+    }).sort((a, b) => new Date(b[8]) - new Date(a[8]));
 
-            if (!unpaidLogs.length) {
-                showToast('No unpaid sessions found', 'info');
-                return;
-            }
+    if (!unpaidLogs.length) {
+        showToast('No unpaid sessions found', 'info');
+        return;
+    }
 
-            const target = unpaidLogs[0];
-            const fee = toNum(target[9]);
-            const alreadyPaid = target[16] !== undefined && target[16] !== "" ? toNum(target[16]) : 0;
-            const remaining = fee - alreadyPaid;
+    const target = unpaidLogs[0];
+    const fee = toNum(target[9]);
+    const alreadyPaid = target[16] !== undefined && target[16] !== "" ? toNum(target[16]) : 0;
+    const remaining = fee - alreadyPaid;
 
-            const amountStr = prompt(`Mark payment for ${name} — session on ${formatDateDMY(target[8])}.\nOutstanding: ₹${remaining}\n\nEnter amount received:`, remaining);
-            if (amountStr === null) return;
-            const amount = Number(amountStr);
-            if (isNaN(amount) || amount <= 0) {
-                showToast('Enter a valid amount', 'warning');
-                return;
-            }
+    const amountStr = prompt(`Mark payment for ${name} — session on ${formatDateDMY(target[8])}.\nOutstanding: ₹${remaining}\n\nEnter amount received:`, remaining);
+    if (amountStr === null) return;
+    const amount = Number(amountStr);
+    if (isNaN(amount) || amount <= 0) {
+        showToast('Enter a valid amount', 'warning');
+        return;
+    }
 
-            const modeInput = prompt(`Payment mode for this ₹${amount} (Cash / UPI / Card):`, "Cash");
-            const mode = modeInput && modeInput.trim() ? modeInput.trim() : "Cash";
+    const modeInput = prompt(`Payment mode for this ₹${amount} (Cash / UPI / Card):`, "Cash");
+    const mode = modeInput && modeInput.trim() ? modeInput.trim() : "Cash";
 
-            target[16] = mode;
-            target[17] = alreadyPaid + amount;
-            processData();
-            showToast(`₹${amount} recorded for ${name}`, 'success');
+    // Ensure array has enough elements
+    while(target.length < 17) {
+        target.push("");
+    }
 
-            syncToBackend({
-                action: "markAsPaid",
-                id: p.id,
-                date: target[8],
-                paymentMode: mode,
-                amountPaid: alreadyPaid + amount
-            }).catch(() => {});
-        }
+    target[15] = mode;
+    target[16] = alreadyPaid + amount;
+    processData();
+    showToast(`₹${amount} recorded for ${name}`, 'success');
+
+    syncToBackend({
+        action: "markAsPaid",
+        id: p.id,
+        name: name,
+        date: target[8],
+        paymentMode: mode,
+        amountPaid: alreadyPaid + amount,
+        originalFee: fee
+    }).catch(() => {});
+}
 
         // ---------- CSV EXPORT: PATIENT RECORDS ----------
         function downloadCSV(filename, rows) {
