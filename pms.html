@@ -737,12 +737,12 @@
                 </div>
             </div>
             <nav class="flex-1 space-y-1">
-                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
-                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
-                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
-                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
-                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
-                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
+                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-00 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
+                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
+                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
+                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
+                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
+                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
             </nav>
             <div class="pt-4 mt-4 border-t border-slate-100">
                 <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
@@ -755,7 +755,7 @@
                     <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
                     <div>
                         <h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1>
-                        <p class="text-slate-400 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p>
+                        <p class="text-slate-600 text-xs uppercase font-bold tracking-widest">Prism Clinical Intelligence</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -772,11 +772,11 @@
             <section id="tab-overview" class="animate-slide">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                     <div class="glass-card p-6 rounded-[2rem] shadow-sm">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Session Count</p>
+                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Session Count</p>
                         <h3 id="stat-total" class="text-2xl font-black">0</h3>
                     </div>
                     <div class="glass-card p-6 rounded-[2rem] shadow-sm">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Registered Patients</p>
+                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Registered Patients</p>
                         <h3 id="stat-registered" class="text-2xl font-black">0</h3>
                     </div>
                     <div class="glass-card p-6 rounded-[2rem] border-indigo-100 bg-indigo-50/10">
@@ -813,7 +813,7 @@
                 </div>
 
                 <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-center gap-3">
-                    <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest pl-2">View Patients:</span>
+                    <span class="text-[10px] font-black uppercase text-slate-600 tracking-widest pl-2">View Patients:</span>
                     <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare</button>
                     <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
                     <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic</button>
@@ -822,39 +822,39 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Daily Collection</p>
+                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Daily Collection</p>
                         <h4 id="stat-daily" class="text-3xl font-black text-slate-800">₹0</h4>
                     </div>
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Monthly Collection</p>
+                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Monthly Collection</p>
                         <h4 id="stat-monthly" class="text-3xl font-black text-indigo-600">₹0</h4>
                     </div>
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Yearly Collection</p>
+                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Yearly Collection</p>
                         <h4 id="stat-yearly" class="text-3xl font-black text-slate-800">₹0</h4>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
+                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
                         <canvas id="revenueChart" height="170"></canvas>
                     </div>
                     <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
+                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
                         <canvas id="dailyChart" height="170"></canvas>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-1">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest mb-6">Revenue by Branch</h4>
+                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Revenue by Branch</h4>
                         <canvas id="branchChart" height="220"></canvas>
                     </div>
                     <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-2">
                         <div class="flex items-center justify-between mb-4">
-                            <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Sessions Due Soon</h4>
-                            <span class="text-[9px] font-bold text-slate-400 uppercase">2 or fewer sessions remaining</span>
+                            <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest">Sessions Due Soon</h4>
+                            <span class="text-[9px] font-bold text-slate-600 uppercase">2 or fewer sessions remaining</span>
                         </div>
                         <div id="due-soon-list" class="max-h-64 overflow-y-auto pr-1"></div>
                     </div>
@@ -862,8 +862,8 @@
 
                 <div class="glass-card p-8 rounded-[3rem] shadow-xl mt-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h4 class="text-xs font-black uppercase text-slate-400 tracking-widest">Outstanding Dues</h4>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase">Patients with pending balance</span>
+                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest">Outstanding Dues</h4>
+                        <span class="text-[9px] font-bold text-slate-600 uppercase">Patients with pending balance</span>
                     </div>
                     <div id="dues-list" class="max-h-64 overflow-y-auto pr-1"></div>
                 </div>
@@ -892,7 +892,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Registration Date</label>
+                                <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Registration Date</label>
                                 <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
                             </div>
                             <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
@@ -913,16 +913,16 @@
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Advance Paid (₹)</label>
+                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Advance Paid (₹)</label>
                                     <input type="number" id="en-advance" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                                 </div>
                                 <div>
-                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Discount (%)</label>
+                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Discount (%)</label>
                                     <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                                 </div>
                             </div>
                             <div class="p-5 bg-slate-900 rounded-2xl text-white">
-                                <p class="text-[9px] font-bold uppercase text-slate-400 mb-1">Total Package Value</p>
+                                <p class="text-[9px] font-bold uppercase text-slate-600 mb-1">Total Package Value</p>
                                 <h5 id="enroll-summary" class="text-xl font-black">₹0</h5>
                             </div>
                             <button onclick="saveEnrollment()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl hover:bg-indigo-700 transition-all">Enroll Patient</button>
@@ -940,14 +940,14 @@
                     </div>
 
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
-                        <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-4">Active Cases — Tap "Log Session" To Add A Visit</h4>
+                        <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest mb-4">Active Cases — Tap "Log Session" To Add A Visit</h4>
                         <div id="active-cases-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1"></div>
                     </div>
 
                     <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-10">
                         <div>
                             <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
+                                <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
                                 <div class="flex gap-2">
                                     <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Add Package</button>
                                     <div id="ws-rem-container">
@@ -960,13 +960,13 @@
                         <div class="glass-card p-10 rounded-[3rem] shadow-2xl sticky top-0 h-fit border-white">
                             <div class="flex justify-between items-center mb-6 px-2">
                                 <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-                                <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-500"></h4>
+                                <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-600"></h4>
                                 <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
                             </div>
                             <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-8"></div>
                             <div class="grid grid-cols-2 gap-4 mb-6">
                                 <div>
-                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Base Rate</label>
+                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Base Rate</label>
                                     <input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black">
                                 </div>
                                 <div>
@@ -976,7 +976,7 @@
                             </div>
                             <div class="grid grid-cols-2 gap-4 mb-6">
                                 <div>
-                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Payment Mode</label>
+                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
                                     <select id="session-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
                                         <option value="Cash">Cash</option>
                                         <option value="UPI">UPI</option>
@@ -985,7 +985,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Amount Paid (₹)</label>
+                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Paid (₹)</label>
                                     <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
                                 </div>
                             </div>
@@ -1001,11 +1001,11 @@
                 <div class="max-w-7xl mx-auto space-y-6">
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
                         <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Select Visit Date</label>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">Select Visit Date</label>
                             <input type="date" id="registry-date-input" onchange="renderDailyRegistry()" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
                         </div>
                         <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">Search Patient</label>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">Search Patient</label>
                             <div class="flex gap-2">
                                 <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Name or ID..." class="flex-1 p-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 outline-none">
                                 <button onclick="printDailyRegistry()" class="toolbar-btn bg-slate-800 text-white hover:bg-slate-900 flex-shrink-0" title="Print this day's registry"><i data-lucide="printer" class="w-3.5 h-3.5"></i> Print</button>
@@ -1015,11 +1015,11 @@
 
                     <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end border-indigo-100">
                         <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">From Date</label>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">From Date</label>
                             <input type="date" id="registry-range-from" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
                         </div>
                         <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 block mb-2 ml-1">To Date</label>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">To Date</label>
                             <input type="date" id="registry-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
                         </div>
                         <button onclick="openRegistryDownloadModal()" class="toolbar-btn bg-indigo-600 text-white hover:bg-indigo-700 justify-center py-4"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download Range (CSV)</button>
@@ -1027,18 +1027,18 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="glass-card p-6 rounded-[2rem] shadow-sm border-indigo-50">
-                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Total Visits</p>
+                            <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Total Visits</p>
                             <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600">0</h3>
                         </div>
                         <div class="glass-card p-6 rounded-[2rem] shadow-sm border-emerald-50">
-                            <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Collection for this Date</p>
+                            <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Collection for this Date</p>
                             <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600">₹0</h3>
                         </div>
                     </div>
 
                     <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                         <table class="w-full text-left text-sm">
-                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                                 <tr>
                                     <th class="p-5">#</th>
                                     <th class="p-5">Patient Name</th>
@@ -1052,7 +1052,7 @@
                             <tbody id="registry-table-body" class="divide-y divide-slate-100"></tbody>
                             <tfoot class="bg-slate-50/50">
                                 <tr>
-                                    <td colspan="6" class="p-5 text-right font-black text-slate-500 uppercase text-[10px]">Daily Collection Total:</td>
+                                    <td colspan="6" class="p-5 text-right font-black text-slate-600 uppercase text-[10px]">Daily Collection Total:</td>
                                     <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 text-base">₹0</td>
                                 </tr>
                             </tfoot>
@@ -1065,7 +1065,7 @@
             <section id="tab-patients" class="section-hidden animate-slide">
                 <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <i data-lucide="search" class="w-4 h-4 text-slate-400 ml-2"></i>
+                        <i data-lucide="search" class="w-4 h-4 text-slate-600 ml-2"></i>
                         <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
                     </div>
                     <div class="flex items-center gap-2">
@@ -1078,7 +1078,7 @@
 
                 <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                             <tr>
                                 <th class="p-5">ID</th>
                                 <th class="p-5">Patient Name</th>
@@ -1129,7 +1129,7 @@
 
                     <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
                         <table class="w-full text-left text-sm">
-                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                                 <tr>
                                     <th class="p-5">Patient Registration</th>
                                     <th class="p-5">ID</th>
@@ -1154,7 +1154,7 @@
                 </div>
                 <div class="overflow-y-auto pr-2">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600 sticky top-0">
                             <tr>
                                 <th class="p-4">Patient Name</th>
                                 <th class="p-4 text-center">Sessions Left</th>
@@ -1173,7 +1173,7 @@
                     <h3 class="text-xl font-black">Download Visit Registry</h3>
                     <button onclick="closeRegistryDownloadModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4">Choose branch to export</p>
+                <p class="text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-4">Choose branch to export</p>
                 <div class="space-y-3">
                     <button onclick="downloadRegistryRangeCSV('ALL')" class="w-full py-4 rounded-2xl bg-slate-900 text-white font-black text-xs uppercase tracking-wide hover:bg-slate-800 transition-all">Download All Branches</button>
                     <button onclick="downloadRegistryRangeCSV('POC')" class="w-full py-4 rounded-2xl bg-indigo-50 text-indigo-700 font-black text-xs uppercase tracking-wide hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare (POC)</button>
@@ -1194,7 +1194,7 @@
                 </div>
                 <div class="overflow-y-auto pr-2">
                     <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-400 sticky top-0">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600 sticky top-0">
                             <tr>
                                 <th class="p-4">Patient</th>
                                 <th class="p-4">ID</th>
@@ -1243,7 +1243,7 @@
                         <span id="pd-payment" class="text-xl font-black text-emerald-700"></span>
                     </div>
                     <div class="mt-4">
-                        <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Session Dates</h5>
+                        <h5 class="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2 px-1">Session Dates</h5>
                         <div id="pd-dates-list" class="space-y-1"></div>
                     </div>
                 </div>
@@ -1260,20 +1260,20 @@
                 <input type="hidden" id="ep-original-name">
                 <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical ID</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Clinical ID</label>
                         <input type="text" id="ep-id" readonly class="w-full mt-1 p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Full Patient Name</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Full Patient Name</label>
                         <input type="text" id="ep-name" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Age</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Age</label>
                             <input type="number" id="ep-age" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                         </div>
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Gender</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Gender</label>
                             <select id="ep-gender" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                                 <option>Male</option>
                                 <option>Female</option>
@@ -1281,15 +1281,15 @@
                         </div>
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Phone / WhatsApp Number</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Phone / WhatsApp Number</label>
                         <input type="tel" id="ep-phone" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical Diagnosis / Condition</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Clinical Diagnosis / Condition</label>
                         <input type="text" id="ep-condition" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Address</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Address</label>
                         <input type="text" id="ep-address" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                     </div>
                 </div>
@@ -1330,23 +1330,23 @@
                 </div>
 
                 <div class="border-t pt-6 space-y-4">
-                    <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Add New SOAP Entry</h4>
+                    <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Add New SOAP Entry</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Subjective (S)</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Subjective (S)</label>
                             <input type="text" id="pn-subjective" placeholder="Patient complaints, pain level..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Objective (O)</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Objective (O)</label>
                             <input type="text" id="pn-objective" placeholder="ROM, strength, functional tests..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Assessment (A)</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Assessment (A)</label>
                         <input type="text" id="pn-assessment" placeholder="Clinical impression, progress toward goals..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Plan (P)</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Plan (P)</label>
                         <input type="text" id="pn-plan" placeholder="Next steps, exercises, follow-up..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                     </div>
                     <div class="flex gap-3">
@@ -1373,28 +1373,28 @@
                 </div>
 
                 <div class="border-t pt-6 space-y-4">
-                    <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Add Exercise</h4>
+                    <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Add Exercise</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Exercise Name</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Exercise Name</label>
                             <input type="text" id="ex-input-name" placeholder="e.g., Quadriceps Strengthening" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Sets × Reps</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Sets × Reps</label>
                             <input type="text" id="ex-input-sets" placeholder="e.g., 3 × 10" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Instructions</label>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Instructions</label>
                         <textarea id="ex-input-instructions" placeholder="Step-by-step instructions..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm" rows="2"></textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Video Link (Optional)</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Video Link (Optional)</label>
                             <input type="text" id="ex-input-video" placeholder="https://youtube.com/..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                         <div>
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1 block mb-1">Frequency</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Frequency</label>
                             <input type="text" id="ex-input-freq" placeholder="e.g., 2× daily" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
                         </div>
                     </div>
@@ -1844,7 +1844,7 @@ Object.keys(patientLookup).forEach(name => {
             });
 
             if (dayRecords.length === 0) {
-                html = `<tr><td colspan="7" class="p-10 text-center text-slate-400 italic">No clinical visits recorded for this date.</td></tr>`;
+                html = `<tr><td colspan="7" class="p-10 text-center text-slate-600 italic">No clinical visits recorded for this date.</td></tr>`;
             } else {
                 dayRecords.forEach((r, idx) => {
                     const cid = r[1],
@@ -1861,9 +1861,9 @@ Object.keys(patientLookup).forEach(name => {
                     html += `<tr class="hover:bg-slate-50 transition-colors" data-search-tag="${name.toUpperCase()} ${cid.toUpperCase()}">
                         <td class="p-5 font-bold text-slate-400">${idx + 1}</td>
                         <td class="p-5 font-black uppercase text-indigo-700">${name}</td>
-                        <td class="p-5 font-bold text-slate-500">${cid}</td>
+                        <td class="p-5 font-bold text-slate-600">${cid}</td>
                         <td class="p-5 text-center"><span class="bg-slate-100 text-[10px] font-black uppercase px-3 py-1 rounded-lg">${branch}</span></td>
-                        <td class="p-5 text-slate-500 italic truncate max-w-[200px]">${diag || '-'}</td>
+                        <td class="p-5 text-slate-600 italic truncate max-w-[200px]">${diag || '-'}</td>
                         <td class="p-5 text-center"><span class="${modeBadgeColor} text-[10px] font-black uppercase px-3 py-1 rounded-lg">${paymentMode}</span></td>
                         <td class="p-5 text-right font-black text-slate-800">₹${fee.toLocaleString()}</td>
                     </tr>`;
@@ -1916,7 +1916,7 @@ Object.keys(patientLookup).forEach(name => {
                     tbody.innerHTML += `<tr class="hover:bg-slate-50">
                         <td class="p-4 font-bold uppercase">${name}</td>
                         <td class="p-4 font-black text-indigo-500 text-xs">${p.id}</td>
-                        <td class="p-4 text-xs italic text-slate-500">${p.diag}</td>
+                        <td class="p-4 text-xs italic text-slate-600">${p.diag}</td>
                         <td class="p-4 text-center"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded text-[10px] font-black">${rem}/${p.purchased}</span></td>
                         <td class="p-4 text-center"><button onclick="closePatientCase('${name}', event)" class="bg-rose-500 text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase hover:bg-rose-600 transition-all">Close Case</button></td>
                     </tr>`;
@@ -2027,8 +2027,24 @@ Object.keys(patientLookup).forEach(name => {
             const datesToSubmit = [...selectedDates];
 
             const newRows = datesToSubmit.map(dateString => ([
-                new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", note, "Rehab", dateString, totalFee, 0, 0, 0, "", "", paymentMode, amountPaid
-            ]));
+    new Date().toISOString(),     // [0]
+    p.id,                         // [1]
+    selectedPatientName,          // [2]
+    p.phone,                      // [3]
+    "",                           // [4] age
+    "",                           // [5] gender
+    note,                         // [6] diagnosis
+    "Rehab",                      // [7] type
+    dateString,                   // [8] date
+    totalFee,                     // [9] fee
+    0,                            // [10] purchased
+    0,                            // [11] advance
+    0,                            // [12] discount
+    "",                           // [13]
+    "",                           // [14] address
+    paymentMode,                  // [15] payment mode
+    amountPaid                    // [16] amount paid
+]));
             globalData.push(...newRows);
             processData();
             selectedDates = [];
@@ -2305,7 +2321,7 @@ Object.keys(patientLookup).forEach(name => {
                 badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
             } else {
                 badge.innerText = "REGULAR";
-                badge.className = "bg-slate-200 text-slate-500 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+                badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
             }
             document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
                 const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
@@ -2368,7 +2384,7 @@ Object.keys(patientLookup).forEach(name => {
             if (!grid) return;
             const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
             if (!names.length) {
-                grid.innerHTML = `<p class="text-xs text-slate-400 italic col-span-full">No active cases yet — enroll a patient to get started.</p>`;
+                grid.innerHTML = `<p class="text-xs text-slate-600 italic col-span-full">No active cases yet — enroll a patient to get started.</p>`;
                 return;
             }
             grid.innerHTML = names.map(n => {
@@ -2423,7 +2439,7 @@ Object.keys(patientLookup).forEach(name => {
                     } else if (rem > 0) {
                         statusBadge = `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>`;
                     } else {
-                        statusBadge = `<span class="bg-slate-100 text-slate-400 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
+                        statusBadge = `<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
                     }
 
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
@@ -2431,7 +2447,7 @@ Object.keys(patientLookup).forEach(name => {
                         <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
                         <td class="p-5 text-xs font-bold text-slate-600 italic">${p.age || '—'}Y / ${p.gender || '—'}</td>
                         <td class="p-5 text-xs font-black text-slate-700">${p.phone || '—'}</td>
-                        <td class="p-5 italic text-slate-400 text-xs truncate max-w-[150px]">${p.diag}</td>
+                        <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px]">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-2 justify-center">
                             <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
@@ -2445,8 +2461,8 @@ Object.keys(patientLookup).forEach(name => {
 
                     bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
                         <td class="p-5 font-bold uppercase text-xs">${name}</td>
-                        <td class="p-5 font-black text-xs text-slate-500">${p.id}</td>
-                        <td class="p-5 font-black text-xs text-slate-500">${consumed} / ${p.purchased}</td>
+                        <td class="p-5 font-black text-xs text-slate-600">${p.id}</td>
+                        <td class="p-5 font-black text-xs text-slate-600">${consumed} / ${p.purchased}</td>
                         <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
                         <td class="p-5 text-center">
                             <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">View Document (3P)</button>
@@ -3024,7 +3040,7 @@ Object.keys(patientLookup).forEach(name => {
             });
             rows.sort((a, b) => a.rem - b.rem);
             if (!rows.length) {
-                el.innerHTML = `<p class="text-xs text-slate-400 italic">No patients are close to finishing their package right now.</p>`;
+                el.innerHTML = `<p class="text-xs text-slate-600 italic">No patients are close to finishing their package right now.</p>`;
                 return;
             }
             el.innerHTML = rows.map(r => `
@@ -3066,7 +3082,7 @@ Object.keys(patientLookup).forEach(name => {
             if (statOutstandingEl) statOutstandingEl.innerText = "₹" + total.toLocaleString();
 
             if (!rows.length) {
-                el.innerHTML = `<p class="text-xs text-slate-400 italic">No outstanding dues right now.</p>`;
+                el.innerHTML = `<p class="text-xs text-slate-600 italic">No outstanding dues right now.</p>`;
                 return;
             }
 
@@ -3315,24 +3331,53 @@ Object.keys(patientLookup).forEach(name => {
         // ===== PROGRESS NOTES / SOAP (FIXED) =====
         let progressNotes = {};
 
-        function openProgressNotesModal(patientName) {
-            if (!patientName) return;
-            document.getElementById('progress-notes-timeline').innerHTML = '';
+        function clearProgressNoteForm() {
+    document.getElementById('pn-subjective').value = '';
+    document.getElementById('pn-objective').value = '';
+    document.getElementById('pn-assessment').value = '';
+    document.getElementById('pn-plan').value = '';
+}
 
-            selectedPatientName = patientName;
-            document.getElementById('pn-patient-name').innerText = patientName;
+function saveProgressNote() {
+    const subjective = document.getElementById('pn-subjective').value.trim();
+    const objective = document.getElementById('pn-objective').value.trim();
+    const assessment = document.getElementById('pn-assessment').value.trim();
+    const plan = document.getElementById('pn-plan').value.trim();
 
-            if (!progressNotes[patientName]) progressNotes[patientName] = [];
-            renderProgressNotesTimeline();
-            document.getElementById('progress-notes-modal').classList.remove('hidden');
-            clearProgressNoteForm();
-        }
+    if (!subjective || !objective || !assessment || !plan) {
+        showToast('Please fill all SOAP fields', 'warning');
+        return;
+    }
+
+    if (!progressNotes[selectedPatientName]) progressNotes[selectedPatientName] = [];
+    progressNotes[selectedPatientName].push({
+        date: getLocalISOString(),
+        subjective,
+        objective,
+        assessment,
+        plan
+    });
+
+    renderProgressNotesTimeline();
+    clearProgressNoteForm();
+    showToast('SOAP entry saved', 'success');
+
+    syncToBackend({
+        action: "saveProgressNote",
+        name: selectedPatientName,
+        subjective, objective, assessment, plan
+    }).catch(() => {});
+}
+
+function closeProgressNotesModal() {
+    document.getElementById('progress-notes-modal').classList.add('hidden');
+}
 
         function renderProgressNotesTimeline() {
             const notes = progressNotes[selectedPatientName] || [];
             const container = document.getElementById('progress-notes-timeline');
             if (!notes.length) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">No SOAP entries yet.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-600 italic">No SOAP entries yet.</p>`;
                 return;
             }
             container.innerHTML = notes.slice().reverse().map((note, idx) => `
@@ -3379,7 +3424,7 @@ Object.keys(patientLookup).forEach(name => {
             const exercises = exercisePlans[selectedPatientName] || [];
             const container = document.getElementById('exercise-plan-list');
             if (!exercises.length) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">No exercises yet.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-600 italic">No exercises yet.</p>`;
                 return;
             }
             container.innerHTML = exercises.map((ex, idx) => `
@@ -3507,7 +3552,7 @@ Object.keys(patientLookup).forEach(name => {
     if (nav) {
         const btn = document.createElement('button');
         btn.onclick = function() { switchTab('inquiry', this); };
-        btn.className = 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-50 transition-all';
+        btn.className = 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all';
         btn.innerHTML = '<i data-lucide="clipboard-list" class="w-5 h-5"></i> Inquiries';
         nav.appendChild(btn);
     }
@@ -3524,7 +3569,7 @@ Object.keys(patientLookup).forEach(name => {
                     <h4 class="text-[10px] font-black uppercase text-indigo-500 tracking-widest border-b pb-4 mb-6">Patient Inquiry & Clinical Registry</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="space-y-4">
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Identity</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Identity</label>
                             <input type="text" id="iq-name" placeholder="Patient Full Name" class="w-full p-4 bg-slate-50 rounded-2xl font-bold outline-none border border-transparent focus:border-indigo-300">
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="number" id="iq-age" placeholder="Age" class="w-full p-4 bg-slate-50 rounded-2xl font-bold outline-none">
@@ -3535,7 +3580,7 @@ Object.keys(patientLookup).forEach(name => {
                             <input type="tel" id="iq-phone" value="+91" class="w-full p-4 bg-slate-50 rounded-2xl font-bold outline-none">
                         </div>
                         <div class="space-y-4">
-                            <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Clinical Assessment</label>
+                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Clinical Assessment</label>
                             <input type="text" id="iq-diagnosis" placeholder="Clinical Diagnosis" class="w-full p-4 bg-indigo-50/50 rounded-2xl font-bold outline-none border border-transparent focus:border-indigo-300 text-indigo-700">
                             <textarea id="iq-note" placeholder="History / Complaints / Notes" rows="3" class="w-full p-4 bg-slate-50 rounded-2xl font-bold outline-none border border-transparent focus:border-indigo-300"></textarea>
                         </div>
@@ -3549,12 +3594,12 @@ Object.keys(patientLookup).forEach(name => {
 
                 <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden">
                     <div class="p-6 bg-slate-50/50 border-b flex justify-between items-center">
-                        <h4 class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Inquiry Follow-up Registry</h4>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase">Displays last 15 local entries</span>
+                        <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Inquiry Follow-up Registry</h4>
+                        <span class="text-[9px] font-bold text-slate-600 uppercase">Displays last 15 local entries</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
-                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-500">
+                            <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                                 <tr>
                                     <th class="p-5">Name</th>
                                     <th class="p-5">Clinical Diagnosis</th>
@@ -3626,7 +3671,7 @@ Object.keys(patientLookup).forEach(name => {
         if(!body) return;
         
         if (list.length === 0) {
-            body.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400 italic text-xs">No inquiries registered yet.</td></tr>';
+            body.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-600 italic text-xs">No inquiries registered yet.</td></tr>';
             return;
         }
 
@@ -3634,7 +3679,7 @@ Object.keys(patientLookup).forEach(name => {
             <tr class="hover:bg-slate-50/50">
                 <td class="p-5 font-black text-indigo-700 uppercase text-xs">${i.name}</td>
                 <td class="p-5 font-bold text-slate-600 text-xs">${i.diagnosis}</td>
-                <td class="p-5 font-black text-slate-500 text-xs">${i.phone}</td>
+                <td class="p-5 font-black text-slate-600 text-xs">${i.phone}</td>
                 <td class="p-5 text-center">
                     <button onclick="sendIqFollowUp('${i.name}', '${i.phone}', '${i.diagnosis}')" class="bg-[#25D366] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 mx-auto shadow-sm hover:scale-105 transition-all">
                         <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Reminder
