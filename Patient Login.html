@@ -213,107 +213,148 @@
         let patientLogs = [];
 
         async function attemptLogin() {
-            const name = document.getElementById('login-name').value.trim();
-            const idLast4 = document.getElementById('login-id').value.trim();
-            const btn = document.getElementById('login-btn');
-            
-            if(!name || !idLast4) return;
-            btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin border-2 border-white/20 border-t-white rounded-full h-5 w-5"></span>`;
+    const name = document.getElementById('login-name').value.trim();
+    const idLast4 = document.getElementById('login-id').value.trim();
+    const btn = document.getElementById('login-btn');
+    
+    if(!name || !idLast4) return;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="animate-spin border-2 border-white/20 border-t-white rounded-full h-5 w-5"></span>`;
 
-            try {
-                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "fetchAdminData" }) });
-                const response = await res.json();
-                
-                // THE FIX: Result is an object, we need the adminData array
-                globalData = response.adminData || [];
-                exerciseData = response.exercisePlans || [];
+    try {
+        const res = await fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            body: JSON.stringify({ action: "fetchAdminData" }) 
+        });
+        const response = await res.json();
+        
+        // Debugging: This will show you exactly what the sheet is sending in the browser console
+        console.log("Cloud Response:", response);
 
-                const match = globalData.find(r => 
-                    String(r[2]).toLowerCase() === name.toLowerCase() && 
-                    String(r[1]).endsWith(idLast4)
-                );
+        globalData = response.adminData || [];
+        // THE FIX: Ensure we map exercisePlans from the response to our local variable
+        exerciseData = response.exercisePlans || [];
 
-                if (match) {
-                    loggedInPatient = { 
-                        name: match[2], 
-                        id: match[1], 
-                        phone: match[3], 
-                        age: match[4], 
-                        gender: match[5], 
-                        diag: match[6], 
-                        address: match[14] 
-                    };
-                    patientLogs = globalData.filter(r => r[1] === loggedInPatient.id);
-                    renderUI();
-                } else {
-                    document.getElementById('login-error').classList.remove('hidden');
-                }
-            } catch (e) { 
-                console.error(e);
-                alert("Secure Connection Failed"); 
-            }
-            btn.disabled = false;
-            btn.innerHTML = `Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>`;
-            lucide.createIcons();
+        const match = globalData.find(r => 
+            String(r[2]).trim().toLowerCase() === name.toLowerCase() && 
+            String(r[1]).trim().endsWith(idLast4)
+        );
+
+        if (match) {
+            loggedInPatient = { 
+                name: String(match[2]).trim(), 
+                id: match[1], 
+                phone: match[3], 
+                age: match[4], 
+                gender: match[5], 
+                diag: match[6], 
+                address: match[14] 
+            };
+            patientLogs = globalData.filter(r => r[1] === loggedInPatient.id);
+            renderUI();
+        } else {
+            document.getElementById('login-error').classList.remove('hidden');
         }
+    } catch (e) { 
+        console.error("Login Error:", e);
+        alert("Secure Connection Failed. Check your internet or SCRIPT_URL."); 
+    }
+    btn.disabled = false;
+    btn.innerHTML = `Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>`;
+    lucide.createIcons();
+}
 
         function renderUI() {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('app-content').classList.remove('hidden');
+    document.getElementById('login-section').classList.add('hidden');
+    document.getElementById('app-content').classList.remove('hidden');
 
-            const sessions = patientLogs.filter(r => r[9] > 0 && !['bill issued', 'case closed', 'enrollment'].includes(String(r[7]).toLowerCase()));
-            const totalPurchased = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
-            const totalAdvance = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[11]) || 0), 0);
-            const lastPayment = patientLogs.filter(r => parseFloat(r[9]) > 0).sort((a,b) => new Date(b[8]) - new Date(a[8]))[0];
+    // 1. FILTER LOGS: Count everything with a fee except Bills and Closures
+    const sessions = patientLogs.filter(r => 
+        parseFloat(r[9]) > 0 && 
+        !['bill issued', 'case closed'].includes(String(r[7]).toLowerCase())
+    );
 
-            document.getElementById('p-name').innerText = loggedInPatient.name;
-            document.getElementById('p-diag').innerText = loggedInPatient.diag || "Clinical Rehabilitation Plan";
-            document.getElementById('p-age-gender').innerText = `${loggedInPatient.age || '-'}Y / ${loggedInPatient.gender || '-'}`;
-            document.getElementById('p-phone').innerText = loggedInPatient.phone || '-';
-            document.getElementById('p-id-badge').innerText = loggedInPatient.id;
-            document.getElementById('p-attended').innerText = sessions.length;
-            document.getElementById('p-rem-sessions').innerText = (totalPurchased - sessions.length) > 0 ? (totalPurchased - sessions.length) : "Regular";
-            document.getElementById('p-advance').innerText = "₹" + totalAdvance.toLocaleString();
-            document.getElementById('p-last-pay-amt').innerText = lastPayment ? "₹" + parseFloat(lastPayment[9]).toLocaleString() : "₹0";
+    // 2. CALCULATE TOTAL PURCHASED: Total from all Enrollment entries
+    const totalPurchased = patientLogs
+        .filter(r => String(r[7]).toLowerCase() === 'enrollment')
+        .reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
 
-            // Home Exercises Logic
-            const myExercises = exerciseData.filter(ex => ex[0] === loggedInPatient.name);
-            if(myExercises.length > 0) {
-                document.getElementById('exercise-section').classList.remove('hidden');
-                document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
-                    <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
-                        <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[1]}</h4>
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[2]} • ${ex[5]}</p>
-                        <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[3]}</p>
-                        ${ex[4] ? `<a href="${ex[4]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
-                    </div>
-                `).join('');
-            }
+    const totalAdvance = patientLogs
+        .filter(r => String(r[7]).toLowerCase() === 'enrollment')
+        .reduce((s, r) => s + (parseFloat(r[11]) || 0), 0);
 
-            const waMsg = encodeURIComponent("Hello Prism, I am " + loggedInPatient.name + " (ID: " + loggedInPatient.id + "). I want to book my next session.");
-            document.getElementById('book-btn').href = `https://wa.me/919708059081?text=${waMsg}`;
-            document.getElementById('wa-btn').href = `https://wa.me/919708059081?text=${encodeURIComponent("Clinical Assistance required for ID: " + loggedInPatient.id)}`;
+    const lastPayment = patientLogs
+        .filter(r => parseFloat(r[9]) > 0)
+        .sort((a,b) => new Date(b[8]) - new Date(a[8]))[0];
 
-            document.getElementById('passbook-list').innerHTML = sessions.length ? sessions.map(s => `
-                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
-                        <div><p class="text-xs font-black text-slate-800">${formatDate(s[8])}</p><p class="text-[10px] text-slate-400 font-bold uppercase">${s[6] || 'Treatment'}</p></div>
-                    </div>
-                    <span class="text-[10px] font-black text-indigo-600 border border-indigo-100 px-2 py-1 rounded">₹${s[9]}</span>
+    // Update Basic Info
+    document.getElementById('p-name').innerText = loggedInPatient.name;
+    document.getElementById('p-diag').innerText = loggedInPatient.diag || "Clinical Rehabilitation Plan";
+    document.getElementById('p-age-gender').innerText = `${loggedInPatient.age || '-'}Y / ${loggedInPatient.gender || '-'}`;
+    document.getElementById('p-phone').innerText = loggedInPatient.phone || '-';
+    document.getElementById('p-id-badge').innerText = loggedInPatient.id;
+    
+    // Stats Update
+    document.getElementById('p-attended').innerText = sessions.length;
+    
+    // Calculation: Total Package - Sessions Used. If 0 or no package, show "Regular"
+    const remaining = totalPurchased - sessions.length;
+    document.getElementById('p-rem-sessions').innerText = (totalPurchased > 0) ? (remaining > 0 ? remaining : 0) : "Regular";
+    
+    document.getElementById('p-advance').innerText = "₹" + totalAdvance.toLocaleString();
+    document.getElementById('p-last-pay-amt').innerText = lastPayment ? "₹" + parseFloat(lastPayment[9]).toLocaleString() : "₹0";
+
+    // 3. HOME EXERCISES: Case-insensitive and Trimmed matching
+    const myExercises = exerciseData.filter(ex => 
+        String(ex[0]).trim().toLowerCase() === loggedInPatient.name.toLowerCase().trim()
+    );
+
+    if(myExercises.length > 0) {
+        document.getElementById('exercise-section').classList.remove('hidden');
+        document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
+            <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
+                <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[1]}</h4>
+                <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[2] || 'As prescribed'} • ${ex[5] || 'Daily'}</p>
+                <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[3] || 'Follow clinical instructions'}</p>
+                ${ex[4] ? `<a href="${ex[4]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
+            </div>
+        `).join('');
+    } else {
+        document.getElementById('exercise-section').classList.add('hidden');
+    }
+
+    // Update Links
+    const waMsg = encodeURIComponent("Hello Prism, I am " + loggedInPatient.name + " (ID: " + loggedInPatient.id + "). I want to book my next session.");
+    document.getElementById('book-btn').href = `https://wa.me/919708059081?text=${waMsg}`;
+    document.getElementById('wa-btn').href = `https://wa.me/919708059081?text=${encodeURIComponent("Clinical Assistance required for ID: " + loggedInPatient.id)}`;
+
+    // Passbook Rendering
+    document.getElementById('passbook-list').innerHTML = sessions.length ? sessions.map(s => `
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl">
+                    <i data-lucide="${String(s[7]).toLowerCase() === 'enrollment' ? 'user-plus' : 'check-circle'}" class="w-4 h-4"></i>
                 </div>
-            `).reverse().join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No history recorded yet.</div>';
-
-            const bills = patientLogs.filter(r => String(r[7]).toLowerCase() === 'bill issued');
-            document.getElementById('bill-list').innerHTML = bills.length ? bills.map(b => `
-                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center">
-                    <div><p class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Statement No: ${b[13]}</p><h4 class="font-black text-slate-800">${formatDate(b[8])}</h4></div>
-                    <button onclick="generateOfficialDoc('${b[13]}')" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:scale-105 transition-all"><i data-lucide="file-text" class="w-5 h-5"></i></button>
+                <div>
+                    <p class="text-xs font-black text-slate-800">${formatDate(s[8])}</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">${s[7] === 'Enrollment' ? 'Initial Assessment' : (s[6] || 'Rehabilitation')}</p>
                 </div>
-            `).join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No statements issued.</div>';
-            lucide.createIcons();
-        }
+            </div>
+            <span class="text-[10px] font-black text-indigo-600 border border-indigo-100 px-2 py-1 rounded">₹${s[9]}</span>
+        </div>
+    `).reverse().join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No history recorded yet.</div>';
+
+    // Bill Rendering
+    const bills = patientLogs.filter(r => String(r[7]).toLowerCase() === 'bill issued');
+    document.getElementById('bill-list').innerHTML = bills.length ? bills.map(b => `
+        <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center">
+            <div><p class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Statement No: ${b[13]}</p><h4 class="font-black text-slate-800">${formatDate(b[8])}</h4></div>
+            <button onclick="generateOfficialDoc('${b[13]}')" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:scale-105 transition-all"><i data-lucide="file-text" class="w-5 h-5"></i></button>
+        </div>
+    `).join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No statements issued.</div>';
+    
+    lucide.createIcons();
+}
 
         function generateOfficialDoc(stmtNo) {
             const p = loggedInPatient;
