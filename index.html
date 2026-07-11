@@ -1,965 +1,393 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Best Physiotherapy Center in Patna | Neuro, Ortho & Advanced Rehab | Prism Physiotherapy</title>
-<meta name="description" content="Prism Physiotherapy is a leading physiotherapy center in Patna (Gola Road) offering expert neuro physiotherapy, orthopaedic rehabilitation, stroke rehab, and sciatica pain management by Dr. Ravi Kumar. Book your appointment today!">
-<meta name="keywords" content="best physiotherapy center in Patna, physiotherapy near me Patna, neuro physiotherapy Patna, orthopaedic physiotherapy Patna, pain management clinic Patna, back pain treatment Patna, stroke rehabilitation Patna, Dr. Ravi Kumar physiotherapist Patna, Prism Physiotherapy Patna, Gola Road physiotherapy, home physiotherapy Patna, manual therapy Patna">
-<link rel="canonical" href="https://prismhealthcare.in/">
-
-<!-- Geo Location Tags -->
-<meta name="geo.region" content="IN-BR" />
-<meta name="geo.placename" content="Patna" />
-<meta name="geo.position" content="25.612674;85.064562" />
-<meta name="ICBM" content="25.612674, 85.064562" />
-
-<!-- Open Graph / Social Media -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://prismhealthcare.in/">
-<meta property="og:title" content="Best Physiotherapy Center in Patna | Prism Physiotherapy">
-<meta property="og:description" content="Super Speciality Physiotherapy Clinic in Gola Road, Patna. Transforming pain into power with expert neurological & orthopaedic clinical care.">
-<meta property="og:image" content="Prism logo.jpeg">
-<meta property="og:site_name" content="Prism Physiotherapy">
-
-<!-- Structured Data (JSON-LD) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "PhysiotherapyClinic",
-  "name": "Prism Physiotherapy",
-  "image": "https://prismhealthcare.in/PrismLogo.png",
-  "@id": "https://prismhealthcare.in/",
-  "url": "https://prismhealthcare.in/",
-  "telephone": "+919708059081",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Orthocare Hospital, Gola Road",
-    "addressLocality": "Patna",
-    "addressRegion": "Bihar",
-    "postalCode": "801503",
-    "addressCountry": "IN"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 25.612674,
-    "longitude": 85.064562
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    "opens": "09:00",
-    "closes": "20:00"
-  },
-  "medicalSpecialty": ["Neurological Rehabilitation", "Orthopaedic Physiotherapy", "Pain Management", "Pediatric Physiotherapy", "Sports Injury"],
-  "founder": { "@type": "Person", "name": "Dr. Ravi Kumar" },
-  "areaServed": "Patna, Bihar"
-}
-</script>
-
-<link rel="icon" type="image/jpg" href="Logo3.jpg">
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .clinical-blue { color: #0056b3; }
-    .bg-clinical-blue { background-color: #0056b3; }
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-    .reveal.active { opacity: 1; transform: translateY(0); }
-    .whatsapp-float { animation: bounce 2s infinite; }
-    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
-    #chat-window { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateY(20px) scale(0.9); opacity: 0; pointer-events: none; }
-    #chat-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
-    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 14px; margin-bottom: 10px; }
-    .bot-msg { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; }
-    .user-msg { background: #0056b3; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
-    #mobile-menu { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
-    #mobile-menu.open { transform: translateX(0); }
-</style>
-</head>
-
-<body class="bg-white text-slate-900 overflow-x-hidden">
-
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/919708059081?text=Hi%20Prism%20Physiotherapy,%20I%20would%20like%20to%20book%20an%20appointment."
-        class="fixed bottom-6 right-6 z-[100] bg-green-500 text-white p-4 rounded-full shadow-2xl whatsapp-float flex items-center justify-center hover:scale-110 transition-transform">
-        <i data-lucide="message-circle" class="w-8 h-8"></i>
-    </a>
-
-    <!-- Bot Toggle -->
-    <div class="fixed bottom-6 left-6 z-[100]">
-        <button id="chat-toggle" class="bg-clinical-blue text-white p-4 rounded-full shadow-2xl hover:rotate-12 transition-all">
-            <i data-lucide="bot" class="w-8 h-8"></i>
-        </button>
-    </div>
-
-    <!-- Chatbot Window -->
-    <div id="chat-window" class="fixed bottom-24 left-6 w-[350px] h-[550px] bg-white shadow-2xl rounded-2xl z-[100] flex flex-col border border-slate-100 overflow-hidden">
-        <div class="bg-clinical-blue p-4 text-white flex justify-between items-center shadow-md">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
-                <span class="font-bold text-sm uppercase">Prism Assistant</span>
-            </div>
-            <button id="close-chat"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div id="chat-content" class="flex-1 overflow-y-auto p-4 flex flex-col bg-slate-50"></div>
-        <div id="chat-input-area" class="hidden p-3 bg-white border-t flex gap-2">
-            <input type="text" id="bot-input" class="flex-1 text-sm p-3 bg-slate-100 rounded-xl outline-none border" placeholder="Type here...">
-            <button id="send-btn" class="bg-clinical-blue text-white p-3 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button>
-        </div>
-    </div>
-
-    <!-- Sticky Navbar -->
-<nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
-    <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
-        <a href="index.html" class="flex items-center group">
-            <img src="prism1.png" alt="Prism Physiotherapy Logo" class="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
-        </a>
-        <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
-            <a href="index.html" class="text-clinical-blue hover:opacity-80 transition-all border-b-2 border-clinical-blue pb-1">Home</a>
-            <a href="about.html" class="hover:text-clinical-blue transition-all">About</a>
-            <a href="services.html" class="hover:text-clinical-blue transition-all">Services</a>
-            <a href="careers.html" class="hover:text-clinical-blue transition-all">Careers</a>
-            <a href="Patient Login.html" class="clinical-blue transition">Patient Login</a>
-            <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:scale-95">Make Appointment</a>
-        </div>
-        <button id="menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus:outline-none"><i data-lucide="menu" class="w-8 h-8"></i></button>
-    </div>
-</nav>
-
-    <!-- Mobile Menu Slide-out -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col p-8 lg:hidden">
-        <div class="flex justify-end">
-            <button id="close-menu" class="p-2 text-slate-500"><i data-lucide="x" class="w-10 h-10"></i></button>
-        </div>
-        <div class="flex flex-col gap-8 mt-12 text-3xl font-bold">
-            <a href="index.html" class="mobile-link text-clinical-blue underline">Home</a>
-            <a href="about.html" class="mobile-link">About</a>
-            <a href="services.html" class="mobile-link">Services</a>
-            <a href="careers.html" class="mobile-link">Careers</a>
-            <a href="Patient Login.html" class="mobile-link">Patient Login</a>
-            <a href="appointment.html" class="bg-clinical-blue text-white p-4 rounded-2xl text-center text-lg">Make Appointment</a>
-            <a href="https://wa.me/919708059081" class="text-green-600 flex items-center gap-2">WhatsApp Us <i data-lucide="external-link"></i></a>
-        </div>
-    </div>
-
-
-<!-- Hero Section: Modern & Advanced Layout -->
-<section id="home" class="relative min-h-[95vh] flex items-center pt-24 overflow-hidden bg-slate-50">
+    <title>Patient Portal | Prism Clinical Intelligence</title>
     
-    <!-- Background Decor Elements -->
-    <div class="absolute top-0 right-0 w-1/2 h-full bg-blue-50/50 -skew-x-12 translate-x-20 z-0 hidden lg:block"></div>
-    <div class="absolute top-20 left-10 w-72 h-72 bg-clinical-blue/5 rounded-full blur-[100px] animate-pulse"></div>
-    <div class="absolute bottom-10 right-10 w-96 h-96 bg-blue-400/10 rounded-full blur-[120px]"></div>
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'clinical-blue': '#4f46e5'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); }
+        .hero-gradient { background: #ffffff; }
+        
+        .bill-page { 
+            width: 210mm; min-height: 297mm; background: white; padding: 20mm; 
+            margin: 20px auto; box-shadow: 0 0 40px rgba(0,0,0,0.1); 
+            position: relative; color: #0f172a; text-align: left; 
+        }
+        .doc-header2 { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:4px solid #4f46e5; padding-bottom:16px; margin-bottom:30px; }
+        .doc-meta2 { text-align:right; }
+        .meta-label { margin:0; font-size:9px; font-weight:800; color:#94a3b8; letter-spacing:1px; text-transform:uppercase; }
+        .meta-value { margin:2px 0 0; font-size:16px; font-weight:900; color:#0f172a; }
+        .section-label2 { font-size:10px; font-weight:900; letter-spacing:1px; color:#4f46e5; text-transform:uppercase; margin:0 0 6px; }
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            
-            <!-- Left Column: Content -->
-            <div class="reveal">
-                <div class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white shadow-sm border border-slate-100 mb-6">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Super Speciality Clinic • Patna</span>
-                    <div class="h-4 w-px bg-slate-200 mx-1"></div>
-                    <span class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">Top Rated 2024</span>
+        .doc-footer3 { position:absolute; bottom:14mm; left:20mm; right:20mm; display:flex; align-items:flex-start; gap:25px; border-top:1.5px solid #f1f5f9; padding-top:18px; }
+        .doc-footer3 .doc-qr-box { text-align:center; flex-shrink:0; width: 85px; }
+        .doc-footer3 .doc-qr-box .qr-slot { padding:5px; background:#fff; border:1px solid #e2e8f0; display:inline-block; border-radius:8px; }
+        .doc-footer3 .doc-qr-box small { display:block; font-size:8px; color:#94a3b8; margin-top:6px; line-height:1.2; font-weight: 700; text-transform: uppercase; }
+        .doc-footer3 .doc-cert-text { flex:1; }
+        .doc-footer3 .cert-title { font-size:10px; font-weight:900; letter-spacing:0.8px; color:#4f46e5; text-transform:uppercase; margin:0 0 4px; }
+        .doc-footer3 .cert-body { font-size:9.5px; color:#64748b; line-height:1.5; margin:0; text-align: justify; }
+        .doc-footer3 .doc-sign2 { text-align:right; flex-shrink:0; min-width:180px; }
+        .doc-footer3 .doc-sign2 strong { display:block; font-size:13px; color:#0f172a; font-weight: 900; margin-bottom: 2px; }
+        .doc-footer3 .doc-sign2 .sign-sub { display:block; font-size:8px; color:#94a3b8; font-weight: 800; letter-spacing:0.8px; text-transform: uppercase; margin-bottom: 1px; }
+        .doc-footer3 .doc-sign2 .sign-auth { display:block; font-size:9px; font-weight:900; color:#4f46e5; letter-spacing:0.5px; text-transform: uppercase; }
+
+        @media screen and (max-width: 800px) {
+            .bill-page { transform: scale(0.4); transform-origin: top center; margin-bottom: -620px; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="login-section">
+        <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
+            <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
+                <a href="index.html" class="flex items-center group">
+                    <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy Logo" class="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                </a>
+                <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-clinical-blue transition-all">Home</a>
+                    <a href="about.html" class="hover:text-clinical-blue transition-all">About</a>
+                    <a href="services.html" class="hover:text-clinical-blue transition-all">Services</a>
+                    <a href="careers.html" class="hover:text-clinical-blue transition-all">Careers</a>
+                    <a href="Patient Login.html" class="text-clinical-blue underline underline-offset-4">Patient Login</a>
+                    <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5">Make Appointment</a>
                 </div>
-
-                <h1 class="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.05] mb-6 tracking-tight">
-                    Advanced <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Neurological</span> &<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-                        Orthopaedic</span> Rehabilitation in patna.</span>
-                </h1>
-                    
-                <div class="space-y-4">
-                    <p class="text-lg text-slate-600 leading-relaxed max-w-xl">
-                        <strong class="text-slate-900">Prism Physiotherapy</strong> is a leading center in Patna delivering globally standard, evidence-based care. We specialize in <span class="clinical-blue font-semibold">Neuro, Ortho,musculoskeletal, and Pediatric rehab</span> through precise assessment and individualized recovery plans.
-                    </p>
-
-                    <!-- Modern Feature Chips -->
-                    <div class="flex flex-wrap gap-2 pt-2">
-                        <span class="px-3 py-1 bg-blue-100/50 border border-blue-200 text-clinical-blue text-[10px] font-bold rounded-lg uppercase">Dry Needling</span>
-                        <span class="px-3 py-1 bg-blue-100/50 border border-blue-200 text-clinical-blue text-[10px] font-bold rounded-lg uppercase">Cupping</span>
-                        <span class="px-3 py-1 bg-blue-100/50 border border-blue-200 text-clinical-blue text-[10px] font-bold rounded-lg uppercase">IASTM</span>
-                        <span class="px-3 py-1 bg-blue-100/50 border border-blue-200 text-clinical-blue text-[10px] font-bold rounded-lg uppercase">Imported Modalities</span>
-                    </div>
-
-                    <p class="text-base text-slate-500 leading-relaxed pt-2">
-                        We prioritize <span class="font-bold">one-on-one sessions</span> with <span class="font-bold">Personalized treatment programs</span> ensuring every patient receives focused attention and high-quality care. aligned with <span class="text-slate-900 font-semibold underline decoration-blue-400 underline-offset-4">global standard physiotherapy treatment</span> in patna.
-                    </p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 mt-10">
-                    <a href="https://wa.me/919708059081" class="group bg-clinical-blue text-white px-8 py-5 rounded-2xl font-bold shadow-2xl shadow-blue-200 hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
-                        Book via WhatsApp 
-                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                    <button onclick="document.getElementById('chat-toggle').click()" class="bg-white border border-slate-200 text-slate-700 px-8 py-5 rounded-2xl font-bold shadow-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-3">
-                        <i data-lucide="bot" class="w-5 h-5 text-clinical-blue"></i>
-                        Clinical Assistant
-                    </button>
-                </div>
-                
-                <!-- Trust Badges -->
-                <div class="mt-12 flex items-center gap-8 border-t border-slate-200 pt-8 opacity-70">
-                    <div class="flex flex-col">
-                        <span class="text-xl font-bold text-slate-900">1-on-1</span>
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Focused Care</span>
-                    </div>
-                    <div class="w-px h-8 bg-slate-200"></div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-bold text-slate-900">100%</span>
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Evidence Based</span>
-                    </div>
-                    <div class="w-px h-8 bg-slate-200"></div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-bold text-slate-900">Elite</span>
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Home Service</span>
-                    </div>
-                </div>
+                <button id="menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg"><i data-lucide="menu" class="w-8 h-8"></i></button>
             </div>
+        </nav>
 
-            <!-- Right Column: Visual Component -->
-            <div class="relative lg:block reveal">
-                <div class="relative z-10 rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-15px_rgba(0,0,0,0.1)] border-[12px] border-white">
-                    <img src="geriatrics.png" 
-                         alt="Advanced Physiotherapy Treatment Patna" 
-                         class="w-full h-[550px] object-cover">
+        <div id="login-screen" class="min-h-screen bg-white flex items-center justify-center px-6 pb-6 pt-28">
+            <div class="w-full max-w-md bg-white rounded-[3rem] p-10 shadow-2xl border border-slate-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full"></div>
+                <div class="relative z-10 text-center">
+                    <img src="https://prismhealthcare.in/prism1.png" class="h-12 mx-auto mb-6">
+                    <h2 class="text-2xl font-black tracking-tight mb-2 text-slate-800">Clinical Portal</h2>
+                    <p class="text-slate-400 text-sm mb-8 font-medium">Identify yourself to access medical records</p>
                     
-                    <!-- Floating Glass Card -->
-                    <div class="absolute bottom-6 left-6 right-6 backdrop-blur-xl bg-white/70 p-6 rounded-3xl border border-white/50 shadow-2xl">
-                        <div class="flex items-center gap-4">
-                            <div class="bg-clinical-blue text-white p-3 rounded-2xl shadow-inner">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-slate-900 leading-tight">Result-Oriented Treatment</p>
-                                <p class="text-xs text-slate-500">Regain mobility with confidence.</p>
-                            </div>
+                    <div class="space-y-4 text-left">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">User Id</label>
+                            <input type="text" id="login-name" placeholder="As per clinical record" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
                         </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Verification ID</label>
+                            <input type="password" id="login-id" placeholder="Last 4 digits of Clinical ID" maxlength="4" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                        </div>
+                        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                            Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </button>
+                        <p id="login-error" class="text-rose-500 text-xs font-bold text-center hidden">Access denied. Please check your details.</p>
                     </div>
                 </div>
-
-                <!-- Floating Abstract Shape -->
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-clinical-blue/10 rounded-full flex items-center justify-center border border-clinical-blue/20 rotate-12">
-                     <i data-lucide="activity" class="w-12 h-12 text-clinical-blue opacity-40"></i>
-                </div>
             </div>
-
         </div>
     </div>
-</section>
 
-<!-- Elite Service Portfolio Section -->
-    <section id="services" class="py-32 bg-white relative overflow-hidden">
-        <!-- Decorative subtle background elements -->
-        <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-slate-50 to-transparent opacity-50"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- Section Header -->
-            <div class="flex flex-col items-center text-center mb-24 reveal">
-                <div class="flex items-center gap-3 mb-6">
-                    <span class="w-8 h-[2px] bg-clinical-blue"></span>
-                    <span class="text-xs font-black uppercase tracking-[0.4em] text-clinical-blue">Our Specializations</span>
-                    <span class="w-8 h-[2px] bg-clinical-blue"></span>
+    <!-- MAIN DASHBOARD -->
+    <div id="app-content" class="hidden min-h-screen">
+        <header class="glass-card sticky top-0 z-[100] px-6 py-4 flex justify-between items-center border-b border-slate-200/50">
+            <div class="flex items-center gap-3">
+                <img src="https://prismhealthcare.in/prism1.png" class="h-8">
+                <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
+                <span class="text-[10px] font-black text-indigo-600 tracking-tighter bg-indigo-50 px-2 py-1 rounded uppercase">Verified Portal</span>
+            </div>
+            <button onclick="location.reload()" class="flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-rose-500 transition-all uppercase font-bold">
+                Logout <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+        </header>
+
+        <main class="max-w-4xl mx-auto p-6 space-y-8">
+            <!-- Hero Patient Card -->
+            <div class="hero-gradient rounded-[3rem] p-10 shadow-2xl relative overflow-hidden border border-slate-100">
+                <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span id="p-id-badge" class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">—</span>
+                            <span class="bg-emerald-500 w-2 h-2 rounded-full animate-pulse"></span>
+                        </div>
+                        <h1 id="p-name" class="text-4xl font-black tracking-tight mb-2 text-slate-800">—</h1>
+                        <p id="p-diag" class="text-indigo-600 font-bold italic opacity-90">—</p>
+                    </div>
+                    <div class="flex flex-col gap-2 text-right">
+                        <div class="bg-indigo-50 backdrop-blur-md rounded-2xl p-4 border border-indigo-100 text-center min-w-[140px]">
+                            <h3 id="p-rem-sessions" class="text-3xl font-black text-emerald-600">0</h3>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Sessions Remaining</p>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none mb-8 uppercase italic">
-                    Comprehensive &nbsp; Clinical &nbsp; <span class="text-clinical-blue">Portfolio</span>
-                </h2>
-                <div class="w-24 h-1.5 bg-clinical-blue rounded-full mb-8"></div>
-                <p class="text-lg text-slate-500 max-w-3xl mx-auto font-medium leading-relaxed">
-                    Utilizing globally accepted evidence-based protocols and <span class="text-slate-900">advanced clinical expertise</span> to restore functional mobility for the residents of <strong>Patna and Danapur</strong>.
-                </p>
+                <i data-lucide="activity" class="absolute right-[-30px] top-[-30px] w-64 h-64 text-indigo-50"></i>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-10">
-                <!-- 1. Neurological Rehab -->
-                <div class="reveal group relative bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-[0_30px_60px_-15px_rgba(0,86,179,0.15)] hover:border-blue-100 hover:-translate-y-3 transition-all duration-500">
-                    <div class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-8 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-[0_0_20px_rgba(0,86,179,0.4)] transition-all duration-500">
-                        <i data-lucide="brain-circuit" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Neurological Rehab</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                        Specialized <strong>stroke rehabilitation</strong>, Parkinson’s care, and SCI recovery using NDT and PNF protocols for neuro-plasticity.
-                    </p>
-                    <a href="services.html#neuro" class="inline-flex items-center gap-2 text-clinical-blue font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                        Clinical Details <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Age/Gender</p>
+                    <p id="p-age-gender" class="font-black text-slate-800 text-sm">—</p>
                 </div>
-
-                <!-- 2. Orthopaedic Rehab -->
-                <div class="reveal group relative bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-[0_30px_60px_-15px_rgba(0,86,179,0.15)] hover:border-blue-100 hover:-translate-y-3 transition-all duration-500" style="transition-delay: 100ms;">
-                    <div class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-8 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-[0_0_20px_rgba(0,86,179,0.4)] transition-all duration-500">
-                        <i data-lucide="bone" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Orthopaedic Therapy</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                        Elite <strong>sciatica treatment</strong>, slip disc management, and post-surgical rehab focused on structural alignment and strength.
-                    </p>
-                    <a href="services.html#ortho" class="inline-flex items-center gap-2 text-clinical-blue font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                        Clinical Details <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
+                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Advance Paid</p>
+                    <p id="p-advance" class="font-black text-indigo-600 text-sm">₹0</p>
                 </div>
-
-                <!-- 3. Pediatric Care -->
-                <div class="reveal group relative bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-[0_30px_60px_-15px_rgba(0,86,179,0.15)] hover:border-blue-100 hover:-translate-y-3 transition-all duration-500" style="transition-delay: 200ms;">
-                    <div class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-8 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-[0_0_20px_rgba(0,86,179,0.4)] transition-all duration-500">
-                        <i data-lucide="baby" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Pediatric Care</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                        Specialized milestone tracking and therapy for Cerebral Palsy, Autism, and ADHD. Premier <strong>child physio in Patna</strong>.
-                    </p>
-                    <a href="services.html#pediatric" class="inline-flex items-center gap-2 text-clinical-blue font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                        Clinical Details <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
+                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Last Payment</p>
+                    <p id="p-last-pay-amt" class="font-black text-emerald-600 text-sm">₹0</p>
                 </div>
-
-                <!-- 4. Sports Injury -->
-                <div class="reveal group relative bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-[0_30px_60px_-15px_rgba(0,86,179,0.15)] hover:border-blue-100 hover:-translate-y-3 transition-all duration-500">
-                    <div class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-8 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-[0_0_20px_rgba(0,86,179,0.4)] transition-all duration-500">
-                        <i data-lucide="trophy" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Sports Physio</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                        ACL reconstruction rehab, ligament management, and performance conditioning for high-level <strong>athletes and sports professionals</strong>.
-                    </p>
-                    <a href="services.html#sports" class="inline-flex items-center gap-2 text-clinical-blue font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                        Clinical Details <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
+                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Phone No.</p>
+                    <p id="p-phone" class="font-black text-slate-800 text-sm">—</p>
                 </div>
-
-                <!-- 5. Advanced Modalities -->
-                <div class="reveal group relative bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-[0_30px_60px_-15px_rgba(0,86,179,0.15)] hover:border-blue-100 hover:-translate-y-3 transition-all duration-500" style="transition-delay: 100ms;">
-                    <div class="w-16 h-16 bg-blue-50 text-clinical-blue rounded-2xl flex items-center justify-center mb-8 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-[0_0_20px_rgba(0,86,179,0.4)] transition-all duration-500">
-                        <i data-lucide="zap" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-900 mb-4 tracking-tight">Clinical Modalities</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                        Precision treatment using <strong>Dry Needling</strong>, IASTM, and imported high-tech equipment for instant pain modulation.
-                    </p>
-                    <a href="services.html#modalities" class="inline-flex items-center gap-2 text-clinical-blue font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                        Clinical Details <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
-                </div>
-
-                <!-- Image Card Optimized -->
-                <div class="reveal rounded-[3rem] overflow-hidden shadow-xl relative group h-full min-h-[300px] border-8 border-white">
-                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=800"
-                        class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110"
-                        alt="Advanced physiotherapy equipment in Patna clinic">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent flex items-end p-8">
-                        <div>
-                            <p class="text-white font-black text-xl tracking-tight leading-tight mb-2 italic">Evidence-Based <br>Treatment</p>
-                            <p class="text-white/60 text-[10px] font-bold uppercase tracking-widest">Super Speciality Care • Patna</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Outcome Focus Section -->
-    <section class="py-24 bg-white text-center">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-extrabold mb-4 uppercase italic tracking-tighter">The Outcome Focus</h2>
-            <div class="w-20 h-1.5 bg-clinical-blue mx-auto rounded-full mb-16"></div>
-            <div class="grid grid-cols-2 lg:grid-cols-5 gap-12">
-                <div class="reveal group cursor-pointer">
-                    <div class="w-20 h-20 bg-blue-50 text-clinical-blue rounded-full flex items-center justify-center mx-auto mb-6 transition-all group-hover:scale-125 group-hover:bg-clinical-blue group-hover:text-white group-hover:shadow-lg"><i data-lucide="heart" class="w-8 h-8"></i></div>
-                    <p class="font-black text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-clinical-blue">Pain Relief</p>
-                </div>
-                <div class="reveal group cursor-pointer" style="transition-delay: 100ms;">
-                    <div class="w-20 h-20 bg-blue-50 text-clinical-blue rounded-full flex items-center justify-center mx-auto mb-6 transition-all group-hover:scale-125 group-hover:bg-clinical-blue group-hover:text-white"><i data-lucide="move" class="w-8 h-8"></i></div>
-                    <p class="font-black text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-clinical-blue">Mobility</p>
-                </div>
-                <div class="reveal group cursor-pointer" style="transition-delay: 200ms;">
-                    <div class="w-20 h-20 bg-blue-50 text-clinical-blue rounded-full flex items-center justify-center mx-auto mb-6 transition-all group-hover:scale-125 group-hover:bg-clinical-blue group-hover:text-white"><i data-lucide="zap" class="w-8 h-8"></i></div>
-                    <p class="font-black text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-clinical-blue">Strength</p>
-                </div>
-                <div class="reveal group cursor-pointer" style="transition-delay: 300ms;">
-                    <div class="w-20 h-20 bg-blue-50 text-clinical-blue rounded-full flex items-center justify-center mx-auto mb-6 transition-all group-hover:scale-125 group-hover:bg-clinical-blue group-hover:text-white"><i data-lucide="smile" class="w-8 h-8"></i></div>
-                    <p class="font-black text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-clinical-blue">Independence</p>
-                </div>
-                <div class="reveal group cursor-pointer" style="transition-delay: 400ms;">
-                    <div class="w-20 h-20 bg-blue-50 text-clinical-blue rounded-full flex items-center justify-center mx-auto mb-6 transition-all group-hover:scale-125 group-hover:bg-clinical-blue group-hover:text-white"><i data-lucide="bike" class="w-8 h-8"></i></div>
-                    <p class="font-black text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-clinical-blue">Recovery</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Slider -->
-    <section id="testimonials" class="py-24 lg:py-32 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-20">
-                <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-4 uppercase tracking-tighter italic">Patient
-                    &nbsp;
-                    Success &nbsp; Stories</h2>
-                <div class="w-20 h-1.5 bg-clinical-blue mx-auto rounded-full mb-6"></div>
-                <p class="text-gray-500 font-medium">Verified reviews from our Google Business Profile</p>
-            </div>
-
-            <div class="relative px-4">
-                <div id="testimonial-track"
-                    class="flex transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] gap-8">
-                    <!-- Cards -->
-                    <div
-                        class="w-full md:w-[calc(33.333%-22px)] shrink-0 bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 flex flex-col justify-between">
-                        <div>
-                            <div class="flex gap-1 text-yellow-400 mb-6"><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i></div>
-                            <p class="text-gray-600 italic mb-10 leading-relaxed font-medium">"Best neuro-rehabilitation
-                                center in Begusarai. Dr. Ravi is highly professional and his treatment plan for my
-                                father's stroke recovery was excellent."</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-clinical-blue text-white rounded-2xl flex items-center justify-center font-bold">
-                                A</div>
-                            <div>
-                                <h4 class="font-bold">Amit Kumar</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Local
-                                    Guide</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="w-full md:w-[calc(33.333%-22px)] shrink-0 bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 flex flex-col justify-between">
-                        <div>
-                            <div class="flex gap-1 text-yellow-400 mb-6"><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i></div>
-                            <p class="text-gray-600 italic mb-10 leading-relaxed font-medium">"I was suffering from
-                                chronic back pain for 2 years. After sessions of manual therapy, I am completely
-                                pain-free and active again."</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-clinical-blue text-white rounded-2xl flex items-center justify-center font-bold">
-                                P</div>
-                            <div>
-                                <h4 class="font-bold">Priya Sharma</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Patient
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="w-full md:w-[calc(33.333%-22px)] shrink-0 bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 flex flex-col justify-between">
-                        <div>
-                            <div class="flex gap-1 text-yellow-400 mb-6"><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i></div>
-                            <p class="text-gray-600 italic mb-10 leading-relaxed font-medium">"Very clean and advanced
-                                facility. Highly recommended for sports injury rehabilitation. Staff is very supportive
-                                throughout the journey."</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-clinical-blue text-white rounded-2xl flex items-center justify-center font-bold">
-                                R</div>
-                            <div>
-                                <h4 class="font-bold">Rajesh Singh</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Athlete
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="w-full md:w-[calc(33.333%-22px)] shrink-0 bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 flex flex-col justify-between">
-                        <div>
-                            <div class="flex gap-1 text-yellow-400 mb-6"><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i></div>
-                            <p class="text-gray-600 italic mb-10 leading-relaxed font-medium">"Exceptional care for
-                                pediatric conditions. We saw great improvement in our child's mobility within a few
-                                weeks."</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-clinical-blue text-white rounded-2xl flex items-center justify-center font-bold">
-                                S</div>
-                            <div>
-                                <h4 class="font-bold">Sneha Gupta</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Parent
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="w-full md:w-[calc(33.333%-22px)] shrink-0 bg-slate-50 p-10 rounded-[2.5rem] border border-slate-100 flex flex-col justify-between">
-                        <div>
-                            <div class="flex gap-1 text-yellow-400 mb-6"><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i><i data-lucide="star"
-                                    class="fill-current w-4 h-4"></i></div>
-                            <p class="text-gray-600 italic mb-10 leading-relaxed font-medium">"Post-surgery rehab was
-                                top-notch. Dr. Ravi's expertise in manual therapy is truly impressive and
-                                results-driven."</p>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 bg-clinical-blue text-white rounded-2xl flex items-center justify-center font-bold">
-                                V</div>
-                            <div>
-                                <h4 class="font-bold">Vikram Rathore</h4>
-                                <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Patient
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Attended</p>
+                    <p id="p-attended" class="font-black text-slate-800 text-sm">—</p>
                 </div>
             </div>
 
-            <div class="text-center mt-20">
-                <a href="https://www.google.com/search?q=prism+physiotherapy+begusarai" target="_blank"
-                    class="inline-flex items-center gap-2 bg-clinical-blue text-white px-8 py-4 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-blue-800 transition shadow-lg">
-                    See More Reviews <i data-lucide="external-link" class="w-4 h-4"></i>
+            <!-- Home Exercise Plan Section (New) -->
+            <section id="exercise-section" class="hidden">
+                <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4 flex items-center gap-2">
+                    <i data-lucide="dumbbell" class="w-4 h-4"></i> Prescribed Home Exercises
+                </h3>
+                <div id="p-exercise-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </section>
+
+            <!-- Integration Buttons -->
+            <div class="flex flex-wrap gap-4">
+                <a id="book-btn" href="#" target="_blank" class="flex-1 min-w-[200px] bg-indigo-600 text-white p-5 rounded-[2rem] font-black text-xs uppercase flex items-center justify-center gap-3 shadow-xl hover:scale-[1.02] transition-all">
+                    <i data-lucide="calendar-plus"></i> Book Session
+                </a>
+                <a id="wa-btn" href="#" target="_blank" class="flex-1 min-w-[200px] bg-white border border-slate-100 text-slate-800 p-5 rounded-[2rem] font-black text-xs uppercase flex items-center justify-center gap-3 shadow-sm hover:bg-slate-50 transition-all">
+                    <i data-lucide="message-circle" class="text-emerald-500"></i> Clinical Support
                 </a>
             </div>
-        </div>
-    </section>
 
-    <!-- Service Page Booster Section - Exact Match Scaling -->
-    <section id="contact-section" class="py-12 md:py-24 bg-slate-50 relative overflow-hidden">
-        <!-- Decorative background glow -->
-        <div
-            class="absolute top-1/2 left-0 w-72 h-72 md:w-96 md:h-96 bg-clinical-blue/5 rounded-full blur-[80px] md:blur-[100px] -translate-x-1/2 -translate-y-1/2">
-        </div>
-
-        <div class="max-w-6xl mx-auto px-4 relative z-10">
-            <!-- Action-Oriented Heading (Matches Index Font Sizes) -->
-            <div class="text-center mb-10 md:mb-16">
-                <span
-                    class="inline-block py-1 px-4 rounded-full bg-blue-100 text-clinical-blue text-[10px] md:text-xs font-extrabold uppercase tracking-widest mb-4">
-                    Specialized Clinical Inquiry
-                </span>
-                <h2
-                    class="text-3xl md:text-6xl font-black text-gray-900 mb-4 md:mb-6 uppercase tracking-tighter italic leading-tight md:leading-none">
-                    Contact &nbsp; us &nbsp; to &nbsp; <br>
-                    <span class="text-clinical-blue">booster &nbsp; your &nbsp; recovery</span>
-                </h2>
-                <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-xl font-medium px-2">
-                    Take the first step toward specialized healing. Our clinical experts are ready to design your <span
-                        class="text-slate-900 font-bold">Advanced Recovery Protocol</span>.
-                </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4">
+                <section>
+                    <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4">Clinical Passbook</h3>
+                    <div id="passbook-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
+                </section>
+                <section>
+                    <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4">Issued Documents</h3>
+                    <div id="bill-list" class="space-y-3"></div>
+                </section>
             </div>
+        </main>
+    </div>
 
-            <!-- Main Container: flex-col for mobile, flex-row for desktop -->
-            <div
-                class="bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-xl overflow-hidden flex flex-col md:flex-row border border-slate-100">
-
-                <!-- Left Info Panel (Appears on top on mobile) -->
-                <div class="md:w-2/5 bg-clinical-blue p-8 md:p-12 text-white flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-black mb-6 md:mb-8 uppercase tracking-tight">Clinical <br
-                                class="hidden md:block">Excellence</h3>
-
-                        <div class="space-y-6 md:space-y-8">
-                            <!-- Points -->
-                            <div class="flex gap-4">
-                                <div class="w-10 h-10 bg-white/10 rounded-xl flex shrink-0 items-center justify-center">
-                                    <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase tracking-wider">Evidence-Based</h4>
-                                    <p class="text-xs text-blue-100 opacity-80">Global therapy standards.</p>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-4">
-                                <div class="w-10 h-10 bg-white/10 rounded-xl flex shrink-0 items-center justify-center">
-                                    <i data-lucide="heart-pulse" class="w-5 h-5 text-white"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm uppercase tracking-wider">Expert Oversight</h4>
-                                    <p class="text-xs text-blue-100 opacity-80">Supervised by Dr. Ravi Kumar.</p>
-                                </div>
-                            </div>
-
-                            <!-- Contact Links & WhatsApp QR -->
-                            <div class="pt-6 border-t border-white/10 space-y-4">
-                                <a href="tel:+919708059081" class="flex items-center gap-3 group">
-                                    <i data-lucide="phone"
-                                        class="w-5 h-5 text-white group-hover:scale-110 transition-transform"></i>
-                                    <span class="font-bold text-base md:text-lg">+91 97080 59081</span>
-                                </a>
-                                <a href="mailto:info@prism.com" class="flex items-center gap-3 group">
-                                    <i data-lucide="mail"
-                                        class="w-5 h-5 text-white group-hover:scale-110 transition-transform"></i>
-                                    <span class="font-bold text-base md:text-lg">info@prism.com</span>
-                                </a>
-                                
-                                <div class="mt-4 flex items-center gap-4 bg-white/5 p-3 rounded-2xl border border-white/10">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://wa.me/919708059081" 
-                                         alt="WhatsApp QR" class="w-16 h-16 rounded-lg border-2 border-white/20">
-                                    <div>
-                                        <p class="text-[10px] font-bold uppercase tracking-wider text-blue-100">Scan to Chat</p>
-                                        <p class="text-[9px] opacity-70">Direct WhatsApp Support</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Status Status -->
-                    <div class="mt-8 md:mt-12">
-                        <div class="bg-white/10 p-3 md:p-4 rounded-2xl inline-flex items-center gap-3">
-                            <div class="w-2 h-2 md:w-3 md:h-3 bg-green-400 rounded-full animate-pulse"></div>
-                            <p class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white">
-                                Clinicians Online Now</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Form Panel -->
-                <div class="md:w-3/5 p-8 md:p-12 bg-white">
-                    <form id="homeContactForm" class="space-y-5 md:space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-2">Full
-                                    Name</label>
-                                <input type="text" id="fc-name" placeholder="Enter Name" required
-                                    class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all text-sm">
-                            </div>
-                            <div class="space-y-2">
-                                <label
-                                    class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-2">Phone
-                                    Number</label>
-                                <input type="tel" id="fc-phone" placeholder="Contact Number" required
-                                    class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all text-sm">
-                            </div>
-                        </div>
-
-                        <div class="space-y-2">
-                            <label
-                                class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 ml-2">Condition
-                                Details</label>
-                            <textarea id="fc-message" rows="3 md:4"
-                                placeholder="Briefly describe your pain or condition..."
-                                class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-clinical-blue transition-all text-sm"></textarea>
-                        </div>
-
-                        <button type="submit"
-                            class="group w-full bg-clinical-blue text-white font-black py-4 md:py-5 rounded-2xl shadow-xl hover:bg-blue-800 transition transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-xs md:text-sm">
-                            Booster My Recovery
-                            <i data-lucide="rocket"
-                                class="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
-                        </button>
-
-                        <!-- Trust Badges -->
-                        <div class="flex items-center justify-center gap-4 md:gap-8 mt-4 md:mt-6">
-                            <div class="flex items-center gap-1.5 opacity-40">
-                                <i data-lucide="award" class="w-3 h-3"></i>
-                                <span class="text-[9px] font-bold uppercase tracking-tighter">Certified Rehab</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 opacity-40">
-                                <i data-lucide="lock" class="w-3 h-3"></i>
-                                <span class="text-[9px] font-bold uppercase tracking-tighter">Secure Privacy</span>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <!-- DOCUMENT MODAL -->
+    <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[5000] overflow-y-auto flex flex-col items-center py-10 px-4">
+        <div class="sticky top-0 z-[5001] flex gap-4 mb-8">
+            <button onclick="closeModal()" class="bg-white/10 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase border border-white/10">Close</button>
+            <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase shadow-2xl flex items-center gap-2 hover:bg-indigo-700 transition-all">
+                <i data-lucide="download" class="w-5 h-5"></i> Download PDF
+            </button>
         </div>
-    </section>
-    <!-- Map & Footer -->
-    <footer class="bg-slate-900 text-white pt-20 pb-12 rounded-t-[4rem]">
-<div class="max-w-7xl mx-auto px-6">
-    <div class="grid lg:grid-cols-3 gap-12 mb-16">
-        <div>
-            <!-- Wrap the image in a link -->
-            <a href="about.html" class="inline-block transition-transform duration-300 hover:scale-110 active:scale-95">
-                <img src="PrismLogo.png" alt="Prism Logo" class="w-42 h-auto rounded-md">
-            </a>
+        <div id="full-document-render" class="w-full max-w-[210mm]"></div>
+    </div>
 
-            <p class="text-slate-400 text-sm leading-relaxed mb-8 italic mt-4">
-                Redefining recovery through specialized care across orthopedic injuries, athletes, geriatrics, post operative cases, and overall well being, using advanced interventions beyond routine outpatient care.
-            </p>
-            <div class="flex flex-wrap gap-3">
-                        <a href="https://www.linkedin.com/company/prismphysiotherapy/?viewAsMember=true" target="_blank"
-                            class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
-                            <i data-lucide="linkedin" class="w-4 h-4"></i> LinkedIn
-                        </a>
-                        <a href="https://instagram.com/prismphysiotherapy" target="_blank"
-                            class="flex items-center gap-2 px-4 py-2 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
-                            <i data-lucide="instagram" class="w-4 h-4"></i> Instagram
-                        </a>
-                        <a href="#" target="_blank"
-                            class="flex items-center gap-2 px-4 py-2 bg-[#FF0000] text-white rounded-xl text-xs font-bold shadow-lg hover:scale-105 transition-transform">
-                            <i data-lucide="youtube" class="w-4 h-4"></i> YouTube
-                        </a>
-                    </div>
-                </div>
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
+        const PRISM_LOGO = "https://prismhealthcare.in/prism1.png";
+        
+        let globalData = [];
+        let exerciseData = [];
+        let loggedInPatient = null;
+        let patientLogs = [];
 
-                <div class="space-y-6">
-                    <div>
-                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Begusarai
-                            (HQ)</h5>
-                        <p class="text-sm text-slate-400">Main Road, Begusarai, Bihar</p>
-                    </div>
-                    <div>
-                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
-                            Unit</h5>
-                        <p class="text-sm text-slate-400">Orthocare Hospital, Gola road Patna</p>
-                    </div>
-                    <div>
-                        <h5 class="font-bold text-xs uppercase tracking-widest text-clinical-blue mb-2 italic">Patna
-                            Unit</h5>
-                        <p class="text-sm text-slate-400">MG Nagar, Kanti Factory Rd, Patna</p>
-                    </div>
-                    <div class="flex items-center gap-2 text-white font-bold hover:scale-105 transition-transform">
-                        <a href="tel:+919708059081"
-                            class="flex items-center gap-2 text-white font-bold hover:text-clinical-blue transition-colors">
-                            <i data-lucide="phone-call" class="text-clinical-blue w-5 h-5"></i>
-                            <span>+91 97080 59081</span>
-                        </a>
-                    </div>
-                </div>
+        async function attemptLogin() {
+            const name = document.getElementById('login-name').value.trim();
+            const idLast4 = document.getElementById('login-id').value.trim();
+            const btn = document.getElementById('login-btn');
+            
+            if(!name || !idLast4) return;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-spin border-2 border-white/20 border-t-white rounded-full h-5 w-5"></span>`;
 
-                <div class="rounded-3xl overflow-hidden h-48 border border-slate-800 shadow-xl">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3597.6!2d85.13!3d25.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed5842f03901b5%3A0x747209930f78a2!2sPatna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1704543200000"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-            </div>
-            <div
-                class="border-t border-slate-800 pt-10 text-center text-slate-500 text-[10px] uppercase tracking-[0.3em] font-bold">
-                &copy; 2024 Prism Healthcare. 
-            </div>
-        </div>
-    </footer>
-<script>
-        lucide.createIcons();
+            try {
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "fetchAdminData" }) });
+                const response = await res.json();
+                
+                // THE FIX: Result is an object, we need the adminData array
+                globalData = response.adminData || [];
+                exerciseData = response.exercisePlans || [];
 
-        // Navigation
-        const menuBtn = document.getElementById('menu-btn');
-        const closeMenu = document.getElementById('close-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (menuBtn) menuBtn.onclick = () => mobileMenu.classList.add('open');
-        if (closeMenu) closeMenu.onclick = () => mobileMenu.classList.remove('open');
+                const match = globalData.find(r => 
+                    String(r[2]).toLowerCase() === name.toLowerCase() && 
+                    String(r[1]).endsWith(idLast4)
+                );
 
-        // BOT SCRIPT (Older logic)
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQmrjUara4qVeEMua8JA3jFnUguv2O0tUyF5P0arjeuFlDwfTNkCZGoLxyaCGNbLG-/exec';
-        const chatWindow = document.getElementById('chat-window');
-        const chatToggle = document.getElementById('chat-toggle');
-        const chatContent = document.getElementById('chat-content');
-        const botInputArea = document.getElementById('chat-input-area');
-        const botInput = document.getElementById('bot-input');
-
-        const prismData = {
-            teamInfo: "Our clinical team is led by **Dr. Ravi Kumar (MPT Neuro)**. We specialize in advanced Neurological, Orthopaedic, and Women's health rehabilitation. Click a specialist below to view their profile:",
-            services: "**Our Specializations:**\n• Neuro Rehab\n• Ortho & Spine Care\n• Pediatric Physio\n• Sports Injury\n• Women's Health",
-            locations: "**Unit 1 (HQ):** Main Road, Begusarai\n**Unit 2:** Gola Road, Patna",
-            treatments: {
-                neuro: { title: "Neurological Rehab", info: "Specialized recovery for **Stroke, Parkinson's, and SCI** using NDT protocols." },
-                ortho: { title: "Ortho & Spine", info: "Treatment for **Slip Disc and Sciatica** using McKenzie techniques." },
-                peds: { title: "Pediatric Physio", info: "Helping children achieve milestones. Specialists in **CP and Autism**." },
-                women: { title: "Women's Health", info: "Care for **Pelvic Floor and Post-Natal core**." }
+                if (match) {
+                    loggedInPatient = { 
+                        name: match[2], 
+                        id: match[1], 
+                        phone: match[3], 
+                        age: match[4], 
+                        gender: match[5], 
+                        diag: match[6], 
+                        address: match[14] 
+                    };
+                    patientLogs = globalData.filter(r => r[1] === loggedInPatient.id);
+                    renderUI();
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden');
+                }
+            } catch (e) { 
+                console.error(e);
+                alert("Secure Connection Failed"); 
             }
-        };
-
-        let bookingStep = 0;
-        let userData = { source: 'Assistant Bot', name: '', phone: '', location: '', condition: '', paymentProof: '', message: '', visitType: '', date: '', time: '', address: '' };
-
-        function openChat() {
-            chatWindow.classList.add('open');
-            if (chatContent.innerHTML === "") {
-                setTimeout(() => {
-                    appendMsg('bot', "Hi! 👋 I am your **Prism Assistant**. How can I help you today?");
-                    showMainMenu();
-                }, 400);
-            }
-        }
-        chatToggle.onclick = openChat;
-        document.getElementById('close-chat').onclick = () => chatWindow.classList.remove('open');
-
-        function appendMsg(sender, text) {
-            const div = document.createElement('div');
-            div.className = `chat-bubble ${sender === 'bot' ? 'bot-msg' : 'user-msg'}`;
-            div.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            chatContent.appendChild(div);
-            chatContent.scrollTop = chatContent.scrollHeight;
+            btn.disabled = false;
+            btn.innerHTML = `Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>`;
+            lucide.createIcons();
         }
 
-        function showMainMenu() {
-            const div = document.createElement('div');
-            div.id = "bot-options";
-            div.className = "flex flex-col gap-2 mb-4 mt-2";
-            div.innerHTML = `
-                <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-md italic">📅 Diagnostic Booking</button>
-                <button onclick="handleBotAction('doctor')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold hover:border-clinical-blue transition">👨‍⚕️ Our Specialized Team</button>
-                <button onclick="handleBotAction('services')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">🏥 Service Details</button>
-                <button onclick="handleBotAction('browse')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">🏥 Specialized care </button>
-                <button onclick="handleBotAction('loc')" class="text-left text-xs bg-white border border-slate-200 p-3 rounded-xl font-semibold">📍 Clinic Locations</button>
-                <button onclick="handleBotAction('help')" class="text-left text-xs bg-slate-800 text-white p-3 rounded-xl font-bold uppercase shadow-md">💬 Need Help / Message</button>
+        function renderUI() {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+
+            const sessions = patientLogs.filter(r => r[9] > 0 && !['bill issued', 'case closed', 'enrollment'].includes(String(r[7]).toLowerCase()));
+            const totalPurchased = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
+            const totalAdvance = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[11]) || 0), 0);
+            const lastPayment = patientLogs.filter(r => parseFloat(r[9]) > 0).sort((a,b) => new Date(b[8]) - new Date(a[8]))[0];
+
+            document.getElementById('p-name').innerText = loggedInPatient.name;
+            document.getElementById('p-diag').innerText = loggedInPatient.diag || "Clinical Rehabilitation Plan";
+            document.getElementById('p-age-gender').innerText = `${loggedInPatient.age || '-'}Y / ${loggedInPatient.gender || '-'}`;
+            document.getElementById('p-phone').innerText = loggedInPatient.phone || '-';
+            document.getElementById('p-id-badge').innerText = loggedInPatient.id;
+            document.getElementById('p-attended').innerText = sessions.length;
+            document.getElementById('p-rem-sessions').innerText = (totalPurchased - sessions.length) > 0 ? (totalPurchased - sessions.length) : "Regular";
+            document.getElementById('p-advance').innerText = "₹" + totalAdvance.toLocaleString();
+            document.getElementById('p-last-pay-amt').innerText = lastPayment ? "₹" + parseFloat(lastPayment[9]).toLocaleString() : "₹0";
+
+            // Home Exercises Logic
+            const myExercises = exerciseData.filter(ex => ex[0] === loggedInPatient.name);
+            if(myExercises.length > 0) {
+                document.getElementById('exercise-section').classList.remove('hidden');
+                document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
+                    <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
+                        <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[1]}</h4>
+                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[2]} • ${ex[5]}</p>
+                        <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[3]}</p>
+                        ${ex[4] ? `<a href="${ex[4]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            const waMsg = encodeURIComponent("Hello Prism, I am " + loggedInPatient.name + " (ID: " + loggedInPatient.id + "). I want to book my next session.");
+            document.getElementById('book-btn').href = `https://wa.me/919708059081?text=${waMsg}`;
+            document.getElementById('wa-btn').href = `https://wa.me/919708059081?text=${encodeURIComponent("Clinical Assistance required for ID: " + loggedInPatient.id)}`;
+
+            document.getElementById('passbook-list').innerHTML = sessions.length ? sessions.map(s => `
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
+                        <div><p class="text-xs font-black text-slate-800">${formatDate(s[8])}</p><p class="text-[10px] text-slate-400 font-bold uppercase">${s[6] || 'Treatment'}</p></div>
+                    </div>
+                    <span class="text-[10px] font-black text-indigo-600 border border-indigo-100 px-2 py-1 rounded">₹${s[9]}</span>
+                </div>
+            `).reverse().join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No history recorded yet.</div>';
+
+            const bills = patientLogs.filter(r => String(r[7]).toLowerCase() === 'bill issued');
+            document.getElementById('bill-list').innerHTML = bills.length ? bills.map(b => `
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center">
+                    <div><p class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Statement No: ${b[13]}</p><h4 class="font-black text-slate-800">${formatDate(b[8])}</h4></div>
+                    <button onclick="generateOfficialDoc('${b[13]}')" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:scale-105 transition-all"><i data-lucide="file-text" class="w-5 h-5"></i></button>
+                </div>
+            `).join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No statements issued.</div>';
+            lucide.createIcons();
+        }
+
+        function generateOfficialDoc(stmtNo) {
+            const p = loggedInPatient;
+            const logs = patientLogs.filter(l => !['case closed', 'bill issued'].includes(String(l[7]).toLowerCase()));
+            const billRec = patientLogs.find(r => r[13] === stmtNo);
+            const dateStr = formatDate(billRec[8]);
+            
+            let total = 0; const groups = {};
+            logs.forEach(l => {
+                const fee = parseFloat(l[9]) || 0; total += fee;
+                if (!groups[fee]) groups[fee] = { qty: 0, dates: [] };
+                groups[fee].qty++; groups[fee].dates.push(l[8]);
+            });
+
+            const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
+            const header = `<div class="doc-header2"><div><img src="${PRISM_LOGO}" style="height: 50px;"></div><div class="doc-meta2"><p class="meta-label">Statement No.</p><p class="meta-value">${stmtNo}</p></div></div>`;
+            
+            const footer = `<div class="doc-footer3">
+                <div class="doc-qr-box">
+                    <div class="qr-slot">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(verifyUrl)}" style="width:70px; height:70px; display:block;">
+                    </div>
+                    <small>Scan to verify<br>this statement</small>
+                </div>
+                <div class="doc-cert-text">
+                    <p class="cert-title">Certification & Authorization</p>
+                    <p class="cert-body">This is a system-generated medical statement issued by Prism Physiotherapy & Rehabilitation Center. The records contained herein are digitally authenticated and valid without a physical signature. Verification can be performed by scanning the secure QR code.</p>
+                </div>
+                <div class="doc-sign2">
+                    <strong>Dr Ravi Kumar, <span style="font-weight:600; color:#64748b;">PT</span></strong>
+                    <span class="sign-sub">Digital Signature</span>
+                    <span class="sign-auth">Authorized Signatory</span>
+                </div>
+            </div>`;
+
+            const rowHtml = Object.keys(groups).map(fee => `
+                <tr style="border-bottom:1px solid #edf2f7"><td style="padding:14px"><strong>Physiotherapy Session</strong><br><span style="font-size:10px; color:#4f46e5; font-weight:700">Period: ${formatDate(groups[fee].dates[0])} - ${formatDate(groups[fee].dates.at(-1))}</span></td><td style="text-align:center; font-weight:800">${groups[fee].qty}</td><td style="text-align:center; color:#64748b">₹${fee}</td><td style="text-align:right; font-weight:900">₹${(fee*groups[fee].qty).toLocaleString()}</td></tr>
+            `).join('');
+
+            const ledgerRows = logs.map((l, i) => `
+                <div style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;"><div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${i+1}.</div><div style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDate(l[8])}</div><div style="flex:1; color:#64748b; font-size:13px;">Physiotherapy Session</div><div style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${l[9]}</div></div>
+            `).join('');
+
+            document.getElementById('full-document-render').innerHTML = `
+                <div class="bill-page">${header}
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:26px">
+                        <div><p class="section-label2">Patient Information</p><strong style="font-size:20px;">${p.name}</strong><p style="font-size:12px; color:#475569; margin:2px 0;">ID: <span style="font-weight:800; color:#0f172a">${p.id}</span></p><p style="font-size:12px; color:#475569; margin:2px 0;">Gender: ${p.gender} | Age: ${p.age} Y</p><p style="font-size:12px; color:#475569; margin:2px 0;">Addr: ${p.address || ''}</p><p class="section-label2" style="margin-top:14px">Clinical Diagnosis</p><strong style="font-size:14px; color:#0f172a">${p.diag}</strong></div>
+                        <div style="text-align:right"><p class="section-label2">Provider Details</p><strong style="font-size:15px; color:#0f172a">Dr Ravi Kumar, PT</strong><p style="margin:2px 0; font-size:11px; color:#64748b">Reg No: UDYAM-BR-06-0028454</p><p style="margin:2px 0; font-size:11px; color:#64748b">Ph: +91 97080 59081</p><p style="margin:2px 0; font-size:11px; color:#64748b">Prismhealthcare.in</p><p class="section-label2" style="text-align:right; margin-top:14px">Bill Date</p><strong style="font-size:13px">${dateStr}</strong></div>
+                    </div>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:20px"><thead style="background:#f8fafc; text-align:left; border-bottom:2px solid #e2e8f0; font-size:11px; color:#64748b"><th style="padding:12px;">PROCEDURE DESCRIPTION</th><th style="padding:12px; text-align:center">QTY</th><th style="padding:12px; text-align:center">RATE</th><th style="padding:12px; text-align:right">SUBTOTAL</th></thead><tbody>${rowHtml}</tbody><tfoot><tr style="background:#f8fafc"><td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td><td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px">₹${total.toLocaleString()}</td></tr></tfoot></table>
+                ${footer}</div>
+                <div class="bill-page">${header}<h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER</h2><div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div><div style="margin-bottom:30px; margin-top:14px">${ledgerRows}</div>${footer}</div>
+                <div class="bill-page">${header}<h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2><p style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">This is to certify that <strong>${p.name}</strong> (Age: ${p.age} Y, Gender: ${p.gender}) has been under our care for the clinical diagnosis of <strong>${p.diag}</strong>.<br><br>The patient has successfully completed <strong>${logs.length}</strong> session(s) of Physiotherapy Rehabilitation by Dr Ravi Kumar, PT.<br><br>These therapeutic sessions were administered during the period from <strong>${formatDate(logs[0][8])}</strong> to <strong>${formatDate(logs.at(-1)[8])}</strong>.<br><br>This certificate is issued at the request of the patient for records and health insurance claim purposes.</p><div style="text-align:right; margin-top:60px"><strong>Dr Ravi Kumar, PT</strong><br><span style="font-size:11px; color:#64748b">Consulting Physiotherapist</span></div>${footer}</div>
             `;
-            chatContent.appendChild(div);
-            botInputArea.classList.add('hidden');
+            document.getElementById('bill-modal').classList.remove('hidden');
+            lucide.createIcons();
         }
 
-        function handleBotAction(type) {
-            if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
-
-            if (type === 'doctor') {
-                appendMsg('bot', prismData.teamInfo);
-                const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
-                div.innerHTML = `
-                    <a href="about.html#neuro" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👨‍⚕️ Dr. Ravi Kumar (Director)</a>
-                    <a href="about.html#supriya" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Supriya (Consultant)</a>
-                    <a href="about.html#puja" class="text-left text-[10px] bg-slate-100 p-3 rounded-xl font-bold uppercase border border-slate-200 hover:bg-clinical-blue hover:text-white transition">👩‍⚕️ Dr. Puja (Consultant)</a>
-                    <button onclick="showMainMenu()" class="text-center text-[10px] font-bold text-slate-400 uppercase mt-2">🔙 Back to Menu</button>
-                `;
-                chatContent.appendChild(div);
-            }
-            else if (type === 'services') { appendMsg('bot', prismData.services); setTimeout(showMainMenu, 2000); }
-            else if (type === 'loc') { appendMsg('bot', prismData.locations); setTimeout(showMainMenu, 2000); }
-            else if (type === 'browse') {
-                appendMsg('bot', "Select a category to view details:");
-                const div = document.createElement('div'); div.id = "bot-options"; div.className = "grid grid-cols-2 gap-2 mt-2";
-                Object.keys(prismData.treatments).forEach(k => {
-                    div.innerHTML += `<button onclick="showTreatmentDetails('${k}')" class="bg-slate-100 p-2 rounded-lg text-[10px] font-bold border uppercase hover:bg-clinical-blue hover:text-white">${prismData.treatments[k].title}</button>`;
-                });
-                chatContent.appendChild(div);
-            }
-            else if (type === 'help') { appendMsg('bot', "Please type your query or message below:"); bookingStep = 50; botInputArea.classList.remove('hidden'); botInput.focus(); }
-            else if (type === 'book') {
-                appendMsg('bot', "Would you like to book a **Clinic Visit**, **Home Visit**, or an **Online Consultation**?");
-                const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
-                div.innerHTML = `
-                    <button onclick="startBookingBranch('Clinic')" class="bg-clinical-blue text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏥 Clinic Visit</button>
-                    <button onclick="startBookingBranch('Home')" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">🏠 Home Visit</button>
-                    <button onclick="startBookingBranch('Online')" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-xs font-bold uppercase">💻 Online Consultation</button>
-                `;
-                chatContent.appendChild(div);
-            }
+        function downloadPDF() {
+            const opt = { margin: 0, filename: `Prism_Statement_${loggedInPatient.name}.pdf`, image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(document.getElementById('full-document-render')).save();
         }
 
-        function showTreatmentDetails(key) {
-            if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
-            const treat = prismData.treatments[key];
-            appendMsg('bot', `**${treat.title}**\n\n${treat.info}\n\nWould you like to schedule a session?`);
-            const div = document.createElement('div'); div.id = "bot-options"; div.className = "flex flex-col gap-2 mt-2";
-            div.innerHTML = `
-                <button onclick="handleBotAction('book')" class="text-left text-xs bg-clinical-blue text-white p-3 rounded-xl font-bold uppercase shadow-sm italic">📅 Start Booking Now</button>
-                <button onclick="showMainMenu()" class="bg-slate-200 p-3 rounded-xl text-xs font-bold uppercase">🔙 Back to Menu</button>
-            `;
-            chatContent.appendChild(div);
-        }
+        function closeModal() { document.getElementById('bill-modal').classList.add('hidden'); }
+        function formatDate(d) { if(!d) return '-'; return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
 
-        function startBookingBranch(type) {
-            if (document.getElementById('bot-options')) document.getElementById('bot-options').remove();
-            userData.visitType = type;
-            appendMsg('user', `I want to book a ${type}`);
-            appendMsg('bot', "What is the **Patient's Full Name**?");
-            bookingStep = 1; botInputArea.classList.remove('hidden'); botInput.focus();
-        }
-
-        async function processBotInput() {
-            const val = botInput.value.trim();
-            if (!val) return;
-            appendMsg('user', val);
-            botInput.value = "";
-            if (bookingStep === 50) { userData.message = val; appendMsg('bot', "What is your mobile number?"); bookingStep = 51; return; }
-            if (bookingStep === 51) { userData.phone = val; saveAndConfirm("Message Sent!"); return; }
-
-            switch (bookingStep) {
-                case 1: userData.name = val; appendMsg('bot', "Enter 10-digit **Mobile Number**?"); bookingStep = 2; break;
-                case 2: userData.phone = val;
-                    if (userData.visitType === 'Clinic') { appendMsg('bot', "Which location? (**Begusarai** or **Patna**)"); bookingStep = 3; } 
-                    else if (userData.visitType === 'Online') { appendMsg('bot', "Requested Date?"); bookingStep = 4; } 
-                    else { appendMsg('bot', "Provide your **Full Home Address**:"); bookingStep = 10; } break;
-                case 3: userData.location = val; appendMsg('bot', "Preferred Date?"); bookingStep = 4; break;
-                case 4: userData.date = val; appendMsg('bot', "Preferred Time Slot?"); bookingStep = 5; break;
-                case 5: userData.time = val; appendMsg('bot', "Describe the **Condition**:"); bookingStep = 6; break;
-                case 6: userData.condition = val; askPaymentUI(); break;
-                case 10: userData.address = val; appendMsg('bot', "Requested Date?"); bookingStep = 11; break;
-                case 11: userData.date = val; appendMsg('bot', "Describe Medical Condition?"); bookingStep = 12; break;
-                case 12: userData.condition = val; askPaymentUI(); break;
-                case 20: userData.paymentProof = val; saveAndConfirm("✅ Booking confirmed!"); break;
-            }
-        }
-
-        function askPaymentUI() {
-            const payDiv = document.createElement('div');
-            payDiv.className = "bot-msg chat-bubble mb-4";
-            payDiv.innerHTML = `
-                <p class="mb-3">To finalize slot, pay the **₹500** booking fee.</p>
-                <p class="mb-3">UPI: <strong>dr.raviphysio01@oksbi</strong></p>
-                <div class="bg-white p-3 rounded-xl border border-slate-200 mb-3 flex flex-col items-center">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=dr.raviphysio01@oksbi%26pn=Prism%20Physiotherapy%26am=500%26cu=INR" alt="UPI QR" class="w-32 h-32">
-                </div>
-                <div class="flex flex-col gap-2">
-                    <a href="upi://pay?pa=dr.raviphysio01@oksbi&pn=Prism%20Physiotherapy&am=500&cu=INR" class="bg-green-600 text-white p-3 rounded-xl text-center text-[10px] font-black uppercase">Pay via UPI App</a>
-                    <button onclick="paymentPaidDone()" class="bg-clinical-blue text-white p-3 rounded-xl text-[10px] font-black uppercase">✅ I Have Paid</button>
-                </div>
-            `;
-            chatContent.appendChild(payDiv);
-            chatContent.scrollTop = chatContent.scrollHeight;
-            botInputArea.classList.add('hidden');
-        }
-
-        function paymentPaidDone() { appendMsg('user', "I have paid"); appendMsg('bot', "Excellent. Enter your **12-digit UPI Transaction ID**:"); bookingStep = 20; botInputArea.classList.remove('hidden'); botInput.focus(); }
-
-        async function saveAndConfirm(txt) {
-            appendMsg('bot', "Syncing data...");
-            userData.message = `Visit: ${userData.visitType} | Date: ${userData.date} | Time: ${userData.time || 'N/A'} | Problem: ${userData.condition}`;
-            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(userData) }); appendMsg('bot', txt); } 
-            catch (e) { appendMsg('bot', "Recorded."); }
-            bookingStep = 0; botInputArea.classList.add('hidden'); setTimeout(showMainMenu, 5000);
-        }
-
-        document.getElementById('send-btn').onclick = processBotInput;
-        botInput.onkeypress = (e) => { if (e.key === 'Enter') processBotInput(); };
-
-        // Scroll Reveal
-        window.onscroll = () => { document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active'); }); };
-        window.dispatchEvent(new Event('scroll'));
-
-        // Inquiry Form
-        const homeContactForm = document.getElementById('homeContactForm');
-        if (homeContactForm) {
-            homeContactForm.onsubmit = async (e) => {
-                e.preventDefault();
-                const btn = homeContactForm.querySelector('button'); btn.innerText = "Sending...";
-                const formData = { source: "Inquiry", name: document.getElementById('fc-name').value, phone: document.getElementById('fc-phone').value, message: document.getElementById('fc-message').value };
-                try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(formData) }); alert('Sent Successfully!'); homeContactForm.reset(); } catch (error) { alert('Done.'); }
-                btn.innerText = "Submit Inquiry";
-            };
-        }
-
-        // Testimonial Track
-        const track = document.getElementById('testimonial-track');
-        let currentSlide = 0;
-        setInterval(() => {
-            if (!track) return;
-            currentSlide = (currentSlide + 1) % 2;
-            const move = window.innerWidth < 768 ? (currentSlide * 100) : (currentSlide * 33.333);
-            track.style.transform = `translateX(-${move}%)`;
-        }, 5000);
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            const menuBtn = document.getElementById('menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuBtn && mobileMenu) menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+            if (closeMenuBtn && mobileMenu) closeMenuBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
     </script>
 </body>
 </html>
