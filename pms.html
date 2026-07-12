@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Prism">
     <link rel="apple-touch-icon" href="prismapplogo.png">
-    <link rel="icon" href="prismapplogo.png">
+    <link rel="icon" href="Prism logo.jpeg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -981,8 +981,10 @@
                                         <option value="Cash">Cash</option>
                                         <option value="UPI">UPI</option>
                                         <option value="Card">Card</option>
+                                        <option value="Advance">Advance (Pre-paid Package)</option>
                                         <option value="Pending">Pending / Due</option>
                                     </select>
+                                        <div id="advance-remaining-hint" class="text-[9px] font-black text-indigo-500 uppercase mt-1 ml-1"></div>
                                 </div>
                                 <div>
                                     <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Paid (₹)</label>
@@ -1125,6 +1127,18 @@
                             <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner" onkeyup="filterBillingTable()">
                             <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white flex-shrink-0"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
                         </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-end border-indigo-100">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">Bill From Date (optional)</label>
+                            <input type="date" id="bill-range-from" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-600 block mb-2 ml-1">Bill To Date (optional)</label>
+                            <input type="date" id="bill-range-to" class="w-full p-4 bg-white border border-slate-200 rounded-2xl font-black text-slate-700 outline-none">
+                        </div>
+                        <button onclick="clearBillDateRange()" class="toolbar-btn bg-slate-100 text-slate-600 hover:bg-slate-800 hover:text-white justify-center py-4"><i data-lucide="x" class="w-3.5 h-3.5"></i> Clear Range (Full History)</button>
                     </div>
 
                     <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
@@ -1718,6 +1732,7 @@
                         baseRate: 0,
                         purchased: 0,
                         advance: 0,
+                        discount: 0,
                         closed: false,
                         closedDate: null,
                         age: '',
@@ -1735,6 +1750,7 @@
                     p.purchased += toNum(r[10]);
                     p.advance += toNum(r[11]);
                     p.baseRate = fee;
+                    p.discount = toNum(r[12]);
                     if (r[4]) p.age = r[4];
                     if (r[5]) p.gender = r[5];
                     if (r[14]) p.address = r[14];
@@ -1774,6 +1790,7 @@ let totalOutstanding = 0;
 Object.keys(patientLookup).forEach(name => {
     const p = patientLookup[name];
     let due = 0;
+    let dueSessionCount = 0;
     p.logs.forEach(l => {
         const fee = toNum(l[9]);
         const type = String(l[7] || '').trim().toLowerCase();
@@ -1789,9 +1806,11 @@ Object.keys(patientLookup).forEach(name => {
         // Only mark as due if payment mode is "Pending"
         if (paymentMode === "Pending") {
             due += (fee - paid);
+            dueSessionCount++;
         }
     });
     p.outstandingDue = due;
+    p.dueSessionCount = dueSessionCount;
     if (due > 0) totalOutstanding += due;
 });
 
@@ -2015,8 +2034,19 @@ Object.keys(patientLookup).forEach(name => {
             const paymentMode = document.getElementById('session-payment-mode').value;
             const amountPaidInput = document.getElementById('session-amount-paid').value;
 
+            if (paymentMode === "Advance") {
+                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const remaining = p.purchased - consumed;
+                if (remaining < selectedDates.length) {
+                    showToast(`Only ${remaining} advance session(s) left — cannot log ${selectedDates.length}`, 'warning');
+                    return;
+                }
+            }
+
             let amountPaid;
-            if (amountPaidInput !== "") {
+            if (paymentMode === "Advance") {
+                amountPaid = totalFee;
+            } else if (amountPaidInput !== "") {
                 amountPaid = Number(amountPaidInput);
             } else if (paymentMode === "Pending") {
                 amountPaid = 0;
@@ -2069,6 +2099,20 @@ Object.keys(patientLookup).forEach(name => {
                 amountPaid: amountPaid
             }).catch(() => {});
         }
+
+        function updateAdvanceHint() {
+            const hint = document.getElementById('advance-remaining-hint');
+            if (!selectedPatientName || !hint) {
+                if (hint) hint.innerText = '';
+                return;
+            }
+            const p = patientLookup[selectedPatientName];
+            const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+            const remaining = p.purchased - consumed;
+            hint.innerText = p.purchased > 0 ? `${remaining} / ${p.purchased} advance sessions remaining` : '';
+        }
+
+        document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
         async function saveEnrollment() {
             const name = document.getElementById('en-name').value.trim();
@@ -2338,6 +2382,7 @@ Object.keys(patientLookup).forEach(name => {
             }).join('');
             renderCalendar();
             renderActiveCasesForLog();
+            updateAdvanceHint();
         }
 
         function renderCalendar() {
@@ -2698,7 +2743,17 @@ Object.keys(patientLookup).forEach(name => {
             billCounter[name] = nextBillNo;
             const now = new Date();
             const dateStr = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
-            const logs = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'case closed');
+            const fromDate = document.getElementById('bill-range-from').value;
+            const toDate = document.getElementById('bill-range-to').value;
+            let logs = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'case closed');
+            if (fromDate) logs = logs.filter(l => l[8] >= fromDate);
+            if (toDate) logs = logs.filter(l => l[8] <= toDate);
+            if (fromDate || toDate) {
+                if (!logs.length) {
+                    showToast('No sessions found in selected date range', 'warning');
+                    return;
+                }
+            }
             let total = 0;
             const groups = {};
             logs.forEach(l => {
@@ -2711,6 +2766,9 @@ Object.keys(patientLookup).forEach(name => {
                 groups[fee].qty++;
                 groups[fee].dates.push(l[8]);
             });
+            const discountPercent = Number(p.discount) || 0;
+            const discountAmount = Math.round(total * discountPercent / 100);
+            const grandTotal = total - discountAmount;
             let procedureRowsHtml = '';
             Object.keys(groups).forEach(feeKey => {
                 const g = groups[feeKey],
@@ -2731,6 +2789,8 @@ Object.keys(patientLookup).forEach(name => {
                 </tr>`;
             });
             const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
+            const rangeNoteHtml = (fromDate || toDate) ?
+                `<p style="margin:4px 0 0; font-size:10px; color:#4f46e5; font-weight:800;">Billed Period: ${fromDate ? formatDateDMY(fromDate) : 'Start'} to ${toDate ? formatDateDMY(toDate) : 'Latest'}</p>` : '';
 
             const ledgerChunks = chunkArray(logs, ROWS_PER_LEDGER_PAGE);
             let ledgerPagesHtml = '';
@@ -2783,6 +2843,7 @@ Object.keys(patientLookup).forEach(name => {
                             <p class="editable" style="margin:2px 0; font-size:11px; color:#64748b">${docWeb}</p>
                             <p class="section-label2" style="text-align:right; margin-top:14px">Bill Date</p>
                             <strong class="editable" style="font-size:13px">${dateStr}</strong>
+                            ${rangeNoteHtml}
                         </div>
                     </div>
                     <table style="width:100%; border-collapse:collapse; margin-bottom:20px">
@@ -2793,10 +2854,21 @@ Object.keys(patientLookup).forEach(name => {
                             <th style="padding:12px; text-align:right; font-size:11px; text-transform:uppercase; color:#64748b">Subtotal</th>
                         </tr></thead>
                         <tbody>${procedureRowsHtml}</tbody>
-                        <tfoot><tr style="background:#f8fafc">
-                            <td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td>
-                            <td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px" class="editable">₹${total.toLocaleString()}</td>
-                        </tr></tfoot>
+                        <tfoot>
+                            ${discountPercent > 0 ? `
+                            <tr>
+                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:12px; color:#64748b; text-transform:uppercase">Subtotal</td>
+                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#0f172a; font-size:14px" class="editable">₹${total.toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:12px; color:#f97316; text-transform:uppercase">Discount (${discountPercent}%)</td>
+                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#f97316; font-size:14px" class="editable">-₹${discountAmount.toLocaleString()}</td>
+                            </tr>` : ''}
+                            <tr style="background:#f8fafc">
+                                <td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td>
+                                <td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px" class="editable">₹${grandTotal.toLocaleString()}</td>
+                            </tr>
+                        </tfoot>
                     </table>
                     ${buildPageFooter('qr-inv', docName, verifyUrl)}
                 </div>
@@ -2836,7 +2908,7 @@ Object.keys(patientLookup).forEach(name => {
                 name,
                 phone: p.phone,
                 stmtNo,
-                total,
+                total: grandTotal,
                 verifyUrl
             };
             setTimeout(() => {
@@ -2848,7 +2920,7 @@ Object.keys(patientLookup).forEach(name => {
                 name: name,
                 phone: p.phone,
                 condition: `Bill Issued: ${stmtNo}`,
-                fee: total,
+                fee: grandTotal,
                 billNo: stmtNo,
                 type: "Bill Issued",
                 date: getLocalISOString()
@@ -2924,6 +2996,12 @@ Object.keys(patientLookup).forEach(name => {
             const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are staying consistent with your prescribed exercises. Please find your official receipt (Statement No: ${stmtNo}) for the amount of ₹${total.toLocaleString()}.\n\nYou can verify the authenticity of this document here: ${verifyUrl}\n\nPlease find the attached PDF copy of your bill. Kindly review it and let us know if you have any questions.\n\nYour feedback is important to us and helps us continue providing the highest quality of care. We would greatly appreciate it if you could share your experience by leaving us a review here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nThank you for choosing Prism Physiotherapy & Rehabilitation Center. We wish you a smooth and speedy recovery!
 `);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+        }
+
+        function clearBillDateRange() {
+            document.getElementById('bill-range-from').value = '';
+            document.getElementById('bill-range-to').value = '';
+            showToast('Bill range cleared — full history will be used', 'info');
         }
 
         function filterBillingTable() {
