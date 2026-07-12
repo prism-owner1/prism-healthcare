@@ -360,97 +360,264 @@
         }
 
         #lock-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: #0f172a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0b0f1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-        #lock-screen .lock-card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 2rem;
-            padding: 3rem 2.5rem;
-            width: 100%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-        }
+/* Ambient prism-spectrum glow — echoes the app's own POC/PHC/PRC colors */
+.lock-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    will-change: transform;
+}
+.lock-blob.b1 { width: 480px; height: 480px; background: #4f46e5; top: -120px; left: -100px; animation: driftA 16s ease-in-out infinite; }
+.lock-blob.b2 { width: 420px; height: 420px; background: #10b981; bottom: -140px; right: -80px; animation: driftB 19s ease-in-out infinite; }
+.lock-blob.b3 { width: 360px; height: 360px; background: #f97316; bottom: 10%; left: 8%; animation: driftC 22s ease-in-out infinite; opacity: 0.22; }
 
-        #lock-screen .lock-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 1.2rem;
-            background: #4f46e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.25rem;
-            color: white;
-        }
+@keyframes driftA {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, 40px) scale(1.08); }
+}
+@keyframes driftB {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, -30px) scale(1.1); }
+}
+@keyframes driftC {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -50px) scale(0.95); }
+}
 
-        #lock-screen h2 {
-            color: white;
-            font-weight: 900;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.4rem;
-        }
+.lock-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 40%, transparent 90%);
+}
 
-        #lock-screen p {
-            color: #94a3b8;
-            font-size: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
+#lock-screen .lock-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2rem;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    animation: cardEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
 
-        #lock-password {
-            width: 100%;
-            padding: 0.9rem 1rem;
-            border-radius: 1rem;
-            border: none;
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            font-weight: 700;
-            outline: none;
-            margin-bottom: 0.9rem;
-            text-align: center;
-            letter-spacing: 1px;
-        }
+@keyframes cardEnter {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-        #lock-password::placeholder {
-            color: #64748b;
-        }
+#lock-screen .lock-logo-wrap {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        #lock-submit {
-            width: 100%;
-            padding: 0.9rem;
-            border-radius: 1rem;
-            border: none;
-            background: #4f46e5;
-            color: white;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+#lock-screen .lock-logo-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 1.4rem;
+    background: linear-gradient(135deg, #4f46e5, #10b981 50%, #f97316);
+    opacity: 0.5;
+    filter: blur(14px);
+    animation: ringPulse 3s ease-in-out infinite;
+}
 
-        #lock-submit:hover {
-            background: #4338ca;
-        }
+@keyframes ringPulse {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.12); }
+}
 
-        #lock-error {
-            color: #fb7185;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-top: 0.8rem;
-            min-height: 14px;
-        }
+.lock-icon {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    border-radius: 1.2rem;
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.5);
+}
+
+/* Pulse / EKG line — clinical motif, sits quietly under the heading */
+.lock-pulse-line {
+    width: 100%;
+    height: 26px;
+    margin: 0.25rem 0 1.4rem;
+    opacity: 0.55;
+}
+.lock-pulse-line path {
+    fill: none;
+    stroke: #4f46e5;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 180;
+    stroke-dashoffset: 180;
+    animation: pulseDraw 2.6s ease-in-out infinite;
+}
+@keyframes pulseDraw {
+    0% { stroke-dashoffset: 180; }
+    45% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -180; }
+}
+
+#lock-screen h2 {
+    color: white;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.35rem;
+}
+
+#lock-screen p.lock-sub {
+    color: #94a3b8;
+    font-size: 0.78rem;
+    font-weight: 500;
+    margin-bottom: 1.75rem;
+}
+
+.lock-field {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+#lock-password {
+    width: 100%;
+    padding: 0.95rem 2.9rem 0.95rem 1.1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    outline: none;
+    text-align: left;
+    letter-spacing: 0.5px;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+#lock-password:focus {
+    border-color: #6366f1;
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+#lock-password::placeholder {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.lock-toggle-visibility {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    transition: color 0.2s;
+}
+.lock-toggle-visibility:hover { color: #cbd5e1; }
+
+#lock-submit {
+    position: relative;
+    width: 100%;
+    padding: 0.95rem;
+    border-radius: 1rem;
+    border: none;
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+    box-shadow: 0 10px 25px -8px rgba(79, 70, 229, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#lock-submit:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -8px rgba(79, 70, 229, 0.7); }
+#lock-submit:active { transform: translateY(0); }
+#lock-submit:disabled { opacity: 0.75; cursor: default; transform: none; }
+
+.lock-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#lock-error {
+    color: #fb7185;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-top: 0.9rem;
+    min-height: 14px;
+}
+
+.lock-card.shake { animation: cardEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) both, shakeErr 0.4s ease; }
+@keyframes shakeErr {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+.lock-footer-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    color: #475569;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lock-blob, .lock-logo-ring, .lock-pulse-line path, #lock-screen .lock-card {
+        animation: none !important;
+    }
+}
 
         #app-root {
             display: none;
@@ -714,15 +881,46 @@
 
     <!-- ---------- PASSWORD LOCK SCREEN ---------- -->
     <div id="lock-screen">
-        <div class="lock-card">
-            <div class="lock-icon"><i data-lucide="lock" class="w-6 h-6"></i></div>
-            <h2>Prism Clinical Intelligence</h2>
-            <p>Enter the access password to continue</p>
+    <div class="lock-blob b1"></div>
+    <div class="lock-blob b2"></div>
+    <div class="lock-blob b3"></div>
+    <div class="lock-grid-overlay"></div>
+
+    <div class="lock-card" id="lock-card">
+        <div class="lock-logo-wrap">
+            <div class="lock-logo-ring"></div>
+            <div class="lock-icon" style="background: white; padding: 6px;">
+             <img src="prismapplogo.png" style="width: 100%; height: 100%; object-fit: contain;">
+</div>
+        </div>
+
+        <h2>Prism Clinical Intelligence</h2>
+        <p class="lock-sub">Enter your access password to continue</p>
+
+        <svg class="lock-pulse-line" viewBox="0 0 300 26" preserveAspectRatio="none">
+            <path d="M0,13 L70,13 L85,13 L95,3 L105,23 L115,13 L130,13 L300,13" />
+        </svg>
+
+        <div class="lock-field">
             <input type="password" id="lock-password" placeholder="Password" autocomplete="off">
-            <button id="lock-submit" onclick="checkLockPassword()">Unlock</button>
-            <div id="lock-error"></div>
+            <button type="button" class="lock-toggle-visibility" onclick="toggleLockPasswordVisibility()" aria-label="Show password">
+                <i data-lucide="eye" class="w-4 h-4" id="lock-eye-icon"></i>
+            </button>
+        </div>
+
+        <button id="lock-submit" onclick="checkLockPassword()">
+            <span id="lock-submit-label">Unlock</span>
+            <span class="lock-spinner" id="lock-spinner"></span>
+        </button>
+
+        <div id="lock-error"></div>
+
+        <div class="lock-footer-note">
+            <i data-lucide="lock" class="w-3 h-3"></i>
+            <span>Secured session</span>
         </div>
     </div>
+</div>
 
     <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
@@ -1445,34 +1643,44 @@
             loadAdminData(false);
         }
 
-        function checkLockPassword() {
-            const val = document.getElementById('lock-password').value;
-            const errEl = document.getElementById('lock-error');
-            if (val === APP_LOCK_PASSWORD) {
-                errEl.innerText = '';
-                unlockApp();
-            } else {
-                errEl.innerText = 'Incorrect password. Please try again.';
-                document.getElementById('lock-password').value = '';
-                document.getElementById('lock-password').focus();
-            }
+        function toggleLockPasswordVisibility() {
+    const input = document.getElementById('lock-password');
+    const icon = document.getElementById('lock-eye-icon');
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    icon.setAttribute('data-lucide', isHidden ? 'eye-off' : 'eye');
+    lucide.createIcons();
+}
+
+function checkLockPassword() {
+    const val = document.getElementById('lock-password').value;
+    const errEl = document.getElementById('lock-error');
+    const btn = document.getElementById('lock-submit');
+    const label = document.getElementById('lock-submit-label');
+    const spinner = document.getElementById('lock-spinner');
+    const card = document.getElementById('lock-card');
+
+    btn.disabled = true;
+    label.style.opacity = '0.7';
+    spinner.style.display = 'inline-block';
+
+    setTimeout(() => {
+        if (val === APP_LOCK_PASSWORD) {
+            errEl.innerText = '';
+            unlockApp();
+        } else {
+            errEl.innerText = 'Incorrect password. Please try again.';
+            document.getElementById('lock-password').value = '';
+            document.getElementById('lock-password').focus();
+            card.classList.remove('shake');
+            void card.offsetWidth;
+            card.classList.add('shake');
+            btn.disabled = false;
+            label.style.opacity = '1';
+            spinner.style.display = 'none';
         }
-
-        document.getElementById('lock-password').addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') checkLockPassword();
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            let alreadyUnlocked = false;
-            try {
-                alreadyUnlocked = sessionStorage.getItem('prism_unlocked') === '1';
-            } catch (e) {}
-            if (alreadyUnlocked) {
-                unlockApp();
-            } else {
-                lucide.createIcons();
-            }
-        });
+    }, 380);
+};
 
         // ---------- MOBILE SIDEBAR DRAWER ----------
         function openSidebar() {
@@ -1698,6 +1906,17 @@
             return 'Physiotherapy Session';
         }
 
+        function getAdvanceSessionLabel(r, p) {
+            const nonEnrollLogs = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment');
+            const sorted = nonEnrollLogs.slice().sort((a, b) => {
+                if (a[8] !== b[8]) return a[8] < b[8] ? -1 : 1;
+                return new Date(a[0]) - new Date(b[0]);
+            });
+            const idx = sorted.findIndex(l => l[0] === r[0]);
+            const sessionNum = idx >= 0 ? idx + 1 : sorted.length;
+            return `${sessionNum}/${p.purchased}`;
+        }
+
         function processData() {
             patientLookup = {};
             billCounter = {};
@@ -1871,6 +2090,8 @@ Object.keys(patientLookup).forEach(name => {
                         diag = r[6],
                         fee = toNum(r[9]);
                     const paymentMode = r[15] || 'Cash';
+                    const p = patientLookup[name];
+                    const paymentDisplay = (paymentMode === 'Advance' && p) ? getAdvanceSessionLabel(r, p) : paymentMode;
                     const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
                     const modeBadgeColor = paymentMode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
 
@@ -1883,7 +2104,7 @@ Object.keys(patientLookup).forEach(name => {
                         <td class="p-5 font-bold text-slate-600">${cid}</td>
                         <td class="p-5 text-center"><span class="bg-slate-100 text-[10px] font-black uppercase px-3 py-1 rounded-lg">${branch}</span></td>
                         <td class="p-5 text-slate-600 italic truncate max-w-[200px]">${diag || '-'}</td>
-                        <td class="p-5 text-center"><span class="${modeBadgeColor} text-[10px] font-black uppercase px-3 py-1 rounded-lg">${paymentMode}</span></td>
+                        <td class="p-5 text-center"><span class="${modeBadgeColor} text-[10px] font-black uppercase px-3 py-1 rounded-lg">${paymentDisplay}</span></td>
                         <td class="p-5 text-right font-black text-slate-800">₹${fee.toLocaleString()}</td>
                     </tr>`;
                 });
@@ -2684,6 +2905,34 @@ Object.keys(patientLookup).forEach(name => {
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
+        function sendDueReminder(name) {
+            const p = patientLookup[name];
+            if (!p) return;
+            const waNumber = getWhatsAppNumber(p.phone);
+            if (!waNumber) {
+                showToast('Invalid phone number', 'warning');
+                return;
+            }
+            const due = p.outstandingDue;
+            const sessionCount = p.dueSessionCount || 0;
+            const UPI_ID = "prismphysio@upi";
+
+            const msg = encodeURIComponent(
+                `Hello ${name},\n\n` +
+                `This is a gentle reminder from *Prism Physiotherapy & Rehabilitation Center* regarding a pending balance on your account.\n\n` +
+                `*Outstanding Amount:* ₹${due.toLocaleString()}\n` +
+                `*Pending for:* ${sessionCount} session(s)\n\n` +
+                `You can clear this via UPI:\n` +
+                `*UPI ID:* ${UPI_ID}\n\n` +
+                `Kindly share the payment screenshot once done, or let us know if you'd like to pay by cash/card at the clinic.\n\n` +
+                `Thank you for your continued trust in us.\n\n` +
+                `Warm regards,\nPrism Physiotherapy & Rehabilitation Center`
+            );
+
+            showToast("Opening WhatsApp...", "success");
+            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+        }
+
         function buildDocHeader(stmtNo, udyam) {
             return `<div class="doc-header2">
                 <div>
@@ -3172,6 +3421,7 @@ Object.keys(patientLookup).forEach(name => {
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">₹${r.due.toLocaleString()} due</span>
+                        <button onclick="sendDueReminder('${r.name.replace(/'/g, "\\'")}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
                         <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
                     </div>
                 </div>`).join('');
