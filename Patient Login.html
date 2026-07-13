@@ -262,7 +262,7 @@
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('app-content').classList.remove('hidden');
 
-            const sessions = patientLogs.filter(r => r[9] > 0 && !['bill issued', 'case closed', 'enrollment'].includes(String(r[7]).toLowerCase()));
+            const sessions = patientLogs.filter(r => r[9] > 0 && !['bill issued', 'case closed'].includes(String(r[7]).toLowerCase()));
             const totalPurchased = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
             const totalAdvance = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (parseFloat(r[11]) || 0), 0);
             const lastPayment = patientLogs.filter(r => parseFloat(r[9]) > 0).sort((a,b) => new Date(b[8]) - new Date(a[8]))[0];
