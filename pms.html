@@ -874,6 +874,50 @@
         body:not(.dark-mode) #dark-toggle-btn i[data-lucide="sun"] {
             display: none;
         }
+
+        /* ---- Body chart modal (added) ---- */
+        #overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            z-index: 600;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        #overlay.show { display: flex; }
+        #overlay .modal {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 420px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        #overlay .modal h3 { font-weight: 900; font-size: 1.1rem; margin-bottom: 2px; }
+        #overlay .modal .sub { font-size: 0.7rem; color: #6366f1; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; }
+        #overlay .field { margin-bottom: 1rem; }
+        #overlay .field label { display:block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; color:#64748b; margin-bottom: 0.4rem; }
+        #overlay .field input[type=text], #overlay .field textarea {
+            width: 100%; padding: 0.7rem 0.9rem; border-radius: 0.8rem; border: 1px solid #e2e8f0; background:#f8fafc; font-weight:600; outline:none; font-size: 0.85rem;
+        }
+        #overlay .pain-scale { display:flex; flex-wrap:wrap; gap:6px; }
+        #overlay .pain-scale button {
+            width: 30px; height: 30px; border-radius: 8px; border: 1px solid #e2e8f0; background:#f8fafc; font-weight:800; font-size:0.75rem; cursor:pointer;
+        }
+        #overlay .pain-scale button.sel { background:#4f46e5; color:white; border-color:#4f46e5; }
+        #overlay .qualifiers { display:flex; flex-wrap:wrap; gap:8px; }
+        #overlay .qualifiers label {
+            display:flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:700; background:#f8fafc; border:1px solid #e2e8f0; padding:5px 10px; border-radius: 999px; cursor:pointer;
+        }
+        #overlay .qualifiers label.on { background:#eef2ff; border-color:#6366f1; color:#4338ca; }
+        #overlay .qualifiers label input { display:none; }
+        #overlay .modal-actions { display:flex; gap:10px; margin-top: 1.2rem; }
+        #overlay .btn { flex:1; padding: 0.8rem; border-radius: 0.9rem; font-weight:800; font-size:0.75rem; text-transform:uppercase; border:none; cursor:pointer; }
+        #overlay .btn.secondary { background:#f1f5f9; color:#475569; }
+        #overlay .btn:not(.secondary) { background:#4f46e5; color:white; }
     </style>
 </head>
 
@@ -935,7 +979,7 @@
                 </div>
             </div>
             <nav class="flex-1 space-y-1">
-                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-00 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
+                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
                 <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
                 <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
                 <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
@@ -1114,18 +1158,100 @@
                                     <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Advance Paid (₹)</label>
                                     <input type="number" id="en-advance" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
                                 </div>
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Discount (%)</label>
-                                    <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                                </div>
+
+<div class="grid grid-cols-2 gap-4">
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
+        <select id="en-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Card">Card</option>
+            <option value="Advance">Advance (Pre-paid Package)</option>
+            <option value="Pending">Pending / Due</option>
+        </select>
+    </div>
+</div>
+<div>
+    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Discount (%)</label>
+    <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+</div>
                             </div>
                             <div class="p-5 bg-slate-900 rounded-2xl text-white">
                                 <p class="text-[9px] font-bold uppercase text-slate-600 mb-1">Total Package Value</p>
                                 <h5 id="enroll-summary" class="text-xl font-black">₹0</h5>
                             </div>
-                            <button onclick="saveEnrollment()" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl hover:bg-indigo-700 transition-all">Enroll Patient</button>
                         </div>
                     </div>
+
+                    <!-- BODY CHART / PAIN MAP -->
+                    <div class="mt-10 pt-8 border-t border-slate-100">
+                        <h4 class="text-[10px] font-black uppercase text-rose-500 tracking-widest border-b border-rose-100 pb-2 mb-6">3. Body Chart — Mark Pain / Findings (optional)</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                            <div>
+                                <p class="text-[11px] text-slate-600 font-semibold mb-3">Click directly on the figure (front / side / back) to drop a marker at the affected area. Each marker becomes part of this patient's first SOAP note.</p>
+                                <div id="enroll-image-wrap" class="relative w-full leading-none cursor-crosshair select-none border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                                    <img id="enroll-anatomy-img" src="C:\Users\Ravi6\Downloads\male_muscle_anatomy__front__side_and_back__by_artistsaif-dax204a.jpg" alt="Front, side and back muscular anatomy diagram" class="w-full block pointer-events-none">
+                                </div>
+                                <div class="flex gap-4 mt-3 text-[10px] font-bold text-slate-600 uppercase">
+                                    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#10b981"></i>mild</span>
+                                    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#d9a441"></i>moderate</span>
+                                    <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#e11d48"></i>severe</span>
+                                </div>
+                            </div>
+                            <div>
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3 id="modalRegion">Region</h3>
+    <div class="sub" id="modalPose">View</div>
+
+    <div class="field">
+      <label>Refine location label</label>
+      <input type="text" id="fRegion">
+    </div>
+
+    <div class="field">
+      <label>Pain / severity (0 none — 10 worst)</label>
+      <div class="pain-scale" id="painScale"></div>
+    </div>
+
+    <div class="field">
+      <label>Character</label>
+      <div class="qualifiers" id="qualifiers">
+        <label data-v="Sharp"><input type="checkbox">Sharp</label>
+        <label data-v="Dull/aching"><input type="checkbox">Dull / aching</label>
+        <label data-v="Burning"><input type="checkbox">Burning</label>
+        <label data-v="Throbbing"><input type="checkbox">Throbbing</label>
+        <label data-v="Stiffness"><input type="checkbox">Stiffness</label>
+        <label data-v="Numbness"><input type="checkbox">Numbness</label>
+        <label data-v="Tingling"><input type="checkbox">Tingling</label>
+        <label data-v="Weakness"><input type="checkbox">Weakness</label>
+        <label data-v="Swelling"><input type="checkbox">Swelling</label>
+        <label data-v="Radiating"><input type="checkbox">Radiating</label>
+      </div>
+    </div>
+<div class="field">
+      <label>Onset / duration</label>
+      <input type="text" id="fOnset" placeholder="e.g. 3 weeks ago, sudden">
+    </div>
+
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="fNotes" placeholder="Aggravating/relieving factors, mechanism of injury, prior treatment..."></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn secondary" id="cancelBtn" type="button">Cancel</button>
+      <button class="btn" id="saveBtn" type="button">Save finding</button>
+    </div>
+  </div>
+</div>
+                                <div id="enroll-empty-findings" class="border border-dashed border-slate-200 rounded-2xl p-6 text-center text-slate-600 text-xs italic">No findings marked yet — click the figure to add one.</div>
+                                <div id="enroll-findings-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="saveEnrollment()" class="w-full mt-8 bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl hover:bg-indigo-700 transition-all">Enroll Patient</button>
                 </div>
             </section>
 
@@ -1345,7 +1471,6 @@
                                 <tr>
                                     <th class="p-5">Patient Registration</th>
                                     <th class="p-5">ID</th>
-                                    <th class="p-5">Sessions</th>
                                     <th class="p-5">Total Amount</th>
                                     <th class="p-5 text-center">Action</th>
                                 </tr>
@@ -1718,6 +1843,310 @@ function checkLockPassword() {
             for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
             return out;
         }
+
+// ---- zone map (approximate, in source-image pixel coordinates, 1023 x 723) ----
+const IMG_W = 1023, IMG_H = 723;
+const ZONES = [
+  // FRONT
+  {pose:'Front', label:'Head / Face', x1:140,y1:20,x2:220,y2:90},
+  {pose:'Front', label:'Neck (Sternocleidomastoid)', x1:150,y1:85,x2:230,y2:140},
+  {pose:'Front', label:'Left Shoulder (Deltoid)', x1:90,y1:130,x2:150,y2:205},
+  {pose:'Front', label:'Right Shoulder (Deltoid)', x1:230,y1:130,x2:290,y2:205},
+  {pose:'Front', label:'Chest (Pectoralis)', x1:145,y1:140,x2:235,y2:222},
+  {pose:'Front', label:'Left Biceps', x1:70,y1:185,x2:118,y2:262},
+  {pose:'Front', label:'Right Biceps', x1:258,y1:185,x2:306,y2:262},
+  {pose:'Front', label:'Abdominals (Rectus Abdominis)', x1:160,y1:215,x2:218,y2:322},
+  {pose:'Front', label:'Left Oblique', x1:125,y1:215,x2:162,y2:322},
+  {pose:'Front', label:'Right Oblique', x1:216,y1:215,x2:253,y2:322},
+  {pose:'Front', label:'Left Forearm', x1:50,y1:255,x2:98,y2:347},
+  {pose:'Front', label:'Right Forearm', x1:268,y1:255,x2:316,y2:347},
+  {pose:'Front', label:'Left Hand / Wrist', x1:8,y1:345,x2:62,y2:402},
+  {pose:'Front', label:'Right Hand / Wrist', x1:308,y1:345,x2:362,y2:402},
+  {pose:'Front', label:'Groin / Hip Flexor', x1:175,y1:320,x2:205,y2:360},
+  {pose:'Front', label:'Left Quadriceps', x1:110,y1:325,x2:190,y2:468},
+  {pose:'Front', label:'Right Quadriceps', x1:190,y1:325,x2:270,y2:468},
+  {pose:'Front', label:'Left Calf (Tibialis/Gastrocnemius)', x1:122,y1:478,x2:168,y2:612},
+  {pose:'Front', label:'Right Calf (Tibialis/Gastrocnemius)', x1:202,y1:478,x2:248,y2:612},
+  {pose:'Front', label:'Left Foot / Ankle', x1:108,y1:610,x2:172,y2:662},
+  {pose:'Front', label:'Right Foot / Ankle', x1:198,y1:610,x2:262,y2:662},
+
+  // SIDE (lateral)
+  {pose:'Lateral', label:'Head / Face', x1:478,y1:28,x2:558,y2:98},
+  {pose:'Lateral', label:'Neck', x1:503,y1:90,x2:548,y2:138},
+  {pose:'Lateral', label:'Shoulder / Trapezius', x1:493,y1:128,x2:562,y2:212},
+  {pose:'Lateral', label:'Chest (Pectoralis, partial)', x1:493,y1:150,x2:522,y2:198},
+  {pose:'Lateral', label:'Triceps / Posterior Arm', x1:543,y1:158,x2:595,y2:262},
+  {pose:'Lateral', label:'Abdomen / Oblique', x1:472,y1:208,x2:522,y2:322},
+  {pose:'Lateral', label:'Forearm', x1:458,y1:253,x2:502,y2:347},
+  {pose:'Lateral', label:'Hand / Wrist', x1:452,y1:345,x2:498,y2:402},
+  {pose:'Lateral', label:'Glute', x1:538,y1:322,x2:582,y2:372},
+  {pose:'Lateral', label:'Quadriceps', x1:478,y1:320,x2:548,y2:462},
+  {pose:'Lateral', label:'Hamstring', x1:518,y1:398,x2:568,y2:492},
+  {pose:'Lateral', label:'Calf', x1:503,y1:488,x2:558,y2:618},
+  {pose:'Lateral', label:'Foot / Ankle', x1:458,y1:615,x2:562,y2:668},
+
+  // BACK
+  {pose:'Back', label:'Head', x1:788,y1:28,x2:868,y2:98},
+  {pose:'Back', label:'Neck / Upper Trapezius', x1:788,y1:85,x2:872,y2:192},
+  {pose:'Back', label:'Left Shoulder (Deltoid)', x1:733,y1:138,x2:792,y2:202},
+  {pose:'Back', label:'Right Shoulder (Deltoid)', x1:868,y1:138,x2:927,y2:202},
+  {pose:'Back', label:'Left Rotator Cuff / Rear Delt', x1:743,y1:150,x2:802,y2:202},
+  {pose:'Back', label:'Right Rotator Cuff / Rear Delt', x1:858,y1:150,x2:917,y2:202},
+  {pose:'Back', label:'Left Triceps', x1:713,y1:190,x2:752,y2:282},
+  {pose:'Back', label:'Right Triceps', x1:908,y1:190,x2:947,y2:282},
+  {pose:'Back', label:'Upper Back (Trapezius / Rhomboids)', x1:758,y1:195,x2:897,y2:282},
+  {pose:'Back', label:'Lower Back (Erector Spinae)', x1:773,y1:280,x2:882,y2:322},
+  {pose:'Back', label:'Left Forearm', x1:683,y1:238,x2:727,y2:332},
+  {pose:'Back', label:'Right Forearm', x1:933,y1:238,x2:977,y2:332},
+  {pose:'Back', label:'Left Hand / Wrist', x1:668,y1:345,x2:717,y2:402},
+  {pose:'Back', label:'Right Hand / Wrist', x1:943,y1:345,x2:992,y2:402},
+  {pose:'Back', label:'Left Glute', x1:763,y1:303,x2:828,y2:372},
+  {pose:'Back', label:'Right Glute', x1:828,y1:303,x2:893,y2:372},
+  {pose:'Back', label:'Left Hamstring', x1:753,y1:372,x2:823,y2:467},
+  {pose:'Back', label:'Right Hamstring', x1:823,y1:372,x2:893,y2:467},
+  {pose:'Back', label:'Left Calf', x1:753,y1:478,x2:823,y2:613},
+  {pose:'Back', label:'Right Calf', x1:823,y1:478,x2:893,y2:613},
+  {pose:'Back', label:'Left Foot / Ankle', x1:743,y1:610,x2:808,y2:662},
+  {pose:'Back', label:'Right Foot / Ankle', x1:808,y1:610,x2:873,y2:662},
+];
+
+function findZone(px, py){
+  let hit = ZONES.find(z => px>=z.x1 && px<=z.x2 && py>=z.y1 && py<=z.y2);
+  if(hit) return hit;
+  // fallback: nearest zone center
+  let best=null, bestD=Infinity;
+  for(const z of ZONES){
+    const cx=(z.x1+z.x2)/2, cy=(z.y1+z.y2)/2;
+    const d=(cx-px)**2+(cy-py)**2;
+    if(d<bestD){bestD=d;best=z;}
+  }
+  return best;
+}
+
+// ---- state ----
+let entries = [];
+let nextId = 1;
+let pendingClick = null; // {xPct, yPct, zone}
+let editingId = null;
+let selectedPain = null;
+
+// ---- CORRECTED IDs: match actual HTML elements ----
+const imageWrap = document.getElementById('enroll-image-wrap');
+const anatomyImg = document.getElementById('enroll-anatomy-img');
+const overlay = document.getElementById('overlay');
+const emptyState = document.getElementById('enroll-empty-findings');
+const entriesEl = document.getElementById('enroll-findings-list');
+
+function severityClass(p){
+  if(p===null||p===undefined) return 'mild';
+  if(p<=3) return 'mild';
+  if(p<=6) return 'moderate';
+  return 'severe';
+}
+function severityColor(p){
+  const c = severityClass(p);
+  return c==='mild' ? '#5b9a68' : c==='moderate' ? '#d9a441' : '#c1473b';
+}
+function renderMarkersOnImage(){
+  if (!imageWrap) return;
+  imageWrap.querySelectorAll('.pain-marker').forEach(m => m.remove());
+  entries.forEach(e => {
+    const dot = document.createElement('div');
+    dot.className = 'pain-marker';
+    dot.style.cssText = `
+      position:absolute;
+      left:${e.xPct*100}%;
+      top:${e.yPct*100}%;
+      width:14px;height:14px;
+      background:${severityColor(e.pain)};
+      border:2px solid white;
+      border-radius:50%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 1px 4px rgba(0,0,0,.4);
+      cursor:pointer;
+      z-index:5;
+    `;
+    dot.title = e.region;
+    dot.onclick = (ev) => { ev.stopPropagation(); openModal(null, e); };
+    imageWrap.appendChild(dot);
+  });
+}
+
+if (imageWrap) {
+  imageWrap.addEventListener('click', (e)=>{
+    const rect = anatomyImg.getBoundingClientRect();
+    const xPct = (e.clientX - rect.left) / rect.width;
+    const yPct = (e.clientY - rect.top) / rect.height;
+    const px = xPct * IMG_W, py = yPct * IMG_H;
+    const zone = findZone(px, py);
+    openModal({xPct, yPct, zone});
+  });
+}
+
+function openModal(click, existing){
+  pendingClick = click;
+  editingId = existing ? existing.id : null;
+  selectedPain = existing ? existing.pain : null;
+  document.getElementById('modalRegion').textContent = existing ? existing.region : click.zone.label;
+  document.getElementById('modalPose').textContent = (existing ? existing.pose : click.zone.pose) + ' view';
+  document.getElementById('fRegion').value = existing ? existing.region : click.zone.label;
+  document.getElementById('fOnset').value = existing ? existing.onset : '';
+  document.getElementById('fNotes').value = existing ? existing.notes : '';
+  buildPainScale();
+  wireQualifiers();
+  document.querySelectorAll('#qualifiers label').forEach(l=>{
+    const on = existing && existing.qualifiers && existing.qualifiers.includes(l.dataset.v);
+    l.classList.toggle('on', !!on);
+    l.querySelector('input').checked = !!on;
+  });
+  overlay.classList.add('show');
+}
+
+function closeModal(){
+  overlay.classList.remove('show');
+  pendingClick = null;
+  editingId = null;
+}
+
+function buildPainScale(){
+  const wrap = document.getElementById('painScale');
+  wrap.innerHTML='';
+  for(let i=0;i<=10;i++){
+    const b=document.createElement('button');
+    b.type='button'; b.textContent=i;
+    if(selectedPain===i) b.classList.add('sel');
+    b.addEventListener('click',()=>{
+      selectedPain=i;
+      wrap.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+    });
+    wrap.appendChild(b);
+  }
+}
+function wireQualifiers(){
+  document.querySelectorAll('#qualifiers label').forEach(label => {
+    label.onclick = (e) => {
+      e.preventDefault();
+      const input = label.querySelector('input');
+      input.checked = !input.checked;
+      label.classList.toggle('on', input.checked);
+    };
+  });
+}
+
+// ---- Save / Cancel button wiring ----
+const cancelBtnEl = document.getElementById('cancelBtn');
+if (cancelBtnEl) cancelBtnEl.addEventListener('click', closeModal);
+
+const saveBtnEl = document.getElementById('saveBtn');
+if (saveBtnEl) saveBtnEl.addEventListener('click', () => {
+  const region = document.getElementById('fRegion').value.trim();
+  const onset = document.getElementById('fOnset').value.trim();
+  const notes = document.getElementById('fNotes').value.trim();
+  const qualifiers = Array.from(document.querySelectorAll('#qualifiers label.on'))
+    .map(l => l.dataset.v);
+
+  if (!region) {
+    showToast('Enter a location label', 'warning');
+    return;
+  }
+
+  if (editingId) {
+    const idx = entries.findIndex(e => e.id === editingId);
+    if (idx > -1) {
+      entries[idx] = { ...entries[idx], region, pain: selectedPain, qualifiers, onset, notes };
+    }
+  } else {
+    entries.push({
+      id: nextId++,
+      xPct: pendingClick.xPct,
+      yPct: pendingClick.yPct,
+      pose: pendingClick.zone.pose,
+      region,
+      pain: selectedPain,
+      qualifiers,
+      onset,
+      notes
+    });
+  }
+
+  renderFindings();
+  closeModal();
+});
+
+// ---- Render findings list into the Enroll tab ----
+function renderFindings(){
+  if (!entriesEl) return;
+  if (!entries.length) {
+    if (emptyState) emptyState.style.display = '';
+    entriesEl.innerHTML = '';
+    renderMarkersOnImage();
+    return;
+  }
+  if (emptyState) emptyState.style.display = 'none';
+
+  entriesEl.innerHTML = entries.map(e => `
+    <div class="log-card">
+      <div class="flex justify-between items-center mb-1">
+        <span class="text-[10px] font-black uppercase" style="color:${severityColor(e.pain)}">${e.region}</span>
+        <span class="text-[9px] font-bold text-slate-600">${e.pose} · Pain ${e.pain ?? '-'}/10</span>
+      </div>
+      <div class="text-[10px] text-slate-600">${(e.qualifiers||[]).join(', ') || '—'}</div>
+      ${e.onset ? `<div class="text-[10px] italic text-slate-400 mt-1">Onset: ${e.onset}</div>` : ''}
+      ${e.notes ? `<div class="text-[10px] text-slate-500 mt-1">${e.notes}</div>` : ''}
+      <button type="button" onclick="removeFinding(${e.id})" class="mt-2 text-[9px] font-black text-rose-500 uppercase">Remove</button>
+    </div>
+  `).join('');
+   renderMarkersOnImage();
+}
+
+function removeFinding(id){
+  entries = entries.filter(e => e.id !== id);
+  renderFindings();
+}
+
+// ---- Called from saveEnrollment(): push all findings as one SOAP entry ----
+function saveEnrollmentBodyChartAsSoap(patientName){
+  if (!entries.length) return;
+
+  const subjective = entries.map(e =>
+    `${e.region} (${e.pose}): pain ${e.pain ?? '-'}/10${e.onset ? ', onset ' + e.onset : ''}`
+  ).join(' | ');
+
+  const objective = entries.map(e =>
+    `${e.region}: ${(e.qualifiers||[]).join(', ') || 'no qualifiers noted'}`
+  ).join(' | ');
+
+  const assessment = `Initial body-chart assessment at enrollment. ${entries.length} finding(s) marked.`;
+
+  const plan = entries.map(e => e.notes).filter(Boolean).join(' | ') || 'Proceed with initial treatment plan per findings.';
+
+  if (!progressNotes[patientName]) progressNotes[patientName] = [];
+  progressNotes[patientName].push({
+    date: getLocalISOString(),
+    subjective,
+    objective,
+    assessment,
+    plan
+  });
+
+  syncToBackend({
+    action: "saveProgressNote",
+    name: patientName,
+    date: getLocalISOString(),
+    subjective, objective, assessment, plan
+  }).catch(() => {});
+}
+
+// ---- Reset the body chart after enrollment saves ----
+function resetEnrollBodyChart(){
+  entries = [];
+  nextId = 1;
+  pendingClick = null;
+  editingId = null;
+  selectedPain = null;
+  renderFindings();
+}
 
         let globalData = [],
             patientLookup = {},
@@ -2335,57 +2764,69 @@ Object.keys(patientLookup).forEach(name => {
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
-        async function saveEnrollment() {
-            const name = document.getElementById('en-name').value.trim();
-            if (!name) {
-                showToast("Enter the patient's name first", 'warning');
-                return;
-            }
-            const rate = Number(document.getElementById('en-rate').value) || 0;
-            if (!rate) {
-                showToast("Enter cost per session", 'warning');
-                return;
-            }
-            const dateStr = document.getElementById('en-reg-date').value || getLocalISOString();
-            const address = document.getElementById('en-address').value.trim();
-            const row = [
-                new Date().toISOString(),
-                document.getElementById('en-id').value,
-                name,
-                document.getElementById('en-phone').value,
-                document.getElementById('en-age').value,
-                document.getElementById('en-gender').value,
-                document.getElementById('en-condition').value,
-                "Enrollment",
-                dateStr,
-                rate,
-                Number(document.getElementById('en-sessions').value) || 0,
-                Number(document.getElementById('en-advance').value) || 0,
-                Number(document.getElementById('en-discount').value) || 0,
-                "",
-                address
-            ];
-            globalData.push(row);
-            processData();
-            resetEnrollForm();
-            showToast(`${name} enrolled successfully`, 'success');
-            syncToBackend({
-                action: "logAppointment",
-                id: row[1],
-                name: row[2],
-                age: row[4],
-                gender: row[5],
-                phone: row[3],
-                condition: row[6],
-                fee: row[9],
-                purchased: row[10],
-                advance: row[11],
-                discount: row[12],
-                address: row[14],
-                type: "Enrollment",
-                date: row[8]
-            }).catch(() => {});
-        }
+async function saveEnrollment() {
+    const name = document.getElementById('en-name').value.trim();
+    if (!name) {
+        showToast("Enter the patient's name first", 'warning');
+        return;
+    }
+    const rate = Number(document.getElementById('en-rate').value) || 0;
+    if (!rate) {
+        showToast("Enter cost per session", 'warning');
+        return;
+    }
+    const dateStr = document.getElementById('en-reg-date').value || getLocalISOString();
+    const address = document.getElementById('en-address').value.trim();
+    
+    // NEW: Get Payment Mode
+    const paymentMode = document.getElementById('en-payment-mode').value;
+    const advanceAmount = Number(document.getElementById('en-advance').value) || 0;
+
+    const row = [
+        new Date().toISOString(),
+        document.getElementById('en-id').value,
+        name,
+        document.getElementById('en-phone').value,
+        document.getElementById('en-age').value,
+        document.getElementById('en-gender').value,
+        document.getElementById('en-condition').value,
+        "Enrollment",
+        dateStr,
+        rate,
+        Number(document.getElementById('en-sessions').value) || 0,
+        advanceAmount,
+        Number(document.getElementById('en-discount').value) || 0,
+        "",
+        address,
+        paymentMode, // [15] Payment Mode
+        advanceAmount // [16] Amount Paid (the advance itself)
+    ];
+
+    globalData.push(row);
+    processData();
+    saveEnrollmentBodyChartAsSoap(name);
+    resetEnrollForm();
+    showToast(`${name} enrolled successfully`, 'success');
+
+    syncToBackend({
+        action: "logAppointment",
+        id: row[1],
+        name: row[2],
+        age: row[4],
+        gender: row[5],
+        phone: row[3],
+        condition: row[6],
+        fee: row[9],
+        purchased: row[10],
+        advance: row[11],
+        discount: row[12],
+        address: row[14],
+        type: "Enrollment",
+        date: row[8],
+        paymentMode: paymentMode, // NEW
+        amountPaid: advanceAmount  // NEW
+    }).catch(() => {});
+}
 
         function resetEnrollForm() {
             document.getElementById('en-name').value = "";
@@ -2401,7 +2842,9 @@ Object.keys(patientLookup).forEach(name => {
             document.getElementById('en-branch').value = "POC";
             document.getElementById('en-reg-date').value = getLocalISOString();
             document.getElementById('enroll-summary').innerText = "₹0";
+            document.getElementById('en-payment-mode').value = "Cash";
             generateClinicalID();
+            resetEnrollBodyChart();
         }
 
         function openMidPackage() {
@@ -2728,7 +3171,6 @@ Object.keys(patientLookup).forEach(name => {
                     bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
                         <td class="p-5 font-bold uppercase text-xs">${name}</td>
                         <td class="p-5 font-black text-xs text-slate-600">${p.id}</td>
-                        <td class="p-5 font-black text-xs text-slate-600">${consumed} / ${p.purchased}</td>
                         <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
                         <td class="p-5 text-center">
                             <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">View Document (3P)</button>
@@ -2760,12 +3202,11 @@ Object.keys(patientLookup).forEach(name => {
                 actionButtons = document.createElement('div');
                 actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t';
                 actionButtons.innerHTML = `
-            <button onclick="openProgressNotesModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📋 SOAP Notes</button>
-            <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
-        `;
+    <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
+`;
                 const portalBtn = document.createElement('button');
-                portalBtn.className = 'w-full mt-2 bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all';
-                portalBtn.innerHTML = '💬 Send Portal Login (WhatsApp)';
+                portalBtn.className = 'flex-1 bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all';
+                portalBtn.innerHTML = '💬 Send Portal Login';
                 portalBtn.onclick = () => sendPatientPortalLink(name);
                 actionButtons.appendChild(portalBtn);
 
@@ -3692,6 +4133,7 @@ function saveProgressNote() {
 
     syncToBackend({
         action: "saveProgressNote",
+        date: getLocalISOString(),
         name: selectedPatientName,
         subjective, objective, assessment, plan
     }).catch(() => {});
