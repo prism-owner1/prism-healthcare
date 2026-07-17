@@ -4056,28 +4056,35 @@ async function saveEnrollment() {
             lucide.createIcons();
         }
 
-        function openMarkPaidPrompt(name) {
+       function openMarkPaidPrompt(name) {
     const p = patientLookup[name];
     if (!p) return;
+
+    // Get ALL sessions with pending balance (not just the latest one)
     const unpaidLogs = p.logs.filter(l => {
+        const mode = l[15] || 'Cash';
         const fee = toNum(l[9]);
-        const paid = l[16] !== undefined && l[16] !== "" ? toNum(l[16]) : 0;
-        return fee - paid > 0;
-    }).sort((a, b) => new Date(b[8]) - new Date(a[8]));
+        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : (mode === 'Pending' ? 0 : fee);
+        return mode === 'Pending' && (fee - paid) > 0;
+    }).sort((a, b) => new Date(a[8]) - new Date(b[8])); // oldest first
 
     if (!unpaidLogs.length) {
         showToast('No unpaid sessions found', 'info');
         return;
     }
 
-    const target = unpaidLogs[0];
-    const fee = toNum(target[9]);
-    const alreadyPaid = target[16] !== undefined && target[16] !== "" ? toNum(target[16]) : 0;
-    const remaining = fee - alreadyPaid;
+    const totalDue = unpaidLogs.reduce((sum, l) => {
+        const fee = toNum(l[9]);
+        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : 0;
+        return sum + (fee - paid);
+    }, 0);
 
-    const amountStr = prompt(`Mark payment for ${name} — session on ${formatDateDMY(target[8])}.\nOutstanding: ₹${remaining}\n\nEnter amount received:`, remaining);
+    const amountStr = prompt(
+        `Mark payment for ${name}\nTotal Outstanding: ₹${totalDue} across ${unpaidLogs.length} session(s)\n\nEnter amount received (it will be applied across pending sessions, oldest first):`,
+        totalDue
+    );
     if (amountStr === null) return;
-    const amount = Number(amountStr);
+    let amount = Number(amountStr);
     if (isNaN(amount) || amount <= 0) {
         showToast('Enter a valid amount', 'warning');
         return;
@@ -4086,25 +4093,58 @@ async function saveEnrollment() {
     const modeInput = prompt(`Payment mode for this ₹${amount} (Cash / UPI / Card):`, "Cash");
     const mode = modeInput && modeInput.trim() ? modeInput.trim() : "Cash";
 
-    // Ensure array has enough elements
-    while(target.length < 17) {
-        target.push("");
+    let remainingAmount = amount;
+    const updatedSessions = [];
+
+    for (const log of unpaidLogs) {
+        if (remainingAmount <= 0) break;
+
+        while (log.length < 17) log.push("");
+
+        const fee = toNum(log[9]);
+        const alreadyPaid = (log[16] !== undefined && log[16] !== "") ? toNum(log[16]) : 0;
+        const dueOnThis = fee - alreadyPaid;
+
+        if (dueOnThis <= 0) continue;
+
+        const payThis = Math.min(remainingAmount, dueOnThis);
+        const newPaidTotal = alreadyPaid + payThis;
+
+        log[16] = newPaidTotal;
+        // Only flip mode to the new payment mode if fully cleared;
+        // otherwise keep it "Pending" so the remaining balance still shows as due
+        log[15] = (newPaidTotal >= fee) ? mode : 'Pending';
+
+        remainingAmount -= payThis;
+
+        updatedSessions.push({
+            date: log[8],
+            paymentMode: log[15],
+            amountPaid: newPaidTotal,
+            originalFee: fee
+        });
     }
 
-    target[15] = mode;
-    target[16] = alreadyPaid + amount;
     processData();
-    showToast(`₹${amount} recorded for ${name}`, 'success');
 
-    syncToBackend({
-        action: "markAsPaid",
-        id: p.id,
-        name: name,
-        date: target[8],
-        paymentMode: mode,
-        amountPaid: alreadyPaid + amount,
-        originalFee: fee
-    }).catch(() => {});
+    if (remainingAmount > 0) {
+        showToast(`₹${amount} recorded. ₹${remainingAmount} extra had no due session left — check entry.`, 'warning');
+    } else {
+        showToast(`₹${amount} recorded for ${name} — dues updated`, 'success');
+    }
+
+    // Sync every touched session
+    updatedSessions.forEach(s => {
+        syncToBackend({
+            action: "markAsPaid",
+            id: p.id,
+            name: name,
+            date: s.date,
+            paymentMode: s.paymentMode,
+            amountPaid: s.amountPaid,
+            originalFee: s.originalFee
+        }).catch(() => {});
+    });
 }
 
         // ---------- CSV EXPORT: PATIENT RECORDS ----------
