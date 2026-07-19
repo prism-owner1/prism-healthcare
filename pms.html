@@ -974,13 +974,13 @@
             border-color: #1e293b;
         }
 
-        body.dark-mode #dark-toggle-btn i[data-lucide="moon"] {
-            display: none;
-        }
+        body.dark-mode #dark-toggle-btn [data-lucide="moon"] {
+    display: none;
+}
 
-        body:not(.dark-mode) #dark-toggle-btn i[data-lucide="sun"] {
-            display: none;
-        }
+body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
+    display: none;
+}
 
         /* ---- Body chart modal (added) ---- */
         #overlay {
@@ -1136,7 +1136,11 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
+    <div id="live-clock" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase text-slate-600">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-500"></i>
+        <span id="live-clock-text">--:--:--</span>
+    </div>
+    <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
                         <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
@@ -1932,6 +1936,25 @@
 };
 
         const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
+function updateLiveClock() {
+    const el = document.getElementById('live-clock-text');
+    if (!el) return;
+    const now = new Date();
+    const formatted = now.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
+    el.innerText = formatted;
+}
+updateLiveClock();
+setInterval(updateLiveClock, 1000);
+
 
         function unlockApp() {
             document.getElementById('lock-screen').style.display = 'none';
@@ -2517,8 +2540,11 @@ function resetEnrollBodyChart(){
         }
 
         function getAdvanceSessionLabel(r, p) {
-            const nonEnrollLogs = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment');
-            const sorted = nonEnrollLogs.slice().sort((a, b) => {
+    const nonEnrollLogs = p.logs.filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+    });
+    const sorted = nonEnrollLogs.slice().sort((a, b) => {
                 if (a[8] !== b[8]) return a[8] < b[8] ? -1 : 1;
                 return new Date(a[0]) - new Date(b[0]);
             });
@@ -2866,7 +2892,10 @@ Object.keys(patientLookup).forEach(name => {
             const amountPaidInput = document.getElementById('session-amount-paid').value;
 
             if (paymentMode === "Advance") {
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const consumed = p.logs.filter(l => {
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+                }).length;
                 const remaining = p.purchased - consumed;
                 if (remaining < selectedDates.length) {
                     showToast(`Only ${remaining} advance session(s) left — cannot log ${selectedDates.length}`, 'warning');
@@ -2938,8 +2967,11 @@ Object.keys(patientLookup).forEach(name => {
                 return;
             }
             const p = patientLookup[selectedPatientName];
-            const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
-            const remaining = p.purchased - consumed;
+            const consumed = p.logs.filter(l => {
+                const t = String(l[7] || '').trim().toLowerCase();
+                return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+            }).length;
+            const remaining = p.purchased - consumed;0
             hint.innerText = p.purchased > 0 ? `${remaining} / ${p.purchased} advance sessions remaining` : '';
         }
 
@@ -3315,10 +3347,13 @@ async function saveEnrollment() {
             });
 
             names.forEach(name => {
-                const p = patientLookup[name];
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
-                const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-                const rem = p.purchased - consumed;
+    const p = patientLookup[name];
+    const consumed = p.logs.filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+    }).length;
+    const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    const rem = p.purchased - consumed;
 
                 if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
                     let statusBadge;
@@ -3365,11 +3400,14 @@ async function saveEnrollment() {
         }
 
         function viewPatientDetail(name) {
-            const p = patientLookup[name];
-            if (!p) return;
-            const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-            const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
-            const remaining = p.purchased - consumed;
+    const p = patientLookup[name];
+    if (!p) return;
+    const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    const consumed = p.logs.filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+    }).length;
+    const remaining = p.purchased - consumed;
 
             document.getElementById('pd-name').innerText = name;
             document.getElementById('pd-id-badge').innerText = p.id;
