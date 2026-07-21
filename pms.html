@@ -24,10 +24,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-html {
-    overflow-x: hidden;
-    width: 100%;
-}
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f8fafc;
@@ -44,12 +40,6 @@ html {
             z-index: -1;
             pointer-events: none;
         }
-@media (max-width: 768px) {
-    .bg-logo-image {
-        width: 260px;
-        left: 50%;
-    }
-}
 
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
@@ -748,11 +738,11 @@ html {
             display: none;
         }
 
-        body {
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-@media (max-width: 1024px) {
+        @media (max-width: 1024px) {
+            body {
+                overflow: auto;
+            }
+
             #hamburger-btn {
                 display: flex;
                 align-items: center;
