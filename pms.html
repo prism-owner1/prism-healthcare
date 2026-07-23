@@ -80,6 +80,23 @@
             border-radius: 50%;
         }
 
+        .calendar-day-due {
+            border: 2px solid #f87171 !important;
+            color: #dc2626 !important;
+            background-color: #fef2f2 !important;
+            position: relative;
+            font-weight: 800 !important;
+        }
+        .calendar-day-due::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
+            background: #f87171;
+            border-radius: 50%;
+        }
+
         .calendar-day-disabled {
             opacity: 0.15;
             cursor: not-allowed !important;
@@ -94,6 +111,7 @@
             margin-bottom: 0.6rem;
             transition: 0.2s;
         }
+
 
         @keyframes slideIn {
             from {
@@ -1923,6 +1941,49 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             </div>
         </div>
 
+        <!-- MARK AS PAID MODAL -->
+        <div id="markpaid-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xl font-black">Record Payment</h3>
+                    <button onclick="closeMarkPaidModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <p id="mp-patient-name" class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-6"></p>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 bg-rose-50 rounded-2xl text-center">
+                        <span class="block text-[9px] font-black uppercase text-rose-500 mb-1">Total Outstanding</span>
+                        <span id="mp-total-due" class="text-lg font-black text-rose-700"></span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl text-center">
+                        <span class="block text-[9px] font-black uppercase text-slate-600 mb-1">Pending Sessions</span>
+                        <span id="mp-session-count" class="text-lg font-black text-slate-700"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Received (₹)</label>
+                        <input type="number" id="mp-amount" class="w-full mt-1 p-4 bg-slate-50 rounded-xl font-black text-lg outline-none border border-transparent focus:border-indigo-300">
+                        <p class="text-[9px] text-slate-600 mt-1 ml-1 font-semibold">Applied across pending sessions, oldest first</p>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
+                        <select id="mp-mode" class="w-full mt-1 p-4 bg-slate-50 rounded-xl font-bold outline-none">
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-6">
+                    <button onclick="closeMarkPaidModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                    <button onclick="confirmMarkPaid()" class="flex-[2] py-4 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Confirm Payment</button>
+                </div>
+            </div>
+        </div>
+
         <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
 
     </div><!-- /#app-root -->
@@ -3268,6 +3329,16 @@ async function saveEnrollment() {
             if (!selectedPatientName) return;
             const p = patientLookup[selectedPatientName];
             const logDates = new Set(p.logs.map(l => l[8]));
+
+            const dueDates = new Set(
+                p.logs.filter(l => {
+                    const mode = l[15] || 'Cash';
+                    const fee = toNum(l[9]);
+                    const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : (mode === 'Pending' ? 0 : fee);
+                    return mode === 'Pending' && (fee - paid) > 0;
+                }).map(l => l[8])
+            );
+
             const yr = currentViewDate.getFullYear(),
                 mt = currentViewDate.getMonth();
             document.getElementById('calendar-month-year').innerText = currentViewDate.toLocaleString('default', {
@@ -3284,10 +3355,12 @@ async function saveEnrollment() {
                     dateObj = new Date(yr, mt, d),
                     isFuture = dateObj > today,
                     sel = selectedDates.includes(ds),
-                    isLogged = logDates.has(ds);
+                    isLogged = logDates.has(ds),
+                    isDue = dueDates.has(ds);
                 const btn = document.createElement('div');
                 let dayClass = `h-10 flex items-center justify-center rounded-xl border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
                 if (sel) dayClass += 'calendar-day-selected ';
+                else if (isDue) dayClass += 'calendar-day-due ';
                 else if (isLogged) dayClass += 'calendar-day-logged bg-emerald-50/50 ';
                 else if (!isFuture) dayClass += 'bg-white border-slate-100 hover:border-indigo-300 ';
                 btn.className = dayClass;
@@ -4127,6 +4200,8 @@ async function saveEnrollment() {
             lucide.createIcons();
         }
 
+       let markPaidContext = null;
+
        function openMarkPaidPrompt(name) {
     const p = patientLookup[name];
     if (!p) return;
@@ -4150,19 +4225,34 @@ async function saveEnrollment() {
         return sum + (fee - paid);
     }, 0);
 
-    const amountStr = prompt(
-        `Mark payment for ${name}\nTotal Outstanding: ₹${totalDue} across ${unpaidLogs.length} session(s)\n\nEnter amount received (it will be applied across pending sessions, oldest first):`,
-        totalDue
-    );
-    if (amountStr === null) return;
-    let amount = Number(amountStr);
+    markPaidContext = { name, p, unpaidLogs, totalDue };
+
+    document.getElementById('mp-patient-name').innerText = name;
+    document.getElementById('mp-total-due').innerText = '₹' + totalDue.toLocaleString();
+    document.getElementById('mp-session-count').innerText = unpaidLogs.length;
+    document.getElementById('mp-amount').value = totalDue;
+    document.getElementById('mp-mode').value = 'Cash';
+
+    document.getElementById('markpaid-modal').classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function closeMarkPaidModal() {
+    document.getElementById('markpaid-modal').classList.add('hidden');
+    markPaidContext = null;
+}
+
+function confirmMarkPaid() {
+    if (!markPaidContext) return;
+    const { name, p, unpaidLogs } = markPaidContext;
+
+    const amount = Number(document.getElementById('mp-amount').value);
+    const mode = document.getElementById('mp-mode').value;
+
     if (isNaN(amount) || amount <= 0) {
         showToast('Enter a valid amount', 'warning');
         return;
     }
-
-    const modeInput = prompt(`Payment mode for this ₹${amount} (Cash / UPI / Card):`, "Cash");
-    const mode = modeInput && modeInput.trim() ? modeInput.trim() : "Cash";
 
     let remainingAmount = amount;
     const updatedSessions = [];
@@ -4197,6 +4287,7 @@ async function saveEnrollment() {
     }
 
     processData();
+    closeMarkPaidModal();
 
     if (remainingAmount > 0) {
         showToast(`₹${amount} recorded. ₹${remainingAmount} extra had no due session left — check entry.`, 'warning');
@@ -4568,6 +4659,15 @@ function closeProgressNotesModal() {
             showToast('Deleted', 'info');
         }
     (function() {
+        function daysSinceSession(dateStr) {
+            if (!dateStr) return Infinity;
+            const [y, m, d] = String(dateStr).split('-').map(Number);
+            const sessionUTC = Date.UTC(y, m - 1, d);
+            const [ty, tm, td] = getLocalISOString().split('-').map(Number);
+            const todayUTC = Date.UTC(ty, tm - 1, td);
+            return Math.floor((todayUTC - sessionUTC) / 86400000);
+        }
+
         const originalSelectPatient = window.selectPatient;
         window.selectPatient = function(name) {
             originalSelectPatient(name);
@@ -4580,6 +4680,15 @@ function closeProgressNotesModal() {
                 const logData = displayedLogs[idx];
                 const type = String(logData[7] || '').toLowerCase();
                 if (type === 'rehab' || type === 'physiotherapy session') {
+
+                    if (daysSinceSession(logData[8]) > 15) {
+                        const lockNote = document.createElement('div');
+                        lockNote.className = "mt-3 pt-2 border-t border-slate-100 text-[9px] font-black text-slate-400 uppercase";
+                        lockNote.innerText = "Locked";
+                        card.appendChild(lockNote);
+                        return;
+                    }
+
                     const actionArea = document.createElement('div');
                     actionArea.className = "flex gap-4 mt-3 pt-2 border-t border-slate-100";
                     const deleteBtn = document.createElement('button');
