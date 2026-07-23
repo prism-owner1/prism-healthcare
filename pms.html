@@ -48,9 +48,48 @@
         }
 
         .sidebar-active {
-            background: #0f172a;
+            background: #4f46e5;
             color: white !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.35);
+        }
+
+        .bottom-pill-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 1.75rem;
+            padding: 10px;
+            box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.18);
+            max-width: 95vw;
+            overflow-x: auto;
+        }
+
+        .bottom-pill-nav .nav-btn {
+            min-width: 76px;
+            flex-shrink: 0;
+        }
+
+        .bottom-pill-nav .nav-label {
+            font-size: 9px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        body.dark-mode .bottom-pill-nav {
+            background: rgba(15, 23, 42, 0.92);
+            border-color: #1e293b;
+        }
+
+        body.dark-mode .bottom-pill-nav .nav-btn {
+            color: #94a3b8;
         }
 
         .section-hidden {
@@ -749,16 +788,30 @@
         }
 
         #hamburger-btn {
-            display: none;
+            display: none !important;
         }
 
         #sidebar-overlay {
-            display: none;
+            display: none !important;
         }
 
         @media (max-width: 1024px) {
             body {
                 overflow: auto;
+            }
+
+            .bottom-pill-nav {
+                gap: 2px;
+                padding: 8px;
+            }
+
+            .bottom-pill-nav .nav-btn {
+                min-width: 0;
+                padding: 10px !important;
+            }
+
+            .bottom-pill-nav .nav-label {
+                display: none;
             }
 
             #hamburger-btn {
@@ -774,31 +827,6 @@
                 flex-shrink: 0;
             }
 
-            #sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                transform: translateX(-105%);
-                transition: transform 0.25s ease;
-                z-index: 1000;
-                width: 80%;
-                max-width: 300px;
-                box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
-            }
-
-            #sidebar.sidebar-open {
-                transform: translateX(0);
-            }
-
-            #sidebar-overlay.active {
-                display: block;
-                position: fixed;
-                inset: 0;
-                z-index: 999;
-                background: rgba(15, 23, 42, 0.5);
-                backdrop-filter: blur(2px);
-            }
 
             main {
                 padding: 1.25rem !important;
@@ -807,11 +835,25 @@
             }
 
             #app-root {
-                min-height: 100vh;
-            }
+            min-height: 100vh;
+        }
+
+        main {
+            padding-bottom: 110px !important;
+        }
 
             header h1 {
-                font-size: 1.25rem !important;
+                font-size: 1.1rem !important;
+            }
+
+            header .w-1.5 {
+                width: 4px !important;
+                height: 30px !important;
+            }
+
+           header img[alt="Clinic Logo"] {
+                width: 56px !important;
+                height: 56px !important;
             }
 
             .grid.md\:grid-cols-5 {
@@ -1124,33 +1166,27 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     <div id="app-root" class="min-h-screen flex w-full">
         <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
 
-        <!-- SIDE NAVIGATION -->
-        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50">
-            <div class="flex items-center gap-3 mb-10 px-2">
-                <div class="mb-10 px-2">
-                    <img src="https://prismhealthcare.in/prism1.png" class="h-12 w-auto object-contain" alt="Prism Logo">
-                </div>
-            </div>
-            <nav class="flex-1 space-y-1">
-                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
-                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
-                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
-                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
-                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
-                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
-            </nav>
-            <div class="pt-4 mt-4 border-t border-slate-100">
-                <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
-            </div>
-        </aside>
+        <!-- BOTTOM PILL NAVIGATION -->
+        <nav id="sidebar" class="bottom-pill-nav">
+            <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i><span class="nav-label">Overview</span></button>
+            <button onclick="switchTab('enroll', this)" class="nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i><span class="nav-label">Enroll Patient</span></button>
+            <button onclick="switchTab('log-session', this)" class="nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="history" class="w-5 h-5"></i><span class="nav-label">Log Sessions</span></button>
+            <button onclick="switchTab('visit-registry', this)" class="nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i><span class="nav-label">Daily Visit Registry</span></button>
+            <button onclick="switchTab('patients', this)" class="nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i><span class="nav-label">Patient Records</span></button>
+            <button onclick="switchTab('billing', this)" class="nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i><span class="nav-label">Billing</span></button>
+        </nav>
 
         <main class="flex-1 p-8 lg:p-10 relative overflow-y-auto h-screen">
             <header class="flex justify-between items-center mb-8">
                 <div class="flex items-center gap-3">
                     <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
-                    <div>
-                        <h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1>
-                        <p class="text-slate-600 text-xs uppercase font-bold tracking-widest"> ClinioSphere</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://prismhealthcare.in/prismapplogo.png" alt="Clinic Logo" class="w-14 h-14 rounded-xl object-contain bg-white border border-slate-100 shadow-sm p-1 flex-shrink-0">
+                        <div class="w-1.5 h-9 rounded-full bg-gradient-to-b from-indigo-500 to-indigo-700 flex-shrink-0"></div>
+                        <div>
+                            <h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase text-slate-900 leading-none">Dashboard</h1>
+                            <p class="text-indigo-500 text-[10px] uppercase font-bold tracking-[0.15em] mt-1">ClinioSphere</p>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -1164,6 +1200,10 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     </div>
                     <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
                     <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+<!-- ADD LOGOUT BUTTON HERE -->
+<button id="logout-btn" onclick="logoutApp()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-rose-50 hover:border-rose-200 transition-all" title="Logout">
+    <i data-lucide="log-out" class="w-5 h-5 text-rose-500"></i>
+</button>
                 </div>
             </header>
 
@@ -2032,7 +2072,11 @@ setInterval(updateLiveClock, 1000);
             loadAdminData(false);
         }
 
-        function toggleLockPasswordVisibility() {
+   document.addEventListener('DOMContentLoaded', function() {
+    if (window.lucide) lucide.createIcons();
+});
+
+    function toggleLockPasswordVisibility() {
     const input = document.getElementById('lock-password');
     const icon = document.getElementById('lock-eye-icon');
     const isHidden = input.type === 'password';
@@ -3254,12 +3298,13 @@ async function saveEnrollment() {
             btn.classList.add('sidebar-active');
 
             const titles = {
-                'overview': 'DASHBOARD',
+                'overview': 'OVERVIEW',
                 'enroll': 'ENROLL PATIENT',
                 'log-session': 'LOG SESSIONS',
                 'visit-registry': 'DAILY VISIT REGISTRY',
                 'patients': 'PATIENT RECORDS',
-                'billing': 'BILLING'
+                'billing': 'BILLING',
+                'inquiry': 'INQUIRIES'
             };
             document.getElementById('tab-title').innerText = titles[id] || 'PRISM';
 
@@ -4477,10 +4522,69 @@ function confirmMarkPaid() {
             }
         });
 
+        // ---------- AUTO-CLOSE INACTIVE CASES (15+ DAYS NO SESSION) ----------
+        function checkAutoCloseInactiveCases() {
+            const todayStr = getLocalISOString();
+
+            function daysBetween(dateStr) {
+                if (!dateStr) return Infinity;
+                const [y, m, d] = String(dateStr).split('-').map(Number);
+                const dUTC = Date.UTC(y, m - 1, d);
+                const [ty, tm, td] = todayStr.split('-').map(Number);
+                const tUTC = Date.UTC(ty, tm - 1, td);
+                return Math.floor((tUTC - dUTC) / 86400000);
+            }
+
+            let autoClosedAny = false;
+
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                if (p.closed) return;
+
+                // Only count actual sessions (ignore enrollment/admin rows)
+                const sessionLogs = p.logs.filter(l => {
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    return t !== 'enrollment';
+                });
+
+                let lastDate;
+                if (sessionLogs.length) {
+                    lastDate = sessionLogs.reduce((max, l) => (!max || l[8] > max) ? l[8] : max, null);
+                } else {
+                    // No sessions logged yet — count from enrollment date
+                    lastDate = new Date(p.enrollTime).toLocaleDateString('sv-SE');
+                }
+
+                if (daysBetween(lastDate) > 15) {
+                    autoClosedAny = true;
+                    const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", todayStr, 0, 0, 0, 0, "", "", "AutoClosed", 0];
+                    globalData.push(row);
+                    showToast(`${name}'s case auto-closed — 15+ days inactive`, 'warning');
+                    syncToBackend({
+                        action: "logAppointment",
+                        id: p.id,
+                        name: name,
+                        phone: p.phone,
+                        condition: p.diag,
+                        fee: 0,
+                        purchased: 0,
+                        advance: 0,
+                        type: "Case Closed",
+                        date: todayStr
+                    }).catch(() => {});
+                }
+            });
+
+            if (autoClosedAny) {
+                _originalProcessData();
+            }
+        }
+
         // ---------- WRAP PROCESS DATA ----------
         const _originalProcessData = processData;
         processData = function() {
             _originalProcessData();
+            checkAutoCloseInactiveCases();
             renderBranchChart();
             renderDueSoonWidget();
             renderDuesWidget();
@@ -4742,12 +4846,12 @@ function closeProgressNotesModal() {
     })();
 (function() {
     // 1. Sidebar Button Injection
-    const nav = document.querySelector('#sidebar nav');
+    const nav = document.getElementById('sidebar');
     if (nav) {
         const btn = document.createElement('button');
         btn.onclick = function() { switchTab('inquiry', this); };
-        btn.className = 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all';
-        btn.innerHTML = '<i data-lucide="clipboard-list" class="w-5 h-5"></i> Inquiries';
+        btn.className = 'nav-btn flex flex-col items-center justify-center gap-1 px-4 py-2.5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all';
+        btn.innerHTML = '<i data-lucide="clipboard-list" class="w-5 h-5"></i><span class="nav-label">Inquiries</span>';
         nav.appendChild(btn);
     }
 
@@ -4901,7 +5005,7 @@ function closeProgressNotesModal() {
     window.switchTab = function(id, btn) {
         oldSwitchTab(id, btn);
         if(id === 'inquiry') {
-            document.getElementById('tab-title').innerText = 'INQUIRY CLINICAL REGISTRY';
+            document.getElementById('tab-title').innerText = 'INQUIRIES';
             renderIqTable();
         }
     };
