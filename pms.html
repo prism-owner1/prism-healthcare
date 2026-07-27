@@ -1288,6 +1288,10 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                 </select>
                                 <input type="text" id="en-id" readonly class="p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
                             </div>
+                            <div>
+                                <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Registration Date</label>
+                                <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+                            </div>
                             <input type="text" id="en-name" placeholder="Full Patient Name" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none">
                             <div class="grid grid-cols-2 gap-4">
                                 <input type="number" id="en-age" placeholder="Age" class="p-3 bg-slate-50 rounded-xl font-bold outline-none">
@@ -1297,9 +1301,23 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Registration Date</label>
-                                <input type="date" id="en-reg-date" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-slate-600">
-                            </div>
+    <div class="flex items-center justify-between mb-1 ml-1">
+        <label class="text-[9px] font-black text-slate-600 uppercase">Instructions</label>
+        <div class="relative">
+            <button type="button" onclick="toggleInstructionPicker()" class="text-[9px] font-black text-indigo-600 uppercase bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-all flex items-center gap-1">
+                <i data-lucide="list-plus" class="w-3 h-3"></i> Quick Add
+            </button>
+            <div id="instruction-picker" class="hidden absolute right-0 top-full mt-2 w-[340px] max-h-96 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-4">
+                <div id="instruction-picker-list" class="space-y-4"></div>
+                <div class="flex gap-2 pt-3 mt-3 border-t sticky bottom-0 bg-white">
+                    <button type="button" onclick="toggleInstructionPicker()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
+                    <button type="button" onclick="insertSelectedInstructions()" class="flex-[2] py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <textarea id="en-instructions" placeholder="Step-by-step instructions... (or use Quick Add)" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm" rows="3"></textarea>
+</div>
                             <input type="text" id="en-condition" placeholder="Clinical Diagnosis" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                             <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                             <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
@@ -1949,19 +1967,43 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         </div>
                     </div>
                     <div>
-                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Instructions</label>
+                        <div class="flex items-center justify-between mb-1 ml-1">
+                            <label class="text-[9px] font-black text-slate-600 uppercase">Instructions</label>
+                            <div class="relative">
+                                <button type="button" onclick="toggleInstructionPicker2()" class="text-[9px] font-black text-emerald-600 uppercase bg-emerald-50 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition-all flex items-center gap-1">
+                                    <i data-lucide="list-plus" class="w-3 h-3"></i> Quick Add
+                                </button>
+                                <div id="instruction-picker-2" class="hidden absolute right-0 top-full mt-2 w-[340px] max-h-96 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-4">
+                                    <div id="instruction-picker-list-2" class="space-y-4"></div>
+                                    <div class="flex gap-2 pt-3 mt-3 border-t sticky bottom-0 bg-white">
+                                        <button type="button" onclick="toggleInstructionPicker2()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
+                                        <button type="button" onclick="insertSelectedInstructions2()" class="flex-[2] py-2 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <textarea id="ex-input-instructions" placeholder="Step-by-step instructions..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm" rows="2"></textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Video Link (Optional)</label>
-                            <input type="text" id="ex-input-video" placeholder="https://youtube.com/..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
-                        </div>
-                        <div>
-                            <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Frequency</label>
-                            <input type="text" id="ex-input-freq" placeholder="e.g., 2× daily" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
-                        </div>
-                    </div>
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Video Link (Optional)</label>
+        <input type="text" id="ex-input-video" placeholder="https://youtube.com/..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+    </div>
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Frequency</label>
+        <input type="text" id="ex-input-freq" placeholder="e.g., 2× daily" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Prescribed Date</label>
+        <input type="date" id="ex-input-prescribed-date" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+    </div>
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 block mb-1">Review Date</label>
+        <input type="date" id="ex-input-review-date" class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm">
+    </div>
+</div>
                     <div class="flex gap-3">
                         <button onclick="closeExercisePlanModal()" class="flex-1 py-3 font-bold text-slate-400">Close</button>
                         <button onclick="saveExercise()" class="flex-[2] py-3 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all">Add Exercise</button>
@@ -2046,19 +2088,21 @@ updateLiveClock();
 setInterval(updateLiveClock, 1000);
 
         function unlockApp() {
-            document.getElementById('lock-screen').style.display = 'none';
-            const root = document.getElementById('app-root');
-            root.style.display = 'flex';
-            root.classList.remove('hidden');
-            try {
-                sessionStorage.setItem('prism_unlocked', '1');
-            } catch (e) {}
-            const todayStr = getLocalISOString();
-            document.getElementById('en-reg-date').value = todayStr;
-            document.getElementById('registry-date-input').value = todayStr;
-            lucide.createIcons();
-            loadAdminData(false);
-        }
+    document.getElementById('lock-screen').style.display = 'none';
+    const root = document.getElementById('app-root');
+    root.style.display = 'flex';
+    root.classList.remove('hidden');
+    try {
+        sessionStorage.setItem('prism_unlocked', '1');
+    } catch (e) {}
+    const todayStr = getLocalISOString();
+    const regDateEl = document.getElementById('en-reg-date');
+    if (regDateEl) regDateEl.value = todayStr;
+    const registryDateEl = document.getElementById('registry-date-input');
+    if (registryDateEl) registryDateEl.value = todayStr;
+    lucide.createIcons();
+    loadAdminData(false);
+}
 
    document.addEventListener('DOMContentLoaded', function() {
     if (window.lucide) lucide.createIcons();
@@ -2582,19 +2626,21 @@ function resetEnrollBodyChart(){
 
                 // Load Exercises
                 exercisePlans = {};
-                if (result.exercisePlans) {
-                    result.exercisePlans.forEach(row => {
-                        const patientId = row[0];
-                        if (!exercisePlans[patientId]) exercisePlans[patientId] = [];
-                        exercisePlans[patientId].push({
-                            name: row[2],
-                            setsReps: row[3],
-                            instructions: row[4],
-                            videoLink: row[5],
-                            frequency: row[6]
-                        });
-                    });
-                }
+if (result.exercisePlans) {
+    result.exercisePlans.forEach(row => {
+        const name = row[1];
+        if (!exercisePlans[name]) exercisePlans[name] = [];
+        exercisePlans[name].push({
+            name: row[2],
+            setsReps: row[3],
+            instructions: row[4],
+            videoLink: row[5],
+            frequency: row[6],
+            prescribedDate: row[7],
+            reviewDate: row[8]
+        });
+    });
+}
 
                 processData();
                 if (isManual) showToast('Data refreshed', 'success');
@@ -4696,6 +4742,134 @@ function closeProgressNotesModal() {
         // ===== HOME EXERCISE PLANS (FIXED IDs & STICKY DATA) =====
         let exercisePlans = {};
 
+const COMMON_INSTRUCTIONS = {
+  "Modalities / Pain Relief": [
+    "Apply hot pack for 15-20 minutes before exercise",
+    "Apply cold pack / ice for 10-15 minutes after activity",
+    "Use contrast bath (alternating hot-cold) as advised",
+  ],
+  "Movement Precautions": [
+    "Avoid heavy weight lifting",
+    "Avoid running / jogging for now",
+    "Avoid prolonged sitting (more than 30 mins at a stretch)",
+    "Avoid prolonged standing",
+    "Avoid squatting and floor-sitting",
+    "Avoid sudden twisting movements",
+    "Avoid climbing stairs repeatedly",
+    "Avoid overhead activities",
+    "Avoid sleeping on the affected side",
+    "Avoid bending forward from the waist"
+  ],
+  "Positioning / Support": [
+    "Use cervical collar / belt as advised",
+    "Use lumbar belt / support while sitting or standing for long",
+    "Use lumbar support / pillow while sitting",
+    "Use cervical pillow while sleeping",
+    "Use knee cap / brace during activity",
+    "Use wrist / thumb splint as advised",
+    "Use ankle brace / support during activity",
+    "Use shoulder sling / support as advised",
+    "Elevate the limb when resting",
+    "Maintain correct posture while sitting / standing",
+    "Use walking aid (stick / walker) as advised"
+  ],
+  "General Advice": [
+    "Perform exercises slowly and within pain-free range",
+    "Stop exercise immediately if sharp pain occurs",
+    "Maintain adequate hydration",
+    "Continue home exercises daily as prescribed",
+    "Follow up after completion of sessions"
+  ]
+};
+function toggleInstructionPicker() {
+    const panel = document.getElementById('instruction-picker');
+    if (!panel) return;
+    if (panel.classList.contains('hidden')) {
+        renderInstructionPicker();
+    }
+    panel.classList.toggle('hidden');
+}
+
+function renderInstructionPicker() {
+    const list = document.getElementById('instruction-picker-list');
+    list.innerHTML = Object.entries(COMMON_INSTRUCTIONS).map(([category, items]) => `
+        <div>
+            <p class="text-[9px] font-black text-indigo-500 uppercase mb-1.5">${category}</p>
+            <div class="space-y-1.5">
+                ${items.map(txt => `
+                    <label class="flex items-start gap-2 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                        <input type="checkbox" class="instruction-checkbox mt-0.5" value="${txt.replace(/"/g, '&quot;')}">
+                        <span>${txt}</span>
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function insertSelectedInstructions() {
+    const checked = Array.from(document.querySelectorAll('.instruction-checkbox:checked')).map(c => c.value);
+    if (!checked.length) {
+        toggleInstructionPicker();
+        return;
+    }
+    const textarea = document.getElementById('en-instructions');
+    const existing = textarea.value.trim();
+    const newText = checked.join('. ') + '.';
+    textarea.value = existing ? existing + ' ' + newText : newText;
+    toggleInstructionPicker();
+}
+
+document.addEventListener('click', function(e) {
+    const panel = document.getElementById('instruction-picker');
+    if (!panel || panel.classList.contains('hidden')) return;
+    if (!panel.parentElement.contains(e.target)) panel.classList.add('hidden');
+});
+
+function toggleInstructionPicker2() {
+    const panel = document.getElementById('instruction-picker-2');
+    if (!panel) return;
+    if (panel.classList.contains('hidden')) {
+        renderInstructionPicker2();
+    }
+    panel.classList.toggle('hidden');
+}
+
+function renderInstructionPicker2() {
+    const list = document.getElementById('instruction-picker-list-2');
+    list.innerHTML = Object.entries(COMMON_INSTRUCTIONS).map(([category, items]) => `
+        <div>
+            <p class="text-[9px] font-black text-indigo-500 uppercase mb-1.5">${category}</p>
+            <div class="space-y-1.5">
+                ${items.map(txt => `
+                    <label class="flex items-start gap-2 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                        <input type="checkbox" class="instruction-checkbox-2 mt-0.5" value="${txt.replace(/"/g, '&quot;')}">
+                        <span>${txt}</span>
+                    </label>
+                `).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+function insertSelectedInstructions2() {
+    const checked = Array.from(document.querySelectorAll('.instruction-checkbox-2:checked')).map(c => c.value);
+    if (!checked.length) {
+        toggleInstructionPicker2();
+        return;
+    }
+    const textarea = document.getElementById('ex-input-instructions');
+    const existing = textarea.value.trim();
+    const newText = checked.join('. ') + '.';
+    textarea.value = existing ? existing + ' ' + newText : newText;
+    toggleInstructionPicker2();
+}
+
+document.addEventListener('click', function(e) {
+    const panel2 = document.getElementById('instruction-picker-2');
+    if (!panel2 || panel2.classList.contains('hidden')) return;
+    if (!panel2.parentElement.contains(e.target)) panel2.classList.add('hidden');
+});
         function openExercisePlanModal(patientName) {
             if (!patientName) return;
             document.getElementById('exercise-plan-list').innerHTML = '';
@@ -4716,12 +4890,14 @@ function closeProgressNotesModal() {
         }
 
         function clearExerciseForm() {
-            document.getElementById('ex-input-name').value = '';
-            document.getElementById('ex-input-sets').value = '';
-            document.getElementById('ex-input-instructions').value = '';
-            document.getElementById('ex-input-video').value = '';
-            document.getElementById('ex-input-freq').value = '';
-        }
+    document.getElementById('ex-input-name').value = '';
+    document.getElementById('ex-input-sets').value = '';
+    document.getElementById('ex-input-instructions').value = '';
+    document.getElementById('ex-input-video').value = '';
+    document.getElementById('ex-input-freq').value = '';
+    document.getElementById('ex-input-prescribed-date').value = getLocalISOString();
+    document.getElementById('ex-input-review-date').value = '';
+}
 
         function renderExercisePlanList() {
             const exercises = exercisePlans[selectedPatientId] || [];
@@ -4731,63 +4907,66 @@ function closeProgressNotesModal() {
                 return;
             }
             container.innerHTML = exercises.map((ex, idx) => `
-        <div class="p-4 border-2 border-emerald-200 rounded-2xl bg-emerald-50/50 space-y-2">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h5 class="font-black text-emerald-700 text-sm">${ex.name}</h5>
-                    <p class="text-[10px] font-bold text-emerald-600 uppercase">${ex.setsReps} • ${ex.frequency}</p>
-                </div>
-                <button onclick="deleteExercise('${selectedPatientId}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
+    <div class="p-4 border-2 border-emerald-200 rounded-2xl bg-emerald-50/50 space-y-2">
+        <div class="flex justify-between items-start">
+            <div>
+                <h5 class="font-black text-emerald-700 text-sm">${ex.name}</h5>
+                <p class="text-[10px] font-bold text-emerald-600 uppercase">${ex.setsReps} • ${ex.frequency}</p>
             </div>
-            <p class="text-[11px] text-slate-600">${ex.instructions}</p>
-            ${ex.videoLink ? `<a href="${ex.videoLink}" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline inline-block">🎥 Watch Demo</a>` : ''}
+            <button onclick="deleteExercise('${selectedPatientName}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
         </div>
-    `).join('');
-            lucide.createIcons();
+        <p class="text-[11px] text-slate-600">${ex.instructions}</p>
+        <div class="flex gap-3 flex-wrap">
+            ${ex.prescribedDate ? `<span class="text-[9px] font-black text-slate-500 uppercase">Prescribed: ${formatDateDMY(ex.prescribedDate)}</span>` : ''}
+            ${ex.reviewDate ? `<span class="text-[9px] font-black text-amber-600 uppercase">Review: ${formatDateDMY(ex.reviewDate)}</span>` : ''}
+        </div>
+        ${ex.videoLink ? `<a href="${ex.videoLink}" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline inline-block">🎥 Watch Videos </a>` : ''}
+    </div>
+`).join('');
         }
 
         async function saveExercise() {
-            const name = document.getElementById('ex-input-name').value.trim();
-            const sets = document.getElementById('ex-input-sets').value.trim();
-            const instr = document.getElementById('ex-input-instructions').value.trim();
-            const video = document.getElementById('ex-input-video').value.trim();
-            const freq = document.getElementById('ex-input-freq').value.trim();
+    const name = document.getElementById('ex-input-name').value.trim();
+    const sets = document.getElementById('ex-input-sets').value.trim();
+    const instr = document.getElementById('ex-input-instructions').value.trim();
+    const video = document.getElementById('ex-input-video').value.trim();
+    const freq = document.getElementById('ex-input-freq').value.trim();
+    const prescribedDate = document.getElementById('ex-input-prescribed-date').value || getLocalISOString();
+    const reviewDate = document.getElementById('ex-input-review-date').value;
 
-            if (!name || !sets || !instr || !freq) {
-                showToast('Please fill Name, Sets, Instructions, and Frequency', 'warning');
-                return;
-            }
+    if (!name || !sets || !instr || !freq) {
+        showToast('Please fill Name, Sets, Instructions, and Frequency', 'warning');
+        return;
+    }
 
-            if (!selectedPatientId) {
-                showToast('Patient ID missing — reopen from Patient Records', 'error');
-                return;
-            }
+    if (!exercisePlans[selectedPatientName]) exercisePlans[selectedPatientName] = [];
+    exercisePlans[selectedPatientName].push({
+        name: name,
+        setsReps: sets,
+        instructions: instr,
+        videoLink: video,
+        frequency: freq,
+        prescribedDate: prescribedDate,
+        reviewDate: reviewDate
+    });
 
-            if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
-            exercisePlans[selectedPatientId].push({
-                name: name,
-                setsReps: sets,
-                instructions: instr,
-                videoLink: video,
-                frequency: freq
-            });
+    renderExercisePlanList();
+    clearExerciseForm();
+    showToast('Saving to cloud...', 'info');
 
-            renderExercisePlanList();
-            clearExerciseForm();
-            showToast('Saving to cloud...', 'info');
-
-            await syncToBackend({
-                action: "saveExercise",
-                id: selectedPatientId,
-                name: selectedPatientName,
-                exName: name,
-                sets: sets,
-                instr: instr,
-                video: video,
-                freq: freq
-            });
-            showToast('Exercise plan updated', 'success');
-        }
+    await syncToBackend({
+        action: "saveExercise",
+        name: selectedPatientName,
+        exName: name,
+        sets: sets,
+        instr: instr,
+        video: video,
+        freq: freq,
+        prescribedDate: prescribedDate,
+        reviewDate: reviewDate
+    });
+    showToast('Exercise plan updated', 'success');
+}
 
         function deleteProgressNote(patientName, index) {
             if (!progressNotes[patientName] || !progressNotes[patientName][index]) return;
