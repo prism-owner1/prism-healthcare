@@ -278,18 +278,22 @@
             document.getElementById('p-last-pay-amt').innerText = lastPayment ? "₹" + parseFloat(lastPayment[9]).toLocaleString() : "₹0";
 
             // Home Exercises Logic
-            const myExercises = exerciseData.filter(ex => ex[0] === loggedInPatient.name);
-            if(myExercises.length > 0) {
-                document.getElementById('exercise-section').classList.remove('hidden');
-                document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
-                    <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
-                        <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[1]}</h4>
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[2]} • ${ex[5]}</p>
-                        <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[3]}</p>
-                        ${ex[4] ? `<a href="${ex[4]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
-                    </div>
-                `).join('');
-            }
+            const myExercises = exerciseData.filter(ex => ex[1] === loggedInPatient.name);
+if(myExercises.length > 0) {
+    document.getElementById('exercise-section').classList.remove('hidden');
+    document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
+        <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
+            <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[2]}</h4>
+            <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[3]} • ${ex[6]}</p>
+            <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[4]}</p>
+            <div class="flex gap-3 flex-wrap mb-3">
+                ${ex[7] ? `<span class="text-[9px] font-black text-slate-500 uppercase bg-white px-3 py-1.5 rounded-lg">Prescribed: ${formatDate(ex[7])}</span>` : ''}
+                ${ex[8] ? `<span class="text-[9px] font-black text-amber-700 uppercase bg-amber-50 px-3 py-1.5 rounded-lg">Review: ${formatDate(ex[8])}</span>` : ''}
+            </div>
+            ${ex[5] ? `<a href="${ex[5]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
+        </div>
+    `).join('');
+}
 
             const waMsg = encodeURIComponent("Hello Prism, I am " + loggedInPatient.name + " (ID: " + loggedInPatient.id + "). I want to book my next session.");
             document.getElementById('book-btn').href = `https://wa.me/919708059081?text=${waMsg}`;
