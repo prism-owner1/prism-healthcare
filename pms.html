@@ -1,4 +1,3 @@
-
 <html lang="en">
 
 <head>
@@ -1296,20 +1295,6 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-1">
-                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Revenue by Branch</h4>
-                        <canvas id="branchChart" height="220"></canvas>
-                    </div>
-                    <div class="glass-card p-8 rounded-[3rem] shadow-xl lg:col-span-2">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest">Sessions Due Soon</h4>
-                            <span class="text-[9px] font-bold text-slate-600 uppercase">2 or fewer sessions remaining</span>
-                        </div>
-                        <div id="due-soon-list" class="max-h-64 overflow-y-auto pr-1"></div>
-                    </div>
-                </div>
-
                 <div class="glass-card p-8 rounded-[3rem] shadow-xl mt-6">
                     <div class="flex items-center justify-between mb-4">
                         <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest">Outstanding Dues</h4>
@@ -1505,14 +1490,15 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-10">
                         <div>
                             <div class="flex justify-between items-center mb-4">
-                                <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
-                                <div class="flex gap-2">
-                                    <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Add Package</button>
-                                    <div id="ws-rem-container">
-                                        <div class="bg-slate-900 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-indigo-100" id="workspace-remaining">REGULAR</div>
-                                    </div>
-                                </div>
-                            </div>
+    <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
+    <div class="flex gap-2">
+        <button onclick="openTopupBalance()" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-emerald-600 hover:text-white transition-all">+ Topup Balance</button>
+        <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Monthly Package</button>
+        <div id="ws-rem-container">
+            <div class="bg-slate-900 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-indigo-100" id="workspace-remaining">REGULAR</div>
+        </div>
+    </div>
+</div>
                             <div id="recent-logs-cards" class="max-h-[500px] overflow-y-auto pr-3"></div>
                         </div>
                         <div class="glass-card p-10 rounded-[3rem] shadow-2xl sticky top-0 h-fit border-white">
@@ -1542,7 +1528,7 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                         <option value="Advance">Advance (Pre-paid Package)</option>
                                         <option value="Pending">Pending / Due</option>
                                     </select>
-                                        <div id="advance-remaining-hint" class="text-[9px] font-black text-indigo-500 uppercase mt-1 ml-1"></div>
+                                        <div id="advance-remaining-hint" class="mt-2.5 p-3 rounded-2xl text-center font-bold text-[10px] uppercase transition-all"></div>
                                 </div>
                                 <div>
                                     <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Paid (₹)</label>
@@ -2126,11 +2112,6 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
     <script>
         // ---------- LOCK SCREEN LOGIC ----------
-        const APP_USERS = {
-    "admin": "PrismAdmin@2024",
-    "reception": "PrismFront@2024"
-    // add more "username": "password" pairs as needed
-};
 
         const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
 function updateLiveClock() {
@@ -2182,7 +2163,7 @@ setInterval(updateLiveClock, 1000);
     lucide.createIcons();
 }
 
-function checkLockPassword() {
+async function checkLockPassword() {
     const user = document.getElementById('lock-username').value.trim();
     const val = document.getElementById('lock-password').value;
     const errEl = document.getElementById('lock-error');
@@ -2191,27 +2172,46 @@ function checkLockPassword() {
     const spinner = document.getElementById('lock-spinner');
     const card = document.getElementById('lock-card');
 
+    if (!user || !val) {
+        errEl.innerText = 'Please enter both username and password.';
+        return;
+    }
+
     btn.disabled = true;
     label.style.opacity = '0.7';
     spinner.style.display = 'inline-block';
+    errEl.innerText = '';
 
-    setTimeout(() => {
-        if (APP_USERS[user] && APP_USERS[user] === val) {
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: "verifyPassword",
+                username: user,
+                password: val
+            })
+        });
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
             errEl.innerText = '';
             try { sessionStorage.setItem('prism_user', user); } catch (e) {}
             unlockApp();
         } else {
-            errEl.innerText = 'Incorrect username or password.';
-            document.getElementById('lock-password').value = '';
-            document.getElementById('lock-password').focus();
-            card.classList.remove('shake');
-            void card.offsetWidth;
-            card.classList.add('shake');
-            btn.disabled = false;
-            label.style.opacity = '1';
-            spinner.style.display = 'none';
+            throw new Error(result.message || 'Incorrect username or password.');
         }
-    }, 380);
+    } catch (e) {
+        errEl.innerText = e.message || 'Verification failed. Try again.';
+        document.getElementById('lock-password').value = '';
+        document.getElementById('lock-password').focus();
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+    } finally {
+        btn.disabled = false;
+        label.style.opacity = '1';
+        spinner.style.display = 'none';
+    }
 }
         // ---------- MOBILE SIDEBAR DRAWER ----------
         function openSidebar() {
@@ -2656,71 +2656,173 @@ function resetEnrollBodyChart(){
             }
         }
 
+        // Helper to map and assign raw Sheet data into frontend arrays
+        function applyFetchedData(result) {
+            if (!result) return;
+            
+            // Assign Main Records
+            if (result.adminData) globalData = result.adminData;
+
+            // Assign SOAP Notes
+            progressNotes = {};
+            if (result.soapNotes) {
+                result.soapNotes.forEach(row => {
+                    const name = row[0];
+                    if (!progressNotes[name]) progressNotes[name] = [];
+                    progressNotes[name].push({
+                        date: row[1],
+                        subjective: row[2],
+                        objective: row[3],
+                        assessment: row[4],
+                        plan: row[5]
+                    });
+                });
+            }
+
+            // Assign Exercises
+            exercisePlans = {};
+            if (result.exercisePlans) {
+                result.exercisePlans.forEach(row => {
+                    const pid = normId(row[0]);
+                    if (!exercisePlans[pid]) exercisePlans[pid] = [];
+                    exercisePlans[pid].push({
+                        name: row[2],
+                        setsReps: row[3],
+                        instructions: row[4],
+                        videoLink: row[5],
+                        frequency: row[6],
+                        prescribedDate: row[7],
+                        reviewDate: row[8]
+                    });
+                });
+            }
+        }
+
         async function loadAdminData(isManual) {
             const syncBtn = document.getElementById('sync-indicator');
             if (syncBtn) syncBtn.classList.add('animate-spin');
 
+            // 1. Instantly pull data from the local storage cache if it exists 
+            if (!isManual) {
+                try {
+                    const cached = localStorage.getItem('prism_cached_data');
+                    if (cached) {
+                        const parsedResult = JSON.parse(cached);
+                        applyFetchedData(parsedResult);
+                        processData();
+                    }
+                } catch (e) {
+                    console.warn("Could not read local cache:", e);
+                }
+            }
+
+            // 2. Fetch fresh updates from Google Sheet in the background
             try {
+                // Terminate connection attempt if it takes longer than 12 seconds
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
+
                 const res = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({
-                        action: "fetchAdminData"
+                        action: "fetchAdminData",
+                        bypassCache: isManual // Forces a fresh read from the spreadsheet cells when manual refresh is clicked
                     }),
+                    signal: controller.signal,
                     priority: 'high'
                 });
+                clearTimeout(timeoutId);
+
                 const result = await res.json();
 
-                // Main Records
-                globalData = result.adminData;
+                if (result && result.adminData) {
+                    // Cache the successful result locally for future loads
+                    try {
+                        localStorage.setItem('prism_cached_data', JSON.stringify(result));
+                    } catch (e) {
+                        console.warn("Storage write limit exceeded:", e);
+                    }
 
-                // Load SOAP Notes
-                progressNotes = {};
-                if (result.soapNotes) {
-                    result.soapNotes.forEach(row => {
-                        const name = row[0];
-                        if (!progressNotes[name]) progressNotes[name] = [];
-                        progressNotes[name].push({
-                            date: row[1],
-                            subjective: row[2],
-                            objective: row[3],
-                            assessment: row[4],
-                            plan: row[5]
-                        });
-                    });
+                    // Render fresh sheet data silently over the old screen state
+                    applyFetchedData(result);
+                    processData();
+
+                    if (isManual) showToast('Data refreshed', 'success');
+                } else {
+                    throw new Error("Invalid format returned from Apps Script");
                 }
-
-                // Load Exercises
-                exercisePlans = {};
-if (result.exercisePlans) {
-    result.exercisePlans.forEach(row => {
-        const pid = normId(row[0]); // ID column from sheet, normalized
-        if (!exercisePlans[pid]) exercisePlans[pid] = [];
-        exercisePlans[pid].push({
-            name: row[2],
-            setsReps: row[3],
-            instructions: row[4],
-            videoLink: row[5],
-            frequency: row[6],
-            prescribedDate: row[7],
-            reviewDate: row[8]
-        });
-    });
-}
-
-                processData();
-                if (isManual) showToast('Data refreshed', 'success');
             } catch (e) {
-                if (isManual) showToast('Connection failed', 'error');
-                console.error(e);
+                console.error("Background sync error:", e);
+                if (isManual) {
+                    showToast('Sync timed out or connection failed', 'error');
+                } else {
+                    showToast('Offline mode: Using local cached data', 'warning');
+                }
+            } finally {
+                if (syncBtn) syncBtn.classList.remove('animate-spin');
             }
-            if (syncBtn) syncBtn.classList.remove('animate-spin');
         }
 
         function toNum(v) {
-            if (v === null || v === undefined || v === "") return 0;
-            const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
-            return isNaN(n) ? 0 : n;
+    if (v === null || v === undefined || v === "") return 0;
+    const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
+    return isNaN(n) ? 0 : n;
+}
+
+// --- ADDED THIS FUNCTION HERE ---
+function getPackageBreakdown(p) {
+    const packageDefinitions = [];
+    p.logs.forEach(l => {
+        const type = String(l[7] || '').trim().toLowerCase();
+        const capacity = toNum(l[10]);
+        if ((type === 'enrollment' || type === 'package added') && capacity > 0) {
+            packageDefinitions.push({
+                timestamp: l[0],
+                capacity: capacity,
+                sessions: []
+            });
         }
+    });
+    packageDefinitions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    if (packageDefinitions.length === 0) return { packages: [], totalCapacity: p.purchased || 0, totalUsed: 0 };
+
+    const consumingLogs = p.logs.filter(l => {
+        const type = String(l[7] || '').trim().toLowerCase();
+        const mode = String(l[15] || '').trim();
+        
+        // If it is the enrollment row, only count it as a consumed session 
+        // if an advance payment was recorded (acting as Session #1)
+        if (type === 'enrollment') {
+            const advance = toNum(l[11]);
+            const fee = toNum(l[9]);
+            return advance > 0 && fee > 0;
+        }
+
+        return type !== 'package added' &&
+               type !== 'case closed' && 
+               type !== 'case restarted' && 
+               type !== 'bill issued' &&
+               (mode === 'Advance' || toNum(l[9]) > 0);
+    }).slice();
+    consumingLogs.sort((a, b) => new Date(a[0]) - new Date(b[0]));
+
+    consumingLogs.forEach(l => {
+        const openPkg = packageDefinitions.find(pkg => pkg.sessions.length < pkg.capacity);
+        if (openPkg) openPkg.sessions.push(l);
+        else if (packageDefinitions.length > 0) packageDefinitions[packageDefinitions.length - 1].sessions.push(l);
+    });
+
+    const totalCapacity = packageDefinitions.reduce((s, pkg) => s + pkg.capacity, 0);
+    const totalUsed = packageDefinitions.reduce((s, pkg) => s + pkg.sessions.length, 0);
+    return { packages: packageDefinitions, totalCapacity, totalUsed };
+}
+
+function getRemainingSessions(p) {
+    if (!p || !p.purchased) return 0;
+    const { totalCapacity, totalUsed } = getPackageBreakdown(p);
+    return Math.max(0, totalCapacity - totalUsed);
+}
 
         function formatDateDMY(dateStr) {
             if (!dateStr) return '';
@@ -2744,18 +2846,26 @@ if (result.exercisePlans) {
             return 'Physiotherapy Session';
         }
 
-        function getAdvanceSessionLabel(r, p) {
-    const nonEnrollLogs = p.logs.filter(l => {
-        const t = String(l[7] || '').trim().toLowerCase();
-        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-    });
-    const sorted = nonEnrollLogs.slice().sort((a, b) => {
-                if (a[8] !== b[8]) return a[8] < b[8] ? -1 : 1;
-                return new Date(a[0]) - new Date(b[0]);
-            });
-            const idx = sorted.findIndex(l => l[0] === r[0]);
-            const sessionNum = idx >= 0 ? idx + 1 : sorted.length;
-            return `${sessionNum}/${p.purchased}`;
+function getAdvanceSessionLabel(r, p) {
+            const { packages } = getPackageBreakdown(p);
+            if (!packages.length) {
+                const nonEnrollLogs = p.logs.filter(l => {
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+                });
+                const sorted = nonEnrollLogs.slice().sort((a, b) => {
+                    if (a[8] !== b[8]) return a[8] < b[8] ? -1 : 1;
+                    return new Date(a[0]) - new Date(b[0]);
+                });
+                const idx = sorted.findIndex(l => l[0] === r[0]);
+                const sessionNum = idx >= 0 ? idx + 1 : sorted.length;
+                return `${sessionNum}/${p.purchased || 1}`;
+            }
+            for (const pkg of packages) {
+                const idx = pkg.sessions.findIndex(l => l[0] === r[0]);
+                if (idx >= 0) return `${idx + 1}/${pkg.capacity}`;
+            }
+            return `Advance`;
         }
 
         function processData() {
@@ -2856,6 +2966,11 @@ const paymentMode = r[15] ? String(r[15]).trim() : "";
 const paidAmount = (r[16] !== undefined && r[16] !== "") ? toNum(r[16]) : toNum(r[9]);
 if (paymentMode === "Advance" && !['enrollment', 'package added'].includes(type)) {
     p.walletBalance = (p.walletBalance || 0) - paidAmount;
+} else if (paymentMode !== "Pending" && !['enrollment', 'package added'].includes(type)) {
+    const excess = paidAmount - fee;
+    if (excess > 0) {
+        p.walletBalance = (p.walletBalance || 0) + excess;
+    }
 }
 }
             });
@@ -3242,28 +3357,26 @@ Object.keys(patientLookup).forEach(name => {
        function updateAdvanceHint() {
     const hint = document.getElementById('advance-remaining-hint');
     if (!selectedPatientName || !hint) {
-        if (hint) hint.innerText = '';
+        if (hint) {
+            hint.innerText = '';
+            hint.className = 'hidden';
+        }
         return;
     }
     const p = patientLookup[selectedPatientName];
-    
-    // ONLY count sessions that used up the pre-paid package (Enrollment, Package Added, or payment mode "Advance")
-    const consumedPackage = p.logs.filter(l => {
-        const type = String(l[7] || '').trim().toLowerCase();
-        const mode = String(l[15] || '').trim();
-        return type === 'enrollment' || type === 'package added' || mode === 'Advance';
-    }).length;
-
-    const remaining = p.purchased - consumedPackage;
+    const remaining = getRemainingSessions(p);
     const wallet = p.walletBalance || 0;
     
+    hint.classList.remove('hidden');
     if (p.purchased > 0 && remaining > 0) {
-        hint.innerText = `Rem Sessions: ${remaining}/${p.purchased} | Wallet Balance: ₹${wallet.toLocaleString()}`;
-        hint.className = "text-[9px] font-black text-indigo-500 uppercase mt-1 ml-1";
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs">Wallet: ₹${wallet.toLocaleString()}</span>`;
+        hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center text-[10px] font-bold uppercase";
+    } else if (wallet > 0) {
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-emerald-700 mt-1 text-xs">Wallet Balance: ₹${wallet.toLocaleString()}</span>`;
+        hint.className = "mt-2.5 p-3 bg-emerald-50 border border-emerald-100 text-slate-700 rounded-2xl text-center text-[10px] font-bold uppercase";
     } else {
-        // Once the package is fully consumed or it's a regular patient, show as regular
-        hint.innerText = "REGULAR PATIENT (No Active Package)";
-        hint.className = "text-[9px] font-black text-slate-500 uppercase mt-1 ml-1";
+        hint.innerHTML = `<span class="block text-slate-400 text-[8px]">Regular Patient</span><span class="block text-slate-500">No active wallet balance</span>`;
+        hint.className = "mt-2.5 p-3 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl text-center text-[10px] font-bold uppercase";
     }
 }
 
@@ -3352,13 +3465,74 @@ async function saveEnrollment() {
             resetEnrollBodyChart();
         }
 
-        function openMidPackage() {
-            if (!selectedPatientName) return;
-            document.getElementById('pkg-modal-name').innerText = selectedPatientName;
-            document.getElementById('mi-rate').value = patientLookup[selectedPatientName].baseRate;
-            document.getElementById('pkg-modal').classList.remove('hidden');
-        }
+        async function openTopupBalance() {
+    if (!selectedPatientName) return;
+    const p = patientLookup[selectedPatientName];
+    const amount = prompt(`Enter Topup Amount for ${selectedPatientName}:`, "1000");
+    if (!amount) return;
+    const topup = Number(amount);
+    if (isNaN(topup) || topup <= 0) {
+        showToast("Please enter a valid amount", "warning");
+        return;
+    }
+    const dateStr = getLocalISOString();
+    const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Package Added", dateStr, 0, 0, topup, 0, ""];
+    globalData.push(row);
+    processData();
+    selectPatient(selectedPatientName);
+    showToast(`Topup of ₹${topup} added to wallet`, "success");
+    syncToBackend({
+        action: "logAppointment",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: "Wallet Topup",
+        fee: 0,
+        purchased: 0,
+        advance: topup,
+        discount: 0,
+        type: "Package Added",
+        date: dateStr
+    }).catch(() => {});
+}
 
+async function openTopupBalance() {
+    if (!selectedPatientName) return;
+    const p = patientLookup[selectedPatientName];
+    const amount = prompt(`Enter Topup Amount for ${selectedPatientName}:`, "1000");
+    if (!amount) return;
+    const topup = Number(amount);
+    if (isNaN(topup) || topup <= 0) {
+        showToast("Please enter a valid amount", "warning");
+        return;
+    }
+    const dateStr = getLocalISOString();
+    const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Package Added", dateStr, 0, 0, topup, 0, ""];
+    globalData.push(row);
+    processData();
+    selectPatient(selectedPatientName);
+    showToast(`Topup of ₹${topup} added to wallet`, "success");
+    syncToBackend({
+        action: "logAppointment",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: "Wallet Topup",
+        fee: 0,
+        purchased: 0,
+        advance: topup,
+        discount: 0,
+        type: "Package Added",
+        date: dateStr
+    }).catch(() => {});
+}
+
+function openMidPackage() {
+    if (!selectedPatientName) return;
+    document.getElementById('pkg-modal-name').innerText = selectedPatientName;
+    document.getElementById('mi-rate').value = patientLookup[selectedPatientName].baseRate;
+    document.getElementById('pkg-modal').classList.remove('hidden');
+}
         function closeMidPackage() {
             document.getElementById('pkg-modal').classList.add('hidden');
         }
@@ -3517,49 +3691,45 @@ async function saveEnrollment() {
         }
 
         function selectPatient(n) {
-            selectedPatientName = n;
-            const p = patientLookup[n];
-            document.getElementById('patient-search-input').value = n;
-            document.getElementById('search-results').classList.add('hidden');
-            document.getElementById('active-patient-name').innerText = n;
-            document.getElementById('base-rate-display').value = p.baseRate;
-            document.getElementById('patient-workspace').classList.remove('hidden');
-            // ONLY count sessions that used up the pre-paid package
-const consumedPackage = p.logs.filter(l => {
-    const type = String(l[7] || '').trim().toLowerCase();
-    const mode = String(l[15] || '').trim();
-    return type === 'enrollment' || type === 'package added' || mode === 'Advance';
-}).length;
+    selectedPatientName = n;
+    const p = patientLookup[n];
+    document.getElementById('patient-search-input').value = n;
+    document.getElementById('search-results').classList.add('hidden');
+    document.getElementById('active-patient-name').innerText = n;
+    document.getElementById('base-rate-display').value = p.baseRate;
+    document.getElementById('patient-workspace').classList.remove('hidden');
 
-const rem = p.purchased - consumedPackage;
-const badge = document.getElementById('workspace-remaining');
-if (p.closed) {
-    badge.innerText = "CASE CLOSED";
-    badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-} else if (rem > 0 && p.purchased > 0) {
-    badge.innerText = `Rem: ${rem} Sessions`;
-    badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-} else {
-    badge.innerText = "REGULAR";
-    badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+    // UPDATED: Calculate using wallet helper
+    const rem = getRemainingSessions(p);
+
+    const badge = document.getElementById('workspace-remaining');
+    if (p.closed) {
+        badge.innerText = "CASE CLOSED";
+        badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+    } else if (rem > 0 && p.purchased > 0) {
+        badge.innerText = `Rem: ${rem} Sessions`;
+        badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+    } else {
+        badge.innerText = "REGULAR";
+        badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+    }
+    document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
+        const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
+        return `<div class="log-card">
+            <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
+                <div class="flex items-center gap-2">
+                    ${isEnroll ? `<span class="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded text-[8px] font-black uppercase">Enrollment</span>` : ''}
+                    <span class="text-[9px] font-bold">₹${l[9]}</span>
+                </div>
+            </div>
+            <div class="text-[10px] italic text-slate-400">"${l[6]}"</div>
+        </div>`;
+    }).join('');
+    renderCalendar();
+    renderActiveCasesForLog();
+    updateAdvanceHint();
 }
-            document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
-                const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
-                return `<div class="log-card">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[9px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
-                        <div class="flex items-center gap-2">
-                            ${isEnroll ? `<span class="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded text-[8px] font-black uppercase">Enrollment</span>` : ''}
-                            <span class="text-[9px] font-bold">₹${l[9]}</span>
-                        </div>
-                    </div>
-                    <div class="text-[10px] italic text-slate-400">"${l[6]}"</div>
-                </div>`;
-            }).join('');
-            renderCalendar();
-            renderActiveCasesForLog();
-            updateAdvanceHint();
-        }
 
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid');
@@ -3613,181 +3783,184 @@ if (p.closed) {
         }
 
         function renderActiveCasesForLog() {
-            const grid = document.getElementById('active-cases-grid');
-            if (!grid) return;
-            const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
-            if (!names.length) {
-                grid.innerHTML = `<p class="text-xs text-slate-600 italic col-span-full">No active cases yet — enroll a patient to get started.</p>`;
-                return;
-            }
-            grid.innerHTML = names.map(n => {
-                const p = patientLookup[n];
-                const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-}).length;
-                const rem = p.purchased - consumed;
-                const active = selectedPatientName === n;
-                const safeName = n.replace(/"/g, '&quot;');
-                return `<div data-name="${safeName}" class="active-case-card p-4 rounded-2xl border transition-all ${active ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg' : 'bg-slate-50 border-slate-100'}">
-                    <div class="flex justify-between items-center mb-1 gap-2">
-                        <span class="font-black text-xs uppercase truncate">${n}</span>
-                        <span class="text-[9px] font-black flex-shrink-0 ${active ? 'text-white/80' : 'text-indigo-500'}">${p.id}</span>
-                    </div>
-                    <div class="text-[10px] ${active ? 'text-white/70' : 'text-slate-400'} italic truncate mb-2">${p.diag || '-'}</div>
-                    <div class="flex items-center justify-between gap-2">
-                        <span class="text-[9px] font-black ${active ? 'text-white' : 'text-emerald-600'}">${rem > 0 ? rem + ' session(s) left' : 'Regular'}</span>
-                        <button type="button" data-name="${safeName}" class="log-case-btn ${active ? 'bg-white text-indigo-600' : 'bg-indigo-600 text-white'} px-3 py-1.5 rounded-lg text-[9px] font-black uppercase hover:opacity-90 transition-all">Log Session</button>
-                    </div>
-                </div>`;
-            }).join('');
-            grid.querySelectorAll('.log-case-btn').forEach(btn => {
-                btn.addEventListener('click', () => selectPatient(btn.dataset.name));
-            });
-        }
+    const grid = document.getElementById('active-cases-grid');
+    if (!grid) return;
+    const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
+    if (!names.length) {
+        grid.innerHTML = `<p class="text-xs text-slate-600 italic col-span-full">No active cases yet — enroll a patient to get started.</p>`;
+        return;
+    }
+    grid.innerHTML = names.map(n => {
+        const p = patientLookup[n];
+        
+        // UPDATED: Calculate using wallet helper
+        const rem = getRemainingSessions(p);
+        
+        const active = selectedPatientName === n;
+        const safeName = n.replace(/"/g, '&quot;');
+        return `<div data-name="${safeName}" class="active-case-card p-4 rounded-2xl border transition-all ${active ? 'bg-indigo-600 text-white border-indigo-600 shadow-lg' : 'bg-slate-50 border-slate-100'}">
+            <div class="flex justify-between items-center mb-1 gap-2">
+                <span class="font-black text-xs uppercase truncate">${n}</span>
+                <span class="text-[9px] font-black flex-shrink-0 ${active ? 'text-white/80' : 'text-indigo-500'}">${p.id}</span>
+            </div>
+            <div class="text-[10px] ${active ? 'text-white/70' : 'text-slate-400'} italic truncate mb-2">${p.diag || '-'}</div>
+            <div class="flex items-center justify-between gap-2">
+                <span class="text-[9px] font-black ${active ? 'text-white' : 'text-emerald-600'}">${rem > 0 ? rem + ' session(s) left' : 'Regular'}</span>
+                <button type="button" data-name="${safeName}" class="log-case-btn ${active ? 'bg-white text-indigo-600' : 'bg-indigo-600 text-white'} px-3 py-1.5 rounded-lg text-[9px] font-black uppercase hover:opacity-90 transition-all">Log Session</button>
+            </div>
+        </div>`;
+    }).join('');
+    grid.querySelectorAll('.log-case-btn').forEach(btn => {
+        btn.addEventListener('click', () => selectPatient(btn.dataset.name));
+    });
+}
 
         function renderTables() {
-            const pBody = document.getElementById('patient-table-body'),
-                bBody = document.getElementById('billing-table-body');
-            let pHtml = "",
-                bHtml = "";
+    const pBody = document.getElementById('patient-table-body'),
+        bBody = document.getElementById('billing-table-body');
+    let pHtml = "",
+        bHtml = "";
 
-            let names = Object.keys(patientLookup);
+    let names = Object.keys(patientLookup);
 
-            names.sort((a, b) => {
-                return recordSortLatest ?
-                    (patientLookup[b].enrollTime - patientLookup[a].enrollTime) :
-                    (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
-            });
+    names.sort((a, b) => {
+        return recordSortLatest ?
+            (patientLookup[b].enrollTime - patientLookup[a].enrollTime) :
+            (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
+    });
 
-            names.forEach(name => {
-    const p = patientLookup[name];
-    const consumed = p.logs.filter(l => {
-        const t = String(l[7] || '').trim().toLowerCase();
-        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-    }).length;
-    const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-    const rem = p.purchased - consumed;
+    names.forEach(name => {
+        const p = patientLookup[name];
+        
+        // UPDATED: Calculate using wallet helper
+        const rem = getRemainingSessions(p);
+        const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
 
-                if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
-                    let statusBadge;
-                    if (p.closed) {
-                        statusBadge = `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`;
-                    } else if (p.outstandingDue > 0) {
-                        statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded text-[10px] font-black hover:bg-rose-600 hover:text-white transition-all cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE — Click to Clear</button>`;
-                    } else if (rem > 0) {
-                        statusBadge = `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT</span>`;
-                    } else {
-                        statusBadge = `<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
+        if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
+            let statusBadge;
+            const wallet = p.walletBalance || 0;
+            if (p.closed) {
+                statusBadge = `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`;
+            } else if (p.outstandingDue > 0) {
+                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded text-[10px] font-black hover:bg-rose-600 hover:text-white transition-all cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE — Click to Clear</button>`;
+            } else if (rem > 0) {
+                statusBadge = `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT (₹${wallet.toLocaleString()} Wallet)</span>`;
+            } else if (wallet > 0) {
+                statusBadge = `<span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded text-[10px] font-black">₹${wallet.toLocaleString()} WALLET</span>`;
+            } else {
+                statusBadge = `<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
+            }
+
+            pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
+                <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
+                <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
+                <td class="p-5 text-xs font-bold text-slate-600 italic">${p.age || '—'}Y / ${p.gender || '—'}</td>
+                <td class="p-5 text-xs font-black text-slate-700">${p.phone || '—'}</td>
+                <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px]">${p.diag}</td>
+                <td class="p-5">${statusBadge}</td>
+                <td class="p-5 text-center flex gap-2 justify-center">
+                    <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                    <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                    ${p.closed 
+                        ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
+                        : `<button onclick="openCaseModal();" class="bg-rose-50 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
                     }
+                </td>
+            </tr>`;
 
-                    pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
-                        <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
-                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
-                        <td class="p-5 text-xs font-bold text-slate-600 italic">${p.age || '—'}Y / ${p.gender || '—'}</td>
-                        <td class="p-5 text-xs font-black text-slate-700">${p.phone || '—'}</td>
-                        <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px]">${p.diag}</td>
-                        <td class="p-5">${statusBadge}</td>
-                        <td class="p-5 text-center flex gap-2 justify-center">
-                            <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
-                            <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                            ${p.closed 
-                                ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
-                                : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
-                            }
-                        </td>
-                    </tr>`;
-
-                    bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
-                        <td class="p-5 font-bold uppercase text-xs">${name}</td>
-                        <td class="p-5 font-black text-xs text-slate-600">${p.id}</td>
-                        <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
-                        <td class="p-5 text-center">
-                            <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">View Document (3P)</button>
-                        </td>
-                    </tr>`;
-                }
-            });
-            pBody.innerHTML = pHtml;
-            bBody.innerHTML = bHtml;
-            lucide.createIcons();
+            bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
+                <td class="p-5 font-bold uppercase text-xs">${name}</td>
+                <td class="p-5 font-black text-xs text-slate-600">${p.id}</td>
+                <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
+                <td class="p-5 text-center">
+                    <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">View Document (3P)</button>
+                </td>
+            </tr>`;
         }
+    });
+    pBody.innerHTML = pHtml;
+    bBody.innerHTML = bHtml;
+    lucide.createIcons();
+}
 
         function viewPatientDetail(name) {
     const p = patientLookup[name];
     if (!p) return;
     const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    
+    // UPDATED: Calculate using wallet helper
+    const remaining = getRemainingSessions(p);
     const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-}).length;
-    const remaining = p.purchased - consumed;
+        const t = String(l[7] || '').trim().toLowerCase();
+        return t !== 'enrollment' && t !== 'package added' && t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+    }).length;
 
-            document.getElementById('pd-name').innerText = name;
-            document.getElementById('pd-id-badge').innerText = p.id;
-            document.getElementById('pd-sessions').innerText = consumed;
-            document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
+    document.getElementById('pd-name').innerText = name;
+    document.getElementById('pd-id-badge').innerText = p.id;
+    document.getElementById('pd-sessions').innerText = consumed;
+    document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
 
-            const dueCard = document.getElementById('pd-due-card');
-            if (p.outstandingDue > 0) {
-                dueCard.classList.remove('hidden');
-                document.getElementById('pd-due').innerText = '₹' + p.outstandingDue.toLocaleString();
-            } else {
-                dueCard.classList.add('hidden');
-            }
+    const dueCard = document.getElementById('pd-due-card');
+    if (p.outstandingDue > 0) {
+        dueCard.classList.remove('hidden');
+        document.getElementById('pd-due').innerText = '₹' + p.outstandingDue.toLocaleString();
+    } else {
+        dueCard.classList.add('hidden');
+    }
 
-            document.getElementById('pd-demo').innerText = `${p.age || '—'} yrs / ${p.gender || '—'}`;
-            document.getElementById('pd-phone').innerText = p.phone || '—';
-            document.getElementById('pd-address').innerText = p.address || '—';
-            document.getElementById('pd-diag').innerText = p.diag || '—';
-            document.getElementById('pd-package').innerText = p.purchased > 0
-                ? `${remaining} of ${p.purchased} sessions left @ ₹${p.baseRate}/session`
-                : `Regular @ ₹${p.baseRate || 0}/session`;
+    document.getElementById('pd-demo').innerText = `${p.age || '—'} yrs / ${p.gender || '—'}`;
+    document.getElementById('pd-phone').innerText = p.phone || '—';
+    document.getElementById('pd-address').innerText = p.address || '—';
+    document.getElementById('pd-diag').innerText = p.diag || '—';
+    const wallet = p.walletBalance || 0;
+    document.getElementById('pd-package').innerText = p.purchased > 0
+        ? `${remaining} of ${p.purchased} sessions left @ ₹${p.baseRate}/session | Wallet: ₹${wallet.toLocaleString()}`
+        : `Regular @ ₹${p.baseRate || 0}/session | Wallet: ₹${wallet.toLocaleString()}`;
 
-            const statusEl = document.getElementById('pd-status');
-            statusEl.innerText = p.closed
-                ? `Closed${p.closedDate ? ' on ' + formatDateDMY(p.closedDate) : ''}`
-                : 'Active';
+    const statusEl = document.getElementById('pd-status');
+    statusEl.innerText = p.closed
+        ? `Closed${p.closedDate ? ' on ' + formatDateDMY(p.closedDate) : ''}`
+        : 'Active';
 
-            const datesList = document.getElementById('pd-dates-list');
-            const sortedLogs = p.logs.slice().sort((a, b) => new Date(b[8]) - new Date(a[8]));
-            datesList.innerHTML = sortedLogs.length
-                ? sortedLogs.map(l => {
-                    const mode = l[15] || 'Cash';
-                    const badgeColor = mode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
-                    const note = l[6] ? `<span class="text-slate-400 italic ml-2">"${l[6]}"</span>` : '';
-                    return `<div class="p-3 bg-slate-50 rounded-xl text-[10px] font-bold text-slate-600 flex justify-between items-center gap-2">
-                        <span class="truncate">${formatDateDMY(l[8])}${note}</span>
-                        <span class="flex items-center gap-2 flex-shrink-0">
-                            <span class="${badgeColor} px-2 py-0.5 rounded text-[9px] font-black uppercase">${mode}</span>
-                            <span class="text-indigo-500">₹${toNum(l[9])}</span>
-                        </span>
-                    </div>`;
-                }).join('')
-                : `<p class="text-xs text-slate-600 italic">No sessions logged yet.</p>`;
+    const datesList = document.getElementById('pd-dates-list');
+    const sortedLogs = p.logs.slice().sort((a, b) => new Date(b[8]) - new Date(a[8]));
+    datesList.innerHTML = sortedLogs.length
+        ? sortedLogs.map(l => {
+            const mode = l[15] || 'Cash';
+            const badgeColor = mode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
+            const note = l[6] ? `<span class="text-slate-400 italic ml-2">"${l[6]}"</span>` : '';
+            return `<div class="p-3 bg-slate-50 rounded-xl text-[10px] font-bold text-slate-600 flex justify-between items-center gap-2">
+                <span class="truncate">${formatDateDMY(l[8])}${note}</span>
+                <span class="flex items-center gap-2 flex-shrink-0">
+                    <span class="${badgeColor} px-2 py-0.5 rounded text-[9px] font-black uppercase">${mode}</span>
+                    <span class="text-indigo-500">₹${toNum(l[9])}</span>
+                </span>
+            </div>`;
+        }).join('')
+        : `<p class="text-xs text-slate-600 italic">No sessions logged yet.</p>`;
 
-            const modal = document.getElementById('patient-detail-modal');
-            let actionButtons = modal.querySelector('.detail-action-buttons');
-            if (actionButtons) actionButtons.remove();
+    const modal = document.getElementById('patient-detail-modal');
+    let actionButtons = modal.querySelector('.detail-action-buttons');
+    if (actionButtons) actionButtons.remove();
 
-            actionButtons = document.createElement('div');
-            actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t flex-wrap flex-shrink-0';
-            actionButtons.innerHTML = `
-                <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
-                <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">✏️ Edit Details</button>
-                <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📄 View Bill</button>
-            `;
-            const portalBtn = document.createElement('button');
-            portalBtn.className = 'flex-1 min-w-[120px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all';
-            portalBtn.innerHTML = '💬 Send Portal Login';
-            portalBtn.onclick = () => sendPatientPortalLink(name);
-            actionButtons.appendChild(portalBtn);
+    actionButtons = document.createElement('div');
+    actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t flex-wrap flex-shrink-0';
+    actionButtons.innerHTML = `
+        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">🏃 Exercise Plan</button>
+        <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">✏️ Edit Details</button>
+        <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all">📄 View Bill</button>
+    `;
+    const portalBtn = document.createElement('button');
+    portalBtn.className = 'flex-1 min-w-[120px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all';
+    portalBtn.innerHTML = '💬 Send Portal Login';
+    portalBtn.onclick = () => sendPatientPortalLink(name);
+    actionButtons.appendChild(portalBtn);
 
-            modal.querySelector('.bg-white').appendChild(actionButtons);
+    modal.querySelector('.bg-white').appendChild(actionButtons);
 
-            document.getElementById('patient-detail-modal').classList.remove('hidden');
-            lucide.createIcons();
-        }
+    document.getElementById('patient-detail-modal').classList.remove('hidden');
+    lucide.createIcons();
+}
 
         function closePatientDetailModal() {
             document.getElementById('patient-detail-modal').classList.add('hidden');
@@ -4313,93 +4486,6 @@ if (p.closed) {
         }
         applyDarkModePreference();
 
-        // ---------- BRANCH DISTRIBUTION CHART ----------
-        let branchChartInstance = null;
-
-        function renderBranchChart() {
-            const canvasEl = document.getElementById('branchChart');
-            if (!canvasEl) return;
-            const ctx = canvasEl.getContext('2d');
-            let poc = 0,
-                phc = 0,
-                prc = 0;
-            Object.values(patientLookup).forEach(p => {
-                const sum = p.logs.reduce((s, l) => s + toNum(l[9]), 0);
-                if (p.id.startsWith('POC')) poc += sum;
-                else if (p.id.startsWith('PHC')) phc += sum;
-                else if (p.id.startsWith('PRC')) prc += sum;
-            });
-            const isDark = document.body.classList.contains('dark-mode');
-            if (branchChartInstance) branchChartInstance.destroy();
-            branchChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Orthocare (POC)', 'Homecare (PHC)', 'Rehab Clinic (PRC)'],
-                    datasets: [{
-                        data: [poc, phc, prc],
-                        backgroundColor: ['#4f46e5', '#10b981', '#f97316'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: isDark ? '#cbd5e1' : '#475569',
-                                font: {
-                                    size: 10,
-                                    weight: 'bold'
-                                },
-                                boxWidth: 10,
-                                padding: 14
-                            }
-                        }
-                    },
-                    cutout: '65%'
-                }
-            });
-        }
-
-        // ---------- SESSIONS DUE SOON WIDGET ----------
-        function renderDueSoonWidget() {
-            const el = document.getElementById('due-soon-list');
-            if (!el) return;
-            const rows = [];
-            Object.keys(patientLookup).forEach(name => {
-                const p = patientLookup[name];
-                if (p.closed || !p.purchased) return;
-                const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-}).length;
-                const rem = p.purchased - consumed;
-                if (rem <= 2 && rem >= 0) rows.push({
-                    name,
-                    id: p.id,
-                    rem,
-                    phone: p.phone
-                });
-            });
-            rows.sort((a, b) => a.rem - b.rem);
-            if (!rows.length) {
-                el.innerHTML = `<p class="text-xs text-slate-600 italic">No patients are close to finishing their package right now.</p>`;
-                return;
-            }
-            el.innerHTML = rows.map(r => `
-                <div class="due-soon-row">
-                    <div>
-                        <span class="font-black text-xs uppercase text-slate-700">${r.name}</span>
-                        <span class="text-[9px] font-bold text-indigo-500 ml-2">${r.id}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg ${r.rem === 0 ? 'bg-rose-100 text-rose-600' : 'bg-amber-100 text-amber-700'}">${r.rem === 0 ? 'Package Complete' : r.rem + ' Left'}</span>
-                        <button onclick="sendWhatsApp('${r.phone}', '${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Message on WhatsApp"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                </div>`).join('');
-            lucide.createIcons();
-        }
-
         // ---------- OUTSTANDING DUES WIDGET ----------
         function renderDuesWidget() {
             const el = document.getElementById('dues-list');
@@ -4790,8 +4876,6 @@ const sessionLogs = p.logs.filter(l => {
         processData = function() {
             _originalProcessData();
             checkAutoCloseInactiveCases();
-            renderBranchChart();
-            renderDueSoonWidget();
             renderDuesWidget();
         };
 
