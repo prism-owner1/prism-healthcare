@@ -1044,6 +1044,51 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
         #overlay .btn { flex:1; padding: 0.8rem; border-radius: 0.9rem; font-weight:800; font-size:0.75rem; text-transform:uppercase; border:none; cursor:pointer; }
         #overlay .btn.secondary { background:#f1f5f9; color:#475569; }
         #overlay .btn:not(.secondary) { background:#4f46e5; color:white; }
+
+.instruction-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+.instruction-modal-overlay.show {
+    display: flex;
+}
+.instruction-modal-box {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 420px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+}
+.instruction-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+.instruction-modal-body {
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 4px;
+}
+.instruction-modal-footer {
+    display: flex;
+    gap: 10px;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #eef0f5;
+    flex-shrink: 0;
+}
     </style>
 </head>
 
@@ -1307,9 +1352,17 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             <button type="button" onclick="toggleInstructionPicker()" class="text-[9px] font-black text-indigo-600 uppercase bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-all flex items-center gap-1">
                 <i data-lucide="list-plus" class="w-3 h-3"></i> Quick Add
             </button>
-            <div id="instruction-picker" class="hidden absolute right-0 top-full mt-2 w-[340px] max-h-96 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-4">
-                <div id="instruction-picker-list" class="space-y-4"></div>
-                <div class="flex gap-2 pt-3 mt-3 border-t sticky bottom-0 bg-white">
+        </div>
+        <div id="instruction-picker" class="instruction-modal-overlay">
+            <div class="instruction-modal-box">
+                <div class="instruction-modal-header">
+                    <h4 class="text-sm font-black uppercase text-slate-800">Quick Add Instructions</h4>
+                    <button type="button" onclick="toggleInstructionPicker()" class="p-1.5 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="instruction-modal-body">
+                    <div id="instruction-picker-list" class="space-y-4"></div>
+                </div>
+                <div class="instruction-modal-footer">
                     <button type="button" onclick="toggleInstructionPicker()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
                     <button type="button" onclick="insertSelectedInstructions()" class="flex-[2] py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
                 </div>
@@ -1940,9 +1993,9 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
         </div>
 
         <!-- HOME EXERCISE PLAN MODAL -->
-        <div id="exercise-plan-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
-            <div class="bg-white rounded-[2.5rem] p-8 max-w-3xl w-full shadow-2xl flex flex-col max-h-[85vh]">
-                <div class="flex justify-between items-center mb-6">
+       <div id="exercise-plan-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2rem] w-full max-w-3xl shadow-2xl flex flex-col max-h-[90vh]">
+    <div class="flex justify-between items-center p-8 pb-4 border-b border-slate-100 flex-shrink-0">
                     <div>
                         <h3 class="text-xl font-black">Home Exercise Plan</h3>
                         <p id="ex-patient-display-name" class="text-xs text-emerald-600 font-bold uppercase tracking-wider mt-1"></p>
@@ -1950,9 +2003,11 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     <button onclick="closeExercisePlanModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
 
-                <div class="overflow-y-auto pr-2 flex-1 mb-6">
-                    <div id="exercise-plan-list" class="space-y-3"></div>
-                </div>
+                <div class="flex-1 overflow-y-auto p-8 pt-4 space-y-6">
+    <div>
+        <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest mb-3">Current Exercises</h4>
+        <div id="exercise-plan-list" class="space-y-3 min-h-[80px]"></div>
+    </div>
 
                 <div class="border-t pt-6 space-y-4">
                     <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Add Exercise</h4>
@@ -1973,16 +2028,25 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                 <button type="button" onclick="toggleInstructionPicker2()" class="text-[9px] font-black text-emerald-600 uppercase bg-emerald-50 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition-all flex items-center gap-1">
                                     <i data-lucide="list-plus" class="w-3 h-3"></i> Quick Add
                                 </button>
-                                <div id="instruction-picker-2" class="hidden absolute right-0 top-full mt-2 w-[340px] max-h-96 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 p-4">
-                                    <div id="instruction-picker-list-2" class="space-y-4"></div>
-                                    <div class="flex gap-2 pt-3 mt-3 border-t sticky bottom-0 bg-white">
-                                        <button type="button" onclick="toggleInstructionPicker2()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
-                                        <button type="button" onclick="insertSelectedInstructions2()" class="flex-[2] py-2 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
-                                    </div>
                                 </div>
+        <div id="instruction-picker-2" class="instruction-modal-overlay">
+            <div class="instruction-modal-box">
+                <div class="instruction-modal-header">
+                    <h4 class="text-sm font-black uppercase text-slate-800">Quick Add Instructions</h4>
+                    <button type="button" onclick="toggleInstructionPicker2()" class="p-1.5 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <div class="instruction-modal-body">
+                    <div id="instruction-picker-list-2" class="space-y-4"></div>
+                </div>
+                <div class="instruction-modal-footer">
+                    <button type="button" onclick="toggleInstructionPicker2()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
+                    <button type="button" onclick="insertSelectedInstructions2()" class="flex-[2] py-2 bg-emerald-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
+                </div>
+            </div>
+        </div>
                             </div>
                         </div>
-                        <textarea id="ex-input-instructions" placeholder="Step-by-step instructions..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm" rows="2"></textarea>
+                        <textarea id="ex-input-instructions" placeholder="Step-by-step instructions..." class="w-full p-3 bg-slate-50 rounded-xl font-bold outline-none border text-sm resize-y" rows="5"></textarea>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
@@ -2009,6 +2073,7 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         <button onclick="saveExercise()" class="flex-[2] py-3 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all">Add Exercise</button>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -2628,9 +2693,9 @@ function resetEnrollBodyChart(){
                 exercisePlans = {};
 if (result.exercisePlans) {
     result.exercisePlans.forEach(row => {
-        const name = row[1];
-        if (!exercisePlans[name]) exercisePlans[name] = [];
-        exercisePlans[name].push({
+        const pid = normId(row[0]); // ID column from sheet, normalized
+        if (!exercisePlans[pid]) exercisePlans[pid] = [];
+        exercisePlans[pid].push({
             name: row[2],
             setsReps: row[3],
             instructions: row[4],
@@ -2727,6 +2792,7 @@ if (result.exercisePlans) {
                         baseRate: 0,
                         purchased: 0,
                         advance: 0,
+                        walletBalance: 0,   // NEW — running ₹ balance from advance payments
                         discount: 0,
                         closed: false,
                         closedDate: null,
@@ -2741,15 +2807,23 @@ if (result.exercisePlans) {
 
                 const p = patientLookup[name];
 
-                if (type === "enrollment") {
-                    p.purchased += toNum(r[10]);
-                    p.advance += toNum(r[11]);
-                    p.baseRate = fee;
-                    p.discount = toNum(r[12]);
-                    if (r[4]) p.age = r[4];
-                    if (r[5]) p.gender = r[5];
-                    if (r[14]) p.address = r[14];
-                } else if (type === "case closed") {
+                if (type === "enrollment" || type === "package added") {
+    p.purchased += toNum(r[10]);
+    p.advance += toNum(r[11]);
+    p.walletBalance = (p.walletBalance || 0) + toNum(r[11]);
+
+    // If they paid an advance, count today's registration as Session #1 and deduct its fee from the wallet
+    if (toNum(r[11]) > 0 && fee > 0) {
+        p.walletBalance -= fee;
+    }
+
+    if (type === "enrollment") p.baseRate = fee;
+    if (r[10] > 0 && fee > 0) p.baseRate = fee; // package can also update rate if changed
+    if (type === "enrollment") p.discount = toNum(r[12]);
+    if (r[4]) p.age = r[4];
+    if (r[5]) p.gender = r[5];
+    if (r[14]) p.address = r[14];
+} else if (type === "case closed") {
                     p.closed = true;
                     p.closedDate = dateStr;
                 } else if (type === "case restarted") {
@@ -2760,23 +2834,30 @@ if (result.exercisePlans) {
                 }
 
                 if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
-                    totalRawCol += fee;
-                    sessionCount++;
+    totalRawCol += fee;
+    sessionCount++;
 
-                    if (id.startsWith('POC')) pocRevenue += fee;
-                    else if (id.startsWith('PHC')) phcRevenue += fee;
-                    else if (id.startsWith('PRC')) prcRevenue += fee;
+    if (id.startsWith('POC')) pocRevenue += fee;
+    else if (id.startsWith('PHC')) phcRevenue += fee;
+    else if (id.startsWith('PRC')) prcRevenue += fee;
 
-                    if (dateStr === today) dailyCol += fee;
-                    if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
-                    if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
+    if (dateStr === today) dailyCol += fee;
+    if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
+    if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
 
-                    const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
-                    chartData[mKey] = (chartData[mKey] || 0) + fee;
-                    if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
+    const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
+    chartData[mKey] = (chartData[mKey] || 0) + fee;
+    if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
 
-                    p.logs.push(r);
-                }
+    p.logs.push(r);
+
+    // DEDUCT WALLET BALANCE: If this treatment log was paid via Advance, subtract the actual amount paid from the wallet
+const paymentMode = r[15] ? String(r[15]).trim() : "";
+const paidAmount = (r[16] !== undefined && r[16] !== "") ? toNum(r[16]) : toNum(r[9]);
+if (paymentMode === "Advance" && !['enrollment', 'package added'].includes(type)) {
+    p.walletBalance = (p.walletBalance || 0) - paidAmount;
+}
+}
             });
 
             // ---- OUTSTANDING DUES CALCULATION ----
@@ -2790,15 +2871,15 @@ Object.keys(patientLookup).forEach(name => {
         const type = String(l[7] || '').trim().toLowerCase();
         
         // Skip enrollment and other non-session entries
-        if (type === 'enrollment' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
+        if (type === 'enrollment' || type === 'package added' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
             return;
         }
         
         const paymentMode = l[15] || 'Cash';
         const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : toNum(l[9]);
         
-        // Only mark as due if payment mode is "Pending"
-        if (paymentMode === "Pending") {
+        // Mark as due if payment mode is "Pending" OR if it's an "Advance" session with a shortfall (fee > paid)
+        if (paymentMode === "Pending" || (paymentMode === "Advance" && fee > paid)) {
             due += (fee - paid);
             dueSessionCount++;
         }
@@ -3066,100 +3147,125 @@ Object.keys(patientLookup).forEach(name => {
         }
 
         async function submitSessionsFast() {
-            if (!selectedPatientName || selectedDates.length === 0) {
-                showToast('Select at least one date', 'warning');
-                return;
-            }
-            const p = patientLookup[selectedPatientName],
-                btn = document.getElementById('submit-btn');
-            const totalFee = p.baseRate + (Number(document.getElementById('session-add-fee').value) || 0);
-            const note = document.getElementById('session-note').value || p.diag;
-            const paymentMode = document.getElementById('session-payment-mode').value;
-            const amountPaidInput = document.getElementById('session-amount-paid').value;
+    if (!selectedPatientName || selectedDates.length === 0) {
+        showToast('Select at least one date', 'warning');
+        return;
+    }
+    const p = patientLookup[selectedPatientName],
+        btn = document.getElementById('submit-btn');
+    const totalFee = p.baseRate + (Number(document.getElementById('session-add-fee').value) || 0);
+    const note = document.getElementById('session-note').value || p.diag;
+    const paymentMode = document.getElementById('session-payment-mode').value;
+    const amountPaidInput = document.getElementById('session-amount-paid').value;
 
-            if (paymentMode === "Advance") {
-                const consumed = p.logs.filter(l => {
-                    const t = String(l[7] || '').trim().toLowerCase();
-                    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-                }).length;
-                const remaining = p.purchased - consumed;
-                if (remaining < selectedDates.length) {
-                    showToast(`Only ${remaining} advance session(s) left — cannot log ${selectedDates.length}`, 'warning');
-                    return;
-                }
-            }
+    // Check if the advance wallet is empty
+    if (paymentMode === "Advance") {
+        const wallet = p.walletBalance || 0;
+        if (wallet <= 0) {
+            showToast(`No advance balance left for ${selectedPatientName}. Please use Cash/UPI or top up.`, 'warning');
+            return;
+        }
+    }
 
-            let amountPaid;
-            if (paymentMode === "Advance") {
-                amountPaid = totalFee;
-            } else if (amountPaidInput !== "") {
-                amountPaid = Number(amountPaidInput);
-            } else if (paymentMode === "Pending") {
-                amountPaid = 0;
-            } else {
-                amountPaid = totalFee;
-            }
+    const datesToSubmit = [...selectedDates];
+    let tempWallet = p.walletBalance || 0;
 
-            const datesToSubmit = [...selectedDates];
-
-            const newRows = datesToSubmit.map(dateString => ([
-    new Date().toISOString(),     // [0]
-    p.id,                         // [1]
-    selectedPatientName,          // [2]
-    p.phone,                      // [3]
-    "",                           // [4] age
-    "",                           // [5] gender
-    note,                         // [6] diagnosis
-    "Rehab",                      // [7] type
-    dateString,                   // [8] date
-    totalFee,                     // [9] fee
-    0,                            // [10] purchased
-    0,                            // [11] advance
-    0,                            // [12] discount
-    "",                           // [13]
-    "",                           // [14] address
-    paymentMode,                  // [15] payment mode
-    amountPaid                    // [16] amount paid
-]));
-            globalData.push(...newRows);
-            processData();
-            selectedDates = [];
-            document.getElementById('session-note').value = "";
-            document.getElementById('session-amount-paid').value = "";
-            selectPatient(selectedPatientName);
-            showToast(`${datesToSubmit.length} session(s) logged`, 'success');
-            btn.innerText = "Saved ✓";
-            setTimeout(() => {
-                btn.innerText = "Submit Session(s)";
-            }, 1200);
-            syncToBackend({
-                action: "logAppointment",
-                name: selectedPatientName,
-                phone: p.phone,
-                id: p.id,
-                condition: note,
-                type: "Rehab",
-                dates: datesToSubmit,
-                fee: totalFee,
-                paymentMode: paymentMode,
-                amountPaid: amountPaid
-            }).catch(() => {});
+    const newRows = datesToSubmit.map(dateString => {
+        let paidForRow = 0;
+        
+        if (paymentMode === "Advance") {
+            // Deduct from wallet up to the fee amount
+            const covered = Math.min(tempWallet, totalFee);
+            paidForRow = covered;
+            tempWallet -= covered;
+        } else if (amountPaidInput !== "") {
+            paidForRow = Number(amountPaidInput);
+        } else if (paymentMode === "Pending") {
+            paidForRow = 0;
+        } else {
+            paidForRow = totalFee;
         }
 
-        function updateAdvanceHint() {
-            const hint = document.getElementById('advance-remaining-hint');
-            if (!selectedPatientName || !hint) {
-                if (hint) hint.innerText = '';
-                return;
-            }
-            const p = patientLookup[selectedPatientName];
-            const consumed = p.logs.filter(l => {
-                const t = String(l[7] || '').trim().toLowerCase();
-                return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-            }).length;
-            const remaining = p.purchased - consumed;
-            hint.innerText = p.purchased > 0 ? `${remaining} / ${p.purchased} advance sessions remaining` : '';
-        }
+        return [
+            new Date().toISOString(),     // [0]
+            p.id,                         // [1]
+            selectedPatientName,          // [2]
+            p.phone,                      // [3]
+            "",                           // [4] age
+            "",                           // [5] gender
+            note,                         // [6] diagnosis
+            "Rehab",                      // [7] type
+            dateString,                   // [8] date
+            totalFee,                     // [9] fee
+            0,                            // [10] purchased
+            0,                            // [11] advance
+            0,                            // [12] discount
+            "",                           // [13]
+            "",                           // [14] address
+            paymentMode,                  // [15] payment mode
+            paidForRow                    // [16] amount paid
+        ];
+    });
+
+    globalData.push(...newRows);
+    processData();
+    selectedDates = [];
+    document.getElementById('session-note').value = "";
+    document.getElementById('session-amount-paid').value = "";
+    selectPatient(selectedPatientName);
+    showToast(`${datesToSubmit.length} session(s) logged`, 'success');
+    btn.innerText = "Saved ✓";
+    setTimeout(() => {
+        btn.innerText = "Submit Session(s)";
+    }, 1200);
+
+    // Sync each logged row individually with its specific paid amount to the cloud
+    newRows.forEach(row => {
+        syncToBackend({
+            action: "logAppointment",
+            id: p.id,
+            name: selectedPatientName,
+            phone: p.phone,
+            condition: note,
+            fee: totalFee,
+            purchased: 0,
+            advance: 0,
+            discount: 0,
+            type: "Rehab",
+            date: row[8],
+            paymentMode: row[15],
+            amountPaid: row[16]
+        }).catch(() => {});
+    });
+}
+
+       function updateAdvanceHint() {
+    const hint = document.getElementById('advance-remaining-hint');
+    if (!selectedPatientName || !hint) {
+        if (hint) hint.innerText = '';
+        return;
+    }
+    const p = patientLookup[selectedPatientName];
+    
+    // ONLY count sessions that used up the pre-paid package (Enrollment, Package Added, or payment mode "Advance")
+    const consumedPackage = p.logs.filter(l => {
+        const type = String(l[7] || '').trim().toLowerCase();
+        const mode = String(l[15] || '').trim();
+        return type === 'enrollment' || type === 'package added' || mode === 'Advance';
+    }).length;
+
+    const remaining = p.purchased - consumedPackage;
+    const wallet = p.walletBalance || 0;
+    
+    if (p.purchased > 0 && remaining > 0) {
+        hint.innerText = `Rem Sessions: ${remaining}/${p.purchased} | Wallet Balance: ₹${wallet.toLocaleString()}`;
+        hint.className = "text-[9px] font-black text-indigo-500 uppercase mt-1 ml-1";
+    } else {
+        // Once the package is fully consumed or it's a regular patient, show as regular
+        hint.innerText = "REGULAR PATIENT (No Active Package)";
+        hint.className = "text-[9px] font-black text-slate-500 uppercase mt-1 ml-1";
+    }
+}
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
@@ -3258,35 +3364,35 @@ async function saveEnrollment() {
         }
 
         async function saveMidPackage() {
-            const p = patientLookup[selectedPatientName];
-            const sessions = Number(document.getElementById('mi-sessions').value) || 0;
-            const rate = Number(document.getElementById('mi-rate').value) || 0;
-            const advance = Number(document.getElementById('mi-advance').value) || 0;
-            if (!sessions || !rate) {
-                showToast('Enter sessions and rate', 'warning');
-                return;
-            }
-            const dateStr = getLocalISOString();
-            const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Enrollment", dateStr, rate, sessions, advance, 0, ""];
-            globalData.push(row);
-            processData();
-            closeMidPackage();
-            selectPatient(selectedPatientName);
-            showToast('Package added', 'success');
-            syncToBackend({
-                action: "logAppointment",
-                id: p.id,
-                name: selectedPatientName,
-                phone: p.phone,
-                condition: p.diag,
-                fee: rate,
-                purchased: sessions,
-                advance: advance,
-                discount: 0,
-                type: "Enrollment",
-                date: dateStr
-            }).catch(() => {});
-        }
+    const p = patientLookup[selectedPatientName];
+    const sessions = Number(document.getElementById('mi-sessions').value) || 0;
+    const rate = Number(document.getElementById('mi-rate').value) || 0;
+    const advance = Number(document.getElementById('mi-advance').value) || 0;
+    if (!sessions || !rate) {
+        showToast('Enter sessions and rate', 'warning');
+        return;
+    }
+    const dateStr = getLocalISOString();
+    const row = [new Date().toISOString(), p.id, selectedPatientName, p.phone, "", "", p.diag, "Package Added", dateStr, rate, sessions, advance, 0, ""];
+    globalData.push(row);
+    processData();
+    closeMidPackage();
+    selectPatient(selectedPatientName);
+    showToast('Package added', 'success');
+    syncToBackend({
+        action: "logAppointment",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: p.diag,
+        fee: rate,
+        purchased: sessions,
+        advance: advance,
+        discount: 0,
+        type: "Package Added",
+        date: dateStr
+    }).catch(() => {});
+}
 
         function renderCharts(data) {
             const ctx = document.getElementById('revenueChart').getContext('2d');
@@ -3418,18 +3524,25 @@ async function saveEnrollment() {
             document.getElementById('active-patient-name').innerText = n;
             document.getElementById('base-rate-display').value = p.baseRate;
             document.getElementById('patient-workspace').classList.remove('hidden');
-            const rem = p.purchased - p.logs.length;
-            const badge = document.getElementById('workspace-remaining');
-            if (p.closed) {
-                badge.innerText = "CASE CLOSED";
-                badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-            } else if (rem > 0) {
-                badge.innerText = `Rem: ${rem} Sessions`;
-                badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-            } else {
-                badge.innerText = "REGULAR";
-                badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-            }
+            // ONLY count sessions that used up the pre-paid package
+const consumedPackage = p.logs.filter(l => {
+    const type = String(l[7] || '').trim().toLowerCase();
+    const mode = String(l[15] || '').trim();
+    return type === 'enrollment' || type === 'package added' || mode === 'Advance';
+}).length;
+
+const rem = p.purchased - consumedPackage;
+const badge = document.getElementById('workspace-remaining');
+if (p.closed) {
+    badge.innerText = "CASE CLOSED";
+    badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+} else if (rem > 0 && p.purchased > 0) {
+    badge.innerText = `Rem: ${rem} Sessions`;
+    badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+} else {
+    badge.innerText = "REGULAR";
+    badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+}
             document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
                 const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
                 return `<div class="log-card">
@@ -3509,7 +3622,10 @@ async function saveEnrollment() {
             }
             grid.innerHTML = names.map(n => {
                 const p = patientLookup[n];
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const consumed = p.logs.filter(l => {
+    const t = String(l[7] || '').trim().toLowerCase();
+    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+}).length;
                 const rem = p.purchased - consumed;
                 const active = selectedPatientName === n;
                 const safeName = n.replace(/"/g, '&quot;');
@@ -3602,9 +3718,9 @@ async function saveEnrollment() {
     if (!p) return;
     const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
     const consumed = p.logs.filter(l => {
-        const t = String(l[7] || '').trim().toLowerCase();
-        return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-    }).length;
+    const t = String(l[7] || '').trim().toLowerCase();
+    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+}).length;
     const remaining = p.purchased - consumed;
 
             document.getElementById('pd-name').innerText = name;
@@ -4253,7 +4369,10 @@ async function saveEnrollment() {
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 if (p.closed || !p.purchased) return;
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const consumed = p.logs.filter(l => {
+    const t = String(l[7] || '').trim().toLowerCase();
+    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+}).length;
                 const rem = p.purchased - consumed;
                 if (rem <= 2 && rem >= 0) rows.push({
                     name,
@@ -4331,13 +4450,13 @@ async function saveEnrollment() {
     const p = patientLookup[name];
     if (!p) return;
 
-    // Get ALL sessions with pending balance (not just the latest one)
-    const unpaidLogs = p.logs.filter(l => {
-        const mode = l[15] || 'Cash';
-        const fee = toNum(l[9]);
-        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : (mode === 'Pending' ? 0 : fee);
-        return mode === 'Pending' && (fee - paid) > 0;
-    }).sort((a, b) => new Date(a[8]) - new Date(b[8])); // oldest first
+    // Get ALL sessions with pending balance (both Pending and Advance shortfall rows)
+const unpaidLogs = p.logs.filter(l => {
+    const mode = l[15] || 'Cash';
+    const fee = toNum(l[9]);
+    const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : (mode === 'Pending' ? 0 : fee);
+    return (mode === 'Pending' || (mode === 'Advance' && fee > paid)) && (fee - paid) > 0;
+}).sort((a, b) => new Date(a[8]) - new Date(b[8])); // oldest first
 
     if (!unpaidLogs.length) {
         showToast('No unpaid sessions found', 'info');
@@ -4458,7 +4577,10 @@ function confirmMarkPaid() {
             ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const consumed = p.logs.filter(l => {
+    const t = String(l[7] || '').trim().toLowerCase();
+    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+}).length;
                 rows.push([p.id, name, p.age, p.gender, p.phone, p.diag, p.closed ? 'Closed' : 'Active', p.purchased, consumed, p.outstandingDue]);
             });
             downloadCSV(`Prism_Patient_Records_${getLocalISOString()}.csv`, rows);
@@ -4470,7 +4592,10 @@ function confirmMarkPaid() {
             ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
-                const consumed = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'enrollment').length;
+                const consumed = p.logs.filter(l => {
+    const t = String(l[7] || '').trim().toLowerCase();
+    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+}).length;
                 const total = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
                 rows.push([name, p.id, consumed, p.purchased, total, p.outstandingDue]);
             });
@@ -4545,7 +4670,7 @@ function confirmMarkPaid() {
                 const fee = toNum(r[9]);
                 const cid = String(r[1] || '');
                 const branchMatch = !branch || branch === 'ALL' || cid.startsWith(branch);
-                return rDate >= from && rDate <= to && fee > 0 && branchMatch && type !== "case closed" && type !== "case restarted" && type !== "bill issued";
+                return rDate >= from && rDate <= to && fee > 0 && branchMatch && type !== "case closed" && type !== "case restarted" && type !== "bill issued" && type !== "package added"
             }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
                 const cid = r[1],
                     name = r[2],
@@ -4622,10 +4747,10 @@ function confirmMarkPaid() {
                 if (p.closed) return;
 
                 // Only count actual sessions (ignore enrollment/admin rows)
-                const sessionLogs = p.logs.filter(l => {
-                    const t = String(l[7] || '').trim().toLowerCase();
-                    return t !== 'enrollment';
-                });
+const sessionLogs = p.logs.filter(l => {
+    const t = String(l[7] || '').trim().toLowerCase();
+    return !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(t);
+});
 
                 let lastDate;
                 if (sessionLogs.length) {
@@ -4742,6 +4867,10 @@ function closeProgressNotesModal() {
         // ===== HOME EXERCISE PLANS (FIXED IDs & STICKY DATA) =====
         let exercisePlans = {};
 
+function normId(id) {
+    return String(id || '').trim().toUpperCase();
+}
+
 const COMMON_INSTRUCTIONS = {
   "Modalities / Pain Relief": [
     "Apply hot pack for 15-20 minutes before exercise",
@@ -4784,10 +4913,10 @@ const COMMON_INSTRUCTIONS = {
 function toggleInstructionPicker() {
     const panel = document.getElementById('instruction-picker');
     if (!panel) return;
-    if (panel.classList.contains('hidden')) {
+    if (!panel.classList.contains('show')) {
         renderInstructionPicker();
     }
-    panel.classList.toggle('hidden');
+    panel.classList.toggle('show');
 }
 
 function renderInstructionPicker() {
@@ -4820,19 +4949,14 @@ function insertSelectedInstructions() {
     toggleInstructionPicker();
 }
 
-document.addEventListener('click', function(e) {
-    const panel = document.getElementById('instruction-picker');
-    if (!panel || panel.classList.contains('hidden')) return;
-    if (!panel.parentElement.contains(e.target)) panel.classList.add('hidden');
-});
 
 function toggleInstructionPicker2() {
     const panel = document.getElementById('instruction-picker-2');
     if (!panel) return;
-    if (panel.classList.contains('hidden')) {
+    if (!panel.classList.contains('show')) {
         renderInstructionPicker2();
     }
-    panel.classList.toggle('hidden');
+    panel.classList.toggle('show');
 }
 
 function renderInstructionPicker2() {
@@ -4865,29 +4989,30 @@ function insertSelectedInstructions2() {
     toggleInstructionPicker2();
 }
 
-document.addEventListener('click', function(e) {
-    const panel2 = document.getElementById('instruction-picker-2');
-    if (!panel2 || panel2.classList.contains('hidden')) return;
-    if (!panel2.parentElement.contains(e.target)) panel2.classList.add('hidden');
+document.getElementById('instruction-picker').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
+});
+document.getElementById('instruction-picker-2').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
 });
         function openExercisePlanModal(patientName) {
-            if (!patientName) return;
-            document.getElementById('exercise-plan-list').innerHTML = '';
+    if (!patientName) return;
+    document.getElementById('exercise-plan-list').innerHTML = '';
 
-            selectedPatientName = patientName;
-            const p = patientLookup[patientName];
-            selectedPatientId = p ? p.id : null;
-            document.getElementById('ex-patient-display-name').innerText = selectedPatientId ? `${patientName} (${selectedPatientId})` : patientName;
+    selectedPatientName = patientName;
+    const p = patientLookup[patientName];
+    selectedPatientId = p ? normId(p.id) : null;
+    document.getElementById('ex-patient-display-name').innerText = selectedPatientId ? `${patientName} (${selectedPatientId})` : patientName;
 
-            if (!selectedPatientId) {
-                showToast('Could not resolve patient ID', 'error');
-                return;
-            }
-            if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
-            renderExercisePlanList();
-            document.getElementById('exercise-plan-modal').classList.remove('hidden');
-            clearExerciseForm();
-        }
+    if (!selectedPatientId) {
+        showToast('Could not resolve patient ID', 'error');
+        return;
+    }
+    if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
+    renderExercisePlanList();
+    document.getElementById('exercise-plan-modal').classList.remove('hidden');
+    clearExerciseForm();
+}
 
         function clearExerciseForm() {
     document.getElementById('ex-input-name').value = '';
@@ -4900,10 +5025,10 @@ document.addEventListener('click', function(e) {
 }
 
         function renderExercisePlanList() {
-            const exercises = exercisePlans[selectedPatientId] || [];
+    const exercises = exercisePlans[selectedPatientId] || [];
             const container = document.getElementById('exercise-plan-list');
             if (!exercises.length) {
-                container.innerHTML = `<p class="text-xs text-slate-600 italic">No exercises yet.</p>`;
+                container.innerHTML = `<div class="border border-dashed border-slate-200 rounded-2xl p-6 text-center text-slate-600 text-xs italic">No exercises prescribed yet — add one below.</div>`;
                 return;
             }
             container.innerHTML = exercises.map((ex, idx) => `
@@ -4913,7 +5038,7 @@ document.addEventListener('click', function(e) {
                 <h5 class="font-black text-emerald-700 text-sm">${ex.name}</h5>
                 <p class="text-[10px] font-bold text-emerald-600 uppercase">${ex.setsReps} • ${ex.frequency}</p>
             </div>
-            <button onclick="deleteExercise('${selectedPatientName}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
+            <button onclick="deleteExercise('${selectedPatientId}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
         </div>
         <p class="text-[11px] text-slate-600">${ex.instructions}</p>
         <div class="flex gap-3 flex-wrap">
@@ -4939,8 +5064,8 @@ document.addEventListener('click', function(e) {
         return;
     }
 
-    if (!exercisePlans[selectedPatientName]) exercisePlans[selectedPatientName] = [];
-    exercisePlans[selectedPatientName].push({
+    if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
+    exercisePlans[selectedPatientId].push({
         name: name,
         setsReps: sets,
         instructions: instr,
@@ -4956,6 +5081,7 @@ document.addEventListener('click', function(e) {
 
     await syncToBackend({
         action: "saveExercise",
+        id: selectedPatientId,
         name: selectedPatientName,
         exName: name,
         sets: sets,
@@ -4981,9 +5107,10 @@ document.addEventListener('click', function(e) {
         }
 
         function deleteExercise(patientId, index) {
-            if (!exercisePlans[patientId] || !exercisePlans[patientId][index]) return;
-            if (!confirm('Delete exercise?')) return;
-            exercisePlans[patientId].splice(index, 1);
+    patientId = normId(patientId);
+    if (!exercisePlans[patientId] || !exercisePlans[patientId][index]) return;
+    if (!confirm('Delete exercise?')) return;
+    exercisePlans[patientId].splice(index, 1);
             renderExercisePlanList();
             showToast('Deleted', 'info');
         }
