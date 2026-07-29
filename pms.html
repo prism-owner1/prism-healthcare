@@ -403,13 +403,6 @@
                 display: block !important;
             }
 
-            .bill-page {
-                width: 100%;
-                min-height: auto;
-                padding: 6mm;
-                transform-origin: top center;
-            }
-
             /* Hide Clinical ID, Branch, and Diagnosis/Note columns in Registry on mobile */
             #tab-visit-registry th:nth-child(3),
             #tab-visit-registry th:nth-child(4),
@@ -1103,13 +1096,6 @@
                 padding: 0.65rem 1rem !important;
             }
 
-            .bill-page {
-                width: 100%;
-                min-height: auto;
-                padding: 6mm;
-                transform-origin: top center;
-            }
-
             /* Hide Clinical ID, Branch, and Diagnosis/Note columns on mobile */
             #tab-visit-registry th:nth-child(3),
             #tab-visit-registry th:nth-child(4),
@@ -1364,6 +1350,13 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
         outline: none;
     }
+#bill-content-pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow-x: hidden;
+}
     </style>
 </head>
 
@@ -2436,6 +2429,55 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     </div><!-- /#app-root -->
 
     <script>
+        // ---------- AUTO-SCALING FOR MOBILE BILL VIEW ----------
+        function adjustBillScale() {
+            const container = document.getElementById('bill-content-pages');
+            if (!container) return;
+            const pages = container.querySelectorAll('.bill-page');
+            const screenWidth = window.innerWidth;
+            
+            pages.forEach(page => {
+                if (screenWidth < 1024) {
+                    // Standard A4 print width is 210mm (~794px at 96 DPI)
+                    const originalWidth = 794; 
+                    const padding = 16; // Safe margins for mobile viewports
+                    const scale = (screenWidth - padding) / originalWidth;
+                    
+                    // Maintain layout dimensions so table text and footer do not warp
+                    page.style.width = '210mm';
+                    page.style.minHeight = '297mm';
+                    page.style.padding = '20mm';
+                    page.style.position = 'relative';
+                    
+                    // Scaledown with zoom if supported (Blink/WebKit standard)
+                    if ('zoom' in document.body.style) {
+                        page.style.zoom = scale;
+                        page.style.transform = 'none';
+                        page.style.marginBottom = '20px';
+                    } else {
+                        // Fallback scale transform
+                        page.style.transform = `scale(${scale})`;
+                        page.style.transformOrigin = 'top center';
+                        const originalHeight = 1123; // ~297mm in pixels
+                        const gap = originalHeight - (originalHeight * scale);
+                        page.style.marginBottom = `${-gap + 20}px`;
+                    }
+                } else {
+                    // Restore desktop default standard styles
+                    page.style.transform = '';
+                    page.style.zoom = '';
+                    page.style.transformOrigin = '';
+                    page.style.marginBottom = '20px';
+                    page.style.width = '';
+                    page.style.minHeight = '';
+                    page.style.padding = '';
+                }
+            });
+        }
+
+        // Automatically re-scale if the phone changes orientation
+        window.addEventListener('resize', adjustBillScale);
+
         // ---------- LOCK SCREEN LOGIC ----------
 
         const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
@@ -4708,8 +4750,9 @@ function openMidPackage() {
                 verifyUrl
             };
             setTimeout(() => {
-                lucide.createIcons();
-            }, 300);
+            lucide.createIcons();
+            adjustBillScale(); // Recalculates document scale upon page generation
+        }, 300);
             syncToBackend({
                 action: "logAppointment",
                 id: p.id,
@@ -4751,12 +4794,25 @@ function openMidPackage() {
                 const pageWidthMM = 210,
                     pageHeightMM = 297;
 
+                // --- TEMP RESET TO FULL DESKTOP DIMENSIONS TO PREVENT MOBILE SQUISHING ---
+                pageEls.forEach(page => {
+                    page.style.transform = 'none';
+                    page.style.zoom = '1';
+                    page.style.width = '794px';       // Native pixel width for standard A4
+                    page.style.minHeight = '1123px';  // Native pixel height for standard A4
+                    page.style.padding = '75px';      // Safe print padding in pixels
+                    page.style.marginBottom = '20px';
+                });
+
                 for (let i = 0; i < pageEls.length; i++) {
                     const canvas = await html2canvas(pageEls[i], {
-                        scale: 2,
+                        scale: 2, // High resolution scale for crisp text
                         useCORS: true,
                         allowTaint: true,
-                        logging: false
+                        logging: false,
+                        windowWidth: 1024, // Forces rendering engine to use desktop layout
+                        width: 794,
+                        height: 1123
                     });
                     const imgData = canvas.toDataURL('image/jpeg', 0.98);
                     const imgHeightMM = Math.min((canvas.height * pageWidthMM) / canvas.width, pageHeightMM);
@@ -4764,11 +4820,16 @@ function openMidPackage() {
                     pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, imgHeightMM);
                 }
 
+                // --- INSTANTLY RE-APPLY MOBILE SCALING BACK TO PREVIEW ---
+                adjustBillScale();
+
                 pdf.save(`${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`);
                 showToast('PDF downloaded successfully', 'success');
             } catch (err) {
                 console.error(err);
                 showToast('Could not generate PDF', 'error');
+                // Ensure scale is restored even if an error breaks the process
+                adjustBillScale();
             }
         }
 
