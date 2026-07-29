@@ -1,3 +1,4 @@
+
 <html lang="en">
 
 <head>
@@ -1486,7 +1487,8 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div id="connection-status" class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
+                    <!-- Connection status hidden on mobile, visible on desktop -->
+                    <div id="connection-status" class="hidden lg:flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 shadow-sm text-[10px] font-black uppercase">
                         <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
