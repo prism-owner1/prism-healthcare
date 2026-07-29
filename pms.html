@@ -4607,6 +4607,30 @@ function openMidPackage() {
             const discountPercent = Number(p.discount) || 0;
             const discountAmount = Math.round(total * discountPercent / 100);
             const grandTotal = total - discountAmount;
+            
+            // --- DUPING THE EXACT "OUTSTANDING DUES" WIDGET LOGIC ---
+            let billAmountDue = 0;
+            logs.forEach(l => {
+                const fee = toNum(l[9]);
+                const type = String(l[7] || '').trim().toLowerCase();
+                
+                // Skip administrative/non-session entries exactly like Outstanding Dues
+                if (type === 'enrollment' || type === 'package added' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
+                    return;
+                }
+                
+                const paymentMode = l[15] || 'Cash';
+                const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : toNum(l[9]);
+                
+                // Flags any pending sessions or advance package shortfalls
+                if (paymentMode === "Pending" || (paymentMode === "Advance" && fee > paid)) {
+                    billAmountDue += (fee - paid);
+                }
+            });
+
+            // Derived Paid amount (Bounded at zero minimum)
+            const billAmountPaid = Math.max(0, grandTotal - billAmountDue);
+
             let procedureRowsHtml = '';
             Object.keys(groups).forEach(feeKey => {
                 const g = groups[feeKey],
@@ -4695,16 +4719,24 @@ function openMidPackage() {
                         <tfoot>
                             ${discountPercent > 0 ? `
                             <tr>
-                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:12px; color:#64748b; text-transform:uppercase">Subtotal</td>
-                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#0f172a; font-size:14px" class="editable">₹${total.toLocaleString()}</td>
+                                <td colspan="3" style="padding:8px 18px; text-align:right; font-weight:800; font-size:11px; color:#64748b; text-transform:uppercase">Subtotal</td>
+                                <td style="padding:8px 18px; text-align:right; font-weight:800; color:#0f172a; font-size:13px" class="editable">₹${total.toLocaleString()}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:12px; color:#f97316; text-transform:uppercase">Discount (${discountPercent}%)</td>
-                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#f97316; font-size:14px" class="editable">-₹${discountAmount.toLocaleString()}</td>
+                                <td colspan="3" style="padding:8px 18px; text-align:right; font-weight:800; font-size:11px; color:#f97316; text-transform:uppercase">Discount (${discountPercent}%)</td>
+                                <td style="padding:8px 18px; text-align:right; font-weight:800; color:#f97316; font-size:13px" class="editable">-₹${discountAmount.toLocaleString()}</td>
                             </tr>` : ''}
-                            <tr style="background:#f8fafc">
-                                <td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td>
-                                <td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px" class="editable">₹${grandTotal.toLocaleString()}</td>
+                            <tr style="border-top:1.5px solid #e2e8f0">
+                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:11px; color:#64748b; text-transform:uppercase">Total Payable Amount</td>
+                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#0f172a; font-size:13px" class="editable">₹${grandTotal.toLocaleString()}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding:10px 18px; text-align:right; font-weight:800; font-size:11px; color:#10b981; text-transform:uppercase">Amount Paid</td>
+                                <td style="padding:10px 18px; text-align:right; font-weight:800; color:#059669; font-size:13px" class="editable">₹${billAmountPaid.toLocaleString()}</td>
+                            </tr>
+                            <tr style="background:#fef2f2; border-top:1px solid #fee2e2">
+                                <td colspan="3" style="padding:14px 18px; text-align:right; font-weight:900; font-size:12px; color:#dc2626; text-transform:uppercase">Outstanding Amount Due</td>
+                                <td style="padding:14px 18px; text-align:right; font-weight:900; color:#991b1b; font-size:16px" class="editable">₹${billAmountDue.toLocaleString()}</td>
                             </tr>
                         </tfoot>
                     </table>
