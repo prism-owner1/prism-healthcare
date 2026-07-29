@@ -2529,8 +2529,52 @@ setInterval(updateLiveClock, 1000);
     loadAdminData(false);
 }
 
-   document.addEventListener('DOMContentLoaded', function() {
+   // Reusable helper to format phone inputs to: "+91 [10 digits]"
+function setupPhoneInputFormatting(inputElement) {
+    if (!inputElement) return;
+
+    inputElement.type = 'tel';
+
+    inputElement.addEventListener('input', function(e) {
+        let value = e.target.value;
+
+        // Isolate the actual user number from the +91 prefix
+        let cleanValue = value;
+        if (value.startsWith('+91')) {
+            cleanValue = value.substring(3); // Skip "+91" prefix
+        } else if (value.startsWith('91') && value.length > 10) {
+            cleanValue = value.substring(2); // Handle full numbers with country code pasted in
+        }
+
+        // Extract only numeric digits from the remaining user portion
+        let digits = cleanValue.replace(/\D/g, '');
+
+        // Limit the user's typed phone number to exactly 10 digits
+        let truncated = digits.substring(0, 10);
+
+        // Reapply formatting
+        if (truncated.length > 0) {
+            e.target.value = '+91 ' + truncated;
+        } else {
+            e.target.value = '';
+        }
+    });
+
+    // Prevent cursor from getting stuck on "+91 " when backspacing
+    inputElement.addEventListener('keydown', function(e) {
+        if (this.value.length <= 5 && (e.key === 'Backspace' || e.key === 'Delete')) {
+            this.value = '';
+            e.preventDefault();
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
     if (window.lucide) lucide.createIcons();
+    
+    // Setup formatting for the main patient registration inputs
+    setupPhoneInputFormatting(document.getElementById('en-phone'));
+    setupPhoneInputFormatting(document.getElementById('ep-phone'));
 });
 
     function toggleLockPasswordVisibility() {
@@ -5801,10 +5845,11 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                     </div>
                 </div>
             </div>`;
-        main.appendChild(sec);
-    }
+       main.appendChild(sec);
+            setupPhoneInputFormatting(document.getElementById('iq-phone'));
+        }
 
-    // 3. Logic to Save and Sync
+        // 3. Logic to Save and Sync
     window.saveInquiryToCloud = async function() {
         const name = document.getElementById('iq-name').value.trim();
         const phone = document.getElementById('iq-phone').value.trim();
