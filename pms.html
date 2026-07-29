@@ -1,3 +1,4 @@
+
 <html lang="en">
 
 <head>
@@ -26,8 +27,8 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            overflow: hidden;
+            background-color: #f4f7fa;
+            overflow-x: hidden;
         }
 
         .bg-logo-image {
@@ -35,25 +36,246 @@
             top: 50%;
             left: 55%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            opacity: 0.05;
+            width: 400px;
+            opacity: 0.03;
             z-index: -1;
             pointer-events: none;
         }
 
+        /* --- Modern Glassmorphism & UI Accents --- */
         .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(241, 245, 249, 0.9);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 8px -1px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.06);
         }
 
         .sidebar-active {
-            background: #0f172a;
+            background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
             color: white !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px -6px rgba(79, 70, 229, 0.4);
         }
 
         .section-hidden {
+            display: none;
+        }
+
+        /* --- Mobile Navigation Styles --- */
+        .mobile-nav-active {
+            color: #4f46e5 !important;
+        }
+        .mobile-nav-active i {
+            transform: translateY(-2px);
+            color: #4f46e5;
+        }
+
+        /* --- Custom Calendar Enhancements --- */
+        .calendar-day-selected {
+            background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+            color: white !important;
+            transform: scale(0.92);
+            font-weight: 700;
+        }
+
+        .calendar-day-logged {
+            border: 2px solid #10b981 !important;
+            color: #047857 !important;
+            background-color: #ecfdf5 !important;
+            position: relative;
+            font-weight: 800 !important;
+        }
+
+        .calendar-day-logged::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .calendar-day-due {
+            border: 2px solid #f87171 !important;
+            color: #b91c1c !important;
+            background-color: #fef2f2 !important;
+            position: relative;
+            font-weight: 800 !important;
+        }
+
+        .calendar-day-due::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: #f87171;
+            border-radius: 50%;
+        }
+
+        .calendar-day-disabled {
+            opacity: 0.25;
+            cursor: not-allowed !important;
+            background-color: #f8fafc !important;
+            border-color: #f1f5f9 !important;
+        }
+
+        .log-card {
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 1rem;
+            padding: 1.1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.01);
+            transition: all 0.2s ease;
+        }
+
+        .log-card:hover {
+            border-color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- Hide scrollbars but allow scrolling --- */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            body {
+                background: white;
+                overflow: visible !important;
+            }
+            main {
+                overflow: visible !important;
+                height: auto !important;
+            }
+            #sidebar, header, .nav-btn, #mobile-bottom-nav {
+                display: none !important;
+            }
+            #bill-modal {
+                position: absolute !important;
+                inset: 0 !important;
+                background: white !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+        }
+
+        /* --- Responsive View Adaptation --- */
+        @media (max-width: 1024px) {
+            body {
+                overflow-y: auto;
+                background-color: #f8fafc;
+            }
+            #sidebar {
+                display: none !important; 
+            }
+            #sidebar-overlay {
+                display: none !important;
+            }
+            main {
+                padding: 1rem 1rem 5.5rem 1rem !important; 
+                height: auto !important;
+                overflow-y: visible !important;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+            #app-root {
+                min-height: 100vh;
+                display: block !important;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+            header h1 {
+                font-size: 1.4rem !important;
+            }
+            .glass-card {
+                border-radius: 1.25rem !important;
+                padding: 1.25rem !important;
+            }
+            .table-scroll {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 1rem;
+            }
+            table {
+                min-width: 680px; /* Default horizontal scroll for detailed tables */
+            }
+            table.no-mobile-scroll {
+                min-width: 100% !important; /* Forces the table to fit fully on the mobile screen width */
+            }
+        }
+
+        .stat-card-v2 {
+            border-left: 4px solid #4f46e5;
+        }
+
+        /* --- Dark Mode Overrides --- */
+        body.dark-mode {
+            background-color: #090d16;
+            color: #f1f5f9;
+        }
+        body.dark-mode .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode #mobile-bottom-nav {
+            background: rgba(17, 24, 39, 0.95);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode strong {
+            color: #f8fafc;
+        }
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+            background: #111827 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #f1f5f9 !important;
+        }
+        body.dark-mode .log-card {
+            background: #111827;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        body.dark-mode #dark-toggle-btn [data-lucide="moon"] {
+            display: none;
+        }
+        body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             display: none;
         }
 
@@ -1164,13 +1386,11 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     </div>
 </div>
 
-    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
-
     <div id="app-root" class="min-h-screen flex w-full">
         <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
 
-        <!-- SIDE NAVIGATION -->
-        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50">
+        <!-- SIDE NAVIGATION (Desktop Only) -->
+        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50 lg:flex hidden">
             <div class="flex items-center gap-3 mb-10 px-2">
                 <div class="mb-10 px-2">
                     <img src="https://prismhealthcare.in/prism1.png" class="h-12 w-auto object-contain" alt="Prism Logo">
@@ -1184,18 +1404,22 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                 <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
                 <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
             </nav>
-            <div class="pt-4 mt-4 border-t border-slate-100">
-                <button onclick="logoutApp()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-rose-500 hover:bg-rose-50 transition-all"><i data-lucide="log-out" class="w-5 h-5"></i> Logout</button>
+            <div class="pt-4 mt-4 border-t border-slate-100/80">
+                <div class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-slate-100/30 dark:from-slate-900 dark:to-slate-950/40 rounded-2xl border border-slate-100 dark:border-slate-800/80 shadow-sm">
+                    <!-- Date (Top) -->
+                    <div id="live-date-text" class="text-[9px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mb-1"></div>
+                    <!-- Time (Bottom) -->
+                    <div id="live-time-text" class="text-base font-black text-slate-800 dark:text-slate-100 tracking-wider"></div>
+                </div>
             </div>
         </aside>
 
-        <main class="flex-1 p-8 lg:p-10 relative overflow-y-auto h-screen">
-            <header class="flex justify-between items-center mb-8">
+        <main class="flex-1 p-4 lg:p-10 relative overflow-y-auto h-screen">
+            <header class="flex justify-between items-center mb-6 lg:mb-8">
                 <div class="flex items-center gap-3">
-                    <button id="hamburger-btn" onclick="openSidebar()"><i data-lucide="menu" class="w-5 h-5 text-slate-700"></i></button>
                     <div>
-                        <h1 id="tab-title" class="text-2xl font-black tracking-tight uppercase">Dashboard</h1>
-                        <p class="text-slate-600 text-xs uppercase font-bold tracking-widest"> ClinioSphere</p>
+                        <h1 id="tab-title" class="text-xl lg:text-2xl font-black tracking-tight uppercase">Dashboard</h1>
+                        <p class="text-slate-600 text-[10px] uppercase font-bold tracking-widest"> ClinioSphere</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -1204,7 +1428,10 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
                     <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
-                    <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+                    <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white border border-slate-200 rounded-xl shadow-sm hover:rotate-180 transition-all" title="Refresh Data"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+                    <button onclick="logoutApp()" class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all flex items-center justify-center" title="Logout">
+                        <i data-lucide="log-out" class="w-5 h-5 text-rose-500"></i>
+                    </button>
                 </div>
             </header>
 
@@ -1609,28 +1836,28 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
             <!-- RECORDS -->
             <section id="tab-patients" class="section-hidden animate-slide">
-                <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-6 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="search" class="w-4 h-4 text-slate-600 ml-2"></i>
-                        <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-80 p-2 bg-slate-50 rounded-xl border-none outline-none font-bold text-sm">
+                <div class="glass-card p-4 rounded-[1.5rem] lg:rounded-[2rem] shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 rounded-xl px-3 py-1 flex-1">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-600"></i>
+                        <input type="text" id="record-search-input" onkeyup="filterRecordTable()" placeholder="Search records by name or ID..." class="w-full p-2 bg-transparent border-none outline-none font-bold text-sm">
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="exportPatientsCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
-                        <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2">
-                            <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest First</span>
+                    <div class="flex items-center gap-2 justify-between md:justify-end">
+                        <button onclick="exportPatientsCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white py-2.5 px-4 rounded-xl text-[10px] font-black uppercase transition-all flex items-center gap-2 flex-1 md:flex-initial justify-center"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                        <button id="record-sort-btn" onclick="toggleRecordSort()" class="bg-indigo-50 text-indigo-700 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-2 flex-1 md:flex-initial justify-center">
+                            <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i> <span>Sort: Newest</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm no-mobile-scroll">
                         <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                             <tr>
                                 <th class="p-5">ID</th>
                                 <th class="p-5">Patient Name</th>
-                                <th class="p-5">Demographics</th>
-                                <th class="p-5">Contact</th>
-                                <th class="p-5">Condition</th>
+                                <th class="p-5 hidden lg:table-cell">Demographics</th>
+                                <th class="p-5 hidden lg:table-cell">Contact</th>
+                                <th class="p-5 hidden lg:table-cell">Condition</th>
                                 <th class="p-5">Status / Bal.</th>
                                 <th class="p-5 text-center">Action</th>
                             </tr>
@@ -1666,10 +1893,10 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         </div>
                     </div>
 
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
-                        <div class="flex items-center gap-4">
-                            <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner" onkeyup="filterBillingTable()">
-                            <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white flex-shrink-0"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
+                    <div class="glass-card p-4 md:p-6 rounded-[2.5rem] shadow-xl">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <input type="text" id="bill-search-input" placeholder="Search Patient Name or ID..." class="flex-1 p-3 md:p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-sm md:text-lg shadow-inner shadow-slate-100" onkeyup="filterBillingTable()">
+                            <button onclick="exportBillingCSV()" class="toolbar-btn bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white justify-center py-3 md:py-4 rounded-xl text-[10px] font-black uppercase"><i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV</button>
                         </div>
                     </div>
 
@@ -2108,6 +2335,37 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
         <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
 
+    <!-- MOBILE BOTTOM NAVIGATION (Visible only on Mobile) -->
+        <div id="mobile-bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 border-t border-slate-100 px-0.5 py-2 flex justify-around items-center z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] backdrop-blur-lg">
+            <button onclick="switchTab('overview', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all mobile-nav-active flex-shrink-0">
+                <i data-lucide="layout-grid" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Home</span>
+            </button>
+            <button onclick="switchTab('enroll', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="user-plus" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Enroll</span>
+            </button>
+            <button onclick="switchTab('log-session', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="calendar-plus" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Log</span>
+            </button>
+            <button onclick="switchTab('visit-registry', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="book-open" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Registry</span>
+            </button>
+            <button onclick="switchTab('patients', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="users" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Patients</span>
+</button>
+            <button onclick="switchTab('billing', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="credit-card" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Billing</span>
+            </button>
+            <button onclick="switchTab('inquiry', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-1 text-slate-400 text-[8px] font-black uppercase transition-all flex-shrink-0">
+                <i data-lucide="clipboard-list" class="w-5 h-5 transition-transform duration-200"></i>
+                <span>Inquiry</span>
+            </button>
+        </div>
     </div><!-- /#app-root -->
 
     <script>
@@ -2115,20 +2373,32 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
         const getLocalISOString = () => new Date().toLocaleDateString('sv-SE');
 function updateLiveClock() {
-    const el = document.getElementById('live-clock-text');
-    if (!el) return;
+    const dateEl = document.getElementById('live-date-text');
+    const timeEl = document.getElementById('live-time-text');
+    if (!dateEl || !timeEl) return;
+    
     const now = new Date();
-    const formatted = now.toLocaleString('en-IN', {
+    
+    // Format Date (e.g., Wed, 29 Jul 2026)
+    const dateStr = now.toLocaleDateString('en-IN', {
         timeZone: 'Asia/Kolkata',
+        weekday: 'short',
         day: '2-digit',
         month: 'short',
-        year: 'numeric',
+        year: 'numeric'
+    });
+    
+    // Format Time (e.g., 05:00:48 PM)
+    const timeStr = now.toLocaleTimeString('en-IN', {
+        timeZone: 'Asia/Kolkata',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
         hour12: true
     });
-    el.innerText = formatted;
+    
+    dateEl.innerText = dateStr;
+    timeEl.innerText = timeStr;
 }
 updateLiveClock();
 setInterval(updateLiveClock, 1000);
@@ -3653,10 +3923,23 @@ function openMidPackage() {
         }
 
         function switchTab(id, btn) {
+            // Hide all sections, show active one
             document.querySelectorAll('section').forEach(s => s.classList.add('section-hidden'));
-            document.getElementById(`tab-${id}`).classList.remove('section-hidden');
+            const targetSection = document.getElementById(`tab-${id}`);
+            if (targetSection) targetSection.classList.remove('section-hidden');
+
+            // Reset Desktop Nav Button Classes
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active'));
-            btn.classList.add('sidebar-active');
+            
+            // Reset Mobile Bottom Nav Button Classes
+            document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('mobile-nav-active'));
+
+            // Match and apply visual active state safely across both navigational structures
+            const desktopBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(`'${id}'`));
+            if (desktopBtn) desktopBtn.classList.add('sidebar-active');
+
+            const mobileBtn = Array.from(document.querySelectorAll('.mobile-nav-btn')).find(b => b.getAttribute('onclick')?.includes(`'${id}'`));
+            if (mobileBtn) mobileBtn.classList.add('mobile-nav-active');
 
             const titles = {
                 'overview': 'DASHBOARD',
@@ -3664,12 +3947,16 @@ function openMidPackage() {
                 'log-session': 'LOG SESSIONS',
                 'visit-registry': 'DAILY VISIT REGISTRY',
                 'patients': 'PATIENT RECORDS',
-                'billing': 'BILLING'
+                'billing': 'BILLING',
+                'inquiry': 'INQUIRIES'
             };
             document.getElementById('tab-title').innerText = titles[id] || 'PRISM';
 
             if (id === 'log-session') renderActiveCasesForLog();
             if (id === 'visit-registry') renderDailyRegistry();
+            
+            // Auto scroll main window back to top on switch for mobile readability
+            document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
             closeSidebar();
         }
 
@@ -3854,16 +4141,16 @@ function openMidPackage() {
             pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
                 <td class="p-5 font-black text-indigo-500 text-xs">${p.id}</td>
                 <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
-                <td class="p-5 text-xs font-bold text-slate-600 italic">${p.age || '—'}Y / ${p.gender || '—'}</td>
-                <td class="p-5 text-xs font-black text-slate-700">${p.phone || '—'}</td>
-                <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px]">${p.diag}</td>
+                <td class="p-5 text-xs font-bold text-slate-600 italic hidden lg:table-cell">${p.age || '—'}Y / ${p.gender || '—'}</td>
+                <td class="p-5 text-xs font-black text-slate-700 hidden lg:table-cell">${p.phone || '—'}</td>
+                <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] hidden lg:table-cell">${p.diag}</td>
                 <td class="p-5">${statusBadge}</td>
                 <td class="p-5 text-center flex gap-2 justify-center">
                     <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
                     <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
                     ${p.closed 
                         ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
-                        : `<button onclick="openCaseModal();" class="bg-rose-50 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
+                        : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
                     }
                 </td>
             </tr>`;
