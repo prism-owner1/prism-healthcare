@@ -1828,55 +1828,56 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         <div id="session-drawer-backdrop" onclick="toggleSessionDrawer(false)" class="fixed inset-0 bg-slate-900/40 z-[190] hidden lg:hidden max-lg:opacity-0 transition-opacity duration-300"></div>
 
                         <!-- Calendar Logging Container with mobile drawer properties -->
-                        <div id="session-form-container" class="glass-card p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-0 h-fit border-white z-[200]
-                            max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:max-h-[85vh] max-lg:overflow-y-auto max-lg:rounded-t-[2.5rem] max-lg:border-t max-lg:border-slate-200 
-                            max-lg:translate-y-full max-lg:transition-transform max-lg:duration-300 max-lg:ease-out">
-                            
-                            <!-- Mobile Drawer Header with Close Button -->
-                            <div class="flex lg:hidden justify-between items-center mb-5 pb-2 border-b border-slate-100">
-                                <span class="text-[10px] font-black uppercase text-slate-500">Log Session & Calendar</span>
-                                <!-- Touch-friendly Close Button with visual feedback -->
-                                <button type="button" onclick="toggleSessionDrawer(false)" class="p-3 active:bg-slate-200 hover:bg-slate-100 rounded-full text-slate-500 flex items-center justify-center min-w-[44px] min-h-[44px] -mr-3" aria-label="Close drawer">
-                                    <i data-lucide="x" class="w-6 h-6 pointer-events-none"></i>
-                                </button>
-                            </div>
+                            <div id="session-form-container" class="glass-card p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-0 h-fit border-white z-[200]
+                                max-lg:fixed max-lg:inset-0 max-lg:h-screen max-lg:max-h-screen max-lg:overflow-y-auto max-lg:rounded-none max-lg:border-none 
+                                max-lg:bg-white dark:max-lg:bg-slate-900 max-lg:p-4 max-lg:pb-16
+                                max-lg:translate-y-full max-lg:transition-transform max-lg:duration-300 max-lg:ease-out">
+                                
+                                <!-- Mobile Drawer Header with Close Button -->
+                                <div class="flex lg:hidden justify-between items-center mb-5 pb-2 border-b border-slate-100 max-lg:mb-2 max-lg:pb-1">
+                                    <span class="text-[10px] font-black uppercase text-slate-500 max-lg:text-[9px]">Log Session & Calendar</span>
+                                    <!-- Touch-friendly Close Button with visual feedback -->
+                                    <button type="button" onclick="toggleSessionDrawer(false)" class="p-3 active:bg-slate-200 hover:bg-slate-100 rounded-full text-slate-500 flex items-center justify-center min-w-[44px] min-h-[44px] -mr-3" aria-label="Close drawer">
+                                        <i data-lucide="x" class="w-6 h-6 pointer-events-none"></i>
+                                    </button>
+                                </div>
 
-                            <div class="flex justify-between items-center mb-6 px-2">
-                                <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-                                <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-600"></h4>
-                                <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                                <div class="flex justify-between items-center mb-6 px-2 max-lg:mb-2 max-lg:px-1">
+                                    <button onclick="changeMonth(-1)" class="p-2 max-lg:p-1 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5 max-lg:w-4 max-lg:h-4"></i></button>
+                                    <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-600 max-lg:text-[11px]"></h4>
+                                    <button onclick="changeMonth(1)" class="p-2 max-lg:p-1 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-right" class="w-5 h-5 max-lg:w-4 max-lg:h-4"></i></button>
+                                </div>
+                                <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-8 max-lg:gap-1 max-lg:mb-2.5"></div>
+                                <div class="grid grid-cols-2 gap-4 mb-6 max-lg:gap-2 max-lg:mb-2">
+                                    <div>
+                                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Base Rate</label>
+                                        <input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black max-lg:p-2 max-lg:text-[11px]">
+                                    </div>
+                                    <div>
+                                        <label class="text-[9px] font-black text-indigo-500 uppercase ml-1 max-lg:text-[8px]">Add-on Fee</label>
+                                        <input type="number" id="session-add-fee" value="0" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black outline-none max-lg:p-2 max-lg:text-[11px]">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-6 max-lg:gap-2 max-lg:mb-2">
+                                    <div>
+                                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Payment Mode</label>
+                                        <select id="session-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm max-lg:p-2 max-lg:text-[11px] max-lg:mt-0">
+                                            <option value="Cash">Cash</option>
+                                            <option value="UPI">UPI</option>
+                                            <option value="Card">Card</option>
+                                            <option value="Advance">Advance (Pre-paid Package)</option>
+                                            <option value="Pending">Pending / Due</option>
+                                        </select>
+                                            <div id="advance-remaining-hint" class="mt-2.5 p-3 rounded-2xl text-center font-bold text-[10px] uppercase transition-all"></div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Amount Paid (₹)</label>
+                                        <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm max-lg:p-2 max-lg:text-[11px] max-lg:mt-0">
+                                    </div>
+                                </div>
+                                <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm max-lg:p-2.5 max-lg:mb-3 max-lg:text-[11px]">
+                                <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all max-lg:py-2.5 max-lg:text-[9px] max-lg:rounded-xl">Submit Session(s)</button>
                             </div>
-                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-8"></div>
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Base Rate</label>
-                                    <input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black">
-                                </div>
-                                <div>
-                                    <label class="text-[9px] font-black text-indigo-500 uppercase ml-1">Add-on Fee</label>
-                                    <input type="number" id="session-add-fee" value="0" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black outline-none">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
-                                    <select id="session-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Advance">Advance (Pre-paid Package)</option>
-                                        <option value="Pending">Pending / Due</option>
-                                    </select>
-                                        <div id="advance-remaining-hint" class="mt-2.5 p-3 rounded-2xl text-center font-bold text-[10px] uppercase transition-all"></div>
-                                </div>
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Paid (₹)</label>
-                                    <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
-                                </div>
-                            </div>
-                            <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm">
-                            <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all">Submit Session(s)</button>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -3855,14 +3856,14 @@ Object.keys(patientLookup).forEach(name => {
     
     hint.classList.remove('hidden');
     if (p.purchased > 0 && remaining > 0) {
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs">Wallet: ₹${wallet.toLocaleString()}</span>`;
-        hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center text-[10px] font-bold uppercase";
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs max-lg:text-[10px]">Wallet: ₹${wallet.toLocaleString()}</span>`;
+        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     } else if (wallet > 0) {
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-emerald-700 mt-1 text-xs">Wallet Balance: ₹${wallet.toLocaleString()}</span>`;
-        hint.className = "mt-2.5 p-3 bg-emerald-50 border border-emerald-100 text-slate-700 rounded-2xl text-center text-[10px] font-bold uppercase";
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-emerald-700 mt-1 text-xs max-lg:text-[10px]">Wallet Balance: ₹${wallet.toLocaleString()}</span>`;
+        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-emerald-50 border border-emerald-100 text-slate-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     } else {
         hint.innerHTML = `<span class="block text-slate-400 text-[8px]">Regular Patient</span><span class="block text-slate-500">No active wallet balance</span>`;
-        hint.className = "mt-2.5 p-3 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl text-center text-[10px] font-bold uppercase";
+        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     }
 }
 
@@ -4272,7 +4273,7 @@ function openMidPackage() {
                     isLogged = logDates.has(ds),
                     isDue = dueDates.has(ds);
                 const btn = document.createElement('div');
-                let dayClass = `h-10 flex items-center justify-center rounded-xl border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
+                let dayClass = `h-10 max-lg:h-7 flex items-center justify-center rounded-xl max-lg:rounded-lg border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
                 if (sel) dayClass += 'calendar-day-selected ';
                 else if (isDue) dayClass += 'calendar-day-due ';
                 else if (isLogged) dayClass += 'calendar-day-logged bg-emerald-50/50 ';
