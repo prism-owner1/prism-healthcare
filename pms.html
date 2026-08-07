@@ -1,4 +1,3 @@
-
 <html lang="en">
 
 <head>
@@ -2403,48 +2402,53 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             </div>
         </div>
 
-        <!-- MARK AS PAID MODAL -->
-        <div id="markpaid-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6">
-            <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xl font-black">Record Payment</h3>
-                    <button onclick="closeMarkPaidModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <!-- BILL SELECTION MODAL -->
+        <div id="bill-selection-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[250] flex items-center justify-center p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl border border-slate-100 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black">Generate Bill</h3>
+                    <button onclick="closeBillSelectionModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
-                <p id="mp-patient-name" class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-6"></p>
+                <p id="bsm-patient-name" class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-6"></p>
 
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="p-4 bg-rose-50 rounded-2xl text-center">
-                        <span class="block text-[9px] font-black uppercase text-rose-500 mb-1">Total Outstanding</span>
-                        <span id="mp-total-due" class="text-lg font-black text-rose-700"></span>
-                    </div>
-                    <div class="p-4 bg-slate-50 rounded-2xl text-center">
-                        <span class="block text-[9px] font-black uppercase text-slate-600 mb-1">Pending Sessions</span>
-                        <span id="mp-session-count" class="text-lg font-black text-slate-700"></span>
-                    </div>
+                <div class="space-y-4 mb-8">
+                    <p class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Select Documents to Include:</p>
+                    
+                    <label class="flex items-center gap-3.5 p-4 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100/80 dark:hover:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 cursor-pointer transition-all">
+                        <input type="checkbox" id="bsm-opt-invoice" checked disabled class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-not-allowed">
+                        <div>
+                            <span class="block text-xs font-black text-slate-800 dark:text-slate-100">1. Invoice / Receipt</span>
+                            <span class="block text-[10px] text-slate-500">Official billing details and financial summary</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3.5 p-4 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100/80 dark:hover:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 cursor-pointer transition-all">
+                        <input type="checkbox" id="bsm-opt-ledger" checked class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <span class="block text-xs font-black text-slate-800 dark:text-slate-100">2. Session Narrative Ledger</span>
+                            <span class="block text-[10px] text-slate-500">Chronological history of all sessions logged</span>
+                        </div>
+                    </label>
+
+                    <label class="flex items-center gap-3.5 p-4 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100/80 dark:hover:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 cursor-pointer transition-all">
+                        <input type="checkbox" id="bsm-opt-cert" checked class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <span class="block text-xs font-black text-slate-800 dark:text-slate-100">3. Certificate of Treatment</span>
+                            <span class="block text-[10px] text-slate-500">Official statement of treatment completion</span>
+                        </div>
+                    </label>
                 </div>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Received (₹)</label>
-                        <input type="number" id="mp-amount" class="w-full mt-1 p-4 bg-slate-50 rounded-xl font-black text-lg outline-none border border-transparent focus:border-indigo-300">
-                        <p class="text-[9px] text-slate-600 mt-1 ml-1 font-semibold">Applied across pending sessions, oldest first</p>
-                    </div>
-                    <div>
-                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
-                        <select id="mp-mode" class="w-full mt-1 p-4 bg-slate-50 rounded-xl font-bold outline-none">
-                            <option value="Cash">Cash</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Card">Card</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="flex gap-3 pt-6">
-                    <button onclick="closeMarkPaidModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
-                    <button onclick="confirmMarkPaid()" class="flex-[2] py-4 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Confirm Payment</button>
+                <div class="flex gap-3">
+                    <button onclick="closeBillSelectionModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-500 transition-colors">Cancel</button>
+                    <button onclick="confirmBillGeneration()" class="flex-[2] py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4"></i> Generate Document
+                    </button>
                 </div>
             </div>
         </div>
+
+        <!-- MARK AS PAID MODAL -->
 
         <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
 
@@ -4391,7 +4395,7 @@ function openMidPackage() {
                         <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
                         <td class="p-5 text-center">
                             <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 lg:px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">
-                                <span class="hidden lg:inline">View Document (3P)</span>
+                                <span class="hidden lg:inline">Generate Bill</span>
                                 <span class="lg:hidden">View Bill</span>
                             </button>
                         </td>
@@ -4685,9 +4689,35 @@ function openMidPackage() {
             lucide.createIcons();
         }
 
+        let selectedBillPatientName = "";
+
         function generateBill(name) {
             const p = patientLookup[name];
             if (!p) return;
+            selectedBillPatientName = name;
+            
+            document.getElementById('bsm-patient-name').innerText = name;
+            document.getElementById('bsm-opt-ledger').checked = true;
+            document.getElementById('bsm-opt-cert').checked = true;
+            
+            document.getElementById('bill-selection-modal').classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeBillSelectionModal() {
+            document.getElementById('bill-selection-modal').classList.add('hidden');
+        }
+
+        function confirmBillGeneration() {
+            const name = selectedBillPatientName;
+            const p = patientLookup[name];
+            if (!p) return;
+
+            const includeLedger = document.getElementById('bsm-opt-ledger').checked;
+            const includeCert = document.getElementById('bsm-opt-cert').checked;
+
+            closeBillSelectionModal();
+
             const prefix = (p.gender === 'Male') ? 'Mr. ' : 'Ms. ';
             const docName = document.getElementById('bill-cfg-doc').value;
             const docReg = document.getElementById('bill-cfg-reg').value;
@@ -4700,6 +4730,7 @@ function openMidPackage() {
             const dateStr = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
             const fromDate = document.getElementById('bill-range-from').value;
             const toDate = document.getElementById('bill-range-to').value;
+            
             let logs = p.logs.filter(l => String(l[7] || '').trim().toLowerCase() !== 'case closed');
             if (fromDate) logs = logs.filter(l => l[8] >= fromDate);
             if (toDate) logs = logs.filter(l => l[8] <= toDate);
@@ -4709,6 +4740,7 @@ function openMidPackage() {
                     return;
                 }
             }
+            
             let total = 0;
             const groups = {};
             logs.forEach(l => {
@@ -4725,27 +4757,21 @@ function openMidPackage() {
             const discountAmount = Math.round(total * discountPercent / 100);
             const grandTotal = total - discountAmount;
             
-            // --- DUPING THE EXACT "OUTSTANDING DUES" WIDGET LOGIC ---
             let billAmountDue = 0;
             logs.forEach(l => {
                 const fee = toNum(l[9]);
                 const type = String(l[7] || '').trim().toLowerCase();
-                
-                // Skip administrative/non-session entries exactly like Outstanding Dues
                 if (type === 'enrollment' || type === 'package added' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
                     return;
                 }
                 
                 const paymentMode = l[15] || 'Cash';
                 const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : toNum(l[9]);
-                
-                // Flags any pending sessions or advance package shortfalls
                 if (paymentMode === "Pending" || (paymentMode === "Advance" && fee > paid)) {
                     billAmountDue += (fee - paid);
                 }
             });
 
-            // Derived Paid amount (Bounded at zero minimum)
             const billAmountPaid = Math.max(0, grandTotal - billAmountDue);
 
             let procedureRowsHtml = '';
@@ -4771,29 +4797,33 @@ function openMidPackage() {
             const rangeNoteHtml = (fromDate || toDate) ?
                 `<p style="margin:4px 0 0; font-size:10px; color:#4f46e5; font-weight:800;">Billed Period: ${fromDate ? formatDateDMY(fromDate) : 'Start'} to ${toDate ? formatDateDMY(toDate) : 'Latest'}</p>` : '';
 
+            // Construct Narrative Ledger only if checked
             const ledgerChunks = chunkArray(logs, ROWS_PER_LEDGER_PAGE);
             let ledgerPagesHtml = '';
-            ledgerChunks.forEach((chunk, pageIdx) => {
-                let rowsHtml = '';
-                chunk.forEach((l, idxInChunk) => {
-                    const globalIdx = pageIdx * ROWS_PER_LEDGER_PAGE + idxInChunk;
-                    const fee = toNum(l[9]);
-                    rowsHtml += `<div class="ledger-row" style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;">
-                        <div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${globalIdx + 1}.</div>
-                        <div class="editable" style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDateDMY(l[8])}</div>
-                        <div class="editable" style="flex:1; color:#64748b; font-size:13px;">${getSessionTypeLabel(p.id)}</div>
-                        <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
+            if (includeLedger) {
+                ledgerChunks.forEach((chunk, pageIdx) => {
+                    let rowsHtml = '';
+                    chunk.forEach((l, idxInChunk) => {
+                        const globalIdx = pageIdx * ROWS_PER_LEDGER_PAGE + idxInChunk;
+                        const fee = toNum(l[9]);
+                        rowsHtml += `<div class="ledger-row" style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;">
+                            <div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${globalIdx + 1}.</div>
+                            <div class="editable" style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDateDMY(l[8])}</div>
+                            <div class="editable" style="flex:1; color:#64748b; font-size:13px;">${getSessionTypeLabel(p.id)}</div>
+                            <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
+                        </div>`;
+                    });
+                    const pageLabel = ledgerChunks.length > 1 ? ` (Page ${pageIdx + 1} of ${ledgerChunks.length})` : '';
+                    ledgerPagesHtml += `<div class="bill-page page-break">
+                        ${buildDocHeader(stmtNo)}
+                        <h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER${pageLabel}</h2>
+                        <div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div>
+                        <div style="margin-bottom:30px; margin-top:14px">${rowsHtml}</div>
+                        ${buildPageFooter('qr-receipt-' + pageIdx, docName, verifyUrl)}
                     </div>`;
                 });
-                const pageLabel = ledgerChunks.length > 1 ? ` (Page ${pageIdx + 1} of ${ledgerChunks.length})` : '';
-                ledgerPagesHtml += `<div class="bill-page page-break">
-                    ${buildDocHeader(stmtNo)}
-                    <h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER${pageLabel}</h2>
-                    <div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div>
-                    <div style="margin-bottom:30px; margin-top:14px">${rowsHtml}</div>
-                    ${buildPageFooter('qr-receipt-' + pageIdx, docName, verifyUrl)}
-                </div>`;
-            });
+            }
+
             const firstDate = logs.length ? formatDateDMY(logs[0][8]) : '';
             const lastDate = logs.length ? formatDateDMY(logs[logs.length - 1][8]) : '';
             const ageGenderLine = `Gender: ${p.gender || '-'} | Age: ${p.age || '-'} Y`;
@@ -4801,8 +4831,12 @@ function openMidPackage() {
                 `<p style="margin:2px 0; font-size:12px; color:#475569">Addr: <span class="editable">${p.address}</span></p>` :
                 `<p class="editable addr-line" style="margin:2px 0; font-size:12px; color:#475569"></p>`;
             const certAddrClause = p.address ? `, residing at ${p.address},` : '';
-            const pagesHtml = `
-                <div class="bill-page page-break">
+
+            // Handle page separation cleanly
+            const hasMorePages = includeLedger || includeCert;
+
+            const invoicePageHtml = `
+                <div class="bill-page ${hasMorePages ? 'page-break' : ''}">
                     ${buildDocHeader(stmtNo)}
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:26px">
                         <div>
@@ -4859,32 +4893,41 @@ function openMidPackage() {
                     </table>
                     ${buildPageFooter('qr-inv', docName, verifyUrl)}
                 </div>
-                ${ledgerPagesHtml}
-                <div class="bill-page">
-                    ${buildDocHeader(stmtNo)}
-                    <h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2>
-                    <p class="editable" style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">
-                        This is to certify that <strong>${prefix}${name}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} under the professional care of <strong>Prism Physiotherapy & Rehabilitation Center</strong> for the clinical diagnosis of <strong>${p.diag}</strong>.
-                        <br><br>
-                        The patient has successfully completed <strong>${logs.length}</strong> session(s) of ${getSessionTypeLabel(p.id)} under the professional supervision of <strong>${docName}.</strong> The treatment program was planned and delivered following a comprehensive clinical assessment, incorporating evidence-based physiotherapy practice and an individualized rehabilitation plan. 
-                        <br><br>
-                        The prescribed physiotherapy rehabilitation program was provided from <strong>${firstDate}</strong> to <strong>${lastDate}</strong> .
-                        <br><br>
-                        This certificate is issued upon the patient's request as an official record of the physiotherapy treatment received at our center and may be presented wherever appropriate for verification and official documentation purposes.
-                    </p>
-                    <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px;">
-                        <div style="text-align:center">
-
-                        </div>
-                        <div style="text-align:right">
-                            <strong class="editable" style="display:block; font-size:14px; color:#0f172a">${docName}</strong>
-                            <span style="display:block; font-size:11px; color:#64748b">Consulting Physiotherapist</span>
-                            <span class="editable" style="display:block; font-size:10px; color:#64748b">Reg No: ${docReg}</span>
-                        </div>
-                    </div>
-                    ${buildPageFooter('qr-cert', docName, verifyUrl)}
-                </div>
             `;
+
+            let pagesHtml = invoicePageHtml;
+
+            if (includeLedger) {
+                pagesHtml += ledgerPagesHtml;
+            }
+
+            if (includeCert) {
+                pagesHtml += `
+                    <div class="bill-page">
+                        ${buildDocHeader(stmtNo)}
+                        <h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2>
+                        <p class="editable" style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">
+                            This is to certify that <strong>${prefix}${name}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} under the professional care of <strong>Prism Physiotherapy & Rehabilitation Center</strong> for the clinical diagnosis of <strong>${p.diag}</strong>.
+                            <br><br>
+                            The patient has successfully completed <strong>${logs.length}</strong> session(s) of ${getSessionTypeLabel(p.id)} under the professional supervision of <strong>${docName}.</strong> The treatment program was planned and delivered following a comprehensive clinical assessment, incorporating evidence-based physiotherapy practice and an individualized rehabilitation plan. 
+                            <br><br>
+                            The prescribed physiotherapy rehabilitation program was provided from <strong>${firstDate}</strong> to <strong>${lastDate}</strong> .
+                            <br><br>
+                            This certificate is issued upon the patient's request as an official record of the physiotherapy treatment received at our center and may be presented wherever appropriate for verification and official documentation purposes.
+                        </p>
+                        <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px;">
+                            <div style="text-align:center"></div>
+                            <div style="text-align:right">
+                                <strong class="editable" style="display:block; font-size:14px; color:#0f172a">${docName}</strong>
+                                <span style="display:block; font-size:11px; color:#64748b">Consulting Physiotherapist</span>
+                                <span class="editable" style="display:block; font-size:10px; color:#64748b">Reg No: ${docReg}</span>
+                            </div>
+                        </div>
+                        ${buildPageFooter('qr-cert', docName, verifyUrl)}
+                    </div>
+                `;
+            }
+
             document.getElementById('bill-content-pages').innerHTML = pagesHtml;
             document.getElementById('bill-modal').classList.remove('hidden');
             billEditMode = false;
@@ -4899,9 +4942,10 @@ function openMidPackage() {
                 verifyUrl
             };
             setTimeout(() => {
-            lucide.createIcons();
-            adjustBillScale(); // Recalculates document scale upon page generation
-        }, 300);
+                lucide.createIcons();
+                adjustBillScale();
+            }, 300);
+            
             syncToBackend({
                 action: "logAppointment",
                 id: p.id,
