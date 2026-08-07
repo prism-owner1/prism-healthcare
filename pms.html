@@ -42,6 +42,34 @@
             pointer-events: none;
         }
 
+        @media (max-width: 1024px) {
+            #tab-inquiry th:nth-child(1),
+            #tab-inquiry th:nth-child(5),
+            #iq-table-body td:nth-child(1),
+            #iq-table-body td:nth-child(5) {
+                display: none !important;
+            }
+
+            #iq-table-body .flex.items-center.justify-center.gap-2 {
+                flex-direction: row;
+                gap: 6px !important;
+            }
+
+            #iq-table-body button {
+                padding: 6px 10px !important;
+                font-size: 8px !important;
+            }
+
+            #iq-table-body button i {
+                width: 10px !important;
+                height: 10px !important;
+            }
+
+            #iq-table-body td:last-child {
+                white-space: nowrap;
+            }
+        }
+
         /* --- Modern Glassmorphism & UI Accents --- */
         .glass-card {
             background: rgba(255, 255, 255, 0.8);
@@ -1781,9 +1809,11 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
                     <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-10">
                         <div>
-                            <div class="flex justify-between items-center mb-4">
+                            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
     <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">History: <span id="active-patient-name" class="text-indigo-600"></span></h4>
-    <div class="flex gap-2">
+    <div class="flex gap-2 flex-wrap items-center">
+        <!-- Mobile Trigger Button to reopen logging workspace overlay -->
+        <button onclick="toggleSessionDrawer(true)" class="lg:hidden bg-indigo-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-md flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Open Calendar</button>
         <button onclick="openTopupBalance()" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-emerald-600 hover:text-white transition-all">+ Topup Balance</button>
         <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Monthly Package</button>
         <div id="ws-rem-container">
@@ -1793,7 +1823,24 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 </div>
                             <div id="recent-logs-cards" class="max-h-[500px] overflow-y-auto pr-3"></div>
                         </div>
-                        <div class="glass-card p-10 rounded-[3rem] shadow-2xl sticky top-0 h-fit border-white">
+                        
+                        <!-- Backdrop overlay for mobile bottom sheet -->
+                        <div id="session-drawer-backdrop" onclick="toggleSessionDrawer(false)" class="fixed inset-0 bg-slate-900/40 z-[190] hidden lg:hidden max-lg:opacity-0 transition-opacity duration-300"></div>
+
+                        <!-- Calendar Logging Container with mobile drawer properties -->
+                        <div id="session-form-container" class="glass-card p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-0 h-fit border-white z-[200]
+                            max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:max-h-[85vh] max-lg:overflow-y-auto max-lg:rounded-t-[2.5rem] max-lg:border-t max-lg:border-slate-200 
+                            max-lg:translate-y-full max-lg:transition-transform max-lg:duration-300 max-lg:ease-out">
+                            
+                            <!-- Mobile Drawer Header with Close Button -->
+                            <div class="flex lg:hidden justify-between items-center mb-5 pb-2 border-b border-slate-100">
+                                <span class="text-[10px] font-black uppercase text-slate-500">Log Session & Calendar</span>
+                                <!-- Touch-friendly Close Button with visual feedback -->
+                                <button type="button" onclick="toggleSessionDrawer(false)" class="p-3 active:bg-slate-200 hover:bg-slate-100 rounded-full text-slate-500 flex items-center justify-center min-w-[44px] min-h-[44px] -mr-3" aria-label="Close drawer">
+                                    <i data-lucide="x" class="w-6 h-6 pointer-events-none"></i>
+                                </button>
+                            </div>
+
                             <div class="flex justify-between items-center mb-6 px-2">
                                 <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-100 rounded-full transition-all"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
                                 <h4 id="calendar-month-year" class="font-black uppercase text-xs tracking-widest text-slate-600"></h4>
@@ -2518,7 +2565,7 @@ setInterval(updateLiveClock, 1000);
     root.style.display = 'flex';
     root.classList.remove('hidden');
     try {
-        sessionStorage.setItem('prism_unlocked', '1');
+        localStorage.setItem('prism_unlocked', '1');
     } catch (e) {}
     const todayStr = getLocalISOString();
     const regDateEl = document.getElementById('en-reg-date');
@@ -2575,6 +2622,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup formatting for the main patient registration inputs
     setupPhoneInputFormatting(document.getElementById('en-phone'));
     setupPhoneInputFormatting(document.getElementById('ep-phone'));
+
+    // Auto-unlock if a valid session already exists (survives refresh)
+    try {
+        if (localStorage.getItem('prism_unlocked') === '1') {
+            unlockApp();
+        }
+    } catch (e) {}
 });
 
     function toggleLockPasswordVisibility() {
@@ -3119,72 +3173,73 @@ function resetEnrollBodyChart(){
                     });
                 });
             }
+
+            // Assign Inquiries (from Inquiry_Registry sheet)
+            window.iqRegistry = [];
+            if (result.inquiries) {
+                result.inquiries.slice().reverse().forEach(row => {
+                    window.iqRegistry.push({
+                        id: row[0],
+                        name: row[1],
+                        age: row[2],
+                        gender: row[3],
+                        phone: String(row[4] || '').replace(/^'/, ''),
+                        diagnosis: row[5],
+                        note: row[6],
+                        confirmed: String(row[7] || '').trim().toLowerCase() === 'yes',
+                        rowIndex: row[8]
+                    });
+                });
+            }
         }
 
         async function loadAdminData(isManual) {
-            const syncBtn = document.getElementById('sync-indicator');
-            if (syncBtn) syncBtn.classList.add('animate-spin');
+    const syncBtn = document.getElementById('sync-indicator');
+    if (syncBtn) syncBtn.classList.add('animate-spin');
 
-            // 1. Instantly pull data from the local storage cache if it exists 
-            if (!isManual) {
-                try {
-                    const cached = localStorage.getItem('prism_cached_data');
-                    if (cached) {
-                        const parsedResult = JSON.parse(cached);
-                        applyFetchedData(parsedResult);
-                        processData();
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+        const res = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: "fetchAdminData",
+                bypassCache: isManual
+            }),
+            signal: controller.signal,
+            priority: 'high'
+        });
+        clearTimeout(timeoutId);
+
+        const result = await res.json();
+
+        if (result && result.adminData) {
+            applyFetchedData(result);
+            processData();
+
+            if (isManual) {
+                        showToast('Data refreshed', 'success');
+                        // Also refresh inquiry display when manually refreshed
+                        if (window.renderIqTable) {
+                            window.iqRegistry = window.loadInquiriesFromStorage();
+                            renderIqTable();
+                        }
                     }
-                } catch (e) {
-                    console.warn("Could not read local cache:", e);
-                }
-            }
-
-            // 2. Fetch fresh updates from Google Sheet in the background
-            try {
-                // Terminate connection attempt if it takes longer than 12 seconds
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-                const res = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: "fetchAdminData",
-                        bypassCache: isManual // Forces a fresh read from the spreadsheet cells when manual refresh is clicked
-                    }),
-                    signal: controller.signal,
-                    priority: 'high'
-                });
-                clearTimeout(timeoutId);
-
-                const result = await res.json();
-
-                if (result && result.adminData) {
-                    // Cache the successful result locally for future loads
-                    try {
-                        localStorage.setItem('prism_cached_data', JSON.stringify(result));
-                    } catch (e) {
-                        console.warn("Storage write limit exceeded:", e);
-                    }
-
-                    // Render fresh sheet data silently over the old screen state
-                    applyFetchedData(result);
-                    processData();
-
-                    if (isManual) showToast('Data refreshed', 'success');
-                } else {
-                    throw new Error("Invalid format returned from Apps Script");
-                }
-            } catch (e) {
-                console.error("Background sync error:", e);
-                if (isManual) {
-                    showToast('Sync timed out or connection failed', 'error');
-                } else {
-                    showToast('Offline mode: Using local cached data', 'warning');
-                }
-            } finally {
-                if (syncBtn) syncBtn.classList.remove('animate-spin');
-            }
+        } else {
+            throw new Error("Invalid format returned from Apps Script");
         }
+    } catch (e) {
+        console.error("Background sync error:", e);
+        if (isManual) {
+            showToast('Sync timed out or connection failed', 'error');
+        } else {
+            showToast('Offline mode: Using local cached data', 'warning');
+        }
+    } finally {
+        if (syncBtn) syncBtn.classList.remove('animate-spin');
+    }
+}
 
         function toNum(v) {
     if (v === null || v === undefined || v === "") return 0;
@@ -3755,6 +3810,10 @@ Object.keys(patientLookup).forEach(name => {
     document.getElementById('session-note').value = "";
     document.getElementById('session-amount-paid').value = "";
     selectPatient(selectedPatientName);
+    
+    // Close the calendar overlay on mobile after submission
+    toggleSessionDrawer(false); 
+    
     showToast(`${datesToSubmit.length} session(s) logged`, 'success');
     btn.innerText = "Saved ✓";
     setTimeout(() => {
@@ -4173,6 +4232,9 @@ function openMidPackage() {
     renderCalendar();
     renderActiveCasesForLog();
     updateAdvanceHint();
+    
+    // Auto-popup slide-up calendar on mobile
+    toggleSessionDrawer(true);
 }
 
         function renderCalendar() {
@@ -5277,7 +5339,7 @@ function confirmMarkPaid() {
 
         function logoutApp() {
             try {
-                sessionStorage.removeItem('prism_unlocked');
+                localStorage.removeItem('prism_unlocked');
             } catch (e) {}
             location.reload();
         }
@@ -5300,6 +5362,14 @@ function confirmMarkPaid() {
         window.addEventListener('offline', updateConnectionStatus);
         document.addEventListener('DOMContentLoaded', updateConnectionStatus);
 
+        // AUTO-REFRESH DATA EVERY 120 SECONDS
+        setInterval(() => {
+            if (navigator.onLine) {
+                loadAdminData(false);
+                if (window.renderIqTable) renderIqTable();
+            }
+        }, 120 * 1000); // 120 seconds
+
         // ---------- KEYBOARD SHORTCUT ----------
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -5311,7 +5381,7 @@ function confirmMarkPaid() {
             }
         });
 
-        // ---------- AUTO-CLOSE INACTIVE CASES (15+ DAYS NO SESSION) ----------
+        // ---------- AUTO-CLOSE INACTIVE CASES (7+ DAYS NO SESSION) ----------
         function checkAutoCloseInactiveCases() {
             const todayStr = getLocalISOString();
 
@@ -5344,11 +5414,11 @@ const sessionLogs = p.logs.filter(l => {
                     lastDate = new Date(p.enrollTime).toLocaleDateString('sv-SE');
                 }
 
-                if (daysBetween(lastDate) > 15) {
+                if (daysBetween(lastDate) > 7) {
                     autoClosedAny = true;
                     const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", todayStr, 0, 0, 0, 0, "", "", "AutoClosed", 0];
                     globalData.push(row);
-                    showToast(`${name}'s case auto-closed — 15+ days inactive`, 'warning');
+                    showToast(`${name}'s case auto-closed — 7+ days inactive`, 'warning');
                     syncToBackend({
                         action: "logAppointment",
                         id: p.id,
@@ -5783,7 +5853,7 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
     const nav = document.querySelector('#sidebar nav');
     if (nav) {
         const btn = document.createElement('button');
-        btn.onclick = function() { switchTab('inquiry', this); };
+        btn.setAttribute('onclick', "switchTab('inquiry', this)");
         btn.className = 'nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-slate-600 hover:bg-slate-50 transition-all';
         btn.innerHTML = '<i data-lucide="clipboard-list" class="w-5 h-5"></i> Inquiries';
         nav.appendChild(btn);
@@ -5827,13 +5897,13 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden">
                     <div class="p-6 bg-slate-50/50 border-b flex justify-between items-center">
                         <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Inquiry Follow-up Registry</h4>
-                        <span class="text-[9px] font-bold text-slate-600 uppercase">Displays last 15 local entries</span>
+                        <span class="text-[9px] font-bold text-slate-600 uppercase">All Entries</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 text-[10px] uppercase font-black text-slate-600">
                             <tr>
-                                <th class="p-5 hidden lg:table-cell">ID</th>
+                                <th class="p-5 hidden lg:table-cell">Entry Date</th>
                                 <th class="p-5">Patient Name</th>
                                     <th class="p-5">Clinical Diagnosis</th>
                                     <th class="p-5">Mobile No</th>
@@ -5849,7 +5919,30 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             setupPhoneInputFormatting(document.getElementById('iq-phone'));
         }
 
-        // 3. Logic to Save and Sync
+    // 3. LocalStorage helpers for inquiry data
+    window.loadInquiriesFromStorage = function() {
+        try {
+            const stored = localStorage.getItem('prism_inquiries');
+            return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+            return [];
+        }
+    };
+
+    window.saveInquiriesToStorage = function(data) {
+        try {
+            localStorage.setItem('prism_inquiries', JSON.stringify(data));
+        } catch (e) {
+            console.error('Storage save failed:', e);
+        }
+    };
+
+    // Initialize inquiry registry from storage on page load
+    if (!window.iqRegistry) {
+        window.iqRegistry = window.loadInquiriesFromStorage();
+    }
+
+    // 4. Logic to Save and Sync
     window.saveInquiryToCloud = async function() {
         const name = document.getElementById('iq-name').value.trim();
         const phone = document.getElementById('iq-phone').value.trim();
@@ -5869,16 +5962,25 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
         if(window.lucide) lucide.createIcons();
 
         try {
-            // This calls your Google Apps Script Action "saveInquiry"
-            await syncToBackend({
-                action: "saveInquiry",
-                name, phone, diagnosis, note, age, gender
-            });
+            // Create new inquiry object with timestamp
+            const newInquiry = {
+                date: getLocalISOString(),
+                name,
+                phone,
+                diagnosis,
+                note,
+                age,
+                gender,
+                confirmed: false,
+                id: Date.now()
+            };
 
-            // Local cache for the table
-            const iqList = JSON.parse(localStorage.getItem('prism_iq_registry') || '[]');
-            iqList.unshift({ name, phone, diagnosis, id: Date.now() });
-            localStorage.setItem('prism_iq_registry', JSON.stringify(iqList.slice(0, 15)));
+            // Add to local registry FIRST
+            if (!window.iqRegistry) window.iqRegistry = [];
+            window.iqRegistry.unshift(newInquiry);
+            
+            // Save to localStorage immediately
+            window.saveInquiriesToStorage(window.iqRegistry);
             
             renderIqTable();
             
@@ -5887,65 +5989,211 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             document.getElementById('iq-diagnosis').value = '';
             document.getElementById('iq-note').value = '';
             document.getElementById('iq-age').value = '';
+            document.getElementById('iq-phone').value = '+91';
             
-            showToast("Inquiry saved to Cloud Sheet", "success");
+            showToast("Inquiry saved locally", "success");
+
+            // Sync to cloud AND reload fresh data from sheet
+            await syncToBackend({
+                action: "saveInquiry",
+                name, phone, diagnosis, note, age, gender
+            });
+            
+            // After cloud save, reload inquiry data from sheet
+            const result = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: "fetchAdminData" })
+            }).then(r => r.json());
+            
+            if (result.inquiries) {
+                window.iqRegistry = result.inquiries.map(row => ({
+                    date: row[0],
+                    name: row[1],
+                    age: row[2],
+                    gender: row[3],
+                    phone: String(row[4] || '').replace(/^'/, ''),
+                    diagnosis: row[5],
+                    note: row[6],
+                    confirmed: String(row[7] || '').toLowerCase() === 'yes',
+                    rowIndex: row[8],
+                    id: row[1] + '_' + row[0]
+                }));
+                window.saveInquiriesToStorage(window.iqRegistry);
+                renderIqTable();
+            }
+            
+            showToast("Synced with sheet", "info");
+
         } catch (e) {
-            showToast("Error syncing to Cloud", "error");
+            showToast("Error saving inquiry", "error");
+            console.error(e);
         } finally {
             btn.disabled = false;
-            btn.innerHTML = '<i data-lucide="cloud-upload" class="w-5 h-5"></i> SAVE TO CLOUD SHEET';
+            btn.innerHTML = '<i data-lucide="cloud-upload" class="w-5 h-5"></i> LOG INQUIRY';
             if(window.lucide) lucide.createIcons();
         }
     };
 
-    // 4. Render Table with Mobile No column
+    // 5. Render Table
     window.renderIqTable = function() {
         const body = document.getElementById('iq-table-body');
-        const list = JSON.parse(localStorage.getItem('prism_iq_registry') || '[]');
-        if(!body) return;
+        if (!body) return;
         
-        if (list.length === 0) {
-            body.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-600 italic text-xs">No inquiries registered yet.</td></tr>';
+        const list = (window.iqRegistry || []);
+        
+        const pendingList = list.filter(i => !i.confirmed);
+        if (pendingList.length === 0) {
+            body.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-slate-600 italic text-xs">No pending inquiries.</td></tr>';
             return;
         }
 
-        body.innerHTML = list.map(i => `
-            <tr class="hover:bg-slate-50/50">
-                <td class="p-5 font-black text-indigo-700 uppercase text-xs">${i.name}</td>
+        body.innerHTML = list.filter(i => !i.confirmed).map((i, idx) => {
+            return `
+            <tr class="hover:bg-slate-50/50" data-inquiry-id="${i.id || idx}">
+                <td class="p-5 font-black text-slate-500 text-xs hidden lg:table-cell">${i.date || formatDateDMY(new Date())}</td>
+                <td class="p-5 font-bold text-slate-900 text-xs">${i.name}</td>
                 <td class="p-5 font-bold text-slate-600 text-xs">${i.diagnosis}</td>
-                <td class="p-5 font-black text-slate-600 text-xs">${i.phone}</td>
-                <td class="p-5 text-center">
-                    <button onclick="sendIqFollowUp('${i.name}', '${i.phone}', '${i.diagnosis}')" class="bg-[#25D366] text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 mx-auto shadow-sm hover:scale-105 transition-all">
-                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Reminder
-                    </button>
+                <td class="p-5 font-bold text-slate-600 text-xs">${i.phone}</td>
+                <td class="p-5">
+                    <div class="flex items-center justify-center gap-2 flex-wrap">
+                        <button onclick="sendIqFollowUp('${i.name}', '${i.phone}', '${i.diagnosis}')" class="bg-[#25D366] text-white px-3 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 transition-all">
+                            <i data-lucide="message-circle" class="w-3 h-3"></i> Reminder
+                        </button>
+                        <button onclick="markInquiryConfirmed('${i.id}')" class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:bg-emerald-600 hover:text-white hover:border-emerald-600 hover:scale-105 transition-all">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> Confirm
+                        </button>
+                    </div>
                 </td>
             </tr>
-        `).join('');
+        `}).join('');
         if(window.lucide) lucide.createIcons();
     };
 
-    // 5. WhatsApp Action Logic
+    // 6. Mark as Confirmed (Local + Cloud)
+    window.markInquiryConfirmed = async function(inquiryId) {
+        if (!window.iqRegistry) return;
+        
+        // Find entry by ID or index
+        let entry = window.iqRegistry.find(i => {
+            return i.id === inquiryId || 
+                   i.id == inquiryId ||  // loose equality for string/number
+                   window.iqRegistry.indexOf(i) === inquiryId;
+        });
+
+        if (!entry) {
+            console.log('Entry not found. ID:', inquiryId, 'Registry:', window.iqRegistry);
+            showToast('Entry not found', 'error');
+            return;
+        }
+
+        // Mark as confirmed
+        entry.confirmed = true;
+        
+        // Save to localStorage immediately
+        window.saveInquiriesToStorage(window.iqRegistry);
+        
+        // Update UI instantly
+        renderIqTable();
+        showToast('Marked as confirmed', 'success');
+
+        // Sync to cloud in background
+        try {
+            await syncToBackend({
+                action: "markInquiryConfirmed",
+                rowIndex: entry.rowIndex || window.iqRegistry.indexOf(entry)
+            });
+            showToast('Synced to sheet', 'info');
+        } catch (e) {
+            showToast('Cloud sync pending', 'warning');
+        }
+    };
+
+    // 7. WhatsApp Action
     window.sendIqFollowUp = function(name, phone, diag) {
         const msg = encodeURIComponent(
             `*Hello ${name},*\n\n` +
             `This is a reminder from *Prism Physiotherapy & Rehabilitation Center* regarding your inquiry for _${diag}_.\n\n` +
             `We recommend a clinical assessment to start your recovery. Are you available for a consultation this week?\n\n` +
-            `📞 *Contact:* +91 97080 59081\n` +
-            `📍 *Location:* Prism Healthcare`
+            `📞 *Contact:* +91 97080 59081`
         );
         window.open(`https://wa.me/${getWhatsAppNumber(phone)}?text=${msg}`, '_blank');
     };
 
-    // 6. Sidebar Tab Switch Patch
+    // 8. Tab Switch Handler
     const oldSwitchTab = window.switchTab;
     window.switchTab = function(id, btn) {
         oldSwitchTab(id, btn);
+        
+        // Clear ALL active states from sidebar & mobile nav
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('sidebar-active'));
+        document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('mobile-nav-active'));
+        
+        // Apply active state to the clicked button
+        if (btn) btn.classList.add(btn.classList.contains('mobile-nav-btn') ? 'mobile-nav-active' : 'sidebar-active');
+        
         if(id === 'inquiry') {
             document.getElementById('tab-title').innerText = 'INQUIRIES';
+            // Load from storage and refresh display
+            window.iqRegistry = window.loadInquiriesFromStorage();
             renderIqTable();
         }
     };
+
+    // 9. Load inquiries on page init
+    window.addEventListener('load', function() {
+        window.iqRegistry = window.loadInquiriesFromStorage();
+        renderIqTable(); // ADD THIS LINE
+    });
+    
+    // Also load immediately on script parse (before window.load fires)
+    window.iqRegistry = window.loadInquiriesFromStorage();
+    if (document.getElementById('iq-table-body')) {
+        renderIqTable();
+    }
 })();
+
+// Mobile slide-up drawer controller for patient log calendar
+function toggleSessionDrawer(show) {
+    const container = document.getElementById('session-form-container');
+    const backdrop = document.getElementById('session-drawer-backdrop');
+    if (!container || !backdrop) return;
+
+    // Direct reset if user is on desktop mode (width >= 1024px)
+    if (window.innerWidth >= 1024) {
+        container.style.transform = '';
+        backdrop.classList.add('hidden');
+        backdrop.style.opacity = '0';
+        return;
+    }
+
+    if (show) {
+        backdrop.classList.remove('hidden');
+        // Small delay to let browser register the display change before animating transition
+        setTimeout(() => {
+            backdrop.style.opacity = '1';
+            container.style.transform = 'translateY(0)';
+        }, 20);
+    } else {
+        backdrop.style.opacity = '0';
+        container.style.transform = 'translateY(100%)';
+        // Hide overlay element fully after slide transition completes
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+        }, 300);
+    }
+}
+
+// Clean up transforms if user changes screen orientation (Portrait/Landscape)
+window.addEventListener('resize', () => {
+    const container = document.getElementById('session-form-container');
+    if (container) {
+        if (window.innerWidth >= 1024) {
+            container.style.transform = '';
+        } else if (document.getElementById('session-drawer-backdrop').classList.contains('hidden')) {
+            container.style.transform = 'translateY(100%)';
+        }
+    }
+});
     </script>
 </body>
 
