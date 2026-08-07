@@ -1,3 +1,4 @@
+
 <html lang="en">
 
 <head>
@@ -42,6 +43,11 @@
         }
 
         @media (max-width: 1024px) {
+            /* Disable parent section slide animation on mobile to prevent stacking context viewport clipping */
+            .animate-slide {
+                animation: none !important;
+            }
+
             #tab-inquiry th:nth-child(1),
             #tab-inquiry th:nth-child(5),
             #iq-table-body tr:not(.iq-mobile-action-row) td:nth-child(1),
@@ -1824,17 +1830,17 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                         </div>
                         
                         <!-- Backdrop overlay for mobile bottom sheet -->
-                        <div id="session-drawer-backdrop" onclick="toggleSessionDrawer(false)" class="fixed inset-0 bg-slate-900/40 z-[190] hidden lg:hidden max-lg:opacity-0 transition-opacity duration-300"></div>
+                        <div id="session-drawer-backdrop" onclick="toggleSessionDrawer(false)" class="fixed inset-0 bg-slate-900/40 z-[9990] hidden lg:hidden max-lg:opacity-0 transition-opacity duration-300"></div>
 
                         <!-- Calendar Logging Container with mobile drawer properties -->
                             <div id="session-form-container" class="glass-card p-6 lg:p-10 rounded-[2rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-0 h-fit border-white z-[200]
-                                max-lg:fixed max-lg:inset-0 max-lg:h-screen max-lg:max-h-screen max-lg:overflow-y-auto max-lg:rounded-none max-lg:border-none 
-                                max-lg:bg-white dark:max-lg:bg-slate-900 max-lg:p-4 max-lg:pb-16
+                                max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:h-fit max-lg:max-h-[96vh] max-lg:overflow-y-auto max-lg:rounded-t-[2rem] max-lg:border-t max-lg:border-slate-200/50 
+                                max-lg:bg-white dark:max-lg:bg-slate-900 max-lg:p-4 max-lg:pb-8 max-lg:z-[9999]
                                 max-lg:translate-y-full max-lg:transition-transform max-lg:duration-300 max-lg:ease-out">
                                 
                                 <!-- Mobile Drawer Header with Close Button -->
                                 <div class="flex lg:hidden justify-between items-center mb-5 pb-2 border-b border-slate-100 max-lg:mb-2 max-lg:pb-1">
-                                    <span class="text-[10px] font-black uppercase text-slate-500 max-lg:text-[9px]">Log Session & Calendar</span>
+                                    <span id="mobile-drawer-patient-name" class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Select Patient</span>
                                     <!-- Touch-friendly Close Button with visual feedback -->
                                     <button type="button" onclick="toggleSessionDrawer(false)" class="p-3 active:bg-slate-200 hover:bg-slate-100 rounded-full text-slate-500 flex items-center justify-center min-w-[44px] min-h-[44px] -mr-3" aria-label="Close drawer">
                                         <i data-lucide="x" class="w-6 h-6 pointer-events-none"></i>
@@ -2574,6 +2580,8 @@ setInterval(updateLiveClock, 1000);
     if (registryDateEl) registryDateEl.value = todayStr;
     lucide.createIcons();
     loadAdminData(false);
+    // Initialize the inactivity tracking timer immediately upon unlock
+    if (window.resetInactivityTimer) resetInactivityTimer();
 }
 
    // Reusable helper to format phone inputs to: "+91 [10 digits]"
@@ -4200,6 +4208,10 @@ function openMidPackage() {
     document.getElementById('active-patient-name').innerText = n;
     document.getElementById('base-rate-display').value = p.baseRate;
     document.getElementById('patient-workspace').classList.remove('hidden');
+    
+    // Update the mobile full-screen drawer header to show patient's name
+    const mobNameEl = document.getElementById('mobile-drawer-patient-name');
+    if (mobNameEl) mobNameEl.innerText = n;
 
     // UPDATED: Calculate using wallet helper
     const rem = getRemainingSessions(p);
@@ -6182,6 +6194,7 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
 function toggleSessionDrawer(show) {
     const container = document.getElementById('session-form-container');
     const backdrop = document.getElementById('session-drawer-backdrop');
+    const bottomNav = document.getElementById('mobile-bottom-nav');
     if (!container || !backdrop) return;
 
     // Direct reset if user is on desktop mode (width >= 1024px)
@@ -6189,11 +6202,13 @@ function toggleSessionDrawer(show) {
         container.style.transform = '';
         backdrop.classList.add('hidden');
         backdrop.style.opacity = '0';
+        if (bottomNav) bottomNav.classList.remove('hidden');
         return;
     }
 
     if (show) {
         backdrop.classList.remove('hidden');
+        if (bottomNav) bottomNav.classList.add('hidden'); // Hide bottom nav on mobile to prevent overlay clipping
         // Small delay to let browser register the display change before animating transition
         setTimeout(() => {
             backdrop.style.opacity = '1';
@@ -6205,6 +6220,7 @@ function toggleSessionDrawer(show) {
         // Hide overlay element fully after slide transition completes
         setTimeout(() => {
             backdrop.classList.add('hidden');
+            if (bottomNav) bottomNav.classList.remove('hidden'); // Restore bottom nav visibility
         }, 300);
     }
 }
@@ -6221,7 +6237,10 @@ window.addEventListener('resize', () => {
     }
 });
 
-// Controls mobile-only collapsible action sub-rows in Inquiry Registry
+// Tracks the active auto-hide timer for mobile inquiry action rows
+let iqActionsTimeout;
+
+// Controls mobile-only collapsible action sub-rows in Inquiry Registry (Autohides after 5 seconds)
 function toggleIqActionsMobile(idVal) {
     if (window.innerWidth >= 1024) return; // Ignore on desktop
 
@@ -6229,6 +6248,9 @@ function toggleIqActionsMobile(idVal) {
     if (!targetRow) return;
 
     const isCurrentlyHidden = targetRow.classList.contains('hidden');
+
+    // Clear any existing active auto-hide timer
+    clearTimeout(iqActionsTimeout);
 
     // Automatically hide all open mobile inquiry actions
     document.querySelectorAll('.iq-mobile-action-row').forEach(row => {
@@ -6238,8 +6260,42 @@ function toggleIqActionsMobile(idVal) {
     // Expand the selected row if it was closed
     if (isCurrentlyHidden) {
         targetRow.classList.remove('hidden');
+
+        // Automatically hide this row after 5 seconds of inactivity
+        iqActionsTimeout = setTimeout(() => {
+            targetRow.classList.add('hidden');
+        }, 5000);
     }
 }
+
+// ---------- 5-MINUTE AUTO-LOGOUT SYSTEM ----------
+let inactivityTimeout;
+const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+function resetInactivityTimer() {
+    try {
+        // Do not monitor inactivity if the dashboard is locked
+        if (localStorage.getItem('prism_unlocked') !== '1') return;
+    } catch (e) {
+        return;
+    }
+
+    clearTimeout(inactivityTimeout);
+    inactivityTimeout = setTimeout(() => {
+        showToast("Logged out due to 5 minutes of inactivity", "warning");
+        // Brief delay so the warning toast has time to render before page reload
+        setTimeout(logoutApp, 1000); 
+    }, INACTIVITY_LIMIT);
+}
+
+// Desktop & Mobile interaction events to monitor user activity
+const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+activityEvents.forEach(eventName => {
+    document.addEventListener(eventName, resetInactivityTimer, true);
+});
+
+// Initialize the timer loop (useful if the page is refreshed while already unlocked)
+resetInactivityTimer();
     </script>
 </body>
 
