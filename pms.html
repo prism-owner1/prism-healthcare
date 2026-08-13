@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Prism">
     <link rel="apple-touch-icon" href="prismapplogo.png">
-    <link rel="icon" href="Prism logo.jpeg">
+    <link rel="icon" href="prismapplogo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -6374,10 +6374,14 @@ function resetInactivityTimer() {
 }
 
 // Desktop & Mobile interaction events to monitor user activity
-const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'touchmove', 'click', 'visibilitychange'];
 activityEvents.forEach(eventName => {
     document.addEventListener(eventName, resetInactivityTimer, true);
 });
+
+// Also reset when the tab/app regains focus after being backgrounded
+window.addEventListener('focus', resetInactivityTimer);
+window.addEventListener('pageshow', resetInactivityTimer);
 
 // Initialize the timer loop (useful if the page is refreshed while already unlocked)
 resetInactivityTimer();
