@@ -1818,6 +1818,7 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     <div class="flex gap-2 flex-wrap items-center">
         <!-- Mobile Trigger Button to reopen logging workspace overlay -->
         <button onclick="toggleSessionDrawer(true)" class="lg:hidden bg-indigo-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase shadow-md flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Open Calendar</button>
+        <button onclick="sendTomorrowReminder()" class="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-amber-600 hover:text-white transition-all">📅 Remind Tomorrow</button>
         <button onclick="openTopupBalance()" class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-emerald-600 hover:text-white transition-all">+ Topup Balance</button>
         <button onclick="openMidPackage()" class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg text-[10px] font-black uppercase hover:bg-indigo-600 hover:text-white transition-all">+ Monthly Package</button>
         <div id="ws-rem-container">
@@ -3851,6 +3852,12 @@ Object.keys(patientLookup).forEach(name => {
 
     globalData.push(...newRows);
     processData();
+
+    // Send instant WhatsApp receipt if exactly one paid session was logged
+    if (newRows.length === 1 && newRows[0][15] !== 'Pending' && toNum(newRows[0][16]) > 0) {
+        sendQuickSessionReceipt(p, newRows[0]);
+    }
+
     selectedDates = [];
     document.getElementById('session-note').value = "";
     document.getElementById('session-amount-paid').value = "";
@@ -3884,6 +3891,22 @@ Object.keys(patientLookup).forEach(name => {
         }).catch(() => {});
     });
 }
+
+       function sendQuickSessionReceipt(p, row) {
+            const waNumber = getWhatsAppNumber(p.phone);
+            if (!waNumber) return;
+            const fee = toNum(row[9]);
+            const paid = toNum(row[16]);
+            const dateStr = formatDateDMY(row[8]);
+            const msg = encodeURIComponent(
+                `Hello ${selectedPatientName},\n\n` +
+                `Payment receipt for your session on *${dateStr}*:\n\n` +
+                `Amount Paid: ₹${paid.toLocaleString()}\n` +
+                `Payment Mode: ${row[15]}\n\n` +
+                `Thank you for your continued trust in Prism Physiotherapy & Rehabilitation Center. Wishing you a smooth recovery!`
+            );
+            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+        }
 
        function updateAdvanceHint() {
     const hint = document.getElementById('advance-remaining-hint');
@@ -4653,6 +4676,29 @@ function openMidPackage() {
                 return;
             }
             const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
+            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+        }
+
+        function sendTomorrowReminder() {
+            if (!selectedPatientName) return;
+            const p = patientLookup[selectedPatientName];
+            const waNumber = getWhatsAppNumber(p.phone);
+            if (!waNumber) {
+                showToast('Invalid phone number', 'warning');
+                return;
+            }
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowLabel = tomorrow.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short' });
+
+            const msg = encodeURIComponent(
+                `Hello ${selectedPatientName},\n\n` +
+                `This is a friendly reminder about your physiotherapy session scheduled for *tomorrow, ${tomorrowLabel}* at Prism Physiotherapy & Rehabilitation Center.\n\n` +
+                `Please arrive a few minutes early. See you then!\n\n` +
+                `Warm regards,\nPrism Physiotherapy`
+            );
+
+            showToast('Opening WhatsApp reminder...', 'success');
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
@@ -6162,6 +6208,9 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 <td class="p-5 font-bold text-slate-600 text-xs">${i.phone}</td>
                 <td class="p-5 hidden lg:table-cell">
                     <div class="flex items-center justify-center gap-2">
+                        <button onclick="event.stopPropagation(); convertInquiryToPatient(${idx})" class="bg-indigo-600 text-white px-3 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 transition-all">
+                            <i data-lucide="user-plus" class="w-3 h-3"></i> Enroll
+                        </button>
                         <button onclick="event.stopPropagation(); sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="bg-[#25D366] text-white px-3 py-2 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 transition-all">
                             <i data-lucide="message-circle" class="w-3 h-3"></i> Reminder
                         </button>
@@ -6176,6 +6225,9 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 <td colspan="100" class="p-3">
                     <div class="flex items-center justify-end gap-3 px-2 py-1">
                         <span class="text-[9px] font-black text-indigo-500 uppercase tracking-widest mr-auto">Action:</span>
+                        <button onclick="event.stopPropagation(); convertInquiryToPatient(${idx})" class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Enroll
+                        </button>
                         <button onclick="event.stopPropagation(); sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="bg-[#25D366] text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase flex items-center gap-1.5 shadow-sm active:scale-95 transition-all">
                             <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> Reminder
                         </button>
@@ -6229,6 +6281,36 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
         } catch (e) {
             showToast('Cloud sync pending', 'warning');
         }
+    };
+
+// NEW: Convert Inquiry to Enrolled Patient
+    window.convertInquiryToPatient = function(idx) {
+        const list = (window.iqRegistry || []).filter(i => !i.confirmed);
+        const inq = list[idx];
+        if (!inq) {
+            showToast('Inquiry not found', 'error');
+            return;
+        }
+        // Uses a more robust selector and triggers 'input' events to bypass formatting blocks
+switchTab('enroll', document.querySelector('button[onclick*="enroll"]'));
+setTimeout(() => {
+    document.getElementById('en-name').value = inq.name || '';
+    document.getElementById('en-age').value = inq.age || '';
+    document.getElementById('en-gender').value = inq.gender || 'Male';
+    document.getElementById('en-condition').value = inq.diagnosis || '';
+    
+    // Fill phone and trigger event so the +91 formatter accepts the value
+    const ph = document.getElementById('en-phone');
+    ph.value = inq.phone || '+91';
+    ph.dispatchEvent(new Event('input')); 
+    
+    document.getElementById('en-instructions').value = inq.note || '';
+    
+    // Refresh Clinical ID based on the newly loaded branch/patient
+    if(typeof generateClinicalID === 'function') generateClinicalID();
+    
+    showToast(`Loaded ${inq.name}'s inquiry into Enroll form`, 'success');
+}, 300);
     };
 
     // 7. WhatsApp Action
