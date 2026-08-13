@@ -2450,6 +2450,40 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
         <!-- MARK AS PAID MODAL -->
 
+        <!-- MARK AS PAID MODAL -->
+        <div id="markpaid-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-6">
+            <div class="bg-white rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xl font-black">Clear Outstanding Due</h3>
+                    <button onclick="closeMarkPaidModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <p id="mp-patient-name" class="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1"></p>
+                <p class="text-[11px] text-slate-600 font-semibold mb-6">
+                    Total Due: <span id="mp-total-due" class="font-black text-rose-600"></span>
+                    &nbsp;•&nbsp;
+                    <span id="mp-session-count"></span> session(s) pending
+                </p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Received (₹)</label>
+                        <input type="number" id="mp-amount" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none border">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
+                        <select id="mp-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none border">
+                            <option value="Cash">Cash</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="closeMarkPaidModal()" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                        <button onclick="confirmMarkPaid()" class="flex-[2] py-4 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all">Confirm Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-3 items-end pointer-events-none"></div>
 
     <!-- MOBILE BOTTOM NAVIGATION (Visible only on Mobile - Horizontally Scrollable on Narrow Screens) -->
