@@ -3900,16 +3900,22 @@ Object.keys(patientLookup).forEach(name => {
     
     hint.classList.remove('hidden');
     if (p.purchased > 0 && remaining > 0) {
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs max-lg:text-[10px]">Wallet: ₹${wallet.toLocaleString()}</span>`;
+        let extra = '';
+        if (wallet < 0) {
+            extra = `<span class="block font-black mt-1 text-[10px] max-lg:text-[9px] text-rose-100 bg-rose-600/90 rounded-lg px-2 py-1">Due: ₹${Math.abs(wallet).toLocaleString()}</span>`;
+        }
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs max-lg:text-[10px]">Wallet: ₹${wallet.toLocaleString()}</span>${extra}`;
         hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     } else if (wallet > 0) {
         hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-emerald-700 mt-1 text-xs max-lg:text-[10px]">Wallet Balance: ₹${wallet.toLocaleString()}</span>`;
         hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-emerald-50 border border-emerald-100 text-slate-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
+    } else if (wallet < 0) {
+        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-rose-700 mt-1 text-xs max-lg:text-[10px]">Due: ₹${Math.abs(wallet).toLocaleString()}</span>`;
+        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     } else {
         hint.innerHTML = `<span class="block text-slate-400 text-[8px]">Regular Patient</span><span class="block text-slate-500">No active wallet balance</span>`;
         hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
     }
-}
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
