@@ -118,22 +118,35 @@
 
         .calendar-day-logged {
             border: 2px solid #10b981 !important;
-            color: #047857 !important;
-            background-color: #ecfdf5 !important;
+            color: #059669 !important;
             position: relative;
             font-weight: 800 !important;
         }
-
         .calendar-day-logged::after {
             content: '';
             position: absolute;
-            bottom: 4px;
+            bottom: 3px;
             width: 4px;
             height: 4px;
             background: #10b981;
             border-radius: 50%;
         }
-
+        .calendar-day-multi {
+            border: 2.5px solid #047857 !important;
+            color: #ffffff !important;
+            background-color: #065f46 !important;
+            position: relative;
+            font-weight: 900 !important;
+        }
+        .calendar-day-multi::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 5px;
+            height: 5px;
+            background: #6ee7b7;
+            border-radius: 50%;
+        }
         .calendar-day-due {
             border: 2px solid #f87171 !important;
             color: #b91c1c !important;
@@ -150,6 +163,12 @@
             height: 4px;
             background: #f87171;
             border-radius: 50%;
+        }
+        .calendar-day-enrolled {
+            background: #e0e7ff !important;
+            color: #4338ca !important;
+            border: 2px solid #4f46e5 !important;
+            font-weight: 900 !important;
         }
 
         .calendar-day-disabled {
@@ -1389,6 +1408,134 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     width: 100%;
     overflow-x: hidden;
 }
+
+/* ===== WA POPUP STYLES ===== */
+#wa-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+#wa-popup-overlay.show { display: flex; }
+.wa-popup-card {
+    background: #ffffff;
+    border-radius: 1.4rem;
+    padding: 1.6rem 1.6rem 1.3rem;
+    max-width: 340px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    animation: waPop 0.28s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes waPop {
+    from { opacity:0; transform:scale(0.93) translateY(12px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.wa-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+}
+.wa-popup-title {
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.01em;
+}
+.wa-popup-meta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 0.25rem;
+    line-height: 1.5;
+}
+.wa-popup-meta span { color: #0f172a; font-weight: 800; }
+.wa-popup-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0 0 1.1rem;
+}
+.wa-popup-textarea {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid #e2e8f0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #0f172a;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: none;
+}
+.wa-popup-textarea.visible { display: block; }
+.wa-popup-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 0.6rem;
+}
+.wa-btn-dismiss {
+    padding: 0.85rem;
+    border-radius: 0.85rem;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 900;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.15s;
+}
+.wa-btn-dismiss:hover { background: #f1f5f9; border-color: #cbd5e1; }
+.wa-btn-send {
+    padding: 0.85rem;
+    border-radius: 0.85rem;
+    border: none;
+    background: #25D366;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 900;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+    box-shadow: 0 6px 18px -4px rgba(37,211,102,0.45);
+}
+.wa-btn-send:hover { background: #1ebe5d; transform: translateY(-1px); }
+.wa-edit-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #6366f1;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
     </style>
 </head>
 
@@ -1500,13 +1647,17 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     <img src="prismapplogo.png" class="h-11 w-11 object-contain rounded-xl block lg:hidden shadow-sm border border-slate-100 dark:border-slate-800" alt="Logo">
                     <div class="flex flex-col justify-center">
                         <!-- Micro-Label with Glowing Live Indicator -->
-                        <div class="flex items-center gap-1.5 mb-1">
-                            <span class="relative flex h-1.5 w-1.5">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-600 dark:bg-indigo-400"></span>
-                            </span>
-                            <span class="text-[9px] font-black tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">ClinioSphere</span>
-                        </div>
+                        
+<div class="flex items-center gap-1.5 mb-1">
+    <span class="relative flex h-1.5 w-1.5">
+        <!-- Added ID: status-bulb-ping -->
+        <span id="status-bulb-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+        <!-- Added ID: status-bulb-inner -->
+        <span id="status-bulb-inner" class="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-600 dark:bg-indigo-400"></span>
+    </span>
+    <span class="text-[9px] font-black tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">ClinioSphere</span>
+</div>
+
                         <!-- Clean Modernized Title -->
                         <h1 id="tab-title" class="text-lg lg:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase leading-none">Dashboard</h1>
                     </div>
@@ -1801,12 +1952,17 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             <!-- LOG SESSIONS -->
             <section id="tab-log-session" class="section-hidden animate-slide">
                 <div class="max-w-6xl mx-auto space-y-6">
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 relative">
-                        <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search Name or ID..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner">
-                        <div id="search-results" class="hidden absolute top-24 left-6 right-6 bg-white border rounded-2xl shadow-2xl max-h-56 overflow-y-auto p-2 z-[100]"></div>
+                    <!-- Search Bar (Reference Style) -->
+                    <!-- Master Search Section -->
+                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 relative z-[210]">
+                        <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
+                        <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search Name, ID or Phone..." class="flex-1 p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-lg shadow-inner">
+                        <!-- Dropdown Results -->
+                        <div id="search-results" class="hidden absolute top-24 left-6 right-6 bg-white border border-slate-100 rounded-[2rem] shadow-2xl max-h-80 overflow-y-auto p-3 z-[300]"></div>
                     </div>
 
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl">
+                    <!-- Active Cases List Wrapper -->
+                    <div id="active-cases-container" class="glass-card p-6 rounded-[2.5rem] shadow-xl">
                         <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest mb-4">Active Cases — Tap "Log Session" To Add A Visit</h4>
                         <div id="active-cases-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1"></div>
                     </div>
@@ -3314,21 +3470,20 @@ function getPackageBreakdown(p) {
     const consumingLogs = p.logs.filter(l => {
         const type = String(l[7] || '').trim().toLowerCase();
         const mode = String(l[15] || '').trim();
+        const fee = toNum(l[9]);
         
-        // If it is the enrollment row, only count it as a consumed session 
-        // if an advance payment was recorded (acting as Session #1)
+        // Count enrollment as Session #1 if any fee was set
         if (type === 'enrollment') {
-            const advance = toNum(l[11]);
-            const fee = toNum(l[9]);
-            return advance > 0 && fee > 0;
+            return fee > 0;
         }
 
         return type !== 'package added' &&
                type !== 'case closed' && 
                type !== 'case restarted' && 
                type !== 'bill issued' &&
-               (mode === 'Advance' || toNum(l[9]) > 0);
+               (mode === 'Advance' || fee > 0);
     }).slice();
+
     consumingLogs.sort((a, b) => new Date(a[0]) - new Date(b[0]));
 
     consumingLogs.forEach(l => {
@@ -3741,32 +3896,7 @@ Object.keys(patientLookup).forEach(name => {
             });
         }
 
-        async function restartPatientCase(name, event) {
-            const btn = event.currentTarget;
-            armConfirm(btn, 'Confirm Restart?', async () => {
-                const p = patientLookup[name];
-                const dateStr = getLocalISOString();
-                const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
-                globalData.push(row);
-                p.closed = false;
-                p.closedDate = null;
-                processData();
-                showToast(`${name}'s case restarted`, 'success');
-                syncToBackend({
-                    action: "logAppointment",
-                    id: p.id,
-                    name: name,
-                    phone: p.phone,
-                    condition: p.diag,
-                    fee: 0,
-                    purchased: 0,
-                    advance: 0,
-                    type: "Case Restarted",
-                    date: dateStr
-                }).catch(() => {});
-            });
-        }
-
+        
         function toggleRecordSort() {
             recordSortLatest = !recordSortLatest;
             const btnSpan = document.querySelector('#record-sort-btn span');
@@ -3892,20 +4022,8 @@ Object.keys(patientLookup).forEach(name => {
     });
 }
 
-       function sendQuickSessionReceipt(p, row) {
-            const waNumber = getWhatsAppNumber(p.phone);
-            if (!waNumber) return;
-            const fee = toNum(row[9]);
-            const paid = toNum(row[16]);
-            const dateStr = formatDateDMY(row[8]);
-            const msg = encodeURIComponent(
-                `Hello ${selectedPatientName},\n\n` +
-                `Payment receipt for your session on *${dateStr}*:\n\n` +
-                `Amount Paid: ₹${paid.toLocaleString()}\n` +
-                `Payment Mode: ${row[15]}\n\n` +
-                `Thank you for your continued trust in Prism Physiotherapy & Rehabilitation Center. Wishing you a smooth recovery!`
-            );
-            window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
+              function sendQuickSessionReceipt(p, row) {
+            // Popup handled by WA popup system below
         }
 
        function updateAdvanceHint() {
@@ -3957,28 +4075,33 @@ async function saveEnrollment() {
     const dateStr = document.getElementById('en-reg-date').value || getLocalISOString();
     const address = document.getElementById('en-address').value.trim();
     
-    // NEW: Get Payment Mode
     const paymentMode = document.getElementById('en-payment-mode').value;
     const advanceAmount = Number(document.getElementById('en-advance').value) || 0;
+    const enrolledPhone = document.getElementById('en-phone').value.trim();
+    const enrolledDiag = document.getElementById('en-condition').value.trim();
+    const enrolledId = document.getElementById('en-id').value;
+    const enrolledSessions = Number(document.getElementById('en-sessions').value) || 0;
+    const enrolledDiscount = Number(document.getElementById('en-discount').value) || 0;
+    const totalPackageValue = ((rate * enrolledSessions) - (rate * enrolledSessions * (enrolledDiscount / 100)));
 
     const row = [
         new Date().toISOString(),
-        document.getElementById('en-id').value,
+        enrolledId,
         name,
-        document.getElementById('en-phone').value,
+        enrolledPhone,
         document.getElementById('en-age').value,
         document.getElementById('en-gender').value,
-        document.getElementById('en-condition').value,
+        enrolledDiag,
         "Enrollment",
         dateStr,
         rate,
-        Number(document.getElementById('en-sessions').value) || 0,
+        enrolledSessions,
         advanceAmount,
-        Number(document.getElementById('en-discount').value) || 0,
-        "",
+        enrolledDiscount,
+        getLocalISOString(), // Record payment date at enrollment
         address,
-        paymentMode, // [15] Payment Mode
-        advanceAmount // [16] Amount Paid (the advance itself)
+        paymentMode,
+        advanceAmount
     ];
 
     globalData.push(row);
@@ -3986,6 +4109,15 @@ async function saveEnrollment() {
     saveEnrollmentBodyChartAsSoap(name);
     resetEnrollForm();
     showToast(`${name} enrolled successfully`, 'success');
+
+    // Show enrollment success popup
+    showEnrollmentSuccessPopup({
+        name: name,
+        id: enrolledId,
+        phone: enrolledPhone,
+        diag: enrolledDiag,
+        amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
+    });
 
     syncToBackend({
         action: "logAppointment",
@@ -4002,11 +4134,160 @@ async function saveEnrollment() {
         address: row[14],
         type: "Enrollment",
         date: row[8],
-        paymentMode: paymentMode, // NEW
-        amountPaid: advanceAmount  // NEW
+        paymentMode: paymentMode,
+        amountPaid: advanceAmount
     }).catch(() => {});
 }
 
+function showEnrollmentSuccessPopup(patient) {
+    // Remove any existing popup first
+    const existing = document.getElementById('enroll-success-popup-overlay');
+    if (existing) existing.remove();
+
+    const last4Digits = String(patient.id).slice(-4);
+    const waNumber = getWhatsAppNumber(patient.phone);
+
+    const welcomeMsg = encodeURIComponent(
+        `🌟 *Welcome to Prism Physiotherapy & Rehabilitation Center!* 🌟\n\n` +
+        `Hello ${patient.name},\n\n` +
+        `Your personal care account is now active.\n\n` +
+        `We're delighted to support your recovery journey. At Prism Physiotherapy, your dedicated patient account keeps your treatment details, appointments, and rehabilitation progress organized and accessible, all in one place.\n\n` +
+        `📲 *In your portal, you can:*\n` +
+        `✅ Track all your session logs\n` +
+        `✅ Access your Home Exercise Plan (HEP)\n` +
+        `✅ Download your receipts and bills anytime\n\n` +
+        `🔗 *Access Portal Here:* https://prismhealthcare.in/Patient%20Login.html\n\n` +
+        `🔐 *Your Login Details:*\n` +
+        `👤 *User ID:* ${patient.name}\n` +
+        `🔑 *Verification ID:* ${last4Digits}\n\n` +
+        `Please keep your verification ID confidential and do not share it with others.\n\n` +
+        `Warm regards,\n` +
+        `*Team Prism Physiotherapy*`
+    );
+
+    const overlay = document.createElement('div');
+    overlay.id = 'enroll-success-popup-overlay';
+    overlay.style.cssText = `
+        position: fixed; inset: 0; background: rgba(15,23,42,0.6);
+        z-index: 9998; display: flex; align-items: center;
+        justify-content: center; padding: 1.5rem;
+        backdrop-filter: blur(4px);
+    `;
+
+    overlay.innerHTML = `
+        <div style="
+            background: #ffffff; border-radius: 1.75rem; padding: 2.25rem 2rem 2rem;
+            max-width: 400px; width: 100%;
+            box-shadow: 0 30px 70px -10px rgba(79,70,229,0.22), 0 0 0 1px rgba(255,255,255,0.6) inset;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            animation: enrollPopIn 0.35s cubic-bezier(0.16,1,0.3,1) both;
+        ">
+            <style>
+                @keyframes enrollPopIn {
+                    from { opacity:0; transform: scale(0.92) translateY(16px); }
+                    to   { opacity:1; transform: scale(1) translateY(0); }
+                }
+            </style>
+
+            <!-- Success Icon -->
+            <div style="display:flex; justify-content:center; margin-bottom:1.25rem;">
+                <div style="
+                    width: 60px; height: 60px; border-radius: 50%;
+                    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+                    display: flex; align-items: center; justify-content: center;
+                    box-shadow: 0 8px 24px -6px rgba(16,185,129,0.35);
+                ">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h3 style="
+                text-align:center; font-size: 1.15rem; font-weight: 900;
+                color: #0f172a; margin: 0 0 0.25rem; letter-spacing: -0.02em;
+            ">Patient Enrolled Successfully!</h3>
+            <p style="
+                text-align:center; font-size: 0.7rem; font-weight: 800;
+                color: #10b981; text-transform: uppercase; letter-spacing: 1px;
+                margin: 0 0 1.5rem;
+            ">Registration Complete</p>
+
+            <!-- Patient Details -->
+            <div style="
+                background: #f8fafc; border-radius: 1rem; padding: 1rem 1.1rem;
+                margin-bottom: 1.5rem; border: 1px solid #e2e8f0;
+            ">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
+                    <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.6px;">Patient Name</span>
+                    <span style="font-size:0.8rem; font-weight:900; color:#0f172a;">${patient.name}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
+                    <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.6px;">Patient ID</span>
+                    <span style="font-size:0.8rem; font-weight:900; color:#4f46e5;">${patient.id}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
+                    <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.6px;">Diagnosis</span>
+                    <span style="font-size:0.75rem; font-weight:700; color:#475569; max-width:200px; text-align:right;">${patient.diag || '—'}</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.55rem; border-top:1px solid #e2e8f0; margin-top:0.1rem;">
+                    <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.6px;">Amount</span>
+                    <span style="font-size:1rem; font-weight:900; color:#059669;">₹${Number(patient.amount || 0).toLocaleString()}</span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <button
+                onclick="
+                    if('${waNumber}') {
+                        window.open('https://wa.me/${waNumber}?text=${welcomeMsg}', '_blank');
+                    } else {
+                        showToast('Invalid phone number', 'warning');
+                    }
+                "
+                style="
+                    width: 100%; padding: 0.95rem; border-radius: 0.95rem; border: none;
+                    background: #25D366; color: white; font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-weight: 900; font-size: 0.72rem; text-transform: uppercase;
+                    letter-spacing: 1px; cursor: pointer; margin-bottom: 0.65rem;
+                    display: flex; align-items: center; justify-content: center; gap: 8px;
+                    box-shadow: 0 8px 22px -6px rgba(37,211,102,0.45);
+                    transition: transform 0.15s, opacity 0.15s;
+                "
+                onmouseover="this.style.opacity='0.9'; this.style.transform='translateY(-1px)';"
+                onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)';"
+            >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                Send Welcome Message on WhatsApp
+            </button>
+
+            <button
+                onclick="document.getElementById('enroll-success-popup-overlay').remove();"
+                style="
+                    width: 100%; padding: 0.75rem; border-radius: 0.85rem;
+                    border: 1.5px solid #e2e8f0; background: #f8fafc;
+                    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;
+                    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.8px;
+                    color: #64748b; cursor: pointer; transition: background 0.15s;
+                "
+                onmouseover="this.style.background='#f1f5f9';"
+                onmouseout="this.style.background='#f8fafc';"
+            >
+                Close
+            </button>
+        </div>
+    `;
+
+    // Close on backdrop click
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.remove();
+    });
+
+    document.body.appendChild(overlay);
+}
         function resetEnrollForm() {
             document.getElementById('en-name').value = "";
             document.getElementById('en-age').value = "";
@@ -4254,17 +4535,73 @@ function openMidPackage() {
         function searchPatient() {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(() => {
-                const val = document.getElementById('patient-search-input').value.toUpperCase(),
-                    res = document.getElementById('search-results');
+                const val = document.getElementById('patient-search-input').value.toUpperCase().trim();
+                const res = document.getElementById('search-results');
+                const activeContainer = document.getElementById('active-cases-container');
+                
                 if (!val) {
                     res.classList.add('hidden');
+                    if (activeContainer) activeContainer.style.display = 'block';
                     return;
                 }
+
+                if (activeContainer) activeContainer.style.display = 'none';
+
+                // Normalize search values for robust matching
+                const searchValClean = val.replace(/[^A-Z0-9]/g, ''); // Alphanumeric only
+                const searchValDigits = val.replace(/\D/g, '');      // Digits only
+
                 const matches = Object.keys(patientLookup)
-                    .filter(n => n.toUpperCase().includes(val) || patientLookup[n].id.toUpperCase().includes(val))
-                    .slice(0, 8);
-                res.innerHTML = matches.map(n => `<div onclick="selectPatient('${n}')" class="p-4 hover:bg-slate-50 cursor-pointer border-b last:border-none font-bold">${n} <span class="text-indigo-500 text-[10px] ml-2">(${patientLookup[n].id})</span></div>`).join('');
+                    .filter(name => {
+                        const p = patientLookup[name];
+                        if (!p) return false;
+
+                        const pName = name.toUpperCase();
+                        const pId = String(p.id || '').toUpperCase();
+                        const pIdClean = pId.replace(/[^A-Z0-9]/g, '');
+                        const pPhoneClean = String(p.phone || '').replace(/\D/g, '');
+
+                        // Match Name, strict ID, normalized ID (PT-1025 match 1025), or Phone digits
+                        return pName.includes(val) || 
+                               pId.includes(val) || 
+                               (searchValClean !== '' && pIdClean.includes(searchValClean)) ||
+                               (searchValDigits !== '' && pPhoneClean.includes(searchValDigits));
+                    })
+                    .slice(0, 15);
+
+                if (matches.length > 0) {
+                    res.innerHTML = matches.map(name => {
+                        const p = patientLookup[name];
+                        const isClosed = p.closed;
+                        
+                        return `
+                        <div onclick="selectPatient('${name.replace(/'/g, "\\'")}')" class="group flex items-center justify-between p-4 hover:bg-indigo-50 rounded-2xl cursor-pointer border-b border-slate-50 last:border-none transition-all">
+                            <div class="flex flex-col">
+                                <span class="font-black text-slate-800 uppercase text-sm">${name}</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-indigo-500 text-[10px] font-bold">${p.id}</span>
+                                    <span class="text-slate-400 text-[10px] truncate max-w-[150px]">• ${p.diag || 'Consultation'}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                ${isClosed ? 
+                                    '<div class="flex flex-col items-end gap-1"><span class="bg-rose-100 text-rose-600 text-[8px] font-black px-2 py-0.5 rounded uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>' : 
+                                    '<span class="bg-emerald-100 text-emerald-600 text-[8px] font-black px-2 py-1 rounded uppercase">Active Case</span>'
+                                }
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all"></i>
+                            </div>
+                        </div>`;
+                    }).join('');
+                } else {
+                    res.innerHTML = `
+                        <div class="p-10 text-center">
+                            <p class="text-slate-400 text-xs font-bold italic">No patient records found matching "${val}"</p>
+                            <p class="text-[9px] text-slate-300 uppercase mt-2">Check spelling or try searching by Phone Number</p>
+                        </div>`;
+                }
+                
                 res.classList.remove('hidden');
+                if (window.lucide) lucide.createIcons();
             }, 150);
         }
 
@@ -4321,7 +4658,17 @@ function openMidPackage() {
             grid.innerHTML = '';
             if (!selectedPatientName) return;
             const p = patientLookup[selectedPatientName];
-            const logDates = new Set(p.logs.map(l => l[8]));
+            
+            // Identify Enrollment Date
+            const enrollmentDate = p.logs.find(l => String(l[7]).toLowerCase() === 'enrollment')?.[8];
+            
+            // Other session dates
+            // Build a count map for multi-session days
+            const logDateCounts = {};
+            p.logs.filter(l => String(l[7]).toLowerCase() !== 'enrollment').forEach(l => {
+                logDateCounts[l[8]] = (logDateCounts[l[8]] || 0) + 1;
+            });
+            const logDates = new Set(Object.keys(logDateCounts));
 
             const dueDates = new Set(
                 p.logs.filter(l => {
@@ -4348,20 +4695,32 @@ function openMidPackage() {
                     dateObj = new Date(yr, mt, d),
                     isFuture = dateObj > today,
                     sel = selectedDates.includes(ds),
+                    isEnrollDay = (ds === enrollmentDate),
                     isLogged = logDates.has(ds),
                     isDue = dueDates.has(ds);
                 const btn = document.createElement('div');
                 let dayClass = `h-10 max-lg:h-7 flex items-center justify-center rounded-xl max-lg:rounded-lg border font-bold text-[10px] ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
                 if (sel) dayClass += 'calendar-day-selected ';
+                else if (isEnrollDay) dayClass += 'calendar-day-enrolled ';
                 else if (isDue) dayClass += 'calendar-day-due ';
-                else if (isLogged) dayClass += 'calendar-day-logged bg-emerald-50/50 ';
+                else if (isLogged) dayClass += (logDateCounts[ds] > 1 ? 'calendar-day-multi ' : 'calendar-day-logged bg-emerald-50/50 ');
                 else if (!isFuture) dayClass += 'bg-white border-slate-100 hover:border-indigo-300 ';
                 btn.className = dayClass;
                 btn.innerText = d;
                 if (!isFuture) btn.onclick = () => {
-                    if (selectedDates.includes(ds)) selectedDates = selectedDates.filter(x => x !== ds);
-                    else selectedDates.push(ds);
-                    renderCalendar();
+                    if (selectedDates.includes(ds)) {
+                        selectedDates = selectedDates.filter(x => x !== ds);
+                        renderCalendar();
+                    } else if (isLogged) {
+                        // Already has a session — show confirmation popup
+                        showSessionConfirmPopup(ds, () => {
+                            selectedDates.push(ds);
+                            renderCalendar();
+                        });
+                    } else {
+                        selectedDates.push(ds);
+                        renderCalendar();
+                    }
                 };
                 grid.appendChild(btn);
             }
@@ -4474,19 +4833,39 @@ function openMidPackage() {
         function viewPatientDetail(name) {
     const p = patientLookup[name];
     if (!p) return;
-    const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    // Calculate total fees
+    const totalFees = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
     
-    // UPDATED: Calculate using wallet helper
+    // Find the most recent actual payment (where Amount Paid > 0)
+    // We use row[0] because it is the immutable system timestamp of the transaction
+    const paymentLogs = p.logs.filter(l => toNum(l[16]) > 0);
+    paymentLogs.sort((a, b) => new Date(b[0]) - new Date(a[0]));
+    const lastPayEntry = paymentLogs[0];
+    
+    let lastPayDisplay = "No payments yet";
+    if (lastPayEntry) {
+        const lastAmount = toNum(lastPayEntry[16]);
+        const lastDate = formatDateDMY(lastPayEntry[0]); // Using system timestamp date
+        lastPayDisplay = `Last: ₹${lastAmount.toLocaleString()} | ${lastDate}`;
+    }
+
     const remaining = getRemainingSessions(p);
     const consumed = p.logs.filter(l => {
         const t = String(l[7] || '').trim().toLowerCase();
-        return t !== 'enrollment' && t !== 'package added' && t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+        const fee = toNum(l[9]);
+        if (t === 'enrollment') return fee > 0;
+        return t !== 'package added' && t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
     }).length;
 
     document.getElementById('pd-name').innerText = name;
     document.getElementById('pd-id-badge').innerText = p.id;
     document.getElementById('pd-sessions').innerText = consumed;
-    document.getElementById('pd-payment').innerText = '₹' + totalAmount.toLocaleString();
+    
+    // Update the Total Paid card to show both Total and the Last Payment Date
+    document.getElementById('pd-payment').innerHTML = `
+        <span class="block">₹${totalFees.toLocaleString()}</span>
+        <span class="block text-[10px] text-emerald-500 mt-1 font-black">${lastPayDisplay}</span>
+    `;
 
     const dueCard = document.getElementById('pd-due-card');
     if (p.outstandingDue > 0) {
@@ -5304,9 +5683,8 @@ function confirmMarkPaid() {
         const newPaidTotal = alreadyPaid + payThis;
 
         log[16] = newPaidTotal;
-        // Only flip mode to the new payment mode if fully cleared;
-        // otherwise keep it "Pending" so the remaining balance still shows as due
         log[15] = (newPaidTotal >= fee) ? mode : 'Pending';
+        log[13] = getLocalISOString(); // Store the actual date the due was cleared
 
         remainingAmount -= payThis;
 
@@ -5366,9 +5744,12 @@ function confirmMarkPaid() {
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-}).length;
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    const fee = toNum(l[9]);
+                    if (t === 'enrollment') return fee > 0;
+                    return t !== 'package added' && t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+                }).length;
+
                 rows.push([p.id, name, p.age, p.gender, p.phone, p.diag, p.closed ? 'Closed' : 'Active', p.purchased, consumed, p.outstandingDue]);
             });
             downloadCSV(`Prism_Patient_Records_${getLocalISOString()}.csv`, rows);
@@ -5381,9 +5762,12 @@ function confirmMarkPaid() {
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
-}).length;
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    const fee = toNum(l[9]);
+                    if (t === 'enrollment') return fee > 0;
+                    return t !== 'package added' && t !== 'case closed' && t !== 'case restarted' && t !== 'bill issued';
+                }).length;
+
                 const total = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
                 rows.push([name, p.id, consumed, p.purchased, total, p.outstandingDue]);
             });
@@ -5487,19 +5871,38 @@ function confirmMarkPaid() {
         }
 
         function updateConnectionStatus() {
-            const dot = document.getElementById('connection-dot');
-            const text = document.getElementById('connection-text');
-            if (!dot || !text) return;
-            if (navigator.onLine) {
-                dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
-                text.className = 'text-emerald-600';
-                text.innerText = 'Online';
-            } else {
-                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
-                text.className = 'text-rose-600';
-                text.innerText = 'Offline';
-            }
+    const dot = document.getElementById('connection-dot');
+    const text = document.getElementById('connection-text');
+    
+    // Target the new mobile bulb IDs
+    const bulbPing = document.getElementById('status-bulb-ping');
+    const bulbInner = document.getElementById('status-bulb-inner');
+
+    if (navigator.onLine) {
+        // Desktop indicator (Green)
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+        if (text) {
+            text.className = 'text-emerald-600';
+            text.innerText = 'Online';
         }
+
+        // Mobile Bulb indicator (Green)
+        if (bulbPing) bulbPing.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75';
+        if (bulbInner) bulbInner.className = 'relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-600';
+        
+    } else {
+        // Desktop indicator (Red)
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+        if (text) {
+            text.className = 'text-rose-600';
+            text.innerText = 'Offline';
+        }
+
+        // Mobile Bulb indicator (Red)
+        if (bulbPing) bulbPing.className = 'animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75';
+        if (bulbInner) bulbInner.className = 'relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-600';
+    }
+}
         window.addEventListener('online', updateConnectionStatus);
         window.addEventListener('offline', updateConnectionStatus);
         document.addEventListener('DOMContentLoaded', updateConnectionStatus);
@@ -5524,63 +5927,145 @@ function confirmMarkPaid() {
         });
 
         // ---------- AUTO-CLOSE INACTIVE CASES (7+ DAYS NO SESSION) ----------
-        function checkAutoCloseInactiveCases() {
-            const todayStr = getLocalISOString();
+// Stores reactivation timestamps in memory: { patientName: epochMs }
+const reactivationGraceMap = {};
+const REACTIVATION_GRACE_MS = 60 * 60 * 1000; // exactly 1 hour
 
-            function daysBetween(dateStr) {
-                if (!dateStr) return Infinity;
-                const [y, m, d] = String(dateStr).split('-').map(Number);
-                const dUTC = Date.UTC(y, m - 1, d);
-                const [ty, tm, td] = todayStr.split('-').map(Number);
-                const tUTC = Date.UTC(ty, tm - 1, td);
-                return Math.floor((tUTC - dUTC) / 86400000);
-            }
+async function restartPatientCase(name, event) {
+    const btn = event.currentTarget;
+    armConfirm(btn, 'Confirm Restart?', async () => {
+        const p = patientLookup[name];
+        const dateStr = getLocalISOString();
+        const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
+        globalData.push(row);
+        p.closed = false;
+        p.closedDate = null;
 
-            let autoClosedAny = false;
+        // Save exact reactivation timestamp — this is the grace period anchor
+        const reactivatedAt = Date.now();
+        reactivationGraceMap[name] = reactivatedAt;
 
-            Object.keys(patientLookup).forEach(name => {
-                const p = patientLookup[name];
-                if (p.closed) return;
+        processData();
+        showToast(`${name}'s case restarted — 1-hour grace period active`, 'success');
 
-                // Only count actual sessions (ignore enrollment/admin rows)
-const sessionLogs = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(t);
-});
+        // Schedule auto-close exactly 1 hour later if no session is logged
+        setTimeout(() => {
+            // Only close if: (a) still in the grace map for THIS reactivation, (b) still open
+            if (reactivationGraceMap[name] !== reactivatedAt) return; // a session was logged — grace cancelled
+            const pCurrent = patientLookup[name];
+            if (!pCurrent || pCurrent.closed) return;
 
-                let lastDate;
-                if (sessionLogs.length) {
-                    lastDate = sessionLogs.reduce((max, l) => (!max || l[8] > max) ? l[8] : max, null);
-                } else {
-                    // No sessions logged yet — count from enrollment date
-                    lastDate = new Date(p.enrollTime).toLocaleDateString('sv-SE');
-                }
-
-                if (daysBetween(lastDate) > 7) {
-                    autoClosedAny = true;
-                    const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", todayStr, 0, 0, 0, 0, "", "", "AutoClosed", 0];
-                    globalData.push(row);
-                    showToast(`${name}'s case auto-closed — 7+ days inactive`, 'warning');
-                    syncToBackend({
-                        action: "logAppointment",
-                        id: p.id,
-                        name: name,
-                        phone: p.phone,
-                        condition: p.diag,
-                        fee: 0,
-                        purchased: 0,
-                        advance: 0,
-                        type: "Case Closed",
-                        date: todayStr
-                    }).catch(() => {});
-                }
+            // Check whether any real session was logged AFTER reactivation
+            const sessionAfterReactivation = pCurrent.logs.some(l => {
+                const t = String(l[7] || '').trim().toLowerCase();
+                if (['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(t)) return false;
+                return new Date(l[0]).getTime() >= reactivatedAt;
             });
 
-            if (autoClosedAny) {
-                _originalProcessData();
+            if (sessionAfterReactivation) {
+                // Session was logged — keep active, clear grace
+                delete reactivationGraceMap[name];
+                return;
             }
+
+            // No session logged within 1 hour — auto-close
+            delete reactivationGraceMap[name];
+            const closeDateStr = getLocalISOString();
+            const closeRow = [new Date().toISOString(), pCurrent.id, name, pCurrent.phone, "", "", pCurrent.diag, "Case Closed", closeDateStr, 0, 0, 0, 0, "", "", "AutoClosed-Grace", 0];
+            globalData.push(closeRow);
+            processData();
+            showToast(`${name}'s case closed — no session logged within 1 hour of reactivation`, 'warning');
+            syncToBackend({
+                action: "logAppointment",
+                id: pCurrent.id,
+                name: name,
+                phone: pCurrent.phone,
+                condition: pCurrent.diag,
+                fee: 0,
+                purchased: 0,
+                advance: 0,
+                type: "Case Closed",
+                date: closeDateStr
+            }).catch(() => {});
+        }, REACTIVATION_GRACE_MS);
+
+        syncToBackend({
+            action: "logAppointment",
+            id: p.id,
+            name: name,
+            phone: p.phone,
+            condition: p.diag,
+            fee: 0,
+            purchased: 0,
+            advance: 0,
+            type: "Case Restarted",
+            date: dateStr
+        }).catch(() => {});
+    });
+}
+
+function checkAutoCloseInactiveCases() {
+    const todayStr = getLocalISOString();
+
+    function daysBetween(dateStr) {
+        if (!dateStr) return Infinity;
+        const [y, m, d] = String(dateStr).split('-').map(Number);
+        const dUTC = Date.UTC(y, m - 1, d);
+        const [ty, tm, td] = todayStr.split('-').map(Number);
+        const tUTC = Date.UTC(ty, tm - 1, td);
+        return Math.floor((tUTC - dUTC) / 86400000);
+    }
+
+    let autoClosedAny = false;
+
+    Object.keys(patientLookup).forEach(name => {
+        const p = patientLookup[name];
+        if (p.closed) return;
+
+        // GRACE PERIOD GUARD: if this patient was just reactivated, skip the 7-day check entirely
+        if (reactivationGraceMap[name] !== undefined) {
+            const elapsed = Date.now() - reactivationGraceMap[name];
+            if (elapsed < REACTIVATION_GRACE_MS) return; // still within 1-hour grace — do not close
         }
 
+        // Only count actual sessions (ignore enrollment/admin rows)
+        const sessionLogs = p.logs.filter(l => {
+            const t = String(l[7] || '').trim().toLowerCase();
+            return !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(t);
+        });
+
+        let lastDate;
+        if (sessionLogs.length) {
+            lastDate = sessionLogs.reduce((max, l) => (!max || l[8] > max) ? l[8] : max, null);
+        } else {
+            // No sessions logged yet — count from enrollment date
+            lastDate = new Date(p.enrollTime).toLocaleDateString('sv-SE');
+        }
+
+        if (daysBetween(lastDate) > 7) {
+            autoClosedAny = true;
+            const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", todayStr, 0, 0, 0, 0, "", "", "AutoClosed", 0];
+            globalData.push(row);
+            showToast(`${name}'s case auto-closed — 7+ days inactive`, 'warning');
+            syncToBackend({
+                action: "logAppointment",
+                id: p.id,
+                name: name,
+                phone: p.phone,
+                condition: p.diag,
+                fee: 0,
+                purchased: 0,
+                advance: 0,
+                type: "Case Closed",
+                date: todayStr
+            }).catch(() => {});
+        }
+    });
+
+    if (autoClosedAny) {
+        _originalProcessData();
+    }
+}
         // ---------- WRAP PROCESS DATA ----------
         const _originalProcessData = processData;
         processData = function() {
@@ -5945,47 +6430,59 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
 
                     const actionArea = document.createElement('div');
                     actionArea.className = "flex gap-4 mt-3 pt-2 border-t border-slate-100";
+
                     const deleteBtn = document.createElement('button');
                     deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-3 h-3"></i> Delete';
-                    deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase";
-                    deleteBtn.onclick = () => {
-                        if(confirm("Delete this session?")) {
+                    deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase transition-all px-2 py-1 rounded-lg";
+                    deleteBtn.onclick = (e) => {
+                        // REPLACED system confirm with armConfirm (Internal UI notification)
+                        armConfirm(e.currentTarget, "Confirm Delete?", () => {
                             const timestamp = logData[0];
                             globalData = globalData.filter(row => row[0] !== timestamp);
                             processData();
                             selectPatient(name);
-                            showToast("Session deleted", "error");
+                            
+                            // Internal App Toast
+                            showToast("Session record removed", "error");
+
                             syncToBackend({
                                 action: "deleteSession",
                                 id: p.id,
                                 timestamp: timestamp
                             }).catch(() => {
-                                showToast("Delete failed to sync to cloud", "error");
+                                showToast("Cloud sync failed", "warning");
                             });
-                        }
+                        });
                     };
+
                     const editBtn = document.createElement('button');
                     editBtn.innerHTML = '<i data-lucide="edit-2" class="w-3 h-3"></i> Edit Fee';
-                    editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase";
+                    editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase px-2 py-1 rounded-lg";
                     editBtn.onclick = () => {
-                        const newFee = prompt("New Fee Amount:", logData[9]);
-                        if(newFee) {
+                        const newFee = prompt(`Update fee for ${formatDateDMY(logData[8])}:`, logData[9]);
+                        if (newFee !== null && newFee !== "") {
                             const timestamp = logData[0];
                             const rowIndex = globalData.findIndex(row => row[0] === timestamp);
-                            globalData[rowIndex][9] = Number(newFee);
-                            processData();
-                            selectPatient(name);
-                            showToast("Fee updated", "success");
-                            syncToBackend({
-                                action: "updateFee",
-                                id: p.id,
-                                timestamp: timestamp,
-                                newFee: Number(newFee)
-                            }).catch(() => {
-                                showToast("Fee update failed to sync to cloud", "error");
-                            });
+                            if (rowIndex !== -1) {
+                                globalData[rowIndex][9] = Number(newFee);
+                                processData();
+                                selectPatient(name);
+                                
+                                // Internal App Toast
+                                showToast(`Fee updated to ₹${newFee}`, "success");
+
+                                syncToBackend({
+                                    action: "updateFee",
+                                    id: p.id,
+                                    timestamp: timestamp,
+                                    newFee: Number(newFee)
+                                }).catch(() => {
+                                    showToast("Update failed to sync", "error");
+                                });
+                            }
                         }
                     };
+
                     actionArea.appendChild(editBtn);
                     actionArea.appendChild(deleteBtn);
                     card.appendChild(actionArea);
@@ -6467,6 +6964,162 @@ window.addEventListener('pageshow', resetInactivityTimer);
 
 // Initialize the timer loop (useful if the page is refreshed while already unlocked)
 resetInactivityTimer();
+
+// ===== WHATSAPP MESSAGE POPUP =====
+(function() {
+    const overlay = document.createElement('div');
+    overlay.id = 'wa-popup-overlay';
+    overlay.innerHTML = `
+        <div class="wa-popup-card" id="wa-popup-card">
+            <div class="wa-status-badge" id="wa-badge"></div>
+            <p class="wa-popup-title" id="wa-popup-title"></p>
+            <div class="wa-popup-meta" id="wa-popup-meta"></div>
+            <p class="wa-popup-status" id="wa-popup-status"></p>
+            <button class="wa-edit-toggle" id="wa-edit-toggle" onclick="toggleWaEdit()">✏️ Edit Message</button>
+            <textarea class="wa-popup-textarea" id="wa-popup-textarea" rows="7"></textarea>
+            <div class="wa-popup-actions">
+                <button class="wa-btn-dismiss" onclick="closeWaPopup()">Dismiss</button>
+                <button class="wa-btn-send" onclick="sendWaPopupMessage()">
+                    <i data-lucide="send" style="width:14px;height:14px;"></i>
+                    <span id="wa-send-label">Send Bill</span>
+                </button>
+            </div>
+        </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeWaPopup(); });
+
+    let _waPhone = '', _editOpen = false;
+
+    window.toggleWaEdit = function() {
+        _editOpen = !_editOpen;
+        const ta = document.getElementById('wa-popup-textarea');
+        const tog = document.getElementById('wa-edit-toggle');
+        ta.classList.toggle('visible', _editOpen);
+        tog.textContent = _editOpen ? '✅ Done Editing' : '✏️ Edit Message';
+        if (_editOpen) ta.focus();
+    };
+
+    window.openWaPopup = function(phone, badgeText, badgeColor, title, metaLines, statusText, statusColor, message, sendLabel) {
+        _waPhone = phone;
+        _editOpen = false;
+
+        const badge = document.getElementById('wa-badge');
+        badge.style.color = badgeColor;
+        badge.innerHTML = `<i data-lucide="check-circle-2" style="width:15px;height:15px;"></i> ${badgeText}`;
+
+        document.getElementById('wa-popup-title').innerText = title;
+
+        const meta = document.getElementById('wa-popup-meta');
+        meta.innerHTML = metaLines.map(l => `${l.label}: <span>${l.value}</span>`).join('<br>');
+
+        const status = document.getElementById('wa-popup-status');
+        status.innerHTML = `Status: <span style="color:${statusColor};font-weight:900;">${statusText}</span>`;
+
+        document.getElementById('wa-popup-textarea').value = message;
+        document.getElementById('wa-popup-textarea').classList.remove('visible');
+        document.getElementById('wa-edit-toggle').textContent = '✏️ Edit Message';
+        document.getElementById('wa-send-label').innerText = sendLabel || 'Send';
+
+        overlay.classList.add('show');
+        lucide.createIcons();
+    };
+
+    window.closeWaPopup = function() { overlay.classList.remove('show'); };
+
+    window.sendWaPopupMessage = function() {
+        const msg = document.getElementById('wa-popup-textarea').value.trim();
+        if (!msg) { showToast('Message is empty', 'warning'); return; }
+        const waNumber = getWhatsAppNumber(_waPhone);
+        if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+        window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+        closeWaPopup();
+    };
+
+    // Override sendQuickSessionReceipt
+    window.sendQuickSessionReceipt = function(p, row) {
+        if (!getWhatsAppNumber(p.phone)) return;
+        const paid = toNum(row[16]);
+        const dateStr = formatDateDMY(row[8]);
+        const mode = row[15] || 'Cash';
+        const remaining = getRemainingSessions(p);
+        const isPending = mode === 'Pending';
+
+        let msg = `Hello ${selectedPatientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: ₹${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
+        if (p.purchased > 0) msg += `Remaining Sessions: *${remaining}*\n`;
+        msg += `\nThank you! Wishing you a smooth recovery.\n\nPrism Physiotherapy & Rehabilitation Center`;
+
+        openWaPopup(
+            p.phone,
+            'Session Logged',
+            '#f97316',
+            selectedPatientName,
+            [
+                { label: 'Date', value: dateStr },
+                { label: 'Amount Paid', value: `₹${paid.toLocaleString()}` },
+                ...(p.purchased > 0 ? [{ label: 'Sessions Remaining', value: `${remaining} / ${p.purchased}` }] : [])
+            ],
+            isPending ? `Pending (₹${toNum(row[9]).toLocaleString()})` : `Paid ₹${paid.toLocaleString()} via ${mode}`,
+            isPending ? '#e11d48' : '#059669',
+            msg,
+            'Send Bill'
+        );
+    };
+
+    // Override sendDueReminder
+    window.sendDueReminder = function(name) {
+        const p = patientLookup[name];
+        if (!p || !getWhatsAppNumber(p.phone)) { showToast('Invalid phone number', 'warning'); return; }
+        const due = p.outstandingDue;
+        const sessions = p.dueSessionCount || 0;
+
+        const msg = `Hello ${name},\n\nGentle reminder from *Prism Physiotherapy & Rehabilitation Center*.\n\n*Outstanding Amount:* ₹${due.toLocaleString()}\n*Pending for:* ${sessions} session(s)\n\nPay via UPI: *dr.raviphysio01@oksbi*\n\nShare screenshot once paid, or pay at the clinic.\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
+
+        openWaPopup(
+            p.phone,
+            'Due Reminder',
+            '#e11d48',
+            name,
+            [
+                { label: 'Outstanding', value: `₹${due.toLocaleString()}` },
+                { label: 'Sessions Pending', value: `${sessions}` }
+            ],
+            `₹${due.toLocaleString()} Due`,
+            '#e11d48',
+            msg,
+            'Send Reminder'
+        );
+    };
+
+    // Override confirmMarkPaid to show popup after payment
+    const _origConfirmMarkPaid = window.confirmMarkPaid;
+    window.confirmMarkPaid = function() {
+        if (!markPaidContext) return;
+        const { name, p } = markPaidContext;
+        const amount = Number(document.getElementById('mp-amount').value);
+        const mode = document.getElementById('mp-mode').value;
+        if (isNaN(amount) || amount <= 0) { showToast('Enter a valid amount', 'warning'); return; }
+
+        _origConfirmMarkPaid();
+
+        const msg = `Hello ${name},\n\nWe have received your payment. Here are the details:\n\n*Amount Received:* ₹${amount.toLocaleString()}\n*Payment Mode:* ${mode}\n*Date:* ${formatDateDMY(getLocalISOString())}\n\nYour outstanding balance has been updated.\n\nThank you for your payment!\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
+
+        openWaPopup(
+            p.phone,
+            'Payment Received',
+            '#059669',
+            name,
+            [
+                { label: 'Amount Received', value: `₹${amount.toLocaleString()}` },
+                { label: 'Mode', value: mode },
+                { label: 'Date', value: formatDateDMY(getLocalISOString()) }
+            ],
+            `Paid ₹${amount.toLocaleString()} via ${mode}`,
+            '#059669',
+            msg,
+            'Send Confirmation'
+        );
+    };
+})();
     </script>
 </body>
 
