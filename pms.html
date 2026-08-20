@@ -4238,14 +4238,8 @@ function showEnrollmentSuccessPopup(patient) {
             </div>
 
             <!-- Buttons -->
-            <button
-                onclick="
-                    if('${waNumber}') {
-                        window.open('https://wa.me/${waNumber}?text=${welcomeMsg}', '_blank');
-                    } else {
-                        showToast('Invalid phone number', 'warning');
-                    }
-                "
+                        <button
+                id="enroll-wa-send-btn"
                 style="
                     width: 100%; padding: 0.95rem; border-radius: 0.95rem; border: none;
                     background: #25D366; color: white; font-family: 'Plus Jakarta Sans', sans-serif;
@@ -4287,6 +4281,32 @@ function showEnrollmentSuccessPopup(patient) {
     });
 
     document.body.appendChild(overlay);
+
+    document.getElementById('enroll-wa-send-btn').addEventListener('click', function() {
+        const resolvedNumber = getWhatsAppNumber(patient.phone);
+        if (!resolvedNumber) {
+            showToast('Invalid phone number', 'warning');
+            return;
+        }
+        const last4 = String(patient.id).slice(-4);
+        const message =
+            `🌟 *Welcome to Prism Physiotherapy & Rehabilitation Center!* 🌟\n\n` +
+            `Hello ${patient.name},\n\n` +
+            `Your personal care account is now active.\n\n` +
+            `We're delighted to support your recovery journey. At Prism Physiotherapy, your dedicated patient account keeps your treatment details, appointments, and rehabilitation progress organized and accessible, all in one place.\n\n` +
+            `📲 *In your portal, you can:*\n` +
+            `✅ Track all your session logs\n` +
+            `✅ Access your Home Exercise Plan (HEP)\n` +
+            `✅ Download your receipts and bills anytime\n\n` +
+            `🔗 *Access Portal Here:* https://prismhealthcare.in/Patient%20Login.html\n\n` +
+            `🔐 *Your Login Details:*\n` +
+            `👤 *User ID:* ${patient.name}\n` +
+            `🔑 *Verification ID:* ${last4}\n\n` +
+            `Please keep your verification ID confidential and do not share it with others.\n\n` +
+            `Warm regards,\n` +
+            `*Team Prism Physiotherapy*`;
+        window.open('https://wa.me/' + resolvedNumber + '?text=' + encodeURIComponent(message), '_blank');
+    });
 }
         function resetEnrollForm() {
             document.getElementById('en-name').value = "";
