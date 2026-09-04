@@ -248,10 +248,12 @@
 
         /* --- Responsive View Adaptation --- */
         @media (max-width: 1024px) {
-            body {
-                overflow-y: auto;
-                background-color: #f8fafc;
+            /* Existing code stays here, add these new lines: */
+            #patient-table-body td, #tab-patients th {
+                padding: 0.6rem 0.4rem !important; /* Shrinks cell size */
+                font-size: 11px !important;
             }
+            .status-extra-text { display: none; } /* Hides long text on mobile */
             #sidebar {
                 display: none !important; 
             }
@@ -1537,6 +1539,13 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
     display: block;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
+    /* HIDE STATUS COLUMN ON MOBILE PHONES ONLY */
+        @media (max-width: 640px) {
+            #tab-patients th:nth-child(6), 
+            #patient-table-body td:nth-child(6) {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -2171,6 +2180,19 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 
             <!-- RECORDS -->
         <section id="tab-patients" class="section-hidden animate-slide">
+<!-- SMART SEARCH BAR FOR PATIENTS -->
+    <div class="glass-card p-4 md:p-6 rounded-[2.5rem] shadow-xl mb-6 flex items-center gap-4 sticky top-0 z-10">
+        <div class="bg-indigo-50 p-3 rounded-2xl hidden md:block">
+            <i data-lucide="search" class="w-5 h-5 text-indigo-600"></i>
+        </div>
+        <input type="text" id="record-search-input" onkeyup="filterRecordTable()" 
+               placeholder="Search by Name, ID, Phone, or Condition..." 
+               class="flex-1 p-2 bg-transparent border-none outline-none font-bold text-sm md:text-lg placeholder:text-slate-400">
+        <button onclick="document.getElementById('record-search-input').value=''; filterRecordTable();" 
+                class="p-2 hover:bg-slate-100 rounded-xl text-slate-400 transition-all" title="Clear search">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </div>
             <!-- ... some elements ... -->
 
             <div class="glass-card rounded-[2.5rem] shadow-xl overflow-hidden table-scroll">
@@ -4018,13 +4040,21 @@ Object.keys(patientLookup).forEach(name => {
         }
 
         function filterRecordTable() {
-            const val = document.getElementById('record-search-input').value.toUpperCase();
-            const rows = document.querySelectorAll('#patient-table-body tr');
-            rows.forEach(row => {
-                const tag = row.getAttribute('data-search-tag') || "";
-                row.style.display = tag.includes(val) ? "" : "none";
-            });
+    const val = document.getElementById('record-search-input').value.toUpperCase().trim();
+    const rows = document.querySelectorAll('#patient-table-body tr');
+    
+    rows.forEach(row => {
+        // This checks Name, ID, and the hidden Search Tags you created earlier
+        const tag = row.getAttribute('data-search-tag') || "";
+        const name = row.innerText.toUpperCase(); 
+        
+        if (tag.includes(val) || name.includes(val)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
         }
+    });
+}
 
         function filterByBranch(branch) {
             currentBranchFilter = branch;
@@ -4917,12 +4947,12 @@ function openMidPackage() {
             let statusBadge;
             const wallet = p.walletBalance || 0;
             // uniform width and centering applied via inline-block w-52 text-center
-            const commonCls = "inline-block w-52 text-center py-2 rounded text-[10px] font-black transition-all";
+            const commonCls = "inline-block w-full max-w-[130px] lg:w-52 text-center py-2 rounded text-[9px] lg:text-[10px] font-black transition-all";
             
             if (p.closed) {
                 statusBadge = `<span class="${commonCls} bg-slate-900 text-white">CLOSED</span>`;
             } else if (p.outstandingDue > 0) {
-                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white cursor-pointer border-none outline-none">₹${p.outstandingDue.toLocaleString()} DUE — Click to Clear</button>`;
+                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white cursor-pointer border-none outline-none">₹${p.outstandingDue.toLocaleString()} DUE <span class="status-extra-text">— Click to Clear</span></button>`;
             } else if (rem > 0) {
                 statusBadge = `<span class="${commonCls} bg-blue-100 text-blue-700">${rem} LEFT (₹${wallet.toLocaleString()} Wallet)</span>`;
             } else if (wallet > 0) {
