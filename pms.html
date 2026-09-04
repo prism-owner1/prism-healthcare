@@ -1690,117 +1690,123 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
 <section id="tab-overview" class="animate-slide">
 
   <!-- TOP HERO STATS ROW -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 group hover:border-indigo-200 transition-all">
-      <div class="stat-icon-badge bg-indigo-50">
-        <i data-lucide="activity" class="w-5 h-5 text-indigo-600"></i>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <!-- Total Sessions -->
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-indigo-500 bg-gradient-to-r from-indigo-50/40 to-white hover:shadow-xl hover:shadow-indigo-100/50 transition-all">
+      <div class="stat-icon-badge bg-indigo-600 shadow-lg shadow-indigo-200">
+        <i data-lucide="activity" class="w-5 h-5 text-white"></i>
       </div>
       <div>
-        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">Total Sessions</p>
-        <h3 id="stat-total" class="text-2xl font-black text-slate-900 leading-none">0</h3>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Total Sessions</p>
+        <h3 id="stat-total" class="text-3xl font-black text-slate-900 leading-none">0</h3>
       </div>
     </div>
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 hover:border-emerald-200 transition-all">
-      <div class="stat-icon-badge bg-emerald-50">
-        <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
+
+    <!-- Registered Patients -->
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-50/40 to-white hover:shadow-xl hover:shadow-emerald-100/50 transition-all">
+      <div class="stat-icon-badge bg-emerald-600 shadow-lg shadow-emerald-200">
+        <i data-lucide="users" class="w-5 h-5 text-white"></i>
       </div>
       <div>
-        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">Registered Patients</p>
-        <h3 id="stat-registered" class="text-2xl font-black text-slate-900 leading-none">0</h3>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Registered Patients</p>
+        <h3 id="stat-registered" class="text-3xl font-black text-slate-900 leading-none">0</h3>
       </div>
     </div>
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 border-indigo-100 bg-gradient-to-br from-indigo-50/60 to-white hover:border-indigo-300 transition-all">
-      <div class="stat-icon-badge bg-indigo-100">
-        <i data-lucide="indian-rupee" class="w-5 h-5 text-indigo-700"></i>
+
+    <!-- Total Collection (Highlight Card) -->
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-none bg-gradient-to-br from-indigo-600 to-indigo-900 shadow-xl shadow-indigo-200 transition-all transform hover:scale-[1.01]">
+      <div class="stat-icon-badge bg-white/20 backdrop-blur-md border border-white/30">
+        <i data-lucide="indian-rupee" class="w-5 h-5 text-white"></i>
       </div>
       <div>
-        <p class="text-[9px] font-black uppercase text-indigo-400 tracking-widest mb-0.5">Total Collection</p>
-        <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700 leading-none">₹0</h3>
+        <p class="text-[9px] font-black uppercase text-indigo-100 tracking-widest mb-1">Total Collection</p>
+        <h3 id="stat-revenue" class="text-3xl font-black text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
 
   <!-- BRANCH + ACTIVE + DUES ROW -->
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
-    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border-blue-100 bg-blue-50/30 text-left hover:scale-[1.02] hover:shadow-blue-100 transition-all group">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border-blue-200 bg-gradient-to-b from-blue-50/50 to-white text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-100 transition-all group">
       <div class="flex justify-between items-start mb-2">
-        <span class="text-[8px] font-black text-blue-400 uppercase tracking-widest leading-tight">Prism<br>Orthocare</span>
-        <span class="text-[8px] font-black bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-md">POC</span>
+        <span class="text-[8px] font-black text-blue-500 uppercase tracking-widest leading-tight">Prism<br>Orthocare</span>
+        <span class="text-[8px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded-md shadow-sm">POC</span>
       </div>
-      <h3 id="stat-poc-revenue" class="text-xl font-black text-blue-700">₹0</h3>
-      <i data-lucide="chevron-right" class="w-3 h-3 text-blue-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+      <h3 id="stat-poc-revenue" class="text-xl font-black text-blue-900">₹0</h3>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-[8px] text-blue-400 font-bold uppercase">View Branch</span>
+        <i data-lucide="chevron-right" class="w-3 h-3 text-blue-400 group-hover:translate-x-1 transition-all"></i>
+      </div>
     </button>
-    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border-emerald-100 bg-emerald-50/30 text-left hover:scale-[1.02] transition-all group">
+
+    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border-emerald-200 bg-gradient-to-b from-emerald-50/50 to-white text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-100 transition-all group">
       <div class="flex justify-between items-start mb-2">
-        <span class="text-[8px] font-black text-emerald-400 uppercase tracking-widest leading-tight">Home<br>Care</span>
-        <span class="text-[8px] font-black bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded-md">PHC</span>
+        <span class="text-[8px] font-black text-emerald-600 uppercase tracking-widest leading-tight">Home<br>Care</span>
+        <span class="text-[8px] font-black bg-emerald-600 text-white px-1.5 py-0.5 rounded-md shadow-sm">PHC</span>
       </div>
-      <h3 id="stat-phc-revenue" class="text-xl font-black text-emerald-700">₹0</h3>
-      <i data-lucide="chevron-right" class="w-3 h-3 text-emerald-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+      <h3 id="stat-phc-revenue" class="text-xl font-black text-emerald-900">₹0</h3>
+      <div class="flex items-center gap-1 mt-1">
+        <span class="text-[8px] text-emerald-400 font-bold uppercase">View Branch</span>
+        <i data-lucide="chevron-right" class="w-3 h-3 text-emerald-400 group-hover:translate-x-1 transition-all"></i>
+      </div>
     </button>
-    <button onclick="openBranchDetailModal('PRC')" class="glass-card p-5 rounded-[1.75rem] border-orange-100 bg-orange-50/30 text-left hover:scale-[1.02] transition-all group">
+
+    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border-rose-200 bg-gradient-to-b from-rose-50/50 to-white text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-rose-100 transition-all group">
       <div class="flex justify-between items-start mb-2">
-        <span class="text-[8px] font-black text-orange-400 uppercase tracking-widest leading-tight">Rehab<br>Clinic</span>
-        <span class="text-[8px] font-black bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-md">PRC</span>
+        <span class="text-[8px] font-black text-rose-500 uppercase tracking-widest leading-tight">Active<br>Cases</span>
+        <span class="relative flex h-2 w-2 mt-1">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+        </span>
       </div>
-      <h3 id="stat-prc-revenue" class="text-xl font-black text-orange-700">₹0</h3>
-      <i data-lucide="chevron-right" class="w-3 h-3 text-orange-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+      <h3 id="stat-active-count" class="text-xl font-black text-rose-900">0</h3>
+      <p class="text-[8px] text-rose-400 font-bold mt-1 uppercase tracking-tighter">Under Treatment</p>
     </button>
-    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border-rose-100 bg-rose-50/30 text-left hover:scale-[1.02] transition-all group">
+
+    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border-amber-200 bg-gradient-to-b from-amber-50/50 to-white text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-100 transition-all group">
       <div class="flex justify-between items-start mb-2">
-        <span class="text-[8px] font-black text-rose-400 uppercase tracking-widest leading-tight">Active<br>Cases</span>
-        <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping mt-1"></span>
+        <span class="text-[8px] font-black text-amber-600 uppercase tracking-widest leading-tight">Outstanding<br>Dues</span>
+        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-500 mt-0.5"></i>
       </div>
-      <h3 id="stat-active-count" class="text-xl font-black text-rose-700">0</h3>
-      <p class="text-[8px] text-rose-400 font-bold mt-1 uppercase">Under Treatment</p>
-    </button>
-    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border-amber-100 bg-amber-50/30 text-left hover:scale-[1.02] transition-all">
-      <div class="flex justify-between items-start mb-2">
-        <span class="text-[8px] font-black text-amber-500 uppercase tracking-widest leading-tight">Outstanding<br>Dues</span>
-        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5"></i>
-      </div>
-      <h3 id="stat-outstanding" class="text-xl font-black text-amber-700">₹0</h3>
+      <h3 id="stat-outstanding" class="text-xl font-black text-amber-800">₹0</h3>
+      <p class="text-[8px] text-amber-500 font-bold mt-1 uppercase tracking-tighter">Pending Dues</p>
     </button>
   </div>
 
   <!-- FILTER PILL BAR -->
-  <div class="glass-card px-5 py-3.5 rounded-[2rem] mb-5 flex flex-wrap items-center gap-2">
-    <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest mr-1">Filter:</span>
-    <button onclick="filterByBranch('POC')" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[9px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Orthocare</button>
-    <button onclick="filterByBranch('PHC')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[9px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
-    <button onclick="filterByBranch('PRC')" class="px-3 py-1.5 rounded-xl bg-orange-50 text-orange-700 font-black text-[9px] uppercase hover:bg-orange-600 hover:text-white transition-all">Rehab Clinic</button>
-    <button onclick="filterByBranch('ALL')" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 font-black text-[9px] uppercase hover:bg-slate-800 hover:text-white transition-all">All Branches</button>
+  <div class="glass-card px-5 py-3.5 rounded-[2rem] mb-6 flex flex-wrap items-center gap-2 border-slate-100 bg-white/60">
+    <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest mr-1">Quick Filter:</span>
+    <button onclick="filterByBranch('POC')" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[9px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100">Orthocare</button>
+    <button onclick="filterByBranch('PHC')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[9px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100">Homecare</button>
+    <button onclick="filterByBranch('ALL')" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 font-black text-[9px] uppercase hover:bg-slate-800 hover:text-white transition-all border border-slate-200">All Branches</button>
   </div>
 
   <!-- COLLECTION SUMMARY TRIO -->
-  <div class="grid grid-cols-3 gap-4 mb-5">
-    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent pointer-events-none"></div>
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="glass-card p-5 rounded-[2.25rem] text-center border-slate-100 bg-white/40 backdrop-blur-md">
       <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Today</p>
-      <h4 id="stat-daily" class="text-2xl font-black text-slate-800">₹0</h4>
-      <p class="text-[8px] text-slate-400 font-bold mt-1 uppercase">Daily Collection</p>
+      <h4 id="stat-daily" class="text-2xl font-black text-slate-900">₹0</h4>
+      <div class="h-1 w-6 bg-slate-300 mx-auto mt-2 rounded-full opacity-40"></div>
     </div>
-    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden border-indigo-100">
-      <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/40 to-transparent pointer-events-none"></div>
-      <p class="text-[9px] font-black uppercase text-indigo-400 tracking-widest mb-1">This Month</p>
-      <h4 id="stat-monthly" class="text-2xl font-black text-indigo-600">₹0</h4>
-      <p class="text-[8px] text-indigo-400 font-bold mt-1 uppercase">Monthly Collection</p>
+    <div class="glass-card p-5 rounded-[2.25rem] text-center border-indigo-100 bg-indigo-50/20 backdrop-blur-md shadow-inner">
+      <p class="text-[9px] font-black uppercase text-indigo-500 tracking-widest mb-1">This Month</p>
+      <h4 id="stat-monthly" class="text-2xl font-black text-indigo-700">₹0</h4>
+      <div class="h-1 w-10 bg-indigo-600 mx-auto mt-2 rounded-full shadow-[0_0_8px_rgba(79,70,229,0.4)]"></div>
     </div>
-    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent pointer-events-none"></div>
+    <div class="glass-card p-5 rounded-[2.25rem] text-center border-slate-100 bg-white/40 backdrop-blur-md">
       <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">This Year</p>
-      <h4 id="stat-yearly" class="text-2xl font-black text-slate-800">₹0</h4>
-      <p class="text-[8px] text-slate-400 font-bold mt-1 uppercase">Yearly Collection</p>
+      <h4 id="stat-yearly" class="text-2xl font-black text-slate-900">₹0</h4>
+      <div class="h-1 w-6 bg-slate-300 mx-auto mt-2 rounded-full opacity-40"></div>
     </div>
   </div>
 
   <!-- CHARTS ROW -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm border-t-4 border-t-indigo-500 bg-white/80">
       <div class="flex items-center justify-between mb-5">
         <div>
           <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Revenue Trend</h4>
-          <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Monthly Income</p>
+          <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Monthly Performance</p>
         </div>
         <div class="stat-icon-badge bg-indigo-50">
           <i data-lucide="trending-up" class="w-4 h-4 text-indigo-600"></i>
@@ -1808,7 +1814,7 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
       </div>
       <canvas id="revenueChart" height="170"></canvas>
     </div>
-    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm border-t-4 border-t-emerald-500 bg-white/80">
       <div class="flex items-center justify-between mb-5">
         <div>
           <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Daily Collection</h4>
@@ -1823,13 +1829,15 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
   </div>
 
   <!-- OUTSTANDING DUES CARD -->
-  <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+  <div class="glass-card p-6 rounded-[2.5rem] shadow-sm border-l-4 border-l-rose-500 bg-white/80">
     <div class="flex items-center justify-between mb-5">
       <div>
         <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Outstanding Dues</h4>
-        <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Patients with pending balance</p>
+        <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Pending Patient Balances</p>
       </div>
-      <span class="text-[8px] font-black bg-rose-50 text-rose-500 px-3 py-1.5 rounded-xl uppercase border border-rose-100">Unpaid</span>
+      <div class="flex items-center gap-2">
+        <span class="text-[8px] font-black bg-rose-50 text-rose-500 px-3 py-1.5 rounded-xl uppercase border border-rose-100 shadow-sm">Action Required</span>
+      </div>
     </div>
     <div id="dues-list" class="max-h-64 overflow-y-auto pr-1"></div>
   </div>
@@ -1846,7 +1854,6 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                 <select id="en-branch" onchange="generateClinicalID()" class="p-3 bg-slate-50 rounded-xl border-none font-bold outline-none text-sm">
                                     <option value="POC">Orthocare (POC)</option>
                                     <option value="PHC">Homecare (PHC)</option>
-                                    <option value="PRC">Rehab (PRC)</option>
                                 </select>
                                 <input type="text" id="en-id" readonly class="p-3 bg-slate-100 rounded-xl font-black text-indigo-600 outline-none text-sm">
                             </div>
@@ -2308,7 +2315,6 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                     <button onclick="downloadRegistryRangeCSV('ALL')" class="w-full py-4 rounded-2xl bg-slate-900 text-white font-black text-xs uppercase tracking-wide hover:bg-slate-800 transition-all">Download All Branches</button>
                     <button onclick="downloadRegistryRangeCSV('POC')" class="w-full py-4 rounded-2xl bg-indigo-50 text-indigo-700 font-black text-xs uppercase tracking-wide hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare (POC)</button>
                     <button onclick="downloadRegistryRangeCSV('PHC')" class="w-full py-4 rounded-2xl bg-emerald-50 text-emerald-700 font-black text-xs uppercase tracking-wide hover:bg-emerald-600 hover:text-white transition-all">Homecare (PHC)</button>
-                    <button onclick="downloadRegistryRangeCSV('PRC')" class="w-full py-4 rounded-2xl bg-orange-50 text-orange-700 font-black text-xs uppercase tracking-wide hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic (PRC)</button>
                 </div>
             </div>
         </div>
@@ -3389,7 +3395,6 @@ function resetEnrollBodyChart(){
             revenue: document.getElementById('stat-revenue'),
             pocRev: document.getElementById('stat-poc-revenue'),
             phcRev: document.getElementById('stat-phc-revenue'),
-            prcRev: document.getElementById('stat-prc-revenue'),
             activeCount: document.getElementById('stat-active-count'),
             daily: document.getElementById('stat-daily'),
             monthly: document.getElementById('stat-monthly'),
@@ -3477,6 +3482,7 @@ function resetEnrollBodyChart(){
             
             // Assign Main Records
             if (result.adminData) globalData = result.adminData;
+            window.rawAuditData = result.auditData || [];
 
             // Assign SOAP Notes
             progressNotes = {};
@@ -3688,8 +3694,7 @@ function getAdvanceSessionLabel(r, p) {
             let totalRawCol = 0,
                 sessionCount = 0;
             let pocRevenue = 0,
-                phcRevenue = 0,
-                prcRevenue = 0;
+                phcRevenue = 0;
             let dailyCol = 0,
                 monthlyCol = 0,
                 yearlyCol = 0;
@@ -3732,38 +3737,28 @@ function getAdvanceSessionLabel(r, p) {
                 const p = patientLookup[name];
 
                 if (type === "enrollment" || type === "package added") {
-    p.purchased += toNum(r[10]);
-    p.advance += toNum(r[11]);
-    p.walletBalance = (p.walletBalance || 0) + toNum(r[11]);
+        p.purchased += toNum(r[10]);
+        p.advance += toNum(r[11]);
+        p.walletBalance = (p.walletBalance || 0) + toNum(r[11]);
 
-    // If they paid an advance, count today's registration as Session #1 and deduct its fee from the wallet
-    if (toNum(r[11]) > 0 && fee > 0) {
-        p.walletBalance -= fee;
-    }
+        if (toNum(r[11]) > 0 && fee > 0) {
+            p.walletBalance -= fee;
+        }
 
-    if (type === "enrollment") p.baseRate = fee;
-    if (r[10] > 0 && fee > 0) p.baseRate = fee; // package can also update rate if changed
-    if (type === "enrollment") p.discount = toNum(r[12]);
-    if (r[4]) p.age = r[4];
-    if (r[5]) p.gender = r[5];
-    if (r[14]) p.address = r[14];
-} else if (type === "case closed") {
-                    p.closed = true;
-                    p.closedDate = dateStr;
-                } else if (type === "case restarted") {
-                    p.closed = false;
-                    p.closedDate = null;
-                } else if (type === "bill issued") {
-                    billCounter[name] = (billCounter[name] || 0) + 1;
-                }
+        if (type === "enrollment") p.baseRate = fee;
+        if (r[10] > 0 && fee > 0) p.baseRate = fee; 
+        if (type === "enrollment") p.discount = toNum(r[12]);
+        if (r[4]) p.age = r[4];
+        if (r[5]) p.gender = r[5];
+        if (r[14]) p.address = r[14];
+    } // <--- ADD THIS BRACE
 
-                if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
+    if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
     totalRawCol += fee;
     sessionCount++;
 
     if (id.startsWith('POC')) pocRevenue += fee;
     else if (id.startsWith('PHC')) phcRevenue += fee;
-    else if (id.startsWith('PRC')) prcRevenue += fee;
 
     if (dateStr === today) dailyCol += fee;
     if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
@@ -3788,6 +3783,29 @@ if (paymentMode === "Advance" && !['enrollment', 'package added'].includes(type)
 }
 }
             });
+if (window.rawAuditData) {
+    // Sort audit logs by timestamp (index 0) to ensure chronological processing
+    const sortedAudit = [...window.rawAuditData].sort((a, b) => new Date(a[0]) - new Date(b[0]));
+    
+    sortedAudit.forEach(auditRow => {
+        const timestamp = auditRow[0];
+        const action = String(auditRow[2]); // The "Action" column in Audit_Log
+        const pName = auditRow[3];          // The "Patient" column in Audit_Log
+        const p = patientLookup[pName];
+        
+        if (!p) return;
+
+        if (action === "Case Closed") {
+            p.closed = true;
+            p.closedDate = timestamp;
+        } else if (action === "Case Restarted") {
+            p.closed = false;
+            p.closedDate = null;
+        } else if (action === "Bill Issued") {
+            billCounter[pName] = (billCounter[pName] || 0) + 1;
+        }
+    });
+}
 
             // ---- OUTSTANDING DUES CALCULATION ----
 let totalOutstanding = 0;
@@ -3828,7 +3846,6 @@ Object.keys(patientLookup).forEach(name => {
             statEl.revenue.innerText = "₹" + totalRawCol.toLocaleString();
             statEl.pocRev.innerText = "₹" + pocRevenue.toLocaleString();
             statEl.phcRev.innerText = "₹" + phcRevenue.toLocaleString();
-            statEl.prcRev.innerText = "₹" + prcRevenue.toLocaleString();
             statEl.activeCount.innerText = activeCount;
             statEl.daily.innerText = "₹" + dailyCol.toLocaleString();
             statEl.monthly.innerText = "₹" + monthlyCol.toLocaleString();
@@ -4012,7 +4029,6 @@ Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 const dateStr = getLocalISOString();
                 const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Closed", dateStr, 0, 0, 0, 0, ""];
-                globalData.push(row);
                 processData();
                 showToast(`${name}'s case closed`, 'success');
                 if (!document.getElementById('case-modal').classList.contains('hidden')) openCaseModal();
@@ -4947,18 +4963,18 @@ function openMidPackage() {
             let statusBadge;
             const wallet = p.walletBalance || 0;
             // uniform width and centering applied via inline-block w-52 text-center
-            const commonCls = "inline-block w-full max-w-[130px] lg:w-52 text-center py-2 rounded text-[9px] lg:text-[10px] font-black transition-all";
+            const commonCls = "inline-flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tight transition-all border shadow-sm w-fit min-w-[80px]";
             
             if (p.closed) {
-                statusBadge = `<span class="${commonCls} bg-slate-900 text-white">CLOSED</span>`;
+                statusBadge = `<span class="${commonCls} bg-slate-100 text-slate-500 border-slate-200">CLOSED</span>`;
             } else if (p.outstandingDue > 0) {
-                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white cursor-pointer border-none outline-none">₹${p.outstandingDue.toLocaleString()} DUE <span class="status-extra-text">— Click to Clear</span></button>`;
+                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-600 hover:text-white cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE</button>`;
             } else if (rem > 0) {
-                statusBadge = `<span class="${commonCls} bg-blue-100 text-blue-700">${rem} LEFT (₹${wallet.toLocaleString()} Wallet)</span>`;
+                statusBadge = `<span class="${commonCls} bg-indigo-50 text-indigo-600 border-indigo-100">${rem} LEFT <span class="mx-1 opacity-30">|</span> ₹${wallet.toLocaleString()}</span>`;
             } else if (wallet > 0) {
-                statusBadge = `<span class="${commonCls} bg-emerald-100 text-emerald-700">₹${wallet.toLocaleString()} WALLET</span>`;
+                statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">₹${wallet.toLocaleString()} WALLET</span>`;
             } else {
-                statusBadge = `<span class="${commonCls} bg-emerald-100 text-emerald-700">REGULAR</span>`;
+                statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">REGULAR</span>`;
             }
 
             pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
@@ -4967,7 +4983,7 @@ function openMidPackage() {
                         <td class="p-5 text-xs font-bold text-slate-600 italic hidden lg:table-cell">${p.age || '—'}Y / ${p.gender || '—'}</td>
                         <td class="p-5 text-xs font-black text-slate-700 hidden lg:table-cell">${p.phone || '—'}</td>
                         <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] hidden lg:table-cell">${p.diag}</td>
-                        <td class="p-5">${statusBadge}</td>
+                        <td class="p-5 text-center">${statusBadge}</td>
                 <td class="p-5 text-center flex gap-2 justify-center">
                     <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
                     <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
@@ -6103,7 +6119,6 @@ async function restartPatientCase(name, event) {
         const p = patientLookup[name];
         const dateStr = getLocalISOString();
         const row = [new Date().toISOString(), p.id, name, p.phone, "", "", p.diag, "Case Restarted", dateStr, 0, 0, 0, 0, ""];
-        globalData.push(row);
         p.closed = false;
         p.closedDate = null;
 
@@ -6465,82 +6480,157 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
 
         function clearExerciseForm() {
     document.getElementById('ex-input-name').value = '';
-    document.getElementById('ex-input-sets').value = '';
     document.getElementById('ex-input-instructions').value = '';
     document.getElementById('ex-input-video').value = '';
-    document.getElementById('ex-input-freq').value = '';
+    
+    // Default Values (Editable)
+    document.getElementById('ex-input-sets').value = '3 Sets x 10 Reps';
+    document.getElementById('ex-input-freq').value = '2 Times a Day';
+    
     document.getElementById('ex-input-prescribed-date').value = getLocalISOString();
     document.getElementById('ex-input-review-date').value = '';
+
+    // CLEAR THE CART
+    exCart = []; 
+    renderExerciseCart(); 
 }
 
         function renderExercisePlanList() {
     const exercises = exercisePlans[selectedPatientId] || [];
-            const container = document.getElementById('exercise-plan-list');
-            if (!exercises.length) {
-                container.innerHTML = `<div class="border border-dashed border-slate-200 rounded-2xl p-6 text-center text-slate-600 text-xs italic">No exercises prescribed yet — add one below.</div>`;
-                return;
-            }
-            container.innerHTML = exercises.map((ex, idx) => `
-    <div class="p-4 border-2 border-emerald-200 rounded-2xl bg-emerald-50/50 space-y-2">
-        <div class="flex justify-between items-start">
-            <div>
-                <h5 class="font-black text-emerald-700 text-sm">${ex.name}</h5>
-                <p class="text-[10px] font-bold text-emerald-600 uppercase">${ex.setsReps} • ${ex.frequency}</p>
-            </div>
-            <button onclick="deleteExercise('${selectedPatientId}', ${idx})" class="text-rose-500 hover:text-rose-700 text-xs font-bold">Delete</button>
-        </div>
-        <p class="text-[11px] text-slate-600">${ex.instructions}</p>
-        <div class="flex gap-3 flex-wrap">
-            ${ex.prescribedDate ? `<span class="text-[9px] font-black text-slate-500 uppercase">Prescribed: ${formatDateDMY(ex.prescribedDate)}</span>` : ''}
-            ${ex.reviewDate ? `<span class="text-[9px] font-black text-amber-600 uppercase">Review: ${formatDateDMY(ex.reviewDate)}</span>` : ''}
-        </div>
-        ${ex.videoLink ? `<a href="${ex.videoLink}" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline inline-block">🎥 Watch Videos </a>` : ''}
-    </div>
-`).join('');
-        }
-
-        async function saveExercise() {
-    const name = document.getElementById('ex-input-name').value.trim();
-    const sets = document.getElementById('ex-input-sets').value.trim();
-    const instr = document.getElementById('ex-input-instructions').value.trim();
-    const video = document.getElementById('ex-input-video').value.trim();
-    const freq = document.getElementById('ex-input-freq').value.trim();
-    const prescribedDate = document.getElementById('ex-input-prescribed-date').value || getLocalISOString();
-    const reviewDate = document.getElementById('ex-input-review-date').value;
-
-    if (!name || !sets || !instr || !freq) {
-        showToast('Please fill Name, Sets, Instructions, and Frequency', 'warning');
+    const container = document.getElementById('exercise-plan-list');
+    
+    if (!exercises.length) {
+        container.innerHTML = `<div class="border border-dashed border-slate-200 rounded-2xl p-6 text-center text-slate-600 text-xs italic">No entries yet.</div>`;
         return;
     }
 
+    container.innerHTML = exercises.map((ex, idx) => {
+        // Switch colors based on whether it is a General Instruction or an Exercise
+        const isGen = ex.isGeneral === true || ex.name.includes("GENERAL");
+        const themeClass = isGen ? "border-indigo-200 bg-indigo-50/30" : "border-emerald-100 bg-white";
+        const iconClass = isGen ? "bg-indigo-100 text-indigo-600" : "bg-emerald-100 text-emerald-600";
+        const titleClass = isGen ? "text-indigo-800" : "text-slate-800";
+        const badgeClass = isGen ? "bg-indigo-600" : "bg-emerald-600";
+        const iconName = isGen ? "shield-alert" : "dumbbell";
+
+        return `
+        <div class="p-4 border-2 ${themeClass} rounded-2xl shadow-sm mb-3 cursor-pointer group transition-all" onclick="toggleExSteps(${idx})">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 ${iconClass} rounded-full flex items-center justify-center">
+                        <i data-lucide="${iconName}" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-black ${titleClass} text-sm uppercase">${ex.name}</h5>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">${ex.setsReps} • ${ex.frequency}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="event.stopPropagation(); deleteExercise('${selectedPatientId}', ${idx})" class="p-2 text-slate-300 hover:text-rose-500 transition-colors">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-300 group-hover:text-indigo-500 transition-all" id="ex-chevron-${idx}"></i>
+                </div>
+            </div>
+            
+            <div id="ex-steps-view-${idx}" class="hidden mt-4 pt-4 border-t border-slate-100 animate-slide">
+                <div class="${isGen ? 'bg-indigo-100/50' : 'bg-emerald-50/50'} p-4 rounded-xl border ${isGen ? 'border-indigo-200' : 'border-emerald-100'}">
+                    <p class="text-[9px] font-black ${isGen ? 'text-indigo-600' : 'text-emerald-600'} uppercase mb-2 tracking-widest flex items-center gap-1">
+                        <i data-lucide="info" class="w-3 h-3"></i> ${isGen ? 'Instructions & Precautions' : 'Steps to perform'}:
+                    </p>
+                    <p class="text-[12px] text-slate-700 leading-relaxed whitespace-pre-line font-medium">${ex.instructions}</p>
+                </div>
+                
+                <div class="flex items-center justify-between mt-4 px-1">
+                    <span class="text-[8px] font-black text-slate-400 uppercase">Prescribed: ${formatDateDMY(ex.prescribedDate)}</span>
+                    ${ex.videoLink ? `
+                        <a href="${ex.videoLink}" target="_blank" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1.5 shadow-md">
+                            <i data-lucide="play" class="w-3 h-3"></i> Watch Video
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+    
+    if (window.lucide) lucide.createIcons();
+}
+
+        async function saveExercise() {
+    const sets = document.getElementById('ex-input-sets').value.trim();
+    const freq = document.getElementById('ex-input-freq').value.trim();
+    const instrText = document.getElementById('ex-input-instructions').value.trim();
+    const prescribedDate = document.getElementById('ex-input-prescribed-date').value || getLocalISOString();
+    const reviewDate = document.getElementById('ex-input-review-date').value;
+
     if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
-    exercisePlans[selectedPatientId].push({
-        name: name,
-        setsReps: sets,
-        instructions: instr,
-        videoLink: video,
-        frequency: freq,
-        prescribedDate: prescribedDate,
-        reviewDate: reviewDate
-    });
+
+    // CASE 1: If there are library items in the cart
+    if (exCart.length > 0) {
+        showToast(`Saving ${exCart.length} exercises...`, 'info');
+        for (const item of exCart) {
+            const exerciseData = {
+                name: item.name,
+                setsReps: sets,
+                instructions: item.steps,
+                videoLink: item.video || "",
+                frequency: freq,
+                prescribedDate: prescribedDate,
+                reviewDate: reviewDate,
+                isGeneral: false // Mark as specific exercise
+            };
+            exercisePlans[selectedPatientId].push(exerciseData);
+            
+            await syncToBackend({
+                action: "saveExercise",
+                id: selectedPatientId,
+                name: selectedPatientName,
+                exName: item.name,
+                sets: sets,
+                instr: item.steps,
+                video: item.video || "",
+                freq: freq,
+                prescribedDate: prescribedDate,
+                reviewDate: reviewDate
+            }).catch(() => {});
+        }
+    } 
+    // CASE 2: If the cart is empty but there is General Instruction text
+    else if (instrText !== "") {
+        const generalData = {
+            name: "GENERAL INSTRUCTIONS & PRECAUTIONS",
+            setsReps: "As advised",
+            instructions: instrText,
+            videoLink: "",
+            frequency: "Daily",
+            prescribedDate: prescribedDate,
+            reviewDate: reviewDate,
+            isGeneral: true // MARK AS GENERAL
+        };
+        exercisePlans[selectedPatientId].push(generalData);
+        
+        await syncToBackend({
+            action: "saveExercise",
+            id: selectedPatientId,
+            name: selectedPatientName,
+            exName: "GENERAL INSTRUCTIONS",
+            sets: "N/A",
+            instr: instrText,
+            video: "",
+            freq: "N/A",
+            prescribedDate: prescribedDate,
+            reviewDate: reviewDate
+        }).catch(() => {});
+    } 
+    else {
+        showToast('Please add an exercise or type instructions', 'warning');
+        return;
+    }
 
     renderExercisePlanList();
     clearExerciseForm();
-    showToast('Saving to cloud...', 'info');
-
-    await syncToBackend({
-        action: "saveExercise",
-        id: selectedPatientId,
-        name: selectedPatientName,
-        exName: name,
-        sets: sets,
-        instr: instr,
-        video: video,
-        freq: freq,
-        prescribedDate: prescribedDate,
-        reviewDate: reviewDate
-    });
-    showToast('Exercise plan updated', 'success');
+    showToast('Saved successfully', 'success');
 }
 
         function deleteProgressNote(patientName, index) {
@@ -6555,14 +6645,39 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             document.getElementById('exercise-plan-modal').classList.add('hidden');
         }
 
-        function deleteExercise(patientId, index) {
-    patientId = normId(patientId);
-    if (!exercisePlans[patientId] || !exercisePlans[patientId][index]) return;
-    if (!confirm('Delete exercise?')) return;
-    exercisePlans[patientId].splice(index, 1);
-            renderExercisePlanList();
-            showToast('Deleted', 'info');
+        async function deleteExercise(patientId, index) {
+    patientId = String(patientId || '').trim(); // Ensure it's a string
+    const plan = exercisePlans[patientId];
+    
+    if (!plan || !plan[index]) return;
+
+    const exName = plan[index].name;
+
+    if (!confirm(`Are you sure you want to delete "${exName}"? This will remove it permanently from the cloud.`)) return;
+
+    // 1. Remove from local UI immediately
+    plan.splice(index, 1);
+    renderExercisePlanList();
+
+    // 2. Sync deletion to the Google Sheet
+    showToast('Deleting from cloud...', 'info');
+    try {
+        const result = await syncToBackend({
+            action: "deleteExercise",
+            id: patientId, // This must be the Clinical ID
+            exName: exName
+        });
+        
+        if(result.status === 'success') {
+            showToast('Deleted from Sheet successfully', 'success');
+        } else {
+            throw new Error(result.message);
         }
+    } catch (e) {
+        showToast('Local delete worked, but Sheet update failed: ' + e.message, 'warning');
+        console.error("Delete sync error:", e);
+    }
+}
     (function() {
         function daysSinceSession(dateStr) {
             if (!dateStr) return Infinity;
@@ -7466,6 +7581,18 @@ function renderExerciseCart() {
     window.tempSelectedSteps = exCart.map(i => `[${i.name}]\n${i.steps}`).join('\n\n');
     
     if (window.lucide) lucide.createIcons();
+}
+function toggleExSteps(idx) {
+    const el = document.getElementById(`ex-steps-view-${idx}`);
+    const chevron = document.getElementById(`ex-chevron-${idx}`);
+    
+    if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+    } else {
+        el.classList.add('hidden');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
 }
     </script>
 </body>
