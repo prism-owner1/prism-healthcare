@@ -1150,64 +1150,64 @@ function getAdvanceSessionLabel(r, p) {
         showToast('Select at least one date', 'warning');
         return;
     }
-    const p = patientLookup[selectedPatientName],
-        btn = document.getElementById('submit-btn');
-    const totalFee = p.baseRate + (Number(document.getElementById('session-add-fee').value) || 0);
-    const note = document.getElementById('session-note').value || p.diag;
-    const paymentMode = document.getElementById('session-payment-mode').value;
+
+    const p   = patientLookup[selectedPatientName];
+    const btn = document.getElementById('submit-btn');
+    const totalFee        = p.baseRate + (Number(document.getElementById('session-add-fee').value) || 0);
+    const note            = document.getElementById('session-note').value || p.diag;
+    const paymentMode     = document.getElementById('session-payment-mode').value;
     const amountPaidInput = document.getElementById('session-amount-paid').value;
 
     const datesToSubmit = [...selectedDates];
-    let runningWallet = p.walletBalance || 0;
 
-    // Requirement: Amount Paid is mandatory for non-advance/non-pending payments
-    if (paymentMode !== "Advance" && paymentMode !== "Pending" && (amountPaidInput === "" || amountPaidInput === null)) {
-        showToast("Please enter the Amount Paid (₹)", "warning");
-        document.getElementById('session-amount-paid').focus();
-        return;
-    }
+    // FIX BUG B: Use remainingSessions as the Advance credit counter,
+    // NOT walletBalance. walletBalance is a monetary figure that equals
+    // the original advance forever and never decrements.
+    let remainingCredits = p.remainingSessions || 0;  // session slots left
 
-    // Requirement: Amount Paid is mandatory for non-advance payments
-    if (paymentMode !== "Advance" && paymentMode !== "Pending" && amountPaidInput === "") {
-        showToast("Please enter the Amount Paid (₹)", "warning");
+    // Validation: amount required for non-advance, non-pending modes
+    if (paymentMode !== 'Advance' && paymentMode !== 'Pending' &&
+        (amountPaidInput === '' || amountPaidInput === null)) {
+        showToast('Please enter the Amount Paid (₹)', 'warning');
         document.getElementById('session-amount-paid').focus();
         return;
     }
 
     const newRows = datesToSubmit.map(dateString => {
         let paidForRow = 0;
-        let finalMode = paymentMode;
-        
-        if (paymentMode === "Advance") {
-            if (runningWallet <= 0) {
-                showToast("Insufficient Advance Balance. Session marked as Pending.", "warning");
+        let finalMode  = paymentMode;
+
+        if (paymentMode === 'Advance') {
+            // Gate on session credits, not money
+            if (remainingCredits <= 0) {
+                showToast('Package exhausted — session marked as Pending.', 'warning');
                 paidForRow = 0;
-                finalMode = "Pending";
+                finalMode  = 'Pending';
             } else {
-                const useFromWallet = Math.min(runningWallet, totalFee);
-                paidForRow = useFromWallet;
-                runningWallet -= useFromWallet;
-                if (paidForRow < totalFee) finalMode = "Pending";
+                // Consume one session credit; the fee is considered "covered"
+                paidForRow = totalFee;
+                remainingCredits--;          // decrement for subsequent dates in same submit
+                if (paidForRow < totalFee) finalMode = 'Pending';
             }
-        } else if (paymentMode === "Pending") {
+
+        } else if (paymentMode === 'Pending') {
             paidForRow = 0;
-            finalMode = "Pending";
+            finalMode  = 'Pending';
+
         } else {
-            // Cash/UPI/Card Logic with Auto-Credit/Wallet Application
-            let userPaid = Number(amountPaidInput) || 0;
-            
-            if (userPaid < totalFee && runningWallet > 0) {
-                // Auto-apply wallet if user pays less than fee
-                const creditToApply = Math.min(runningWallet, (totalFee - userPaid));
+            // Cash / UPI / Card
+            const wallet   = p.walletBalance || 0;
+            let userPaid   = Number(amountPaidInput) || 0;
+
+            if (userPaid < totalFee && wallet > 0) {
+                const creditToApply = Math.min(wallet, totalFee - userPaid);
                 paidForRow = userPaid + creditToApply;
-                runningWallet -= creditToApply;
-                showToast(`Applied ₹${creditToApply} from wallet credit`, "info");
+                showToast(`Applied ₹${creditToApply} from wallet credit`, 'info');
             } else {
                 paidForRow = userPaid;
-                // If overpaid, surplus will be added to wallet during processData()
             }
-            
-            if (paidForRow < totalFee) finalMode = "Pending";
+
+            if (paidForRow < totalFee) finalMode = 'Pending';
         }
 
         return [
@@ -1215,61 +1215,60 @@ function getAdvanceSessionLabel(r, p) {
             p.id,
             selectedPatientName,
             p.phone,
-            "", "", 
+            '', '',
             note,
-            "Rehab",
+            'Rehab',
             dateString,
             totalFee,
-            0, 0, 0, "", "",
-            finalMode, // Use the smart-detected mode
-            paidForRow // Use the smart-calculated paid amount
+            0, 0, 0, '', '',
+            finalMode,
+            paidForRow
         ];
     });
 
     globalData.push(...newRows);
     processData();
 
-    // Send instant WhatsApp receipt if exactly one paid session was logged
+    // Send WhatsApp receipt for a single paid session
     if (newRows.length === 1 && newRows[0][15] !== 'Pending' && toNum(newRows[0][16]) > 0) {
         sendQuickSessionReceipt(p, newRows[0]);
     }
 
-    // Fully reset Session Log UI
-    selectedDates = [];
-    selectedPatientName = ""; 
-    document.getElementById('session-note').value = "";
-    document.getElementById('session-amount-paid').value = "";
-    document.getElementById('patient-search-input').value = ""; // Clear search
-    
-    // Hide patient details and show the main list again
+    // Reset UI
+    selectedDates         = [];
+    selectedPatientName   = '';
+    document.getElementById('session-note').value         = '';
+    document.getElementById('session-amount-paid').value  = '';
+    document.getElementById('patient-search-input').value = '';
+
     document.getElementById('patient-workspace').classList.add('hidden');
     document.getElementById('active-cases-container').style.display = 'block';
-    
-    // Close mobile drawer
-    toggleSessionDrawer(false); 
-    
-    showToast(`${datesToSubmit.length} session(s) logged and form reset`, 'success');
-    btn.innerText = "Saved ✓";
-    setTimeout(() => {
-        btn.innerText = "Submit Session(s)";
-    }, 1200);
 
-    // Sync each logged row individually using the data captured in 'row'
+    toggleSessionDrawer(false);
+
+    showToast(`${datesToSubmit.length} session(s) logged`, 'success');
+    btn.innerText = 'Saved ✓';
+    setTimeout(() => { btn.innerText = 'Submit Session(s)'; }, 1200);
+
+    // FIX BUG C: refresh the hint after submit so count updates immediately
+    updateAdvanceHint();
+
+    // Sync to backend
     newRows.forEach(row => {
         syncToBackend({
-            action: "logAppointment",
-            id: p.id,
-            name: row[2], // Fixed: Using row[2] ensures name is sent after UI reset
-            phone: p.phone,
-            condition: row[6],
-            fee: row[9],
-            purchased: 0,
-            advance: 0,
-            discount: 0,
-            type: row[7],
-            date: row[8],
+            action:      'logAppointment',
+            id:          p.id,
+            name:        row[2],
+            phone:       p.phone,
+            condition:   row[6],
+            fee:         row[9],
+            purchased:   0,
+            advance:     0,
+            discount:    0,
+            type:        row[7],
+            date:        row[8],
             paymentMode: row[15],
-            amountPaid: row[16]
+            amountPaid:  row[16]
         }).catch(() => {});
     });
 }
@@ -1279,43 +1278,99 @@ function getAdvanceSessionLabel(r, p) {
         }
 
        function updateAdvanceHint() {
-            const hint = document.getElementById('advance-remaining-hint');
-            if (!selectedPatientName || !hint) return;
-            
-            const p = patientLookup[selectedPatientName];
-            const wallet = p.walletBalance || 0;
-            const due = p.outstandingDue || 0;
-            const rem = p.remainingSessions;
-            
-            hint.classList.remove('hidden');
-            
-            // STYLE: CLEAN BLUE BOX (PREVIOUS STYLE)
-            if (p.purchased > 0 && rem > 0) {
-                hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center text-[10px] font-bold uppercase";
+    const hint = document.getElementById('advance-remaining-hint');
+    if (!selectedPatientName || !hint) return;
+
+    const p = patientLookup[selectedPatientName];
+    if (!p) return;
+
+    const rem  = p.remainingSessions || 0;     // session slots still left in package
+    const due  = p.outstandingDue   || 0;     // money owed to clinic
+    const rate = p.baseRate         || 0;     // rate per session
+
+    // Monetary value of remaining sessions — this is what the user wants to see
+    const remainingValue = Math.round(rem * rate);
+
+    hint.classList.remove('hidden');
+
+    // ── Patient has a pre-paid session package ────────────────────────────────
+    if (p.purchased > 0) {
+
+        if (rem > 0) {
+            // Sessions still available — show count AND monetary value
+            hint.className =
+                'mt-2.5 p-3 bg-indigo-50 border border-indigo-100 ' +
+                'text-indigo-700 rounded-2xl text-center text-[10px] font-bold uppercase';
+
+            const dueLine = due > 0
+                ? `<span class="block text-rose-500 text-[9px] mt-1 font-black">
+                       ALSO DUE: ₹${due.toLocaleString()}
+                   </span>`
+                : '';
+
+            hint.innerHTML = `
+                <span class="block text-slate-500 text-[8px]">PRE-PAID PACKAGE</span>
+                <span class="block text-sm font-black">
+                    REM SESSIONS: ${rem} / ${p.purchased}
+                </span>
+                <span class="block font-black text-indigo-600 mt-1 text-[11px]">
+                    BALANCE: ₹${remainingValue.toLocaleString()}
+                </span>
+                ${dueLine}`;
+
+        } else {
+            // Package fully consumed
+            if (due > 0) {
+                hint.className =
+                    'mt-2.5 p-3 bg-rose-50 border border-rose-200 ' +
+                    'text-rose-700 rounded-2xl text-center text-[10px] font-bold uppercase';
                 hint.innerHTML = `
-                    <span class="block text-slate-500 text-[8px]">PRE-PAID PACKAGE</span>
-                    <span class="block">REM SESSIONS: ${rem}/${p.purchased}</span>
-                    <span class="block font-black mt-1 text-xs">
-                        ${wallet > 0 ? `WALLET: ₹${wallet.toLocaleString()}` : (due > 0 ? `DUE: ₹${due.toLocaleString()}` : 'BALANCE: ₹0')}
-                    </span>
-                `;
-            } 
-            // STYLE: GREEN BOX FOR CREDIT
-            else if (wallet > 0) {
-                hint.className = "mt-2.5 p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl text-center text-[10px] font-bold uppercase";
-                hint.innerHTML = `<span class="block text-slate-500 text-[8px]">REGULAR (CREDIT)</span><span class="block font-black text-emerald-700 mt-1 text-xs">WALLET: ₹${wallet.toLocaleString()}</span>`;
-            }
-            // STYLE: RED BOX FOR DUE
-            else if (due > 0) {
-                hint.className = "mt-2.5 p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl text-center text-[10px] font-bold uppercase";
-                hint.innerHTML = `<span class="block text-slate-500 text-[8px]">REGULAR (PENDING)</span><span class="block font-black text-rose-700 mt-1 text-xs">DUE: ₹${due.toLocaleString()}</span>`;
-            } 
-            // STYLE: NEUTRAL
-            else {
-                hint.className = "mt-2.5 p-3 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl text-center text-[10px] font-bold uppercase";
-                hint.innerHTML = `<span class="block text-slate-400 text-[8px]">REGULAR PATIENT</span><span class="block text-slate-500 font-black mt-1">NO PENDING BALANCE</span>`;
+                    <span class="block text-[8px]">PACKAGE EXHAUSTED</span>
+                    <span class="block text-sm font-black">TOTAL DUE: ₹${due.toLocaleString()}</span>`;
+            } else {
+                hint.className =
+                    'mt-2.5 p-3 bg-slate-100 border border-slate-200 ' +
+                    'text-slate-500 rounded-2xl text-center text-[10px] font-bold uppercase';
+                hint.innerHTML = `
+                    <span class="block text-[8px]">PACKAGE EXHAUSTED</span>
+                    <span class="block text-sm font-black">ALL SETTLED</span>`;
             }
         }
+
+    // ── Regular patient (pay-per-session, no package) ─────────────────────────
+    } else {
+        const wallet = p.walletBalance || 0;
+
+        if (wallet > 0) {
+            hint.className =
+                'mt-2.5 p-3 bg-emerald-50 border border-emerald-100 ' +
+                'text-emerald-700 rounded-2xl text-center text-[10px] font-bold uppercase';
+            hint.innerHTML = `
+                <span class="block text-slate-500 text-[8px]">REGULAR (CREDIT)</span>
+                <span class="block font-black text-emerald-700 mt-1 text-xs">
+                    WALLET: ₹${wallet.toLocaleString()}
+                </span>`;
+
+        } else if (due > 0) {
+            hint.className =
+                'mt-2.5 p-3 bg-rose-50 border border-rose-200 ' +
+                'text-rose-700 rounded-2xl text-center text-[10px] font-bold uppercase';
+            hint.innerHTML = `
+                <span class="block text-slate-500 text-[8px]">REGULAR (PENDING)</span>
+                <span class="block font-black text-rose-700 mt-1 text-xs">
+                    DUE: ₹${due.toLocaleString()}
+                </span>`;
+
+        } else {
+            hint.className =
+                'mt-2.5 p-3 bg-slate-100 border border-slate-200 ' +
+                'text-slate-500 rounded-2xl text-center text-[10px] font-bold uppercase';
+            hint.innerHTML = `
+                <span class="block text-slate-400 text-[8px]">REGULAR PATIENT</span>
+                <span class="block text-slate-500 font-black mt-1">NO PENDING DUES</span>`;
+        }
+    }
+}
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
@@ -2077,39 +2132,51 @@ function openMidPackage() {
 
     names.forEach(name => {
         const p = patientLookup[name];
-        
-        // UPDATED: Calculate using wallet helper
         const rem = getRemainingSessions(p);
         const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+        
+        // Internal calculations for the badge text
+        const remainingValue = Math.round(rem * (p.baseRate || 0));
+        const walletValue = Math.round(p.walletBalance || 0);
 
         if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
             let statusBadge;
-            const wallet = p.walletBalance || 0;
+
+            // 1. DARK - CASE CLOSED
             if (p.closed) {
-                statusBadge = `<span class="bg-rose-100 text-rose-600 px-3 py-1 rounded text-[10px] font-black">CLOSED</span>`;
-            } else if (p.outstandingDue > 0) {
-                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="bg-rose-50 text-rose-600 px-3 py-1 rounded text-[10px] font-black hover:bg-rose-600 hover:text-white transition-all cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE — Click to Clear</button>`;
-            } else if (rem > 0) {
-                statusBadge = `<span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded text-[10px] font-black">${rem} LEFT (₹${wallet.toLocaleString()} Wallet)</span>`;
-            } else if (wallet > 0) {
-                statusBadge = `<span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded text-[10px] font-black">₹${wallet.toLocaleString()} WALLET</span>`;
-            } else {
-                statusBadge = `<span class="bg-slate-100 text-slate-600 px-3 py-1 rounded text-[10px] font-black">REGULAR</span>`;
+                statusBadge = `<span class="bg-slate-800 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Closed</span>`;
+            } 
+            
+            // 2. RED - OUTSTANDING DUE (PRIORITY)
+            else if (p.outstandingDue > 0) {
+                statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[10px] font-black hover:bg-rose-700 hover:text-white transition-all cursor-pointer uppercase shadow-sm">₹${p.outstandingDue.toLocaleString()} Due</button>`;
+            } 
+
+            // 3. BLUE - SESSIONS LEFT OR WALLET BALANCE
+            else if (rem > 0 || walletValue > 0) {
+                const displayAmt = rem > 0 ? remainingValue : walletValue;
+                const displayText = rem > 0 ? `${rem} Left` : `Balance`;
+                statusBadge = `<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">${displayText} (₹${displayAmt.toLocaleString()})</span>`;
+            } 
+            
+            // 4. GREEN - REGULAR (0 BALANCE / 0 DUE)
+            else {
+                statusBadge = `<span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Regular</span>`;
             }
 
             pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${name.toUpperCase()} ${p.id.toUpperCase()}">
                         <td class="p-5 font-black text-indigo-500 text-xs hidden lg:table-cell">${p.id}</td>
-                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
+                        <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')">${name}</td>
                         <td class="p-5 text-xs font-bold text-slate-600 italic hidden lg:table-cell">${p.age || '—'}Y / ${p.gender || '—'}</td>
                         <td class="p-5 text-xs font-black text-slate-700 hidden lg:table-cell">${p.phone || '—'}</td>
                         <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] hidden lg:table-cell">${p.diag}</td>
                         <td class="p-5">${statusBadge}</td>
                 <td class="p-5 text-center flex gap-2 justify-center">
-                    <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
-                    <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all" title="Edit Patient"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                    <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                    <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
                     ${p.closed 
-                        ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
-                        : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
+                        ? `<button onclick="restartPatientCase('${name.replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all"><i data-lucide="play" class="w-4 h-4"></i></button>`
+                        : `<button onclick="openCaseModal();" class="bg-rose-500 hover:bg-rose-600 text-white p-2 rounded-lg shadow-md transition-all"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
                     }
                 </td>
             </tr>`;
@@ -2728,71 +2795,74 @@ function openMidPackage() {
         }
 
         async function downloadBillPDF() {
-            if (!currentBillContext) {
-                showToast('Open a bill first', 'warning');
-                return;
-            }
-            const {
-                name,
-                stmtNo
-            } = currentBillContext;
-            const container = document.getElementById('bill-content-pages');
-            const pageEls = container ? Array.from(container.querySelectorAll('.bill-page')) : [];
-            if (!pageEls.length || typeof html2canvas === 'undefined' || !window.jspdf) {
-                showToast('PDF library not available', 'error');
-                return;
-            }
-            showToast('Preparing PDF for download…', 'info');
-            try {
-                const {
-                    jsPDF
-                } = window.jspdf;
-                const pdf = new jsPDF({
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                });
-                const pageWidthMM = 210,
-                    pageHeightMM = 297;
+    if (!currentBillContext) {
+        showToast('Open a bill first', 'warning');
+        return;
+    }
+    const { name, stmtNo } = currentBillContext;
+    const container = document.getElementById('bill-content-pages');
+    const pageEls = container ? Array.from(container.querySelectorAll('.bill-page')) : [];
+    
+    if (!pageEls.length || typeof html2canvas === 'undefined' || !window.jspdf) {
+        showToast('PDF library not available', 'error');
+        return;
+    }
 
-                // --- TEMP RESET TO FULL DESKTOP DIMENSIONS TO PREVENT MOBILE SQUISHING ---
-                pageEls.forEach(page => {
-                    page.style.transform = 'none';
-                    page.style.zoom = '1';
-                    page.style.width = '794px';       // Native pixel width for standard A4
-                    page.style.minHeight = '1123px';  // Native pixel height for standard A4
-                    page.style.padding = '75px';      // Safe print padding in pixels
-                    page.style.marginBottom = '20px';
-                });
+    showToast('Generating PDF...', 'info');
+    
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+            compress: true // Enable internal PDF compression
+        });
 
-                for (let i = 0; i < pageEls.length; i++) {
-                    const canvas = await html2canvas(pageEls[i], {
-                        scale: 2, // High resolution scale for crisp text
-                        useCORS: true,
-                        allowTaint: true,
-                        logging: false,
-                        windowWidth: 1024, // Forces rendering engine to use desktop layout
-                        width: 794,
-                        height: 1123
-                    });
-                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
-                    const imgHeightMM = Math.min((canvas.height * pageWidthMM) / canvas.width, pageHeightMM);
-                    if (i > 0) pdf.addPage();
-                    pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMM, imgHeightMM);
-                }
+        // 1. Pre-render preparation: Temporarily normalize pages for the engine
+        pageEls.forEach(page => {
+            page.style.transform = 'none';
+            page.style.zoom = '1';
+            page.style.margin = '0';
+        });
 
-                // --- INSTANTLY RE-APPLY MOBILE SCALING BACK TO PREVIEW ---
-                adjustBillScale();
+        for (let i = 0; i < pageEls.length; i++) {
+            // 2. Optimized html2canvas settings
+            const canvas = await html2canvas(pageEls[i], {
+                scale: 1.5, // Reduced from 2.0. 1.5 is the "sweet spot" for speed vs clarity.
+                useCORS: true,
+                logging: false,
+                backgroundColor: "#ffffff",
+                removeContainer: true,
+                imageTimeout: 0, // No delay for images
+                fontReadyTimeout: 0
+            });
 
-                pdf.save(`${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`);
-                showToast('PDF downloaded successfully', 'success');
-            } catch (err) {
-                console.error(err);
-                showToast('Could not generate PDF', 'error');
-                // Ensure scale is restored even if an error breaks the process
-                adjustBillScale();
-            }
+            // 3. Faster Image Conversion
+            // Using JPEG with 0.8 quality significantly reduces processing time vs 0.98
+            const imgData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            if (i > 0) pdf.addPage();
+            
+            // Add image to PDF
+            pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+            
+            // Cleanup canvas memory immediately
+            canvas.width = 0;
+            canvas.height = 0;
         }
+
+        // 4. Restore Mobile Preview Scale
+        adjustBillScale();
+
+        pdf.save(`${name.replace(/\s+/g, '_')}_Bill_${stmtNo.replace(/\//g, '-')}.pdf`);
+        showToast('PDF downloaded!', 'success');
+    } catch (err) {
+        console.error(err);
+        showToast('Generation failed. Try "Print" instead.', 'error');
+        adjustBillScale();
+    }
+}
 
         function sendBillToPatient() {
             if (!currentBillContext) {
