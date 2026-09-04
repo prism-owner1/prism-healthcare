@@ -1678,100 +1678,154 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             </header>
 
             <!-- OVERVIEW -->
-            <section id="tab-overview" class="animate-slide">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="glass-card p-6 rounded-[2rem] shadow-sm">
-                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Session Count</p>
-                        <h3 id="stat-total" class="text-2xl font-black">0</h3>
-                    </div>
-                    <div class="glass-card p-6 rounded-[2rem] shadow-sm">
-                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-1">Registered Patients</p>
-                        <h3 id="stat-registered" class="text-2xl font-black">0</h3>
-                    </div>
-                    <div class="glass-card p-6 rounded-[2rem] border-indigo-100 bg-indigo-50/10">
-                        <p class="text-indigo-600 text-[10px] font-bold uppercase mb-1">Total Collection (₹)</p>
-                        <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700">₹0</h3>
-                    </div>
-                </div>
+<section id="tab-overview" class="animate-slide">
 
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
-                    <button onclick="openBranchDetailModal('POC')" class="glass-card p-6 rounded-[2rem] border-blue-100 bg-blue-50/10 text-left hover:scale-[1.02] transition-all group">
-                        <div class="flex justify-between items-center">
-                            <p class="text-blue-600 text-[10px] font-bold uppercase mb-1">Prism Orthocare (POC)</p>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-blue-400 group-hover:translate-x-1 transition-all"></i>
-                        </div>
-                        <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-700">₹0</h3>
-                    </button>
-                    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-6 rounded-[2rem] border-emerald-100 bg-emerald-50/10 text-left hover:scale-[1.02] transition-all group">
-                        <div class="flex justify-between items-center">
-                            <p class="text-emerald-600 text-[10px] font-bold uppercase mb-1">Homecare (PHC)</p>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-all"></i>
-                        </div>
-                        <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-700">₹0</h3>
-                    </button>
-                    <button onclick="openBranchDetailModal('PRC')" class="glass-card p-6 rounded-[2rem] border-orange-100 bg-orange-50/10 text-left hover:scale-[1.02] transition-all group">
-                        <div class="flex justify-between items-center">
-                            <p class="text-orange-600 text-[10px] font-bold uppercase mb-1">Prism Rehab Clinic (PRC)</p>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-orange-400 group-hover:translate-x-1 transition-all"></i>
-                        </div>
-                        <h3 id="stat-prc-revenue" class="text-2xl font-black text-orange-700">₹0</h3>
-                    </button>
-                    <button onclick="openCaseModal()" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all group">
-                        <div class="flex justify-between items-center">
-                            <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Active Cases</p>
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-rose-400 group-hover:translate-x-1 transition-all"></i>
-                        </div>
-                        <h3 id="stat-active-count" class="text-2xl font-black text-rose-700">0</h3>
-                        <p class="text-[9px] text-rose-500 font-bold mt-1">Under Treatment</p>
-                    </button>
-                    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-6 rounded-[2rem] border-rose-100 bg-rose-50/10 text-left hover:scale-[1.02] transition-all cursor-pointer">
-    <p class="text-rose-600 text-[10px] font-bold uppercase mb-1">Outstanding Dues (₹)</p>
-    <h3 id="stat-outstanding" class="text-2xl font-black text-rose-700">₹0</h3>
-</button>
-                </div>
+  <!-- TOP HERO STATS ROW -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 group hover:border-indigo-200 transition-all">
+      <div class="stat-icon-badge bg-indigo-50">
+        <i data-lucide="activity" class="w-5 h-5 text-indigo-600"></i>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">Total Sessions</p>
+        <h3 id="stat-total" class="text-2xl font-black text-slate-900 leading-none">0</h3>
+      </div>
+    </div>
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 hover:border-emerald-200 transition-all">
+      <div class="stat-icon-badge bg-emerald-50">
+        <i data-lucide="users" class="w-5 h-5 text-emerald-600"></i>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">Registered Patients</p>
+        <h3 id="stat-registered" class="text-2xl font-black text-slate-900 leading-none">0</h3>
+      </div>
+    </div>
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-4 border-indigo-100 bg-gradient-to-br from-indigo-50/60 to-white hover:border-indigo-300 transition-all">
+      <div class="stat-icon-badge bg-indigo-100">
+        <i data-lucide="indian-rupee" class="w-5 h-5 text-indigo-700"></i>
+      </div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-indigo-400 tracking-widest mb-0.5">Total Collection</p>
+        <h3 id="stat-revenue" class="text-2xl font-black text-indigo-700 leading-none">₹0</h3>
+      </div>
+    </div>
+  </div>
 
-                <div class="glass-card p-4 rounded-[2rem] shadow-sm mb-8 flex flex-wrap items-center gap-3">
-                    <span class="text-[10px] font-black uppercase text-slate-600 tracking-widest pl-2">View Patients:</span>
-                    <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Prism Orthocare</button>
-                    <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
-                    <button onclick="filterByBranch('PRC')" class="px-4 py-2 rounded-xl bg-orange-50 text-orange-700 font-black text-[10px] uppercase hover:bg-orange-600 hover:text-white transition-all">Prism Rehab Clinic</button>
-                    <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white transition-all">Show All</button>
-                </div>
+  <!-- BRANCH + ACTIVE + DUES ROW -->
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
+    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border-blue-100 bg-blue-50/30 text-left hover:scale-[1.02] hover:shadow-blue-100 transition-all group">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[8px] font-black text-blue-400 uppercase tracking-widest leading-tight">Prism<br>Orthocare</span>
+        <span class="text-[8px] font-black bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-md">POC</span>
+      </div>
+      <h3 id="stat-poc-revenue" class="text-xl font-black text-blue-700">₹0</h3>
+      <i data-lucide="chevron-right" class="w-3 h-3 text-blue-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+    </button>
+    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border-emerald-100 bg-emerald-50/30 text-left hover:scale-[1.02] transition-all group">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[8px] font-black text-emerald-400 uppercase tracking-widest leading-tight">Home<br>Care</span>
+        <span class="text-[8px] font-black bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded-md">PHC</span>
+      </div>
+      <h3 id="stat-phc-revenue" class="text-xl font-black text-emerald-700">₹0</h3>
+      <i data-lucide="chevron-right" class="w-3 h-3 text-emerald-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+    </button>
+    <button onclick="openBranchDetailModal('PRC')" class="glass-card p-5 rounded-[1.75rem] border-orange-100 bg-orange-50/30 text-left hover:scale-[1.02] transition-all group">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[8px] font-black text-orange-400 uppercase tracking-widest leading-tight">Rehab<br>Clinic</span>
+        <span class="text-[8px] font-black bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-md">PRC</span>
+      </div>
+      <h3 id="stat-prc-revenue" class="text-xl font-black text-orange-700">₹0</h3>
+      <i data-lucide="chevron-right" class="w-3 h-3 text-orange-300 mt-1 group-hover:translate-x-1 transition-all"></i>
+    </button>
+    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border-rose-100 bg-rose-50/30 text-left hover:scale-[1.02] transition-all group">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[8px] font-black text-rose-400 uppercase tracking-widest leading-tight">Active<br>Cases</span>
+        <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping mt-1"></span>
+      </div>
+      <h3 id="stat-active-count" class="text-xl font-black text-rose-700">0</h3>
+      <p class="text-[8px] text-rose-400 font-bold mt-1 uppercase">Under Treatment</p>
+    </button>
+    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border-amber-100 bg-amber-50/30 text-left hover:scale-[1.02] transition-all">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[8px] font-black text-amber-500 uppercase tracking-widest leading-tight">Outstanding<br>Dues</span>
+        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5"></i>
+      </div>
+      <h3 id="stat-outstanding" class="text-xl font-black text-amber-700">₹0</h3>
+    </button>
+  </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Daily Collection</p>
-                        <h4 id="stat-daily" class="text-3xl font-black text-slate-800">₹0</h4>
-                    </div>
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Monthly Collection</p>
-                        <h4 id="stat-monthly" class="text-3xl font-black text-indigo-600">₹0</h4>
-                    </div>
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm text-center">
-                        <p class="text-slate-600 text-[10px] font-bold uppercase mb-2">Yearly Collection</p>
-                        <h4 id="stat-yearly" class="text-3xl font-black text-slate-800">₹0</h4>
-                    </div>
-                </div>
+  <!-- FILTER PILL BAR -->
+  <div class="glass-card px-5 py-3.5 rounded-[2rem] mb-5 flex flex-wrap items-center gap-2">
+    <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest mr-1">Filter:</span>
+    <button onclick="filterByBranch('POC')" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-black text-[9px] uppercase hover:bg-indigo-600 hover:text-white transition-all">Orthocare</button>
+    <button onclick="filterByBranch('PHC')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-black text-[9px] uppercase hover:bg-emerald-600 hover:text-white transition-all">Homecare</button>
+    <button onclick="filterByBranch('PRC')" class="px-3 py-1.5 rounded-xl bg-orange-50 text-orange-700 font-black text-[9px] uppercase hover:bg-orange-600 hover:text-white transition-all">Rehab Clinic</button>
+    <button onclick="filterByBranch('ALL')" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 font-black text-[9px] uppercase hover:bg-slate-800 hover:text-white transition-all">All Branches</button>
+  </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Revenue Trend (Monthly Income)</h4>
-                        <canvas id="revenueChart" height="170"></canvas>
-                    </div>
-                    <div class="glass-card p-8 rounded-[3rem] shadow-xl">
-                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest mb-6">Daily Collection (Last 14 Days)</h4>
-                        <canvas id="dailyChart" height="170"></canvas>
-                    </div>
-                </div>
+  <!-- COLLECTION SUMMARY TRIO -->
+  <div class="grid grid-cols-3 gap-4 mb-5">
+    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent pointer-events-none"></div>
+      <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Today</p>
+      <h4 id="stat-daily" class="text-2xl font-black text-slate-800">₹0</h4>
+      <p class="text-[8px] text-slate-400 font-bold mt-1 uppercase">Daily Collection</p>
+    </div>
+    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden border-indigo-100">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/40 to-transparent pointer-events-none"></div>
+      <p class="text-[9px] font-black uppercase text-indigo-400 tracking-widest mb-1">This Month</p>
+      <h4 id="stat-monthly" class="text-2xl font-black text-indigo-600">₹0</h4>
+      <p class="text-[8px] text-indigo-400 font-bold mt-1 uppercase">Monthly Collection</p>
+    </div>
+    <div class="glass-card p-5 rounded-[2rem] text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-transparent pointer-events-none"></div>
+      <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">This Year</p>
+      <h4 id="stat-yearly" class="text-2xl font-black text-slate-800">₹0</h4>
+      <p class="text-[8px] text-slate-400 font-bold mt-1 uppercase">Yearly Collection</p>
+    </div>
+  </div>
 
-                <div class="glass-card p-8 rounded-[3rem] shadow-xl mt-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h4 class="text-xs font-black uppercase text-slate-600 tracking-widest">Outstanding Dues</h4>
-                        <span class="text-[9px] font-bold text-slate-600 uppercase">Patients with pending balance</span>
-                    </div>
-                    <div id="dues-list" class="max-h-64 overflow-y-auto pr-1"></div>
-                </div>
-            </section>
+  <!-- CHARTS ROW -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Revenue Trend</h4>
+          <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Monthly Income</p>
+        </div>
+        <div class="stat-icon-badge bg-indigo-50">
+          <i data-lucide="trending-up" class="w-4 h-4 text-indigo-600"></i>
+        </div>
+      </div>
+      <canvas id="revenueChart" height="170"></canvas>
+    </div>
+    <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Daily Collection</h4>
+          <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Last 14 Days</p>
+        </div>
+        <div class="stat-icon-badge bg-emerald-50">
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-600"></i>
+        </div>
+      </div>
+      <canvas id="dailyChart" height="170"></canvas>
+    </div>
+  </div>
+
+  <!-- OUTSTANDING DUES CARD -->
+  <div class="glass-card p-6 rounded-[2.5rem] shadow-sm">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h4 class="text-[10px] font-black uppercase text-slate-600 tracking-widest">Outstanding Dues</h4>
+        <p class="text-[8px] font-bold text-slate-400 uppercase mt-0.5">Patients with pending balance</p>
+      </div>
+      <span class="text-[8px] font-black bg-rose-50 text-rose-500 px-3 py-1.5 rounded-xl uppercase border border-rose-100">Unpaid</span>
+    </div>
+    <div id="dues-list" class="max-h-64 overflow-y-auto pr-1"></div>
+  </div>
+
+</section>
 
             <!-- ENROLL -->
             <section id="tab-enroll" class="section-hidden animate-slide">
