@@ -1782,23 +1782,33 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
   </div>
 
   <!-- COLLECTION SUMMARY TRIO -->
-  <div class="grid grid-cols-3 gap-4 mb-6">
-    <div class="glass-card p-5 rounded-[2.25rem] text-center border-slate-100 bg-white/40 backdrop-blur-md">
-      <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">Today</p>
-      <h4 id="stat-daily" class="text-2xl font-black text-slate-900">₹0</h4>
-      <div class="h-1 w-6 bg-slate-300 mx-auto mt-2 rounded-full opacity-40"></div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+    <!-- Today -->
+    <div class="glass-card p-4 rounded-2xl md:rounded-[2.25rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border-slate-100 bg-white/40 backdrop-blur-md">
+      <div class="stat-icon-badge bg-slate-100 md:hidden"><i data-lucide="calendar" class="w-4 h-4 text-slate-500"></i></div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">Today</p>
+        <h4 id="stat-daily" class="text-xl md:text-2xl font-black text-slate-900">₹0</h4>
+      </div>
     </div>
-    <div class="glass-card p-5 rounded-[2.25rem] text-center border-indigo-100 bg-indigo-50/20 backdrop-blur-md shadow-inner">
-      <p class="text-[9px] font-black uppercase text-indigo-500 tracking-widest mb-1">This Month</p>
-      <h4 id="stat-monthly" class="text-2xl font-black text-indigo-700">₹0</h4>
-      <div class="h-1 w-10 bg-indigo-600 mx-auto mt-2 rounded-full shadow-[0_0_8px_rgba(79,70,229,0.4)]"></div>
+    <!-- This Month -->
+    <div class="glass-card p-4 rounded-2xl md:rounded-[2.25rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border-indigo-100 bg-indigo-50/30 backdrop-blur-md shadow-sm">
+      <div class="stat-icon-badge bg-indigo-100 md:hidden"><i data-lucide="calendar-days" class="w-4 h-4 text-indigo-600"></i></div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-indigo-500 tracking-widest mb-0.5">This Month</p>
+        <h4 id="stat-monthly" class="text-xl md:text-2xl font-black text-indigo-700">₹0</h4>
+      </div>
     </div>
-    <div class="glass-card p-5 rounded-[2.25rem] text-center border-slate-100 bg-white/40 backdrop-blur-md">
-      <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-1">This Year</p>
-      <h4 id="stat-yearly" class="text-2xl font-black text-slate-900">₹0</h4>
-      <div class="h-1 w-6 bg-slate-300 mx-auto mt-2 rounded-full opacity-40"></div>
+    <!-- This Year -->
+    <div class="glass-card p-4 rounded-2xl md:rounded-[2.25rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border-slate-100 bg-white/40 backdrop-blur-md">
+      <div class="stat-icon-badge bg-slate-100 md:hidden"><i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500"></i></div>
+      <div>
+        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-0.5">This Year</p>
+        <h4 id="stat-yearly" class="text-xl md:text-2xl font-black text-slate-900">₹0</h4>
+      </div>
     </div>
   </div>
+
 
   <!-- CHARTS ROW -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -1900,51 +1910,55 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                             <input type="text" id="en-address" placeholder="Patient Address (optional)" class="p-3 bg-slate-50 rounded-xl font-bold outline-none w-full">
                         </div>
                         <div class="space-y-5">
-                            <h4 class="text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-2">2. Package Configuration</h4>
-                            
-                            <!-- Row 1: Cost/Session & Sessions -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[9px] font-black text-emerald-500 uppercase ml-1">Cost / Session (₹)</label>
-                                    <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full mt-1 p-3 bg-emerald-50 rounded-xl font-bold outline-none text-emerald-700">
-                                </div>
-                                <div>
-                                    <label class="text-[9px] font-black text-blue-500 uppercase ml-1">Sessions</label>
-                                    <input type="number" id="en-sessions" value="0" class="w-full mt-1 p-3 bg-blue-50 rounded-xl font-bold outline-none text-blue-700">
-                                </div>
-                            </div>
+                            <h4 class="text-[10px] font-black uppercase text-emerald-600 tracking-widest border-b border-emerald-100 pb-2">2. Billing & Package</h4>
 
-                            <!-- Row 2: Advance Paid & Payment Mode -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Advance Paid (₹)</label>
-                                    <input type="number" id="en-advance" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                                </div>
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
-                                    <select id="en-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Advance">Advance (Pre-paid Package)</option>
-                                        <option value="Pending">Pending / Due</option>
-                                    </select>
-                                </div>
-                            </div>
+<!-- Row 1: Cost/Session & Sessions -->
+<div class="grid grid-cols-2 gap-4">
+    <div>
+        <label class="text-[9px] font-black text-emerald-500 uppercase ml-1">Cost / Session (₹)</label>
+        <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full mt-1 p-3 bg-emerald-50 rounded-xl font-bold outline-none text-emerald-700">
+    </div>
+    <div>
+        <label class="text-[9px] font-black text-blue-500 uppercase ml-1">Total Sessions</label>
+        <input type="number" id="en-sessions" value="1" placeholder="1 for consultation" class="w-full mt-1 p-3 bg-blue-50 rounded-xl font-bold outline-none text-blue-700">
+    </div>
+</div>
 
-                            <!-- Row 3: Discount (Aligned with columns above) -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Discount (%)</label>
-                                    <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
-                                </div>
-                                <div class="hidden lg:block"></div> <!-- Empty spacer to maintain symmetry on desktop -->
-                            </div>
+<!-- Row 2: Amount Paid & Payment Mode -->
+<div class="grid grid-cols-2 gap-4">
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Amount Paid Now (₹)</label>
+        <input type="number" id="en-advance" value="0" placeholder="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+    </div>
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Payment Mode</label>
+        <select id="en-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Card">Card</option>
+            <option value="Pending">Pending / Due</option>
+        </select>
+    </div>
+</div>
 
-                            <div class="p-5 bg-slate-900 rounded-2xl text-white">
-                                <p class="text-[9px] font-bold uppercase text-slate-600 mb-1">Total Package Value</p>
-                                <h5 id="enroll-summary" class="text-xl font-black">₹0</h5>
-                            </div>
+<!-- Row 3: Discount -->
+<div class="grid grid-cols-2 gap-4">
+    <div>
+        <label class="text-[9px] font-black text-slate-600 uppercase ml-1">Discount (%)</label>
+        <input type="number" id="en-discount" value="0" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none">
+    </div>
+    <div id="en-calc-status" class="flex items-center pt-4">
+        <!-- Live Status will appear here -->
+    </div>
+</div>
+
+<div class="p-5 bg-slate-900 rounded-2xl text-white">
+    <div class="flex justify-between items-center mb-1">
+        <p class="text-[9px] font-bold uppercase text-slate-400">Total Package Value</p>
+        <p id="en-pkg-val" class="text-[10px] font-black text-indigo-400">₹0</p>
+    </div>
+    <h5 id="enroll-summary" class="text-xl font-black">₹0 Paid</h5>
+</div>
                         </div>
                     </div>
 
@@ -2085,9 +2099,10 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                         <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Base Rate</label>
                                         <input type="number" id="base-rate-display" readonly class="w-full p-3 bg-slate-100 rounded-xl text-xs font-black max-lg:p-2 max-lg:text-[11px]">
                                     </div>
-                                    <div>
+                                                                       <div>
                                         <label class="text-[9px] font-black text-indigo-500 uppercase ml-1 max-lg:text-[8px]">Add-on Fee</label>
                                         <input type="number" id="session-add-fee" value="0" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs font-black outline-none max-lg:p-2 max-lg:text-[11px]">
+                                        <input type="text" id="session-add-fee-name" placeholder="Procedure name (e.g. IFT, SWD)" class="w-full mt-1.5 p-2.5 bg-white border border-indigo-100 rounded-xl text-[10px] font-bold outline-none max-lg:p-2 max-lg:text-[10px] placeholder:text-slate-300">
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4 mb-6 max-lg:gap-2 max-lg:mb-2">
@@ -3592,56 +3607,50 @@ function resetEnrollBodyChart(){
 
 // --- ADDED THIS FUNCTION HERE ---
 function getPackageBreakdown(p) {
-    const packageDefinitions = [];
+    if (!p || !p.logs) return { packages: [], totalRemaining: 0, activeWallet: 0 };
+    const packages = [];
+    
+    // 1. Extract every individual payment as a unique package
     p.logs.forEach(l => {
         const type = String(l[7] || '').trim().toLowerCase();
         const capacity = toNum(l[10]);
-        if ((type === 'enrollment' || type === 'package added') && capacity > 0) {
-            packageDefinitions.push({
-                timestamp: l[0],
+        const advance = toNum(l[11]);
+        if ((type === 'enrollment' || type === 'package added') && (capacity > 0 || advance > 0)) {
+            packages.push({
+                id: packages.length + 1, // Permanent Sequential ID
                 capacity: capacity,
+                advance: advance,
+                consumed: 0,
                 sessions: []
             });
         }
     });
-    packageDefinitions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
-    if (packageDefinitions.length === 0) return { packages: [], totalCapacity: p.purchased || 0, totalUsed: 0 };
-
-    const consumingLogs = p.logs.filter(l => {
+    // 2. Distribute rehab sessions sequentially (FIFO)
+    const rehabSessions = p.logs.filter(l => {
         const type = String(l[7] || '').trim().toLowerCase();
-        const mode = String(l[15] || '').trim();
-        const fee = toNum(l[9]);
-        
-        // Count enrollment as Session #1 if any fee was set
-        if (type === 'enrollment') {
-            return fee > 0;
+        return !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(type) && 
+               (String(l[15]).trim() === 'Advance');
+    }).sort((a, b) => new Date(a[0]) - new Date(b[0]));
+
+    rehabSessions.forEach(log => {
+        const openPkg = packages.find(pkg => pkg.consumed < pkg.capacity);
+        if (openPkg) {
+            openPkg.consumed++;
+            openPkg.sessions.push(log);
         }
-
-        return type !== 'package added' &&
-               type !== 'case closed' && 
-               type !== 'case restarted' && 
-               type !== 'bill issued' &&
-               (mode === 'Advance' || fee > 0);
-    }).slice();
-
-    consumingLogs.sort((a, b) => new Date(a[0]) - new Date(b[0]));
-
-    consumingLogs.forEach(l => {
-        const openPkg = packageDefinitions.find(pkg => pkg.sessions.length < pkg.capacity);
-        if (openPkg) openPkg.sessions.push(l);
-        else if (packageDefinitions.length > 0) packageDefinitions[packageDefinitions.length - 1].sessions.push(l);
     });
 
-    const totalCapacity = packageDefinitions.reduce((s, pkg) => s + pkg.capacity, 0);
-    const totalUsed = packageDefinitions.reduce((s, pkg) => s + pkg.sessions.length, 0);
-    return { packages: packageDefinitions, totalCapacity, totalUsed };
-}
+    const totalRemaining = packages.reduce((sum, pkg) => sum + (pkg.capacity - pkg.consumed), 0);
+    const totalAdvance = packages.reduce((sum, pkg) => sum + pkg.advance, 0);
+    const totalConsumedValue = packages.reduce((sum, pkg) => sum + pkg.sessions.reduce((f, s) => f + toNum(s[9]), 0), 0);
 
+    return { packages, totalRemaining, activeWallet: totalAdvance - totalConsumedValue };
+}
 function getRemainingSessions(p) {
-    if (!p || !p.purchased) return 0;
-    const { totalCapacity, totalUsed } = getPackageBreakdown(p);
-    return Math.max(0, totalCapacity - totalUsed);
+    if (!p) return 0;
+    const { totalRemaining } = getPackageBreakdown(p);
+    return totalRemaining;
 }
 
         function formatDateDMY(dateStr) {
@@ -3843,13 +3852,13 @@ Object.keys(patientLookup).forEach(name => {
 
             statEl.total.innerText = sessionCount;
             statEl.registered.innerText = Object.keys(patientLookup).length;
-            statEl.revenue.innerText = "₹" + totalRawCol.toLocaleString();
-            statEl.pocRev.innerText = "₹" + pocRevenue.toLocaleString();
-            statEl.phcRev.innerText = "₹" + phcRevenue.toLocaleString();
+            statEl.revenue.innerText = "₹" + Math.round(totalRawCol).toLocaleString('en-IN');
+            statEl.pocRev.innerText = "₹" + Math.round(pocRevenue).toLocaleString('en-IN');
+            statEl.phcRev.innerText = "₹" + Math.round(phcRevenue).toLocaleString('en-IN');
             statEl.activeCount.innerText = activeCount;
-            statEl.daily.innerText = "₹" + dailyCol.toLocaleString();
-            statEl.monthly.innerText = "₹" + monthlyCol.toLocaleString();
-            statEl.yearly.innerText = "₹" + yearlyCol.toLocaleString();
+            statEl.daily.innerText = "₹" + Math.round(dailyCol).toLocaleString('en-IN');
+            statEl.monthly.innerText = "₹" + Math.round(monthlyCol).toLocaleString('en-IN');
+            statEl.yearly.innerText = "₹" + Math.round(yearlyCol).toLocaleString('en-IN');
 
             renderCharts(chartData);
             renderDailyChart(dailyMap);
@@ -4099,6 +4108,7 @@ Object.keys(patientLookup).forEach(name => {
         }
     }
 
+    const addonProcedureName = document.getElementById('session-add-fee-name').value.trim() || 'Additional Procedure';
     const datesToSubmit = [...selectedDates];
     let tempWallet = p.walletBalance || 0;
 
@@ -4135,7 +4145,8 @@ Object.keys(patientLookup).forEach(name => {
             "",                           // [13]
             "",                           // [14] address
             paymentMode,                  // [15] payment mode
-            paidForRow                    // [16] amount paid
+            paidForRow,                   // [16] amount paid
+            addonProcedureName            // [17] add-on procedure name
         ];
     });
 
@@ -4150,6 +4161,7 @@ Object.keys(patientLookup).forEach(name => {
     selectedDates = [];
     document.getElementById('session-note').value = "";
     document.getElementById('session-amount-paid').value = "";
+    document.getElementById('session-add-fee-name').value = "";
     selectPatient(selectedPatientName);
     
     // Close the calendar overlay on mobile after submission
@@ -4187,34 +4199,31 @@ Object.keys(patientLookup).forEach(name => {
 
        function updateAdvanceHint() {
     const hint = document.getElementById('advance-remaining-hint');
-    if (!selectedPatientName || !hint) {
-        if (hint) {
-            hint.innerText = '';
-            hint.className = 'hidden';
-        }
-        return;
-    }
+    if (!selectedPatientName || !hint) return;
+
     const p = patientLookup[selectedPatientName];
-    const remaining = getRemainingSessions(p);
-    const wallet = p.walletBalance || 0;
-    
+    const { packages, totalRemaining, activeWallet } = getPackageBreakdown(p);
+    const activePkg = packages.find(pkg => pkg.consumed < pkg.capacity);
+
     hint.classList.remove('hidden');
-    if (p.purchased > 0 && remaining > 0) {
-        let extra = '';
-        if (wallet < 0) {
-            extra = `<span class="block font-black mt-1 text-[10px] max-lg:text-[9px] text-rose-100 bg-rose-600/90 rounded-lg px-2 py-1">Due: ₹${Math.abs(wallet).toLocaleString()}</span>`;
-        }
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Pre-paid Package</span><span class="block">Rem Sessions: ${remaining}/${p.purchased}</span><span class="block font-black mt-1 text-xs max-lg:text-[10px]">Wallet: ₹${wallet.toLocaleString()}</span>${extra}`;
-        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
-    } else if (wallet > 0) {
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-emerald-700 mt-1 text-xs max-lg:text-[10px]">Wallet Balance: ₹${wallet.toLocaleString()}</span>`;
-        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-emerald-50 border border-emerald-100 text-slate-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
-    } else if (wallet < 0) {
-        hint.innerHTML = `<span class="block text-slate-500 text-[8px]">Regular Patient</span><span class="block font-black text-rose-700 mt-1 text-xs max-lg:text-[10px]">Due: ₹${Math.abs(wallet).toLocaleString()}</span>`;
-        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
+    
+    if (activePkg) {
+        hint.innerHTML = `
+            <div class="flex flex-col gap-1">
+                <span class="text-[8px] font-black text-indigo-400 uppercase">Current: Package ${activePkg.id}</span>
+                <span class="text-xs font-black">Available: ${totalRemaining} Sessions</span>
+                <div class="h-1 w-full bg-indigo-100 rounded-full mt-1 overflow-hidden">
+                    <div class="h-full bg-indigo-500" style="width: ${(activePkg.consumed / activePkg.capacity) * 100}%"></div>
+                </div>
+                <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet: ₹${activeWallet.toLocaleString()}</span>
+            </div>`;
+        hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center font-bold uppercase shadow-sm";
     } else {
-        hint.innerHTML = `<span class="block text-slate-400 text-[8px]">Regular Patient</span><span class="block text-slate-500">No active wallet balance</span>`;
-        hint.className = "mt-2.5 max-lg:mt-1 p-3 max-lg:p-1.5 bg-slate-100 border border-slate-200 text-slate-500 rounded-2xl max-lg:rounded-xl text-center text-[10px] max-lg:text-[8px] font-bold uppercase";
+        const isDue = activeWallet < 0;
+        hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Regular Patient</span>
+                          <span class="block ${isDue ? 'text-rose-700' : 'text-emerald-700'} font-black text-xs">
+                          ${isDue ? 'Due' : 'Wallet'}: ₹${Math.abs(activeWallet).toLocaleString()}</span>`;
+        hint.className = `mt-2.5 p-3 ${isDue ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'} rounded-2xl text-center font-bold uppercase`;
     }
 }
 
@@ -5394,10 +5403,7 @@ function openMidPackage() {
             logs.forEach(l => {
                 const fee = toNum(l[9]);
                 total += fee;
-                if (!groups[fee]) groups[fee] = {
-                    qty: 0,
-                    dates: []
-                };
+                if (!groups[fee]) groups[fee] = { qty: 0, dates: [] };
                 groups[fee].qty++;
                 groups[fee].dates.push(l[8]);
             });
@@ -5423,22 +5429,99 @@ function openMidPackage() {
             const billAmountPaid = Math.max(0, grandTotal - billAmountDue);
 
             let procedureRowsHtml = '';
-            Object.keys(groups).forEach(feeKey => {
-                const g = groups[feeKey],
-                    fee = Number(feeKey);
+            // Split each log into base rate + add-on so they appear as separate bill lines
+            const baseGroups = {};   // keyed by base rate
+            const addonGroups = {};  // keyed by add-on amount
+
+                        // Separate first session as Consultation, rest as Treatment
+            const sortedLogs = logs.slice().sort((a, b) => new Date(a[8]) - new Date(b[8]));
+            const consultationLog = sortedLogs[0];
+            const treatmentLogs = sortedLogs.slice(1);
+
+            // Consultation row (first session)
+            if (consultationLog) {
+                const cFee = toNum(consultationLog[9]);
+                const cBase = p.baseRate || cFee;
+                if (!baseGroups['consult']) baseGroups['consult'] = { qty: 0, dates: [], label: 'Consultation & Initial Assessment', fee: cBase };
+                baseGroups['consult'].qty++;
+                baseGroups['consult'].dates.push(consultationLog[8]);
+                const cAddon = cFee - cBase;
+                if (cAddon > 0) {
+                    if (!addonGroups[cAddon]) addonGroups[cAddon] = { qty: 0, dates: [] };
+                    addonGroups[cAddon].qty++;
+                    addonGroups[cAddon].dates.push(consultationLog[8]);
+                }
+            }
+
+            // Treatment rows (all subsequent sessions)
+            treatmentLogs.forEach(l => {
+                const totalFee = toNum(l[9]);
+                const baseRate = p.baseRate || totalFee;
+                const addon = totalFee - baseRate;
+                const dateStr = l[8];
+                if (baseRate > 0) {
+                    if (!baseGroups[baseRate]) baseGroups[baseRate] = { qty: 0, dates: [], label: getSessionTypeLabel(p.id), fee: baseRate };
+                    baseGroups[baseRate].qty++;
+                    baseGroups[baseRate].dates.push(dateStr);
+                }
+                if (addon > 0) {
+                    if (!addonGroups[addon]) addonGroups[addon] = { qty: 0, dates: [] };
+                    addonGroups[addon].qty++;
+                    addonGroups[addon].dates.push(dateStr);
+                }
+            });
+
+            // Render base session rows
+            Object.keys(baseGroups).forEach(feeKey => {
+                const g = baseGroups[feeKey];
+                const fee = g.fee || Number(feeKey);
+                const label = g.label || getSessionTypeLabel(p.id);
                 const sortedDates = g.dates.slice().sort();
                 const periodStart = formatDateDMY(sortedDates[0]);
                 const periodEnd = formatDateDMY(sortedDates[sortedDates.length - 1]);
                 const subtotal = fee * g.qty;
                 const periodLabel = periodStart === periodEnd ? `Date: ${periodStart}` : `Period: ${periodStart} - ${periodEnd}`;
+                const isConsult = feeKey === 'consult';
                 procedureRowsHtml += `<tr class="procedure-row" style="border-bottom:1px solid #edf2f7">
                     <td style="padding:14px" class="editable">
-                        <strong style="font-size:13px; color:#0f172a">${getSessionTypeLabel(p.id)}</strong><br>
-                        <span style="font-size:10px; color:#4f46e5; font-weight:700">${periodLabel}</span>
+                        <strong style="font-size:13px; color:${isConsult ? '#7c3aed' : '#0f172a'}">${label}</strong><br>
+                        <span style="font-size:10px; color:${isConsult ? '#7c3aed' : '#4f46e5'}; font-weight:700">${periodLabel}</span>
                     </td>
                     <td style="padding:14px; text-align:center; font-weight:800" class="editable">${g.qty}</td>
                     <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${fee}</td>
                     <td style="padding:14px; text-align:right; font-weight:900" class="editable">₹${subtotal.toLocaleString()}</td>
+                </tr>`;
+            });
+
+            // Render add-on rows separately — grouped by procedure name + amount
+            const addonNamedGroups = {}; // keyed by "procedureName||amount"
+            logs.forEach(l => {
+                const totalFee = toNum(l[9]);
+                const baseRate = p.baseRate || totalFee;
+                const addon = totalFee - baseRate;
+                if (addon > 0) {
+                    const procName = (l[17] && l[17].trim()) ? l[17].trim() : 'Additional Procedure Charges';
+                    const groupKey = procName + '||' + addon;
+                    if (!addonNamedGroups[groupKey]) addonNamedGroups[groupKey] = { qty: 0, dates: [], name: procName, addon: addon };
+                    addonNamedGroups[groupKey].qty++;
+                    addonNamedGroups[groupKey].dates.push(l[8]);
+                }
+            });
+
+            Object.values(addonNamedGroups).forEach(g => {
+                const sortedDates = g.dates.slice().sort();
+                const periodStart = formatDateDMY(sortedDates[0]);
+                const periodEnd = formatDateDMY(sortedDates[sortedDates.length - 1]);
+                const subtotal = g.addon * g.qty;
+                const periodLabel = periodStart === periodEnd ? `Date: ${periodStart}` : `Period: ${periodStart} - ${periodEnd}`;
+                procedureRowsHtml += `<tr class="procedure-row" style="border-bottom:1px solid #edf2f7">
+                    <td style="padding:14px" class="editable">
+                        <strong style="font-size:13px; color:#f97316">${g.name}</strong><br>
+                        <span style="font-size:10px; color:#f97316; font-weight:700">${periodLabel}</span>
+                    </td>
+                    <td style="padding:14px; text-align:center; font-weight:800" class="editable">${g.qty}</td>
+                    <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${g.addon}</td>
+                    <td style="padding:14px; text-align:right; font-weight:900; color:#f97316" class="editable">₹${subtotal.toLocaleString()}</td>
                 </tr>`;
             });
             const verifyUrl = `https://prismhealthcare.in/verify.html?billNo=${encodeURIComponent(stmtNo)}`;
@@ -5594,7 +5677,7 @@ function openMidPackage() {
                 adjustBillScale();
             }, 300);
             
-            syncToBackend({
+                        syncToBackend({
                 action: "logAppointment",
                 id: p.id,
                 name: name,
@@ -5604,6 +5687,22 @@ function openMidPackage() {
                 billNo: stmtNo,
                 type: "Bill Issued",
                 date: getLocalISOString()
+            }).catch(() => {});
+
+            syncToBackend({
+                action: "saveBill",
+                billNo: stmtNo,
+                patientId: p.id,
+                patientName: name,
+                diagnosis: p.diag,
+                date: getLocalISOString(),
+                sessions: logs.length,
+                fee: grandTotal,
+                amountPaid: billAmountPaid,
+                balance: billAmountDue,
+                paymentMode: billAmountDue > 0 ? "Pending" : "Cash",
+                issuedBy: document.getElementById('bill-cfg-doc').value,
+                notes: (fromDate || toDate) ? `Period: ${fromDate || 'Start'} to ${toDate || 'Latest'}` : ""
             }).catch(() => {});
         }
 
