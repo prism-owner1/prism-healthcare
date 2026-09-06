@@ -2109,18 +2109,43 @@ body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
                                     <div>
                                         <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Payment Mode</label>
                                         <select id="session-payment-mode" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm max-lg:p-2 max-lg:text-[11px] max-lg:mt-0">
-                                            <option value="Cash">Cash</option>
-                                            <option value="UPI">UPI</option>
-                                            <option value="Card">Card</option>
-                                            <option value="Advance">Advance (Pre-paid Package)</option>
-                                            <option value="Pending">Pending / Due</option>
-                                        </select>
+    <option value="Cash">Cash</option>
+    <option value="UPI">UPI</option>
+    <option value="Card">Card</option>
+    <option value="Split">Split (Cash + UPI)</option>
+    <option value="Advance">Advance (Pre-paid Package)</option>
+    <option value="Pending">Pending / Due</option>
+    <option value="Complimentary">Complimentary / Free</option>
+    <option value="Refund">Refund to Patient</option>
+</select>
                                             <div id="advance-remaining-hint" class="mt-2.5 p-3 rounded-2xl text-center font-bold text-[10px] uppercase transition-all"></div>
                                     </div>
                                     <div>
-                                        <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Amount Paid (₹)</label>
-                                        <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm max-lg:p-2 max-lg:text-[11px] max-lg:mt-0">
-                                    </div>
+    <label class="text-[9px] font-black text-slate-600 uppercase ml-1 max-lg:text-[8px]">Amount Paid (₹)</label>
+    <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full mt-1 p-3 bg-slate-50 rounded-xl font-bold outline-none text-sm max-lg:p-2 max-lg:text-[11px] max-lg:mt-0">
+<p id="partial-payment-hint" class="hidden mt-1 text-[8px] font-black text-amber-600 uppercase ml-1">⚠ Partial — ₹<span id="partial-due-amount">0</span> will be marked as due</p>
+    <!-- Split payment second field -->
+    <div id="split-payment-row" class="hidden mt-1.5 grid grid-cols-2 gap-2">
+        <div>
+            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">Cash (₹)</label>
+            <input type="number" id="split-cash" value="0" class="w-full mt-0.5 p-2 bg-slate-50 rounded-xl font-bold outline-none text-xs border border-slate-200">
+        </div>
+        <div>
+            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">UPI (₹)</label>
+            <input type="number" id="split-upi" value="0" class="w-full mt-0.5 p-2 bg-slate-50 rounded-xl font-bold outline-none text-xs border border-slate-200">
+        </div>
+    </div>
+    <!-- Session discount field -->
+    <div id="session-discount-row" class="hidden mt-1.5">
+        <label class="text-[8px] font-black text-amber-600 uppercase ml-1">Session Discount (%)</label>
+        <input type="number" id="session-discount-pct" value="0" min="0" max="100" class="w-full mt-0.5 p-2 bg-amber-50 rounded-xl font-bold outline-none text-xs border border-amber-200">
+    </div>
+    <!-- Package expiry days field -->
+    <div id="pkg-expiry-row" class="hidden mt-1.5">
+        <label class="text-[8px] font-black text-rose-500 uppercase ml-1">Package Expires In (Days)</label>
+        <input type="number" id="pkg-expiry-days" value="90" min="1" class="w-full mt-0.5 p-2 bg-rose-50 rounded-xl font-bold outline-none text-xs border border-rose-200">
+    </div>
+</div>
                                 </div>
                                 <input type="text" id="session-note" placeholder="Diagnosis / Observation Note" class="w-full p-4 bg-slate-50 rounded-xl font-bold outline-none mb-6 text-sm max-lg:p-2.5 max-lg:mb-3 max-lg:text-[11px]">
                                 <button id="submit-btn" onclick="submitSessionsFast()" class="w-full bg-[#4f46e5] text-white font-black py-5 rounded-2xl shadow-xl uppercase text-[10px] tracking-widest hover:bg-indigo-700 transition-all max-lg:py-2.5 max-lg:text-[9px] max-lg:rounded-xl">Submit Session(s)</button>
@@ -3628,10 +3653,14 @@ function getPackageBreakdown(p) {
 
     // 2. Distribute rehab sessions sequentially (FIFO)
     const rehabSessions = p.logs.filter(l => {
-        const type = String(l[7] || '').trim().toLowerCase();
-        return !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(type) && 
-               (String(l[15]).trim() === 'Advance');
-    }).sort((a, b) => new Date(a[0]) - new Date(b[0]));
+    const type = String(l[7] || '').trim().toLowerCase();
+    const capacity = toNum(l[10]);
+    // Include enrollment row as session #1 if it has package sessions
+    if (type === 'enrollment' && capacity > 0) return true;
+    return !['enrollment', 'package added', 'case closed',
+             'case restarted', 'bill issued'].includes(type) &&
+           (String(l[15]).trim() === 'Advance');
+}).sort((a, b) => new Date(a[0]) - new Date(b[0]));
 
     rehabSessions.forEach(log => {
         const openPkg = packages.find(pkg => pkg.consumed < pkg.capacity);
@@ -3730,7 +3759,8 @@ function getAdvanceSessionLabel(r, p) {
                         baseRate: 0,
                         purchased: 0,
                         advance: 0,
-                        walletBalance: 0,   // NEW — running ₹ balance from advance payments
+                        runningBalance: 0, // NEW: The unified credit/debit tracker
+                        walletBalance: 0,   
                         discount: 0,
                         closed: false,
                         closedDate: null,
@@ -3746,21 +3776,30 @@ function getAdvanceSessionLabel(r, p) {
                 const p = patientLookup[name];
 
                 if (type === "enrollment" || type === "package added") {
-        p.purchased += toNum(r[10]);
-        p.advance += toNum(r[11]);
-        p.walletBalance = (p.walletBalance || 0) + toNum(r[11]);
+    p.purchased += toNum(r[10]);
+    p.advance += toNum(r[11]);
 
-        if (toNum(r[11]) > 0 && fee > 0) {
-            p.walletBalance -= fee;
-        }
+    const advanceLoaded = toNum(r[11]);
+    const enrollmentFee = toNum(r[9]);
 
-        if (type === "enrollment") p.baseRate = fee;
-        if (r[10] > 0 && fee > 0) p.baseRate = fee; 
-        if (type === "enrollment") p.discount = toNum(r[12]);
-        if (r[4]) p.age = r[4];
-        if (r[5]) p.gender = r[5];
-        if (r[14]) p.address = r[14];
-    } // <--- ADD THIS BRACE
+    // Load the wallet with advance paid
+    p.walletBalance = (p.walletBalance || 0) + advanceLoaded;
+
+    // If enrollment day has a session fee AND advance was paid,
+    // deduct the day-1 session from wallet immediately.
+    // Condition: advance > 0 AND fee > 0 (regardless of sessions count or payment mode)
+    if (type === "enrollment" && advanceLoaded > 0 && enrollmentFee > 0) {
+        p.walletBalance = (p.walletBalance || 0) - enrollmentFee;
+        p.runningBalance = (p.runningBalance || 0) - enrollmentFee;
+    }
+
+    if (type === "enrollment") p.baseRate = fee;
+    if (r[10] > 0 && fee > 0) p.baseRate = fee;
+    if (type === "enrollment") p.discount = toNum(r[12]);
+    if (r[4]) p.age = r[4];
+    if (r[5]) p.gender = r[5];
+    if (r[14]) p.address = r[14];
+}
 
     if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
     totalRawCol += fee;
@@ -3779,17 +3818,19 @@ function getAdvanceSessionLabel(r, p) {
 
     p.logs.push(r);
 
-    // DEDUCT WALLET BALANCE: If this treatment log was paid via Advance, subtract the actual amount paid from the wallet
-const paymentMode = r[15] ? String(r[15]).trim() : "";
-const paidAmount = (r[16] !== undefined && r[16] !== "") ? toNum(r[16]) : toNum(r[9]);
-if (paymentMode === "Advance" && !['enrollment', 'package added'].includes(type)) {
-    p.walletBalance = (p.walletBalance || 0) - paidAmount;
-} else if (paymentMode !== "Pending" && !['enrollment', 'package added'].includes(type)) {
-    const excess = paidAmount - fee;
-    if (excess > 0) {
-        p.walletBalance = (p.walletBalance || 0) + excess;
-    }
+    // REFINED RUNNING BALANCE MATH
+    const paymentMode = r[15] ? String(r[15]).trim() : "";
+    const paidAmount = (r[16] !== undefined && r[16] !== "") ? toNum(r[16]) : toNum(r[9]);
+
+    if (!['case closed', 'case restarted', 'bill issued'].includes(type)) {
+        if (paymentMode === "Advance") {
+    p.runningBalance -= fee;
+    p.walletBalance = (p.walletBalance || 0) - fee;
+} else {
+    // Credit the payment, Debit the fee
+    p.runningBalance += (paidAmount - fee);
 }
+    }
 }
             });
 if (window.rawAuditData) {
@@ -3826,24 +3867,58 @@ Object.keys(patientLookup).forEach(name => {
         const fee = toNum(l[9]);
         const type = String(l[7] || '').trim().toLowerCase();
         
-        // Skip enrollment and other non-session entries
         if (type === 'enrollment' || type === 'package added' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') {
             return;
         }
+
+        if (fee <= 0) return;
         
-        const paymentMode = l[15] || 'Cash';
-        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : toNum(l[9]);
+        const paymentMode = String(l[15] || '').trim();
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== "") 
+                     ? toNum(paidRaw) 
+                     : (paymentMode === "Pending" ? 0 : fee);
         
-        // Mark as due if payment mode is "Pending" OR if it's an "Advance" session with a shortfall (fee > paid)
-        if (paymentMode === "Pending" || (paymentMode === "Advance" && fee > paid)) {
-            due += (fee - paid);
-            dueSessionCount++;
-        }
+        if (paymentMode === "Pending") {
+    // Auto-apply wallet balance against pending fee
+    const walletCover = Math.min(p.walletBalance || 0, fee);
+    const netDue = fee - walletCover;
+    if (netDue > 0) {
+        due += netDue;
+        dueSessionCount++;
+    }
+} else if (paymentMode === "Advance") {
+    // Advance sessions are already settled via wallet deduction — never due.
+} else if (paid < fee) {
+    // Partial cash/UPI/card payment
+    due += (fee - paid);
+    dueSessionCount++;
+}
     });
     p.outstandingDue = due;
     p.dueSessionCount = dueSessionCount;
     if (due > 0) totalOutstanding += due;
 });
+        // Check package expiry
+const EXPIRY_DAYS = 90;
+Object.keys(patientLookup).forEach(name => {
+    const p = patientLookup[name];
+    if (p.closed || p.purchased <= 0) return;
+    const enrollLog = p.logs.find(l => String(l[7]||'').toLowerCase() === 'enrollment');
+    if (!enrollLog) return;
+    const enrollDate = new Date(enrollLog[8]);
+    const daysSince = Math.floor((new Date() - enrollDate) / 86400000);
+    const rem = getRemainingSessions(p);
+    if (daysSince > EXPIRY_DAYS && rem > 0) {
+        p.packageExpired = true;
+        p.expiredSessions = rem;
+    }
+});
+
+// Tables rendered HERE so p.outstandingDue is already assigned
+renderTables();
+        generateClinicalID();
+        renderActiveCasesForLog();
 
             let activeCount = 0;
             Object.values(patientLookup).forEach(p => {
@@ -3862,10 +3937,7 @@ Object.keys(patientLookup).forEach(name => {
 
             renderCharts(chartData);
             renderDailyChart(dailyMap);
-            renderTables();
             renderDailyRegistry();
-            generateClinicalID();
-            renderActiveCasesForLog();
         }
 
         function renderDailyRegistry() {
@@ -3902,12 +3974,15 @@ Object.keys(patientLookup).forEach(name => {
                         fee = toNum(r[9]);
                     const paymentMode = r[15] || 'Cash';
                     const p = patientLookup[name];
-                    const paymentDisplay = (paymentMode === 'Advance' && p) ? getAdvanceSessionLabel(r, p) : paymentMode;
+                    const sessionLabel = (paymentMode === 'Advance' && p) ? getAdvanceSessionLabel(r, p) : '';
+                    const paymentDisplay = sessionLabel ? `Advance (${sessionLabel})` : paymentMode;
                     const branch = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
                     const modeBadgeColor = paymentMode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
 
                     visitCount++;
-                    collectionSum += fee;
+// For Advance/wallet sessions, fee on the row is the session cost (already deducted from wallet)
+const effectiveFee = fee > 0 ? fee : 0;
+collectionSum += effectiveFee;
 
                     html += `<tr class="hover:bg-slate-50 transition-colors" data-search-tag="${name.toUpperCase()} ${cid.toUpperCase()}">
                 <td class="p-5 font-bold text-slate-400">${idx + 1}</td>
@@ -4112,46 +4187,55 @@ Object.keys(patientLookup).forEach(name => {
     const datesToSubmit = [...selectedDates];
     let tempWallet = p.walletBalance || 0;
 
-    const newRows = datesToSubmit.map(dateString => {
-        let paidForRow = 0;
-        
-        if (paymentMode === "Advance") {
-            // Deduct from wallet up to the fee amount
-            const covered = Math.min(tempWallet, totalFee);
-            paidForRow = covered;
-            tempWallet -= covered;
-        } else if (amountPaidInput !== "") {
-            paidForRow = Number(amountPaidInput);
-        } else if (paymentMode === "Pending") {
-            paidForRow = 0;
-        } else {
-            paidForRow = totalFee;
-        }
+    // Inside submitSessionsFast()
+const sessionDiscountPct = Number(document.getElementById('session-discount-pct')?.value) || 0;
 
-        return [
-            new Date().toISOString(),     // [0]
-            p.id,                         // [1]
-            selectedPatientName,          // [2]
-            p.phone,                      // [3]
-            "",                           // [4] age
-            "",                           // [5] gender
-            note,                         // [6] diagnosis
-            "Rehab",                      // [7] type
-            dateString,                   // [8] date
-            totalFee,                     // [9] fee
-            0,                            // [10] purchased
-            0,                            // [11] advance
-            0,                            // [12] discount
-            "",                           // [13]
-            "",                           // [14] address
-            paymentMode,                  // [15] payment mode
-            paidForRow,                   // [16] amount paid
-            addonProcedureName            // [17] add-on procedure name
-        ];
-    });
+const newRows = datesToSubmit.map(dateString => {
+    let paidForRow = 0;
+    const addOn = Number(document.getElementById('session-add-fee').value) || 0;
+    let currentTotalFee = p.baseRate + addOn;
+
+    // Apply single session discount
+    if (sessionDiscountPct > 0) {
+        currentTotalFee = Math.round(currentTotalFee * (1 - sessionDiscountPct / 100));
+    }
+
+    if (paymentMode === 'Advance') {
+        paidForRow = currentTotalFee;
+    } else if (paymentMode === 'Complimentary') {
+        currentTotalFee = 0;
+        paidForRow = 0;
+    } else if (paymentMode === 'Refund') {
+        const refundAmt = Number(document.getElementById('session-amount-paid').value) || 0;
+        currentTotalFee = 0;
+        paidForRow = -refundAmt; // negative = money going out
+    } else if (paymentMode === 'Split') {
+        const cash = Number(document.getElementById('split-cash').value) || 0;
+        const upi  = Number(document.getElementById('split-upi').value)  || 0;
+        paidForRow = cash + upi;
+    } else {
+        paidForRow = Number(document.getElementById('session-amount-paid').value) || 0;
+    }
+
+    return [
+        new Date().toISOString(),
+        p.id,
+        selectedPatientName,
+        p.phone,
+        "", "",
+        note,
+        "Rehab",
+        dateString,
+        currentTotalFee,
+        0, 0, 0, "", "",
+        paymentMode,
+        paidForRow
+    ];
+});
 
     globalData.push(...newRows);
-    processData();
+autoReconcilePayment(selectedPatientName, newRows);
+processData();
 
     // Send instant WhatsApp receipt if exactly one paid session was logged
     if (newRows.length === 1 && newRows[0][15] !== 'Pending' && toNum(newRows[0][16]) > 0) {
@@ -4175,22 +4259,34 @@ Object.keys(patientLookup).forEach(name => {
 
     // Sync each logged row individually with its specific paid amount to the cloud
     newRows.forEach(row => {
-        syncToBackend({
-            action: "logAppointment",
-            id: p.id,
-            name: selectedPatientName,
-            phone: p.phone,
-            condition: note,
-            fee: totalFee,
-            purchased: 0,
-            advance: 0,
-            discount: 0,
-            type: "Rehab",
-            date: row[8],
-            paymentMode: row[15],
-            amountPaid: row[16]
-        }).catch(() => {});
-    });
+    syncToBackend({
+        action: "logAppointment",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: note,
+        fee: row[9],          // use row fee (may be discounted or 0)
+        purchased: 0,
+        advance: 0,
+        discount: sessionDiscountPct,
+        type: "Rehab",
+        date: row[8],
+        paymentMode: row[15],
+        amountPaid: row[16]
+    }).catch(() => {});
+});
+
+// Handle refund sync separately
+if (paymentMode === 'Refund') {
+    const refundAmt = Math.abs(toNum(newRows[0][16]));
+    showToast(`Refund of ₹${refundAmt.toLocaleString()} recorded for ${selectedPatientName}`, 'info');
+}
+
+// Reset discount field
+const discEl = document.getElementById('session-discount-pct');
+if (discEl) discEl.value = 0;
+document.getElementById('split-payment-row').classList.add('hidden');
+document.getElementById('session-discount-row').classList.add('hidden');
 }
 
               function sendQuickSessionReceipt(p, row) {
@@ -4202,7 +4298,10 @@ Object.keys(patientLookup).forEach(name => {
     if (!selectedPatientName || !hint) return;
 
     const p = patientLookup[selectedPatientName];
-    const { packages, totalRemaining, activeWallet } = getPackageBreakdown(p);
+    if (!p) return;
+
+    const wallet = p.walletBalance || 0;
+    const { packages, totalRemaining } = getPackageBreakdown(p);
     const activePkg = packages.find(pkg => pkg.consumed < pkg.capacity);
 
     hint.classList.remove('hidden');
@@ -4215,14 +4314,16 @@ Object.keys(patientLookup).forEach(name => {
                 <div class="h-1 w-full bg-indigo-100 rounded-full mt-1 overflow-hidden">
                     <div class="h-full bg-indigo-500" style="width: ${(activePkg.consumed / activePkg.capacity) * 100}%"></div>
                 </div>
-                <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet: ₹${activeWallet.toLocaleString()}</span>
+                <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet Balance: ₹${wallet.toLocaleString()}</span>
             </div>`;
         hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center font-bold uppercase shadow-sm";
     } else {
-        const isDue = activeWallet < 0;
-        hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Regular Patient</span>
+        const isDue = p.outstandingDue > 0;
+        const displayAmt = isDue ? p.outstandingDue : wallet;
+        
+        hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Payment Status</span>
                           <span class="block ${isDue ? 'text-rose-700' : 'text-emerald-700'} font-black text-xs">
-                          ${isDue ? 'Due' : 'Wallet'}: ₹${Math.abs(activeWallet).toLocaleString()}</span>`;
+                          ${isDue ? 'Due' : 'Wallet Balance'}: ₹${displayAmt.toLocaleString()}</span>`;
         hint.className = `mt-2.5 p-3 ${isDue ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'} rounded-2xl text-center font-bold uppercase`;
     }
 }
@@ -4796,48 +4897,103 @@ function openMidPackage() {
         function selectPatient(n) {
     selectedPatientName = n;
     const p = patientLookup[n];
+    if (!p) return;
+
+    // UI Updates
     document.getElementById('patient-search-input').value = n;
     document.getElementById('search-results').classList.add('hidden');
     document.getElementById('active-patient-name').innerText = n;
-    document.getElementById('base-rate-display').value = p.baseRate;
+    document.getElementById('base-rate-display').value = p.baseRate || 0;
     document.getElementById('patient-workspace').classList.remove('hidden');
     
-    // Update the mobile full-screen drawer header to show patient's name
     const mobNameEl = document.getElementById('mobile-drawer-patient-name');
     if (mobNameEl) mobNameEl.innerText = n;
 
-    // UPDATED: Calculate using wallet helper
+    // Wallet and Session Calculations
     const rem = getRemainingSessions(p);
-
+    const wallet = p.walletBalance || 0; 
     const badge = document.getElementById('workspace-remaining');
+
+    // Update Top Right Badge
     if (p.closed) {
         badge.innerText = "CASE CLOSED";
         badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
     } else if (rem > 0 && p.purchased > 0) {
-        badge.innerText = `Rem: ${rem} Sessions`;
+        badge.innerText = `Rem: ${rem} Sessions | Wallet: ₹${wallet.toLocaleString()}`;
         badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
     } else {
-        badge.innerText = "REGULAR";
+        badge.innerText = `REGULAR | Wallet: ₹${wallet.toLocaleString()}`;
         badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
     }
+
+    // Render Recent Logs
     document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map(l => {
         const isEnroll = String(l[7] || '').trim().toLowerCase() === 'enrollment';
-        return `<div class="log-card">
-            <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
+        const isPkg = String(l[7] || '').trim().toLowerCase() === 'package added';
+        const mode = String(l[15] || '').trim();
+        const fee = toNum(l[9]);
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
+            ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+        const due = Math.max(0, fee - paid);
+        const isPending = mode === 'Pending' || (paid < fee && fee > 0);
+
+        // Badge color per payment mode
+        const modeBadge = (() => {
+            if (isEnroll) return `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Enrollment</span>`;
+            if (isPkg)    return `<span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Package</span>`;
+            if (!mode)    return '';
+            const cfg = {
+                'Cash':          'bg-emerald-100 text-emerald-700',
+                'UPI':           'bg-blue-100 text-blue-700',
+                'Card':          'bg-sky-100 text-sky-700',
+                'Advance':       'bg-indigo-100 text-indigo-700',
+                'Pending':       'bg-rose-100 text-rose-700',
+                'Complimentary': 'bg-slate-100 text-slate-500',
+                'Refund':        'bg-orange-100 text-orange-700',
+                'Split':         'bg-teal-100 text-teal-700',
+            };
+            const cls = cfg[mode] || 'bg-slate-100 text-slate-600';
+            return `<span class="${cls} px-2 py-0.5 rounded-md text-[8px] font-black uppercase">${mode}</span>`;
+        })();
+
+        // Fee display
+        const feeDisplay = (() => {
+            if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+₹${toNum(l[11]).toLocaleString()} wallet</span>`;
+            if (fee <= 0) return `<span class="text-slate-400 font-bold text-[10px]">—</span>`;
+            if (isPending && due > 0 && !isEnroll) {
+                return `<div class="text-right">
+                    <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                    <span class="block text-[8px] font-black text-rose-500 uppercase">₹${due.toLocaleString()} due</span>
+                </div>`;
+            }
+            if (paid > 0 && paid < fee) {
+                return `<div class="text-right">
+                    <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                    <span class="block text-[8px] font-black text-amber-500 uppercase">₹${paid.toLocaleString()} paid</span>
+                </div>`;
+            }
+            return `<span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>`;
+        })();
+
+        return `<div class="log-card ${isPending && !isEnroll && fee > 0 ? 'border-l-2 border-l-rose-400' : isEnroll ? 'border-l-2 border-l-indigo-400' : isPkg ? 'border-l-2 border-l-purple-400' : ''}">
+            <div class="flex justify-between items-center mb-1.5">
                 <div class="flex items-center gap-2">
-                    ${isEnroll ? `<span class="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded text-[8px] font-black uppercase">Enrollment</span>` : ''}
-                    <span class="text-[9px] font-bold">₹${l[9]}</span>
+                    <span class="text-[10px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
+                    ${modeBadge}
                 </div>
+                ${feeDisplay}
             </div>
-            <div class="text-[10px] italic text-slate-400">"${l[6]}"</div>
+            <div class="text-[10px] italic text-slate-400 truncate">"${l[6] || '—'}"</div>
         </div>`;
     }).join('');
+
+    // Trigger UI refreshes
     renderCalendar();
     renderActiveCasesForLog();
     updateAdvanceHint();
     
-    // Auto-popup slide-up calendar on mobile
+    // Open the drawer on mobile
     toggleSessionDrawer(true);
 }
 
@@ -5123,6 +5279,7 @@ function openMidPackage() {
         function closePatientDetailModal() {
             document.getElementById('patient-detail-modal').classList.add('hidden');
         }
+
 
         function sendPatientPortalLink(name) {
             const p = patientLookup[name];
@@ -5879,9 +6036,10 @@ function openMidPackage() {
 
             el.innerHTML = rows.map(r => `
                 <div class="due-soon-row">
-                    <div>
-                        <span class="font-black text-xs uppercase text-slate-700">${r.name}</span>
+                    <div class="cursor-pointer group" onclick="openDueSessionsModal('${r.name.replace(/'/g, "\\'")}')">
+                        <span class="font-black text-xs uppercase text-slate-700 group-hover:text-indigo-600 transition-colors">${r.name}</span>
                         <span class="text-[9px] font-bold text-indigo-500 ml-2">${r.id}</span>
+                        <span class="text-[8px] font-bold text-slate-400 ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">₹${r.due.toLocaleString()} due</span>
@@ -5889,6 +6047,7 @@ function openMidPackage() {
                         <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
                     </div>
                 </div>`).join('');
+
             lucide.createIcons();
         }
 
@@ -5900,27 +6059,54 @@ function openMidPackage() {
 
     // Get ALL sessions with pending balance (both Pending and Advance shortfall rows)
 const unpaidLogs = p.logs.filter(l => {
-    const mode = l[15] || 'Cash';
+    const type = String(l[7] || '').trim().toLowerCase();
+    if (type === 'enrollment' || type === 'package added' || type === 'case closed' || type === 'case restarted' || type === 'bill issued') return false;
+
     const fee = toNum(l[9]);
-    const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : (mode === 'Pending' ? 0 : fee);
-    return (mode === 'Pending' || (mode === 'Advance' && fee > paid)) && (fee - paid) > 0;
-}).sort((a, b) => new Date(a[8]) - new Date(b[8])); // oldest first
+    if (fee <= 0) return false;
+
+    const mode = String(l[15] || '').trim();
+    const paidRaw = l[16];
+    const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== "")
+                 ? toNum(paidRaw)
+                 : (mode === 'Pending' ? 0 : fee);
+
+    if (mode === 'Pending') {
+        const walletCover = Math.min(p.walletBalance || 0, fee);
+        return (fee - walletCover) > 0;
+    }
+    if (mode === 'Advance' && fee > paid) return true;          // advance shortfall
+    if (mode !== 'Advance' && paid < fee) return true;          // partial cash/UPI/card
+    return false;
+}).sort((a, b) => new Date(a[8]) - new Date(b[8]));
 
     if (!unpaidLogs.length) {
         showToast('No unpaid sessions found', 'info');
         return;
     }
 
-    const totalDue = unpaidLogs.reduce((sum, l) => {
+    const rawDue = unpaidLogs.reduce((sum, l) => {
         const fee = toNum(l[9]);
-        const paid = (l[16] !== undefined && l[16] !== "") ? toNum(l[16]) : 0;
+        const mode = String(l[15] || '').trim();
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== "")
+                     ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
         return sum + (fee - paid);
     }, 0);
 
-    markPaidContext = { name, p, unpaidLogs, totalDue };
+    // Wallet-first: deduct available balance regardless of which date
+    // wallet was loaded vs which date session was attended
+    const walletBalance = p.walletBalance || 0;
+    const walletApplied = Math.min(walletBalance, rawDue);
+    const totalDue = Math.max(0, rawDue - walletApplied);
+
+    markPaidContext = { name, p, unpaidLogs, totalDue, rawDue, walletApplied };
 
     document.getElementById('mp-patient-name').innerText = name;
-    document.getElementById('mp-total-due').innerText = '₹' + totalDue.toLocaleString();
+    document.getElementById('mp-total-due').innerText = 
+        walletApplied > 0
+            ? `₹${rawDue.toLocaleString()} − ₹${walletApplied.toLocaleString()} wallet = ₹${totalDue.toLocaleString()}`
+            : `₹${totalDue.toLocaleString()}`;
     document.getElementById('mp-session-count').innerText = unpaidLogs.length;
     document.getElementById('mp-amount').value = totalDue;
     document.getElementById('mp-mode').value = 'Cash';
@@ -5949,8 +6135,13 @@ function confirmMarkPaid() {
     let remainingAmount = amount;
     const updatedSessions = [];
 
+        // Step 1: Use the 'p' already available from markPaidContext
+    // const p = patientLookup[name]; <--- REMOVE THIS LINE
+    
+    let walletAvailable = p ? (p.walletBalance || 0) : 0;
+
     for (const log of unpaidLogs) {
-        if (remainingAmount <= 0) break;
+        if (remainingAmount <= 0 && walletAvailable <= 0) break;
 
         while (log.length < 17) log.push("");
 
@@ -5960,14 +6151,51 @@ function confirmMarkPaid() {
 
         if (dueOnThis <= 0) continue;
 
-        const payThis = Math.min(remainingAmount, dueOnThis);
-        const newPaidTotal = alreadyPaid + payThis;
+        // Step 2: Use wallet first to cover part of the due
+        let walletUsed = 0;
+        if (walletAvailable > 0) {
+            walletUsed = Math.min(walletAvailable, dueOnThis);
+            walletAvailable -= walletUsed;
+
+            if (walletUsed > 0) {
+                const walletDeductRow = [
+                    new Date().toISOString(),
+                    p.id, name, p.phone,
+                    '', '', 'Wallet used toward due',
+                    'Package Added',
+                    getLocalISOString(),
+                    0, 0, -walletUsed, 0, '', '', 'Advance', 0
+                ];
+                globalData.push(walletDeductRow);
+
+                syncToBackend({
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: 'Wallet deducted toward pending due',
+                    fee: 0,
+                    purchased: 0,
+                    advance: -walletUsed,
+                    discount: 0,
+                    type: 'Package Added',
+                    date: getLocalISOString(),
+                    paymentMode: 'Advance',
+                    amountPaid: 0
+                }).catch(() => {});
+            }
+        }
+
+        // Step 3: After wallet, apply cash payment toward remaining
+        const remainingDue = dueOnThis - walletUsed;
+        const cashApplied = Math.min(remainingAmount, remainingDue);
+        const newPaidTotal = alreadyPaid + walletUsed + cashApplied;
 
         log[16] = newPaidTotal;
         log[15] = (newPaidTotal >= fee) ? mode : 'Pending';
-        log[13] = getLocalISOString(); // Store the actual date the due was cleared
+        log[13] = getLocalISOString();
 
-        remainingAmount -= payThis;
+        remainingAmount -= cashApplied;
 
         updatedSessions.push({
             date: log[8],
@@ -5975,6 +6203,16 @@ function confirmMarkPaid() {
             amountPaid: newPaidTotal,
             originalFee: fee
         });
+
+        // Step 4: Show breakdown toast
+        if (walletUsed > 0) {
+            const stillDue = fee - newPaidTotal;
+            if (stillDue > 0) {
+                showToast(`Wallet ₹${walletUsed} + Cash ₹${cashApplied} applied — ₹${stillDue} still due`, 'info');
+            } else {
+                showToast(`Wallet ₹${walletUsed} + Cash ₹${cashApplied} — fully cleared`, 'success');
+            }
+        }
     }
 
     processData();
@@ -7693,6 +7931,393 @@ function toggleExSteps(idx) {
         if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 }
+// Auto-fill logic for Amount Paid
+document.getElementById('session-payment-mode').addEventListener('change', function() {
+    const mode = this.value;
+    const baseRate = Number(document.getElementById('base-rate-display').value) || 0;
+    const addOn = Number(document.getElementById('session-add-fee').value) || 0;
+    const total = baseRate + addOn;
+    const amountInput = document.getElementById('session-amount-paid');
+
+    // Show/hide conditional fields
+    document.getElementById('split-payment-row').classList.toggle('hidden', mode !== 'Split');
+    document.getElementById('session-discount-row').classList.toggle('hidden', mode !== 'Cash' && mode !== 'UPI' && mode !== 'Card' && mode !== 'Split');
+    document.getElementById('pkg-expiry-row').classList.toggle('hidden', true); // shown via enroll only
+
+    if (mode === 'Advance' || mode === 'Pending') {
+        amountInput.value = 0;
+        amountInput.readOnly = true;
+    } else if (mode === 'Complimentary') {
+        amountInput.value = 0;
+        amountInput.readOnly = true;
+    } else if (mode === 'Refund') {
+        amountInput.value = 0;
+        amountInput.readOnly = false;
+        amountInput.placeholder = 'Refund amount (₹)';
+    } else if (mode === 'Split') {
+        amountInput.readOnly = true;
+        amountInput.placeholder = 'Auto = Cash + UPI';
+        // Auto-sum split fields
+        ['split-cash','split-upi'].forEach(id => {
+            document.getElementById(id).oninput = function() {
+                const cash = Number(document.getElementById('split-cash').value) || 0;
+                const upi  = Number(document.getElementById('split-upi').value)  || 0;
+                amountInput.value = cash + upi;
+            };
+        });
+    } else {
+        amountInput.readOnly = false;
+        amountInput.placeholder = 'Auto = Fee';
+        amountInput.value = total;
+    }
+
+    updateAdvanceHint();
+});
+
+// Also update amount if Add-on fee is typed
+document.getElementById('session-add-fee').addEventListener('input', function() {
+    const mode = document.getElementById('session-payment-mode').value;
+    const baseRate = Number(document.getElementById('base-rate-display').value) || 0;
+    const addOn = Number(this.value) || 0;
+    if (mode !== "Advance" && mode !== "Pending") {
+        document.getElementById('session-amount-paid').value = baseRate + addOn;
+    }
+    updatePartialHint();
+});
+
+document.getElementById('session-amount-paid').addEventListener('input', updatePartialHint);
+
+function updatePartialHint() {
+    const mode = document.getElementById('session-payment-mode').value;
+    const hint = document.getElementById('partial-payment-hint');
+    const hintAmt = document.getElementById('partial-due-amount');
+    if (!hint || !hintAmt) return;
+
+    if (mode === 'Pending' || mode === 'Advance' || 
+        mode === 'Complimentary' || mode === 'Refund') {
+        hint.classList.add('hidden');
+        return;
+    }
+
+    const baseRate = Number(document.getElementById('base-rate-display').value) || 0;
+    const addOn = Number(document.getElementById('session-add-fee').value) || 0;
+    const discPct = Number(document.getElementById('session-discount-pct')?.value) || 0;
+    let fee = baseRate + addOn;
+    if (discPct > 0) fee = Math.round(fee * (1 - discPct / 100));
+
+    const paid = Number(document.getElementById('session-amount-paid').value) || 0;
+    const due = fee - paid;
+
+    if (paid > 0 && due > 0) {
+        hintAmt.innerText = due.toLocaleString();
+        hint.classList.remove('hidden');
+    } else {
+        hint.classList.add('hidden');
+    }
+}
+// ---------- DUE SESSIONS DETAIL MODAL ----------
+function openDueSessionsModal(name) {
+    const p = patientLookup[name];
+    if (!p) return;
+
+    const dueLogs = p.logs.filter(l => {
+        const type = String(l[7] || '').trim().toLowerCase();
+        if (['enrollment','package added','case closed','case restarted','bill issued'].includes(type)) return false;
+        const fee = toNum(l[9]);
+        if (fee <= 0) return false;
+        const mode = String(l[15] || '').trim();
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
+                     ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+        if (mode === 'Pending') return true;
+        if (paid < fee) return true;
+        return false;
+    }).sort((a, b) => new Date(a[8]) - new Date(b[8]));
+
+    const totalDue = dueLogs.reduce((sum, l) => {
+        const fee = toNum(l[9]);
+        const mode = String(l[15] || '').trim();
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
+                     ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+        return sum + (fee - paid);
+    }, 0);
+
+    const existing = document.getElementById('due-sessions-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'due-sessions-modal';
+    modal.style.cssText = `position:fixed;inset:0;background:rgba(15,23,42,0.55);z-index:9997;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px);`;
+
+    const rows = dueLogs.map((l, idx) => {
+        const fee = toNum(l[9]);
+        const mode = String(l[15] || '').trim();
+        const paidRaw = l[16];
+        const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
+                     ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+        const due = fee - paid;
+        const isPartial = paid > 0 && paid < fee;
+
+        return `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid #f1f5f9;">
+            <div>
+                <span style="font-size:0.8rem;font-weight:900;color:#0f172a;">${formatDateDMY(l[8])}</span>
+                ${isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid ₹${paid.toLocaleString()} of ₹${fee.toLocaleString()}</span>` : ''}
+            </div>
+            <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">₹${due.toLocaleString()} due</span>
+        </div>`;
+    }).join('');
+
+    modal.innerHTML = `
+    <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;max-width:360px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 25px 60px rgba(0,0,0,0.2);font-family:'Plus Jakarta Sans',sans-serif;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+            <div>
+                <p style="font-size:0.7rem;font-weight:900;color:#0f172a;text-transform:uppercase;margin:0;">${name}</p>
+                <p style="font-size:0.6rem;font-weight:700;color:#6366f1;margin:2px 0 0;">${p.id} · ${dueLogs.length} session(s)</p>
+            </div>
+            <button onclick="document.getElementById('due-sessions-modal').remove()" style="background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;color:#64748b;">✕</button>
+        </div>
+
+        <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:0.75rem;padding:0.6rem 1rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#e11d48;">Total Due</span>
+            <span style="font-size:1.1rem;font-weight:900;color:#be123c;">₹${totalDue.toLocaleString()}</span>
+        </div>
+
+        <div style="overflow-y:auto;flex:1;margin-bottom:1rem;">
+            ${rows}
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+            <button onclick="document.getElementById('due-sessions-modal').remove();sendDueReminder('${name.replace(/'/g, "\\'")}');" style="padding:0.75rem;border-radius:0.75rem;border:none;background:#25D366;color:white;font-weight:900;font-size:0.65rem;text-transform:uppercase;cursor:pointer;">💬 Remind</button>
+            <button onclick="document.getElementById('due-sessions-modal').remove();openMarkPaidPrompt('${name.replace(/'/g, "\\'")}');" style="padding:0.75rem;border-radius:0.75rem;border:none;background:#4f46e5;color:white;font-weight:900;font-size:0.65rem;text-transform:uppercase;cursor:pointer;">✓ Clear Due</button>
+        </div>
+    </div>`;
+
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    document.body.appendChild(modal);
+}
+function autoReconcilePayment(name, newRows) {
+    const p = patientLookup[name];
+    if (!p) return;
+
+    newRows.forEach(row => {
+        const feePaid = toNum(row[16]);   // what patient actually paid now
+        const sessionFee = toNum(row[9]); // cost of this session
+        const mode = String(row[15] || '').trim();
+
+        if (mode === 'Pending' || mode === 'Advance') return;
+
+        // Extra paid beyond this session's fee
+        let surplus = feePaid - sessionFee;
+
+        if (surplus <= 0 && feePaid >= sessionFee) return; // exact payment, nothing to do
+
+        if (surplus > 0) {
+            // SCENARIO: Patient paid more than session fee (e.g. 600 for 300 session)
+            // First use surplus to clear oldest pending dues
+            const dueLogs = globalData.filter(r => {
+                if (r === row) return false; // skip current row
+                const rName = r[2];
+                if (rName !== name) return false;
+                const type = String(r[7] || '').trim().toLowerCase();
+                if (['enrollment','package added','case closed','case restarted','bill issued'].includes(type)) return false;
+                const rFee = toNum(r[9]);
+                if (rFee <= 0) return false;
+                const rMode = String(r[15] || '').trim();
+                const rPaidRaw = r[16];
+                const rPaid = (rPaidRaw !== undefined && rPaidRaw !== null && rPaidRaw !== '')
+                              ? toNum(rPaidRaw) : (rMode === 'Pending' ? 0 : rFee);
+                return rPaid < rFee; // has unpaid balance
+            }).sort((a, b) => new Date(a[8]) - new Date(b[8])); // oldest first
+
+            dueLogs.forEach(dueRow => {
+                if (surplus <= 0) return;
+                while (dueRow.length < 17) dueRow.push('');
+                const dFee = toNum(dueRow[9]);
+                const dPaidRaw = dueRow[16];
+                const dMode = String(dueRow[15] || '').trim();
+                const dPaid = (dPaidRaw !== undefined && dPaidRaw !== null && dPaidRaw !== '')
+                              ? toNum(dPaidRaw) : (dMode === 'Pending' ? 0 : dFee);
+                const dOwed = dFee - dPaid;
+
+                const applying = Math.min(surplus, dOwed);
+                dueRow[16] = dPaid + applying;
+
+                // If fully cleared, update mode to Cash
+                if (dPaid + applying >= dFee) {
+                    dueRow[15] = mode;
+                }
+
+                surplus -= applying;
+
+                // Sync this cleared due row to backend
+                syncToBackend({
+                    action: "markAsPaid",
+                    id: p.id,
+                    name: name,
+                    date: dueRow[8],
+                    paymentMode: dueRow[15],
+                    amountPaid: dueRow[16]
+                }).catch(() => {});
+            });
+
+            // If surplus still remains after clearing all dues, add to wallet
+            if (surplus > 0) {
+                const walletRow = [
+                    new Date().toISOString(),
+                    p.id, name, p.phone,
+                    '', '', 'Wallet Credit',
+                    'Package Added',
+                    getLocalISOString(),
+                    0, 0, surplus, 0, '', '', 'Cash', surplus
+                ];
+                globalData.push(walletRow);
+
+                showToast(`₹${surplus.toLocaleString()} added to ${name}'s wallet`, 'success');
+
+                syncToBackend({
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: 'Wallet Credit from overpayment',
+                    fee: 0,
+                    purchased: 0,
+                    advance: surplus,
+                    discount: 0,
+                    type: 'Package Added',
+                    date: getLocalISOString(),
+                    paymentMode: 'Cash',
+                    amountPaid: surplus
+                }).catch(() => {});
+            }
+
+        } else if (surplus < 0 && feePaid > 0) {
+            // SCENARIO: Patient paid partial (e.g. 100 for 300 session)
+            // Already handled by dues calculation — just log it
+            // No action needed here, dues loop will pick it up
+        }
+    });
+}
+/* 
+   ================================================================
+   SPA MOBILE GESTURE & BACK-BUTTON MANAGEMENT SYSTEM
+   ================================================================
+*/
+
+// 1. HELPER: Check if any modal or overlay is currently visible
+function getOpenOverlayId() {
+    // List of all your modal IDs from the HTML
+    const modals = [
+        'bill-modal', 'advance-modal', 'registry-download-modal', 'case-modal', 
+        'branch-detail-modal', 'pkg-modal', 'patient-detail-modal', 
+        'edit-patient-modal', 'progress-notes-modal', 'exercise-plan-modal', 
+        'ex-lib-overlay', 'bill-selection-modal', 'markpaid-modal', 
+        'wa-popup-overlay', 'overlay'
+    ];
+    
+    // Check standard modals
+    for (let id of modals) {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden') && el.style.display !== 'none') {
+            return id;
+        }
+    }
+
+    // Check specific class-based pickers/drawers
+    if (document.getElementById('instruction-picker')?.classList.contains('show')) return 'instruction-picker';
+    if (document.getElementById('instruction-picker-2')?.classList.contains('show')) return 'instruction-picker-2';
+    if (document.getElementById('sidebar')?.classList.contains('sidebar-open')) return 'sidebar';
+    
+    // Check mobile session drawer (backdrop visibility)
+    const drawerBackdrop = document.getElementById('session-drawer-backdrop');
+    if (drawerBackdrop && !drawerBackdrop.classList.contains('hidden')) return 'session-drawer';
+
+    return null;
+}
+
+// 2. HELPER: Function to close whatever is currently open
+function closeActiveOverlay() {
+    const id = getOpenOverlayId();
+    if (!id) return false;
+
+    if (id === 'sidebar') {
+        closeSidebar();
+    } else if (id === 'session-drawer') {
+        toggleSessionDrawer(false);
+    } else if (id === 'instruction-picker') {
+        document.getElementById('instruction-picker').classList.remove('show');
+    } else if (id === 'instruction-picker-2') {
+        document.getElementById('instruction-picker-2').classList.remove('show');
+    } else if (id === 'ex-lib-overlay') {
+        document.getElementById('ex-lib-overlay').classList.remove('show');
+    } else if (id === 'overlay') {
+        // Body chart modal
+        closeModal(); 
+    } else {
+        // Standard hidden-class modals
+        document.getElementById(id).classList.add('hidden');
+    }
+    return true;
+}
+
+// 3. INTERCEPT TAB SWITCHING: Add to browser history
+const _originalSwitchTab = window.switchTab;
+window.switchTab = function(id, btn, pushState = true) {
+    if (pushState) {
+        // When we switch tabs, we tell the browser we are on a "new page"
+        history.pushState({ type: 'tab', tabId: id }, "", "#" + id);
+    }
+    _originalSwitchTab(id, btn);
+};
+
+// 4. INTERCEPT MODAL OPENING: Add to browser history
+// We "wrap" your existing functions so they push a history state when called
+const functionsToWrap = [
+    'generateBill', 'viewPatientDetail', 'openMarkPaidPrompt', 
+    'openExercisePlanModal', 'openCaseModal', 'openBranchDetailModal', 
+    'openTopupBalance', 'openMidPackage', 'openEditPatientModal'
+];
+
+functionsToWrap.forEach(fnName => {
+    const original = window[fnName];
+    if (typeof original === 'function') {
+        window[fnName] = function(...args) {
+            history.pushState({ type: 'modal' }, "", window.location.hash);
+            return original.apply(this, args);
+        };
+    }
+});
+
+// 5. THE BRAIN: Handle the "Popstate" (The Back Gesture/Button)
+window.addEventListener('popstate', function(event) {
+    // Step A: If an overlay/modal is open, close it and STOP
+    if (closeActiveOverlay()) {
+        // We stay on the current tab
+        return;
+    }
+
+    // Step B: If no modal is open, check which tab we are on
+    const currentTab = document.querySelector('section:not(.section-hidden)')?.id.replace('tab-', '');
+    
+    // Step C: If we are on a sub-tab (like 'patients'), go back to 'overview'
+    if (currentTab && currentTab !== 'overview') {
+        const overviewBtn = document.querySelector('[onclick*="overview"]');
+        window.switchTab('overview', overviewBtn, false); // false = don't push another state
+    } else {
+        // If we are already on overview and they swipe back, 
+        // we let the browser actually exit/go back to the previous site.
+    }
+});
+
+// 6. INITIAL STATE: Mark the starting point when app unlocks
+const _originalUnlockApp = window.unlockApp;
+window.unlockApp = function() {
+    _originalUnlockApp();
+    // Replace current state so the first "back" works correctly
+    history.replaceState({ type: 'tab', tabId: 'overview' }, "", "#overview");
+};
     </script>
 </body>
 
