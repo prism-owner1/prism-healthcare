@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinioSphere</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--teal-900:#0a3240;
+--teal-800:#0f4c5c;
+--teal-700:#165f73;
+--teal-600:#1d7a8a;
+--teal-500:#26a69a;
+--teal-400:#4db6ac;
+--teal-300:#80cbc4;
+--teal-100:#e0f2f1;
+--teal-50:#f0fdfa;
+--slate-900:#0f172a;
+--slate-800:#1e293b;
+--slate-700:#334155;
+--slate-500:#64748b;
+--slate-400:#94a3b8;
+--slate-300:#cbd5e1;
+--slate-200:#e2e8f0;
+--slate-100:#f1f5f9;
+--slate-50:#f8fafc;
+--white:#ffffff;
+}
+body{font-family:'Inter',sans-serif;background:#fff;color:var(--slate-800);line-height:1.6;font-size:15px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--slate-200)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;background:var(--teal-800);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+.logo-text{font-size:20px;font-weight:800;color:var(--teal-800);letter-spacing:-0.5px}
+.logo-text span{color:var(--teal-500)}
+.logo-sub{font-size:9px;font-weight:700;letter-spacing:0.15em;color:var(--slate-400);text-transform:uppercase;margin-top:1px}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate-500);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--teal-600)}
+.nav-cta{background:var(--teal-800);color:#fff;padding:10px 24px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:background 0.2s}
+.nav-cta:hover{background:var(--teal-700)}
+
+/* HERO */
+.hero{padding:140px 32px 80px;background:linear-gradient(135deg,#f0fdfa 0%,#fff 50%,#f0fdfa 100%);min-height:90vh;display:flex;align-items:center}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:#fff;border:1px solid var(--teal-300);border-radius:100px;margin-bottom:24px}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--teal-500);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.badge span{font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-800)}
+h1{font-size:58px;font-weight:900;line-height:1.02;letter-spacing:-2px;color:var(--teal-900);margin-bottom:24px}
+h1 span{color:var(--teal-500)}
+.hero-desc{font-size:17px;color:var(--slate-500);font-weight:400;line-height:1.7;max-width:480px;margin-bottom:36px}
+.hero-cta-group{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--teal-500);color:#fff;padding:16px 32px;border-radius:10px;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;box-shadow:0 8px 24px rgba(38,166,154,0.3)}
+.btn-primary:hover{background:var(--teal-600);transform:translateY(-1px)}
+.btn-secondary{background:#fff;color:var(--teal-800);padding:16px 32px;border-radius:10px;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--teal-300);transition:all 0.2s}
+.btn-secondary:hover{border-color:var(--teal-500);color:var(--teal-600)}
+.hero-trust{display:flex;align-items:center;gap:8px;margin-top:28px;font-size:11px;font-weight:600;color:var(--slate-400);letter-spacing:0.08em;text-transform:uppercase}
+.hero-trust i{color:var(--teal-500)}
+
+/* DASHBOARD MOCKUP */
+.mockup-wrap{position:relative}
+.mockup-outer{background:#fff;border-radius:20px;border:1px solid var(--slate-200);box-shadow:0 32px 80px rgba(15,76,92,0.1);overflow:hidden}
+.mockup-bar{background:var(--teal-800);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+.mockup-dots{display:flex;gap:5px}
+.mockup-dots span{width:9px;height:9px;border-radius:50%}
+.d1{background:#f87171}.d2{background:#fbbf24}.d3{background:#4ade80}
+.mockup-label{font-size:9px;font-weight:700;letter-spacing:0.15em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.mockup-body{padding:24px;background:var(--slate-50)}
+.mock-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.mock-name{height:12px;width:120px;background:var(--slate-300);border-radius:4px}
+.mock-avatar{width:32px;height:32px;border-radius:50%;background:var(--teal-300)}
+.mock-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.mock-stat{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--slate-200)}
+.mock-stat-val{font-size:18px;font-weight:800;color:var(--teal-700);margin-bottom:4px}
+.mock-stat-lbl{font-size:9px;font-weight:600;color:var(--slate-400);text-transform:uppercase;letter-spacing:0.08em}
+.mock-chart{background:#fff;border-radius:10px;border:1px solid var(--slate-200);padding:16px;margin-bottom:14px}
+.mock-chart-title{font-size:10px;font-weight:700;color:var(--slate-600);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em}
+.mock-bars{display:flex;align-items:flex-end;gap:6px;height:60px}
+.mock-bar{flex:1;border-radius:4px 4px 0 0;background:var(--teal-200)}
+.mock-bar.active{background:var(--teal-500)}
+.mock-patients{display:grid;gap:8px}
+.mock-patient{background:#fff;border-radius:8px;border:1px solid var(--slate-200);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.mock-p-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.mock-p-info{flex:1}
+.mock-p-name{height:8px;border-radius:3px;background:var(--slate-300);margin-bottom:4px;width:80px}
+.mock-p-sub{height:6px;border-radius:3px;background:var(--slate-200);width:120px}
+.mock-p-badge{padding:3px 8px;border-radius:100px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+.b-green{background:#dcfce7;color:#15803d}
+.b-amber{background:#fef3c7;color:#b45309}
+
+/* STATS STRIP */
+.stats-strip{background:var(--teal-900);padding:28px 32px}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat-item{text-align:center;padding:0 24px;border-right:1px solid rgba(255,255,255,0.1)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:36px;font-weight:900;color:var(--teal-400);letter-spacing:-1px;line-height:1}
+.stat-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:6px}
+
+/* FEATURES */
+section.features{padding:96px 32px;background:#fff}
+.section-label{font-size:10px;font-weight:800;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal-500);margin-bottom:12px}
+.section-title{font-size:42px;font-weight:900;color:var(--teal-900);letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--slate-500);max-width:560px;line-height:1.7}
+.section-head{max-width:1200px;margin:0 auto 56px}
+.features-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.feat-card{border:1px solid var(--slate-200);border-radius:16px;padding:36px;background:#fff;transition:all 0.3s}
+.feat-card:hover{border-color:var(--teal-400);box-shadow:0 16px 48px rgba(15,76,92,0.08);transform:translateY(-4px)}
+.feat-card.dark{background:var(--teal-900);border-color:transparent}
+.feat-card.accent{background:var(--teal-50);border-color:var(--teal-200)}
+.feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px}
+.fi-teal{background:var(--teal-100);color:var(--teal-700)}
+.fi-white{background:rgba(255,255,255,0.1);color:var(--teal-300)}
+.fi-green{background:#dcfce7;color:#15803d}
+.fi-amber{background:#fef3c7;color:#b45309}
+.feat-card h4{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:10px;color:var(--teal-900);line-height:1.2}
+.feat-card.dark h4{color:#fff}
+.feat-card p{font-size:14px;color:var(--slate-500);line-height:1.7}
+.feat-card.dark p{color:rgba(255,255,255,0.5)}
+.feat-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.feat-tag{padding:4px 12px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:var(--teal-100);color:var(--teal-700)}
+.feat-card.dark .feat-tag{background:rgba(255,255,255,0.1);color:var(--teal-300)}
+.feat-metric{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.feat-m-card{background:#fff;border-radius:10px;padding:14px;border:1px solid var(--slate-200)}
+.feat-m-num{font-size:24px;font-weight:900;color:var(--teal-600);letter-spacing:-0.5px}
+.feat-m-lbl{font-size:9px;font-weight:700;color:var(--slate-400);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+
+/* WHY SECTION */
+section.why{padding:96px 32px;background:var(--slate-50)}
+.why-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.why-list{display:grid;gap:24px;margin-top:36px}
+.why-item{display:flex;gap:16px;align-items:flex-start}
+.why-num{width:40px;height:40px;border-radius:10px;background:var(--teal-100);color:var(--teal-700);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.why-item h5{font-size:15px;font-weight:700;color:var(--teal-900);margin-bottom:4px}
+.why-item p{font-size:13px;color:var(--slate-500);line-height:1.6}
+.why-visual{background:var(--teal-900);border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.why-visual::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(38,166,154,0.1)}
+.timeline-item{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start}
+.timeline-dot{width:12px;height:12px;border-radius:50%;background:var(--teal-500);flex-shrink:0;margin-top:4px}
+.timeline-line{position:absolute;left:37px;top:44px;bottom:0;width:1px;background:rgba(38,166,154,0.2)}
+.timeline-content h6{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.timeline-content p{font-size:12px;color:rgba(255,255,255,0.4)}
+
+/* OFFER BANNER */
+.offer-banner{background:var(--teal-800);padding:0 32px}
+.offer-inner{max-width:1200px;margin:0 auto;padding:48px 0;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.offer-badge{display:inline-flex;align-items:center;gap:8px;padding:4px 14px;background:rgba(255,255,255,0.1);border-radius:100px;margin-bottom:12px}
+.offer-badge span{font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--teal-300)}
+.offer-title{font-size:36px;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.offer-desc{font-size:14px;color:rgba(255,255,255,0.6);max-width:500px}
+.offer-price-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:28px 36px;text-align:center;flex-shrink:0}
+.price-cross{font-size:14px;font-weight:600;color:rgba(255,255,255,0.4);text-decoration:line-through;margin-bottom:4px}
+.price-free{font-size:48px;font-weight:900;color:var(--teal-300);letter-spacing:-2px;line-height:1}
+.price-period{font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px}
+.price-note{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal-400);margin-top:10px}
+
+/* FORM SECTION */
+section.register{padding:96px 32px;background:#fff}
+.register-inner{max-width:960px;margin:0 auto}
+.form-card{background:#fff;border:1px solid var(--slate-200);border-radius:24px;padding:56px;box-shadow:0 32px 80px rgba(15,76,92,0.06)}
+.form-step{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--slate-100)}
+.form-step:last-of-type{border-bottom:none}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.step-badge{width:32px;height:32px;border-radius:50%;background:var(--teal-100);color:var(--teal-700);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.step-title{font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--slate-400)}
+.form-row{display:grid;gap:20px}
+.form-row-2{grid-template-columns:1fr 1fr}
+.form-row-3{grid-template-columns:1fr 1fr 1fr}
+.form-row-4{grid-template-columns:1fr 1fr 1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+label.flabel{font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--slate-400)}
+input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+width:100%;padding:13px 16px;background:var(--slate-50);border:1.5px solid var(--slate-200);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--slate-800);outline:none;transition:all 0.2s;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--teal-400);background:#fff;box-shadow:0 0 0 4px rgba(38,166,154,0.08)}
+textarea{resize:vertical;min-height:90px}
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check-label{display:flex;align-items:center;gap:10px;padding:13px 14px;background:var(--slate-50);border:1.5px solid var(--slate-200);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--slate-600)}
+.check-label:hover{border-color:var(--teal-400);color:var(--teal-800)}
+.check-label input{width:15px;height:15px;accent-color:var(--teal-500);flex-shrink:0}
+.form-note{font-size:11px;color:var(--slate-400);margin-top:6px;font-style:italic}
+.consent-row{display:flex;align-items:flex-start;gap:12px;padding:16px;background:var(--teal-50);border-radius:10px;border:1px solid var(--teal-100)}
+.consent-row input{width:16px;height:16px;accent-color:var(--teal-500);flex-shrink:0;margin-top:2px}
+.consent-row span{font-size:12px;color:var(--slate-600);line-height:1.5}
+.submit-btn{width:100%;background:var(--teal-500);color:#fff;border:none;padding:20px;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;box-shadow:0 8px 24px rgba(38,166,154,0.3)}
+.submit-btn:hover{background:var(--teal-600);transform:translateY(-1px);box-shadow:0 12px 32px rgba(38,166,154,0.35)}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.submit-footer{text-align:center;margin-top:16px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--slate-400);display:flex;align-items:center;justify-content:center;gap:6px}
+.submit-footer i{color:var(--teal-500)}
+.error-msg{font-size:11px;color:#dc2626;font-weight:600;margin-top:4px;display:none}
+
+/* SUCCESS */
+.success-state{display:none;text-align:center;padding:64px 0}
+.success-icon{width:80px;height:80px;background:var(--teal-100);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;color:var(--teal-600)}
+.success-state h3{font-size:30px;font-weight:900;color:var(--teal-900);letter-spacing:-0.5px;margin-bottom:12px}
+.success-state p{font-size:15px;color:var(--slate-500);max-width:420px;margin:0 auto}
+
+/* FOOTER */
+footer{background:var(--teal-900);padding:56px 32px 32px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:flex;justify-content:space-between;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.footer-logo-icon{width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--teal-300);font-size:16px}
+.footer-logo-text{font-size:18px;font-weight:800;color:#fff}
+.footer-logo-text span{color:var(--teal-400)}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,0.4);max-width:260px;line-height:1.7}
+.footer-links h6{font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:16px}
+.footer-links a{display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:10px;transition:color 0.2s}
+.footer-links a:hover{color:var(--teal-300)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;font-size:11px;color:rgba(255,255,255,0.3)}
+.footer-by{display:flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(255,255,255,0.05);border-radius:8px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+
+a{text-decoration:none}
+</style>
+</head>
+<body>
+<h2 class="sr-only">ClinioSphere — Physiotherapy Clinical Intelligence Platform</h2>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <img src="clinicosphare.png" alt="ClinioSphere Logo" style="height: 48px; width: auto;">
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#why">Why Us</a>
+      <a href="#offer">Offer</a>
+      <a href="#register" class="nav-cta">Reserve Trial</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge"><span class="badge-dot"></span><span>Now Accepting Pioneer Clinics</span></div>
+      <h1>The Clinical OS<br>for Modern <span>Physio</span><br>Practice.</h1>
+      <p class="hero-desc">ClinioSphere unifies visual pain mapping, digital SOAP notes, smart HEP delivery, and zero-leakage revenue tracking — in one intelligent workspace.</p>
+      <div class="hero-cta-group">
+        <a href="#register" class="btn-primary"><i class="ti ti-rocket" aria-hidden="true"></i> Start Free 30-Day Trial</a>
+        <a href="#features" class="btn-secondary"><i class="ti ti-layout-grid" aria-hidden="true"></i> Explore Features</a>
+      </div>
+      <div class="hero-trust"><i class="ti ti-shield-check" aria-hidden="true"></i> Built by Physiotherapists for Physiotherapists</div>
+    </div>
+    <div class="mockup-wrap">
+      <div class="mockup-outer">
+        <div class="mockup-bar">
+          <div class="mockup-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <div class="mockup-label">ClinioSphere Dashboard</div>
+          <div></div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-header"><div class="mock-name"></div><div class="mock-avatar"></div></div>
+          <div class="mock-stats">
+            <div class="mock-stat"><div class="mock-stat-val">24</div><div class="mock-stat-lbl">Today's Patients</div></div>
+            <div class="mock-stat"><div class="mock-stat-val" style="color:var(--teal-500)">₹18.4K</div><div class="mock-stat-lbl">Revenue Today</div></div>
+            <div class="mock-stat"><div class="mock-stat-val" style="color:#15803d">3</div><div class="mock-stat-lbl">Dues Cleared</div></div>
+          </div>
+          <div class="mock-chart">
+            <div class="mock-chart-title">Weekly Footfall</div>
+            <div class="mock-bars">
+              <div class="mock-bar" style="height:55%"></div>
+              <div class="mock-bar" style="height:70%"></div>
+              <div class="mock-bar" style="height:50%"></div>
+              <div class="mock-bar active" style="height:90%"></div>
+              <div class="mock-bar" style="height:75%"></div>
+              <div class="mock-bar" style="height:65%"></div>
+              <div class="mock-bar active" style="height:80%"></div>
+            </div>
+          </div>
+          <div class="mock-patients">
+            <div class="mock-patient">
+              <div class="mock-p-avatar" style="background:var(--teal-500)">RK</div>
+              <div class="mock-p-info"><div class="mock-p-name"></div><div class="mock-p-sub"></div></div>
+              <span class="mock-p-badge b-green">Active</span>
+            </div>
+            <div class="mock-patient">
+              <div class="mock-p-avatar" style="background:#f59e0b">SM</div>
+              <div class="mock-p-info"><div class="mock-p-name"></div><div class="mock-p-sub"></div></div>
+              <span class="mock-p-badge b-amber">Due: ₹1,200</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Pioneer Clinics Selected</div></div>
+    <div class="stat-item"><div class="stat-num">30</div><div class="stat-label">Day Free Trial</div></div>
+    <div class="stat-item"><div class="stat-num">85%</div><div class="stat-label">Patient Retention Rate</div></div>
+    <div class="stat-item"><div class="stat-num">+32%</div><div class="stat-label">Average Revenue Lift</div></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-head">
+    <div class="section-label">Core Intelligence</div>
+    <div class="section-title">Built by clinicians,<br>for clinicians.</div>
+    <div class="section-sub">Standard clinic software tracks billing. ClinioSphere tracks the patient's entire recovery journey.</div>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon fi-teal"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+      <h4>Visual Pain Mapping</h4>
+      <p>Place markers on interactive anatomy models to document pain severity, quality, and onset. Watch your patient's pain profile evolve across sessions with dynamic overlays.</p>
+      <div class="feat-tags"><span class="feat-tag">Interactive Anatomy</span><span class="feat-tag">Pain Profiling</span><span class="feat-tag">Session Tracking</span></div>
+    </div>
+    <div class="feat-card dark">
+      <div class="feat-icon fi-white"><i class="ti ti-file-text" aria-hidden="true"></i></div>
+      <h4>Narrative Billing</h4>
+      <p>Generate medical-grade A4 statements, treatment certificates, and session ledgers in seconds. Ready for insurance claims, corporate documentation, and patient records.</p>
+      <div class="feat-tags"><span class="feat-tag">Insurance Ready</span><span class="feat-tag">A4 Statements</span><span class="feat-tag">Digital Ledger</span></div>
+    </div>
+    <div class="feat-card accent">
+      <div class="feat-icon fi-green"><i class="ti ti-barbell" aria-hidden="true"></i></div>
+      <h4>Smart HEP Library</h4>
+      <p>Prescribe professional, multi-stage exercise programs in under 30 seconds. Plans include diagrams, reps, and progressions — delivered directly to patient WhatsApp.</p>
+      <div class="feat-metric">
+        <div class="feat-m-card"><div class="feat-m-num">30s</div><div class="feat-m-lbl">To Prescribe</div></div>
+        <div class="feat-m-card"><div class="feat-m-num">500+</div><div class="feat-m-lbl">Exercises</div></div>
+      </div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-amber"><i class="ti ti-wallet" aria-hidden="true"></i></div>
+      <h4>Zero-Leakage Wallet</h4>
+      <p>Auto-reconcile advance payments and package sessions. Get alerts on outstanding dues, generate payment reminders, and never lose track of a single session fee again.</p>
+      <div class="feat-metric">
+        <div class="feat-m-card"><div class="feat-m-num">+32%</div><div class="feat-m-lbl">Revenue Growth</div></div>
+        <div class="feat-m-card"><div class="feat-m-num">0</div><div class="feat-m-lbl">Missed Payments</div></div>
+      </div>
+    </div>
+    <div class="feat-card" style="grid-column:1/-1">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
+        <div>
+          <div class="feat-icon fi-teal"><i class="ti ti-notes" aria-hidden="true"></i></div>
+          <h4>Digital SOAP Notes</h4>
+          <p style="margin-bottom:16px">Structured, templated SOAP notes tailored for physiotherapy — complete with outcome measure scoring (VAS, NPRS, PSFS), treatment codes, and automatic session summaries. Export as PDF for referrals in one click.</p>
+          <div class="feat-tags"><span class="feat-tag">VAS / NPRS Scoring</span><span class="feat-tag">Auto Summaries</span><span class="feat-tag">PDF Export</span><span class="feat-tag">Referral Ready</span></div>
+        </div>
+        <div style="background:var(--slate-50);border-radius:12px;padding:24px;border:1px solid var(--slate-200)">
+          <div style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--slate-400);margin-bottom:16px">Sample SOAP Entry</div>
+          <div style="display:grid;gap:10px">
+            <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid var(--slate-200)"><span style="font-size:10px;font-weight:800;color:var(--teal-600);text-transform:uppercase;letter-spacing:0.1em">S</span><span style="font-size:12px;color:var(--slate-600);margin-left:8px">Patient reports 7/10 LBP, worse in mornings</span></div>
+            <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid var(--slate-200)"><span style="font-size:10px;font-weight:800;color:var(--teal-600);text-transform:uppercase;letter-spacing:0.1em">O</span><span style="font-size:12px;color:var(--slate-600);margin-left:8px">Lumbar flexion limited to 60°, NPRS 6/10</span></div>
+            <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid var(--slate-200)"><span style="font-size:10px;font-weight:800;color:var(--teal-600);text-transform:uppercase;letter-spacing:0.1em">A</span><span style="font-size:12px;color:var(--slate-600);margin-left:8px">Chronic LBP with acute exacerbation — improving</span></div>
+            <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid var(--slate-200)"><span style="font-size:10px;font-weight:800;color:var(--teal-600);text-transform:uppercase;letter-spacing:0.1em">P</span><span style="font-size:12px;color:var(--slate-600);margin-left:8px">Continue IFT + McKenzie x 3/week, 4 more sessions</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="why-inner">
+    <div>
+      <div class="section-label">Why ClinioSphere</div>
+      <div class="section-title">Stop managing.<br>Start healing.</div>
+      <div class="why-list">
+        <div class="why-item"><div class="why-num">01</div><div><h5>No more paper registers</h5><p>Replace physical files and diaries with a structured, searchable digital record that grows with every patient visit.</p></div></div>
+        <div class="why-item"><div class="why-num">02</div><div><h5>Revenue you can trust</h5><p>Real-time visibility into collections, dues, advance adjustments, and package balances — your entire cash flow in one view.</p></div></div>
+        <div class="why-item"><div class="why-num">03</div><div><h5>Patients remember you</h5><p>Automated HEP follow-ups and session reminders on WhatsApp keep patients engaged between visits and coming back.</p></div></div>
+        <div class="why-item"><div class="why-num">04</div><div><h5>Built for Indian physio workflows</h5><p>Supports AYUSH-style documentation, Indian insurance terminology, and common modality codes used in day-to-day OPD practice.</p></div></div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px">Patient Journey in ClinioSphere</div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h6>First Visit — Onboarding</h6><p>Pain mapping, history, functional scores recorded digitally</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h6>Session 2 — SOAP Note</h6><p>Structured note logged in under 2 minutes. HEP prescribed via WhatsApp.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h6>Mid-Course — Revenue Check</h6><p>Wallet auto-adjusts advance balance. Outstanding dues flagged automatically.</p></div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-content"><h6>Discharge — Full Report</h6><p>PDF summary with all SOAP notes, outcome scores, and billing statement generated in one click.</p></div></div>
+      <div style="margin-top:28px;padding:16px;background:rgba(38,166,154,0.1);border-radius:10px;border:1px solid rgba(38,166,154,0.2)">
+        <div style="font-size:11px;font-weight:700;color:var(--teal-300);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">Average Time Saved</div>
+        <div style="font-size:28px;font-weight:900;color:var(--teal-400);letter-spacing:-1px">45 min/day</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">per physiotherapist across documentation and billing</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER BANNER -->
+<div class="offer-banner" id="offer">
+  <div class="offer-inner">
+    <div>
+      <div class="offer-badge"><i class="ti ti-clock" style="color:var(--teal-300);font-size:12px" aria-hidden="true"></i><span>Pioneer Launch — Limited to 50 Clinics</span></div>
+      <div class="offer-title">1 Full Month.<br>Completely Free.</div>
+      <div class="offer-desc">Pioneer clinics get 30 days of full clinical intelligence at zero cost — no credit card, no commitment. Lock in pioneer pricing before the public launch.</div>
+    </div>
+    <div>
+      <div class="offer-price-card">
+        <div class="price-cross">₹4,999 / month</div>
+        <div class="price-free">₹0</div>
+        <div class="price-period">for your first 30 days</div>
+        <div class="price-note"><i class="ti ti-award" aria-hidden="true"></i> Pioneer Pricing Locked In</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER FORM -->
+<section class="register" id="register">
+  <div class="register-inner">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="section-label" style="text-align:center">Reserve Your Spot</div>
+      <div class="section-title" style="font-size:36px;text-align:center">Join the Sphere.</div>
+      <div style="font-size:15px;color:var(--slate-500);margin-top:8px">Complete your practice profile to activate your 30-day pioneer trial.</div>
+    </div>
+    <div class="form-card">
+      <form id="clinioForm">
+        
+        <!-- STEP 1 -->
+        <div class="form-step">
+          <div class="step-header"><div class="step-badge">01</div><div class="step-title">Clinician Identity</div></div>
+          <div class="form-row form-row-3" style="margin-bottom:20px">
+            <div class="form-group">
+              <label class="flabel" for="fname">Full Name</label>
+              <input type="text" id="fname" name="name" placeholder="Dr. Ravi Kumar" required>
+              <div class="error-msg" id="err-name">Please enter your full name.</div>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fphone">WhatsApp Number</label>
+              <input type="tel" id="fphone" name="phone" value="+91 " required>
+              <div class="error-msg" id="err-phone">Enter a valid 10-digit mobile number.</div>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="femail">Email Address</label>
+              <input type="email" id="femail" name="email" placeholder="dr.ravi@clinic.in" required>
+              <div class="error-msg" id="err-email">Please enter a valid email address.</div>
+            </div>
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="flabel" for="fqualification">Qualification</label>
+              <select id="fqualification" name="qualification">
+                <option value="">Select qualification</option>
+                <option>BPTh (Bachelor of Physiotherapy)</option>
+                <option>MPTh (Master of Physiotherapy)</option>
+                <option>MPTh + PhD</option>
+                <option>DPTh (Diploma)</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fspecialization">Specialization</label>
+              <select id="fspecialization" name="specialization">
+                <option value="">Select specialization</option>
+                <option>Musculoskeletal / Orthopaedic</option>
+                <option>Neurological Rehabilitation</option>
+                <option>Sports Physiotherapy</option>
+                <option>Paediatric Physiotherapy</option>
+                <option>Geriatric Physiotherapy</option>
+                <option>Cardiopulmonary</option>
+                <option>Women's Health</option>
+                <option>General Practice</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step">
+          <div class="step-header"><div class="step-badge">02</div><div class="step-title">Practice Profile</div></div>
+          <div class="form-row form-row-2" style="margin-bottom:20px">
+            <div class="form-group">
+              <label class="flabel" for="fclinic">Clinic / Centre Name</label>
+              <input type="text" id="fclinic" name="clinic" placeholder="e.g. PhysioPlus Rehab Centre" required>
+              <div class="error-msg" id="err-clinic">Please enter your clinic name.</div>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fcity">City</label>
+              <input type="text" id="fcity" name="city" placeholder="e.g. Mumbai, Pune, Bengaluru" required>
+              <div class="error-msg" id="err-city">Please enter your city.</div>
+            </div>
+          </div>
+          <div class="form-row form-row-3" style="margin-bottom:20px">
+            <div class="form-group">
+              <label class="flabel" for="ftype">Practice Type</label>
+              <select id="ftype" name="type">
+                <option>OPD — Solo Practice</option>
+                <option>Multi-Physiotherapist Centre</option>
+                <option>Homecare / Domiciliary Service</option>
+                <option>Hospital Physiotherapy Dept</option>
+                <option>Sports / Fitness Clinic</option>
+                <option>Corporate Wellness</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fvolume">Daily Patient Footfall</label>
+              <select id="fvolume" name="volume">
+                <option>1–5 patients/day</option>
+                <option>5–15 patients/day</option>
+                <option>15–30 patients/day</option>
+                <option>30–50 patients/day</option>
+                <option>50+ patients/day</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fstaff">No. of Physiotherapists</label>
+              <select id="fstaff" name="staff">
+                <option>Just me (solo)</option>
+                <option>2–3 physiotherapists</option>
+                <option>4–7 physiotherapists</option>
+                <option>8+ physiotherapists</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label class="flabel" for="faddress">Clinic Address</label>
+              <input type="text" id="faddress" name="address" placeholder="Street, Area, City — Pincode">
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fgstin">GSTIN (Optional)</label>
+              <input type="text" id="fgstin" name="gstin" placeholder="22AAAAA0000A1Z5">
+              <div class="form-note">Required only for GST-compliant billing on invoices.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step">
+          <div class="step-header"><div class="step-badge">03</div><div class="step-title">Intelligence Audit</div></div>
+          <div class="form-row form-row-2" style="margin-bottom:20px">
+            <div class="form-group">
+              <label class="flabel">Current pain points <span style="font-weight:400;text-transform:none;letter-spacing:0">(select all that apply)</span></label>
+              <div class="checkbox-grid">
+                <label class="check-label"><input type="checkbox" name="pain" value="billing"> Slow / Manual Billing</label>
+                <label class="check-label"><input type="checkbox" name="pain" value="soap"> SOAP Note Documentation</label>
+                <label class="check-label"><input type="checkbox" name="pain" value="dues"> Tracking Payment Dues</label>
+                <label class="check-label"><input type="checkbox" name="pain" value="hep"> Home Exercise Delivery</label>
+                <label class="check-label"><input type="checkbox" name="pain" value="appointments"> Appointment Management</label>
+                <label class="check-label"><input type="checkbox" name="pain" value="reports"> Progress Reports</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="flabel" for="fcurrentsys">How do you currently manage patients?</label>
+              <select id="fcurrentsys" name="current_system" style="margin-bottom:16px">
+                <option>Paper register / physical files</option>
+                <option>Excel / Google Sheets</option>
+                <option>Standard clinic management software</option>
+                <option>WhatsApp only</option>
+                <option>No formal system</option>
+              </select>
+              <label class="flabel" for="fmonthly">Approximate monthly collections (₹)</label>
+              <select id="fmonthly" name="monthly_revenue">
+                <option>Below ₹50,000</option>
+                <option>₹50,000 – ₹1,00,000</option>
+                <option>₹1,00,000 – ₹2,50,000</option>
+                <option>₹2,50,000 – ₹5,00,000</option>
+                <option>Above ₹5,00,000</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="flabel" for="fexpect">What outcome do you most want from ClinioSphere?</label>
+            <textarea id="fexpect" name="expectation" placeholder="e.g. I want to reduce time spent on documentation and track my dues better..."></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="form-step" style="border-bottom:none;margin-bottom:0;padding-bottom:0">
+          <div class="step-header"><div class="step-badge">04</div><div class="step-title">Confirm & Launch</div></div>
+          <div class="consent-row" style="margin-bottom:20px">
+            <input type="checkbox" id="fconsent" name="consent" required>
+            <span>I confirm that the information provided is accurate and I agree to be contacted by the ClinioSphere team on WhatsApp to activate my 30-day pioneer trial. I understand this is a pre-launch offer with no credit card required.</span>
+          </div>
+          <div class="error-msg" id="err-consent" style="margin-bottom:12px">Please confirm the above to proceed.</div>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <i class="ti ti-rocket" aria-hidden="true"></i> Activate My Pioneer Trial — Free for 30 Days
+          </button>
+          <div class="submit-footer"><i class="ti ti-lock" aria-hidden="true"></i> Secure · No credit card required · Data stays private</div>
+        </div>
+      </form>
+
+      <div class="success-state" id="successState">
+        <div class="success-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+        <h3>You're in the Sphere.</h3>
+        <p>Practice profile received. A ClinioSphere specialist will reach out on WhatsApp within 24 hours to activate your 30-day free trial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <img src="clinicosphare.png" alt="ClinioSphere Logo" style="height: 40px; width: auto; filter: brightness(0) invert(1);">
+        </div>
+        <div class="footer-tagline">Clinical intelligence for modern physiotherapy practice. Built in India, for India.</div>
+      </div>
+      <div class="footer-links">
+        <h6>Product</h6>
+        <a href="#features">Features</a>
+        <a href="#why">Why ClinioSphere</a>
+        <a href="#offer">Pioneer Offer</a>
+        <a href="#register">Register</a>
+      </div>
+      <div class="footer-links">
+        <h6>Contact</h6>
+        <a href="mailto:trial@cliniosphere.in">trial@cliniosphere.in</a>
+        <a href="#">WhatsApp Support</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 ClinioSphere · Professional Clinical Operating System</div>
+      <div class="footer-by"><i class="ti ti-building" aria-hidden="true"></i> Developed by Prism Healthcare Intelligence</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const phoneInput = document.getElementById('fphone');
+phoneInput.addEventListener('input', e => {
+  let v = e.target.value;
+  if (!v.startsWith('+91 ')) e.target.value = '+91 ';
+  let digits = v.substring(4).replace(/\D/g,'').substring(0,10);
+  e.target.value = '+91 ' + digits;
+});
+
+function showErr(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = show ? 'block' : 'none';
+}
+
+document.getElementById('clinioForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  let valid = true;
+
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const email = document.getElementById('femail').value.trim();
+  const clinic = document.getElementById('fclinic').value.trim();
+  const city = document.getElementById('fcity').value.trim();
+  const consent = document.getElementById('fconsent').checked;
+
+  if (!name) { showErr('err-name', true); valid = false; } else showErr('err-name', false);
+  const digits = phone.replace('+91 ','').replace(/\D/g,'');
+  if (digits.length !== 10) { showErr('err-phone', true); valid = false; } else showErr('err-phone', false);
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) { showErr('err-email', true); valid = false; } else showErr('err-email', false);
+  if (!clinic) { showErr('err-clinic', true); valid = false; } else showErr('err-clinic', false);
+  if (!city) { showErr('err-city', true); valid = false; } else showErr('err-city', false);
+  if (!consent) { showErr('err-consent', true); valid = false; } else showErr('err-consent', false);
+
+  if (!valid) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Connecting to ClinioSphere...';
+
+  const form = e.target;
+  const fd = new FormData(form);
+  const pains = [];
+  document.querySelectorAll('input[name="pain"]:checked').forEach(cb => pains.push(cb.value));
+
+  const payload = {
+    action: 'preLaunchRegistration',
+    name, phone, email,
+    qualification: fd.get('qualification'),
+    specialization: fd.get('specialization'),
+    clinic, city,
+    type: fd.get('type'),
+    volume: fd.get('volume'),
+    staff: fd.get('staff'),
+    address: fd.get('address'),
+    gstin: fd.get('gstin'),
+    pain: pains.join(', '),
+    current_system: fd.get('current_system'),
+    monthly_revenue: fd.get('monthly_revenue'),
+    expectation: fd.get('expectation'),
+    timestamp: new Date().toISOString()
+  };
+
+    try {
+    await fetch('https://script.google.com/macros/s/AKfycbzCm8sS1ewNtpH0Zp7KFnmeC8d3RYWuq2Cbpft-EPkg_YPTAHZb-bH_TJ7BjTxGEW0e/exec', {
+      method: 'POST', mode: 'no-cors', body: JSON.stringify(payload)
+    });
+    console.log('✅ Submitted successfully');
+  } catch (err) {
+    console.error('❌ Fetch failed:', err);
+    alert('Submission failed. Please try again.');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-rocket"></i> Activate My Pioneer Trial — Free for 30 Days';
+    return;
+  }
+
+  form.style.display = 'none';
+  document.getElementById('successState').style.display = 'block';
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
