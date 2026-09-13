@@ -3104,8 +3104,10 @@ try {
         }
 
         function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('sidebar-open');
-            document.getElementById('sidebar-overlay').classList.remove('active');
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            if (sb) sb.classList.remove('sidebar-open');
+            if (ov) ov.classList.remove('active');
         }
 
         // ---------- PWA: SERVICE WORKER REGISTRATION ----------
