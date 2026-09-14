@@ -3541,14 +3541,8 @@ try {
     console.error('Non-JSON response from server:', rawText);
     throw new Error('Server returned an invalid response (check deployment/access settings)');
 }
-                if (
-  json.status === 'error' ||
-  json.status === 'duplicate'
-) {
-  throw new Error(json.message || 'Backend rejected the request');
-}
-
-return json;
+                if (json.status === 'error') throw new Error(json.message);
+                return json;
             } catch (err) {
                 showToast('Cloud sync failed — tap refresh to verify', 'error');
                 throw err;
@@ -4374,6 +4368,8 @@ async function saveEnrollment() {
     const enrolledDiscount = Math.min(Math.max(0, Number(document.getElementById('en-discount').value) || 0), gross);
     const totalPackageValue = Math.max(0, gross - enrolledDiscount);
 
+    saveEnrollmentBodyChartAsSoap(name, enrolledId);
+
     try {
         console.log('Enrolling with SCRIPT_URL:', SCRIPT_URL);
         let result;
@@ -4419,27 +4415,17 @@ async function saveEnrollment() {
             requestId: "ENROLL-" + Date.now()
         });
 
-        if (!result || result.status !== 'success') {
-  throw new Error(
-    result?.message || 'Enrollment was not confirmed by the backend'
-  );
-}
+        if (result && result.status === 'error') throw new Error(result.message);
 
-saveEnrollmentBodyChartAsSoap(name, enrolledId);
-
-if (enrolledSessions <= 1 && !result.txId) {
-  throw new Error(
-    'Enrollment was not confirmed: no transaction ID returned'
-  );
-}
-
-resetEnrollForm();
-
-showToast(`${name} enrolled successfully`, 'success');
-showEnrollmentSuccessPopup({
-  name: name,
-  patientId: enrolledId
-});
+        resetEnrollForm();
+        showToast(`${name} enrolled successfully`, 'success');
+        showEnrollmentSuccessPopup({
+            name: name,
+            id: enrolledId,
+            phone: enrolledPhone,
+            diag: enrolledDiag,
+            amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
+        });
 
         await loadAdminData(false); // patientLookup rebuilt entirely from backend fetch
     } catch (e) {
