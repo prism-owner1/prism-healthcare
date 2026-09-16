@@ -111,6 +111,77 @@
             display: none !important;
         }
 
+        /* --- Collapsible Desktop Sidebar System --- */
+        #sidebar {
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar.sidebar-collapsed {
+            width: 5.25rem !important; /* 84px */
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-text,
+        #sidebar.sidebar-collapsed .nav-label,
+        #sidebar.sidebar-collapsed .sidebar-bottom-expanded {
+            display: none !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-bottom-collapsed {
+            display: flex !important;
+        }
+
+        #sidebar:not(.sidebar-collapsed) .sidebar-bottom-collapsed {
+            display: none !important;
+        }
+
+        #sidebar.sidebar-collapsed .nav-btn {
+            justify-content: center !important;
+            padding: 0.75rem 0 !important;
+            width: 3.5rem !important;
+            height: 3.25rem !important;
+            margin: 0 auto 0.35rem auto !important;
+            border-radius: 1.1rem !important;
+            transform: none !important;
+            gap: 0 !important;
+        }
+
+        #sidebar.sidebar-collapsed .nav-btn i {
+            margin: 0 auto !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-active {
+            transform: none !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-header-row {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.4rem !important;
+            margin-bottom: 1.25rem !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-bottom: 0.75rem !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-logo-box {
+            width: 2.75rem !important;
+            height: 2.75rem !important;
+            padding: 0.35rem !important;
+            border-radius: 1rem !important;
+            margin: 0 auto !important;
+        }
+
+        #sidebar.sidebar-collapsed .sidebar-collapse-icon {
+            display: none !important;
+        }
+
+        #sidebar:not(.sidebar-collapsed) .sidebar-expand-icon {
+            display: none !important;
+        }
+
         /* --- Mobile Navigation Styles --- */
         .mobile-nav-btn {
             padding: 0.35rem 0.5rem;
@@ -1229,10 +1300,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.65rem 0.9rem;
-            border-radius: 1rem;
-            background: #fff7ed;
+            padding: 0.75rem 1rem;
+            border-radius: 1.15rem;
+            background: #fffaf0;
+            border: 1px solid #fed7aa;
             margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .due-soon-row:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px -2px rgba(245, 158, 11, 0.12);
+        }
+
+        body.dark-mode .due-soon-row {
+            background: rgba(254, 243, 199, 0.04);
+            border-color: rgba(245, 158, 11, 0.18);
         }
 
         .toolbar-btn {
@@ -1817,29 +1900,36 @@ html.dark .instruction-modal-footer {
         <img src="https://prismhealthcare.in/prism1.png" class="bg-logo-image" alt="">
 
         <!-- SIDE NAVIGATION (Desktop Only) -->
-        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 border-r border-slate-200 flex flex-col p-6 z-50 lg:flex hidden">
+        <aside id="sidebar" class="w-72 h-screen sticky top-0 bg-white/95 dark:bg-slate-900/95 border-r border-slate-200 dark:border-slate-800 flex flex-col p-6 z-50 lg:flex hidden">
             <!-- SIDEBAR BRAND HEADER -->
-            <div class="flex items-center gap-3.5 mb-8 px-1 pb-4 border-b border-slate-100 dark:border-slate-800">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-50 to-white dark:from-slate-800 dark:to-slate-900 p-2 shadow-sm border border-indigo-100/80 dark:border-slate-800 flex items-center justify-center flex-shrink-0">
-                    <img src="prismapplogo.png" onerror="this.onerror=null; this.src='https://prismhealthcare.in/prism1.png';" class="h-full w-full object-contain" alt="Prism Logo">
+            <div class="sidebar-header-row flex items-center justify-between gap-2 mb-8 px-1 pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-3.5 min-w-0">
+                    <div class="sidebar-logo-box w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-50 to-white dark:from-slate-800 dark:to-slate-900 p-2 shadow-sm border border-indigo-100/80 dark:border-slate-800 flex items-center justify-center flex-shrink-0 cursor-pointer" onclick="toggleSidebarCollapse()" title="Toggle sidebar">
+                        <img src="prismapplogo.png" onerror="this.onerror=null; this.src='https://prismhealthcare.in/prism1.png';" class="h-full w-full object-contain" alt="Prism Logo">
+                    </div>
+                    <div class="sidebar-text min-w-0">
+                        <h2 class="text-sm font-black tracking-tight text-slate-900 dark:text-white uppercase leading-none">ClinioSphere</h2>
+                        <p class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mt-1 truncate">Prism Healthcare</p>
+                    </div>
                 </div>
-                <div class="min-w-0">
-                    <h2 class="text-sm font-black tracking-tight text-slate-900 dark:text-white uppercase leading-none">ClinioSphere</h2>
-                    <p class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider mt-1 truncate">Prism Healthcare</p>
-                </div>
+                <button id="sidebar-toggle-btn" onclick="toggleSidebarCollapse()" class="p-2 rounded-xl text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 transition-all cursor-pointer flex-shrink-0" title="Collapse Sidebar (Ctrl+B)">
+                    <i data-lucide="chevron-left" class="w-4 h-4 sidebar-collapse-icon"></i>
+                    <i data-lucide="chevron-right" class="w-4 h-4 sidebar-expand-icon"></i>
+                </button>
             </div>
             <nav class="flex-1 space-y-1.5">
-                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 transition-all"><i data-lucide="layout-grid" class="w-5 h-5"></i> Overview</button>
-                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="user-plus" class="w-5 h-5"></i> Enroll Patient</button>
-                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="calendar-plus" class="w-5 h-5"></i> Log Sessions</button>
-                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="book-open" class="w-5 h-5"></i> Daily Visit Registry</button>
-                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="users" class="w-5 h-5"></i> Patient Records</button>
-                <button onclick="switchTab('exercises', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="dumbbell" class="w-5 h-5"></i> Exercises</button>
-                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="credit-card" class="w-5 h-5"></i> Billing</button>
-                <button onclick="switchTab('inquiry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition-all"><i data-lucide="clipboard-list" class="w-5 h-5"></i> Inquiries</button>
+                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 transition-all" title="Overview"><i data-lucide="layout-grid" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Overview</span></button>
+                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Enroll Patient"><i data-lucide="user-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Enroll Patient</span></button>
+                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Log Sessions"><i data-lucide="calendar-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Log Sessions</span></button>
+                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Daily Visit Registry"><i data-lucide="book-open" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Daily Visit Registry</span></button>
+                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Patient Records"><i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Patient Records</span></button>
+                <button onclick="switchTab('exercises', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Exercises"><i data-lucide="dumbbell" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Exercises</span></button>
+                <button onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Billing"><i data-lucide="credit-card" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Billing</span></button>
+                <button onclick="switchTab('inquiry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Inquiries"><i data-lucide="clipboard-list" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Inquiries</span></button>
             </nav>
             <div class="pt-4 mt-4 border-t border-slate-100/80 dark:border-slate-800/80">
-                <div class="flex flex-col items-center justify-center p-3.5 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-emerald-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 rounded-2xl border border-indigo-100/70 dark:border-slate-800 shadow-sm relative overflow-hidden">
+                <!-- Expanded Telemetry Card -->
+                <div class="sidebar-bottom-expanded flex flex-col items-center justify-center p-3.5 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-emerald-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 rounded-2xl border border-indigo-100/70 dark:border-slate-800 shadow-sm relative overflow-hidden">
                     <div class="flex items-center gap-1.5 mb-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="text-[8px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">Clinical Cloud Active</span>
@@ -1849,26 +1939,33 @@ html.dark .instruction-modal-footer {
                     <!-- Time (Bottom) -->
                     <div id="live-time-text" class="text-base font-black text-slate-900 dark:text-slate-100 tracking-wider"></div>
                 </div>
+                <!-- Collapsed Telemetry Card -->
+                <div class="sidebar-bottom-collapsed hidden flex-col items-center justify-center p-2.5 bg-gradient-to-br from-indigo-50/60 to-emerald-50/30 dark:from-slate-900 dark:to-indigo-950/30 rounded-2xl border border-indigo-100/70 dark:border-slate-800 shadow-sm cursor-pointer" onclick="toggleSidebarCollapse()" title="Clinical Cloud Active (Click to expand)">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mb-1"></span>
+                    <i data-lucide="cloud" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+                </div>
             </div>
         </aside>
 
-        <main class="flex-1 p-4 lg:p-10 relative overflow-y-auto h-screen">
-            <header class="flex justify-between items-center mb-6 lg:mb-8">
+        <main class="flex-1 p-3.5 sm:p-6 lg:p-10 relative overflow-y-auto h-screen">
+            <header class="flex justify-between items-center mb-5 lg:mb-8">
                 <div class="flex items-center gap-3">
-                    <!-- Mobile-only Login Logo -->
-                    <img src="prismapplogo.png" class="h-11 w-11 object-contain rounded-xl block lg:hidden shadow-sm border border-slate-100 dark:border-slate-800" alt="Logo">
+                    <!-- Circular Black Logo Badge (Exact match to screenshot) -->
+                    <div class="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center bg-black border border-slate-200/80 dark:border-slate-800 shadow-sm p-0.5 flex-shrink-0 block lg:hidden">
+                        <img src="prismapplogo.png" class="h-full w-full object-contain rounded-full" alt="Logo">
+                    </div>
                     <div class="flex flex-col justify-center">
-                        <!-- Micro-Label with Glowing Live Indicator -->
-                        <div class="flex items-center gap-1.5 mb-1">
-                            <span class="relative flex h-1.5 w-1.5">
-                                <span id="status-bulb-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                <span id="status-bulb-inner" class="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-600 dark:bg-indigo-400"></span>
+                        <!-- Live Indicator & ClinioSphere Label (Exact match to screenshot) -->
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                            <span class="relative flex h-2 w-2">
+                                <span id="status-bulb-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span id="status-bulb-inner" class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
-                            <span class="text-[9px] font-black tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">ClinioSphere</span>
+                            <span class="text-[10px] font-black tracking-wider text-indigo-600 dark:text-indigo-400 uppercase">ClinioSphere</span>
                         </div>
 
-                        <!-- Clean Modernized Title -->
-                        <h1 id="tab-title" class="text-lg lg:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white uppercase leading-none">Dashboard</h1>
+                        <!-- Clean Bold Title -->
+                        <h1 id="tab-title" class="text-2xl lg:text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase leading-none">Dashboard</h1>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
@@ -1878,21 +1975,13 @@ html.dark .instruction-modal-footer {
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
 
-                    <!-- DESKTOP ACTIONS (>= 1024px) -->
-                    <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
-                    <button id="sync-indicator" onclick="if(event.shiftKey){performHardReset();}else{loadAdminData(true);}" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 hover:rotate-180 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Refresh Data (Shift+Click for Hard Reset)"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
-                    <button id="hard-reset-btn" onclick="performHardReset()" class="hidden lg:flex p-2.5 bg-rose-50/90 dark:bg-rose-950/50 border border-rose-200/80 dark:border-rose-900/70 rounded-2xl shadow-sm hover:shadow hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:border-rose-300 active:scale-95 transition-all text-rose-600 dark:text-rose-400 items-center justify-center cursor-pointer" title="Hard Reset: Clear all cases, wipe cache & reload fresh from sheet"><i data-lucide="rotate-ccw" class="w-5 h-5"></i></button>
-                    <button onclick="logoutApp()" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-300 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Logout">
-                        <i data-lucide="log-out" class="w-5 h-5 text-rose-500"></i>
-                    </button>
-
-                    <!-- MOBILE & TABLET SETTINGS DROPDOWN TRIGGER (< 1024px: in place of logout button) -->
-                    <div class="relative lg:hidden">
+                    <!-- SETTINGS & OPTIONS DROPDOWN TRIGGER (Clean & Unified: Desktop, Tablet & Mobile) -->
+                    <div class="relative">
                         <button id="mobile-settings-btn" onclick="toggleMobileSettingsMenu(event)" class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all flex items-center justify-center text-slate-700 dark:text-slate-300 cursor-pointer" title="Settings & Options" aria-label="Settings">
-                            <i data-lucide="settings" class="w-5 h-5"></i>
+                            <i data-lucide="settings" id="sync-indicator" class="w-5 h-5"></i>
                         </button>
 
-                        <!-- Mobile & Tablet Settings Dropdown Menu -->
+                        <!-- Settings & Options Dropdown Menu -->
                         <div id="mobile-settings-menu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                             <!-- Header / Title -->
                             <div class="px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between mb-1">
@@ -1926,7 +2015,7 @@ html.dark .instruction-modal-footer {
                             </button>
 
                             <!-- Option 3: Hard Refresh -->
-                            <button onclick="toggleMobileSettingsMenu(); performHardReset();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 active:scale-[0.98] transition-all cursor-pointer">
+                            <button id="hard-reset-btn" onclick="toggleMobileSettingsMenu(); performHardReset();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 active:scale-[0.98] transition-all cursor-pointer">
                                 <div class="flex items-center gap-2.5">
                                     <div class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
                                         <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
@@ -1935,6 +2024,7 @@ html.dark .instruction-modal-footer {
                                 </div>
                                 <span class="text-[9px] px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-black uppercase">Reset</span>
                             </button>
+
 
                             <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
 
@@ -1954,450 +2044,604 @@ html.dark .instruction-modal-footer {
             </header>
 
 <!-- OVERVIEW -->
-<section id="tab-overview" class="animate-slide">
+<section id="tab-overview" class="animate-slide space-y-4 sm:space-y-6">
 
-  <!-- TOP HERO STATS ROW -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <!-- Total Sessions -->
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-indigo-500 bg-gradient-to-r from-indigo-50/40 to-white dark:from-slate-900 dark:to-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all">
-      <div class="w-12 h-12 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center flex-shrink-0">
-        <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+  <!-- ── 1. TOP HERO STATS ROW (Exact match to screenshot) ── -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+    <!-- Total Sessions Card -->
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-indigo-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center flex-shrink-0 text-white">
+        <i data-lucide="activity" class="w-6 h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-1">Total Sessions</p>
-        <h3 id="stat-total" class="text-3xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5">Total Sessions</p>
+        <h3 id="stat-total" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
       </div>
     </div>
 
-    <!-- Registered Patients -->
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-50/40 to-white dark:from-slate-900 dark:to-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all">
-      <div class="w-12 h-12 rounded-2xl bg-emerald-600 shadow-lg shadow-emerald-200 dark:shadow-none flex items-center justify-center flex-shrink-0">
-        <i data-lucide="users" class="w-6 h-6 text-white"></i>
+    <!-- Registered Patients Card -->
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-emerald-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-500 shadow-lg shadow-emerald-200 dark:shadow-none flex items-center justify-center flex-shrink-0 text-white">
+        <i data-lucide="users" class="w-6 h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-1">Registered Patients</p>
-        <h3 id="stat-registered" class="text-3xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5">Registered Patients</p>
+        <h3 id="stat-registered" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
       </div>
     </div>
 
-    <!-- Total Collection (Highlight Card) -->
-    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border border-indigo-500/20 bg-gradient-to-br from-indigo-600 to-indigo-900 shadow-xl shadow-indigo-200/60 dark:shadow-indigo-950/50 transition-all transform hover:scale-[1.01]">
-      <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center flex-shrink-0">
-        <i data-lucide="indian-rupee" class="w-6 h-6 text-white"></i>
+    <!-- Total Collection Hero Card -->
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 bg-gradient-to-r from-indigo-600 to-indigo-800 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-950/50 transition-all">
+      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center flex-shrink-0 text-white">
+        <i data-lucide="indian-rupee" class="w-6 h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-indigo-100 tracking-widest mb-1">Total Collection</p>
-        <h3 id="stat-revenue" class="text-3xl font-black text-white leading-none">₹0</h3>
+        <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5">Total Collection</p>
+        <h3 id="stat-revenue" class="text-2xl sm:text-3xl font-black text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
 
-  <!-- BRANCH + ACTIVE + DUES ROW -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
+  <!-- ── 2. BRANCH + ACTIVE + DUES ROW (Exact match to screenshot) ── -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
     <!-- Orthocare (POC) -->
-    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border border-blue-200/80 dark:border-blue-900/50 bg-gradient-to-b from-blue-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-none transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-2">
-        <span class="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest leading-tight">Prism<br>Orthocare</span>
-        <span class="text-[9px] font-black bg-blue-600 text-white px-2 py-0.5 rounded-lg shadow-sm">POC</span>
+    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border border-blue-100 dark:border-blue-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+      <div class="flex items-start justify-between mb-2">
+        <div class="text-[9px] sm:text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest leading-tight">
+          Prism<br>Orthocare
+        </div>
+        <span class="text-[9px] font-black bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">POC</span>
       </div>
-      <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-950 dark:text-blue-100 leading-tight">₹0</h3>
-      <div class="flex items-center gap-1 mt-2">
-        <span class="text-[9px] text-blue-500 font-bold uppercase tracking-wide">View Branch</span>
-        <i data-lucide="chevron-right" class="w-3 h-3 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
+      <div>
+        <h3 id="stat-poc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
+        <div class="flex items-center gap-1 text-[9px] font-bold text-blue-500 uppercase tracking-wide">
+          <span>View Branch</span>
+          <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
+        </div>
       </div>
     </button>
 
     <!-- Home Care (PHC) -->
-    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-100 dark:hover:shadow-none transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-2">
-        <span class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-tight">Home<br>Care</span>
-        <span class="text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-lg shadow-sm">PHC</span>
+    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border border-emerald-100 dark:border-emerald-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+      <div class="flex items-start justify-between mb-2">
+        <div class="text-[9px] sm:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-tight">
+          Home<br>Care
+        </div>
+        <span class="text-[9px] font-black bg-emerald-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">PHC</span>
       </div>
-      <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-950 dark:text-emerald-100 leading-tight">₹0</h3>
-      <div class="flex items-center gap-1 mt-2">
-        <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wide">View Branch</span>
-        <i data-lucide="chevron-right" class="w-3 h-3 text-emerald-500 group-hover:translate-x-1 transition-transform"></i>
+      <div>
+        <h3 id="stat-phc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
+        <div class="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-wide">
+          <span>View Branch</span>
+          <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
+        </div>
       </div>
     </button>
 
     <!-- Active Cases -->
-    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border border-rose-200/80 dark:border-rose-900/50 bg-gradient-to-b from-rose-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-rose-100 dark:hover:shadow-none transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-2">
-        <span class="text-[9px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest leading-tight">Active<br>Cases</span>
+    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border border-rose-100 dark:border-rose-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+      <div class="flex items-start justify-between mb-2">
+        <div class="text-[9px] sm:text-[10px] font-black text-rose-500 dark:text-rose-400 uppercase tracking-widest leading-tight">
+          Active<br>Cases
+        </div>
         <span class="relative flex h-2.5 w-2.5 mt-1">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
         </span>
       </div>
-      <h3 id="stat-active-count" class="text-2xl font-black text-rose-950 dark:text-rose-100 leading-tight">0</h3>
-      <p class="text-[9px] text-rose-500 font-bold mt-2 uppercase tracking-wide">Under Treatment</p>
+      <div>
+        <h3 id="stat-active-count" class="text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">0</h3>
+        <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wide">Under Treatment</p>
+      </div>
     </button>
 
     <!-- Outstanding Dues -->
-    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border border-amber-200/80 dark:border-amber-900/50 bg-gradient-to-b from-amber-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-100 dark:hover:shadow-none transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-2">
-        <span class="text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest leading-tight">Outstanding<br>Dues</span>
+    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border border-amber-100 dark:border-amber-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+      <div class="flex items-start justify-between mb-2">
+        <div class="text-[9px] sm:text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest leading-tight">
+          Outstanding<br>Dues
+        </div>
         <i data-lucide="alert-circle" class="w-4 h-4 text-amber-500 mt-0.5"></i>
       </div>
-      <h3 id="stat-outstanding" class="text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight">₹0</h3>
-      <p class="text-[9px] text-amber-500 font-bold mt-2 uppercase tracking-wide">Pending Dues</p>
+      <div>
+        <h3 id="stat-outstanding" class="text-xl sm:text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight mb-2">₹0</h3>
+        <p class="text-[9px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide">Pending Dues</p>
+      </div>
     </button>
   </div>
 
-  <!-- QUICK FILTER BAR -->
-  <div class="glass-card px-5 py-3.5 rounded-[1.75rem] mb-6 flex flex-wrap items-center gap-2.5 border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm">
-    <span class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mr-1">Quick Filter:</span>
-    <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100 dark:border-indigo-900/50 active:scale-95 cursor-pointer">Orthocare</button>
-    <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/50 active:scale-95 cursor-pointer">Homecare</button>
-    <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95 cursor-pointer">All Branches</button>
+  <!-- ── 3. QUICK FILTER BAR (Exact match to screenshot) ── -->
+  <div class="glass-card p-5 rounded-[1.75rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+    <div class="flex flex-wrap items-center gap-2.5">
+      <span class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mr-1">Quick Filter:</span>
+      <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100 dark:border-indigo-900/50 active:scale-95 cursor-pointer">Orthocare</button>
+      <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/50 active:scale-95 cursor-pointer">Homecare</button>
+      <div class="w-full sm:w-auto mt-1 sm:mt-0">
+        <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95 cursor-pointer">All Branches</button>
+      </div>
+    </div>
   </div>
 
-  <!-- COLLECTION SUMMARY TRIO -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <!-- ── 4. COLLECTION SUMMARY TRIO (Wide Tab Cards with Soft Previous Icons) ── -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
     <!-- Today -->
-    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm">
-      <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 md:mb-1">
-        <i data-lucide="calendar" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-sky-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-100 dark:border-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="calendar" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-0.5">Today</p>
-        <h4 id="stat-daily" class="text-2xl font-black text-slate-900 dark:text-white leading-tight">₹0</h4>
+        <div class="flex items-center gap-2 mb-0.5">
+          <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">Today</p>
+          <span class="text-[8px] font-black text-sky-600 dark:text-sky-400 uppercase bg-sky-50 dark:bg-sky-950/60 px-2 py-0.5 rounded-md border border-sky-100 dark:border-sky-900/50">Daily</span>
+        </div>
+        <h3 id="stat-daily" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
     <!-- This Month -->
-    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/30 shadow-sm">
-      <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center flex-shrink-0 md:mb-1">
-        <i data-lucide="calendar-days" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-indigo-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="calendar-days" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest mb-0.5">This Month</p>
-        <h4 id="stat-monthly" class="text-2xl font-black text-indigo-700 dark:text-indigo-300 leading-tight">₹0</h4>
+        <div class="flex items-center gap-2 mb-0.5">
+          <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">This Month</p>
+          <span class="text-[8px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900/50">MTD</span>
+        </div>
+        <h3 id="stat-monthly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
     <!-- This Year -->
-    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm">
-      <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 md:mb-1">
-        <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-purple-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-violet-50 dark:bg-violet-950/60 border border-violet-100 dark:border-violet-900/50 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="bar-chart-3" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
       <div>
-        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-0.5">This Year</p>
-        <h4 id="stat-yearly" class="text-2xl font-black text-slate-900 dark:text-white leading-tight">₹0</h4>
+        <div class="flex items-center gap-2 mb-0.5">
+          <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">This Year</p>
+          <span class="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-md border border-purple-100 dark:border-purple-900/50">YTD</span>
+        </div>
+        <h3 id="stat-yearly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
 
-  <!-- CHARTS ROW -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <!-- Revenue Trend Chart -->
-    <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-t-4 border-t-indigo-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
-      <div class="flex items-center justify-between mb-5">
+  <!-- ── 5. CHARTS ROW (REVENUE TREND & DAILY VELOCITY) ── -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-5 lg:gap-6">
+    <!-- Revenue Trend Chart Card -->
+    <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+      <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-500"></div>
+      <div class="flex items-center justify-between mb-3 sm:mb-5">
         <div>
-          <h4 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300 tracking-wider">Revenue Trend</h4>
-          <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Monthly Performance</p>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Revenue Trend</h4>
+            <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/40">Monthly</span>
+          </div>
+          <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Clinical Inflow</p>
         </div>
-        <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
           <i data-lucide="trending-up" class="w-4 h-4"></i>
         </div>
       </div>
-      <canvas id="revenueChart" height="170"></canvas>
+      <div class="relative w-full">
+        <canvas id="revenueChart" height="150"></canvas>
+      </div>
     </div>
 
-    <!-- Daily Collection Chart -->
-    <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-t-4 border-t-emerald-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
-      <div class="flex items-center justify-between mb-5">
+    <!-- Daily Collection Chart Card -->
+    <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+      <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-500"></div>
+      <div class="flex items-center justify-between mb-3 sm:mb-5">
         <div>
-          <h4 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300 tracking-wider">Daily Collection</h4>
-          <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Last 14 Days</p>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Daily Collection</h4>
+            <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40">14-Day</span>
+          </div>
+          <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Velocity Trajectory</p>
         </div>
-        <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
           <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
         </div>
       </div>
-      <canvas id="dailyChart" height="170"></canvas>
+      <div class="relative w-full">
+        <canvas id="dailyChart" height="150"></canvas>
+      </div>
     </div>
   </div>
 
-  <!-- OUTSTANDING DUES CARD -->
-  <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-l-4 border-l-rose-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
-    <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-100 dark:border-slate-800">
+  <!-- ── 6. OUTSTANDING DUES CARD ── -->
+  <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+    <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-rose-500 via-amber-500 to-rose-400"></div>
+    <div class="flex items-center justify-between mb-3 sm:mb-5 pb-2.5 sm:pb-3 border-b border-slate-100 dark:border-slate-800">
       <div>
-        <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Outstanding Dues</h4>
-        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Pending Patient Balances</p>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Outstanding Dues</h4>
+          <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/80 dark:border-amber-900/40">Pending</span>
+        </div>
+        <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Patient Accounts Requiring Follow-Up</p>
       </div>
-      <span class="text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-3 py-1.5 rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-sm flex items-center gap-1.5">
+      <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
         <i data-lucide="clock" class="w-3 h-3"></i>
-        <span>Action Required</span>
+        <span class="hidden sm:inline">Action</span> Required
       </span>
     </div>
-    <div id="dues-list" class="max-h-64 overflow-y-auto pr-1 space-y-2.5"></div>
+    <div id="dues-list" class="max-h-60 sm:max-h-72 overflow-y-auto pr-1 space-y-2 custom-scrollbar"></div>
   </div>
 
 </section>
 
             <!-- ENROLL -->
-            <section id="tab-enroll" class="section-hidden animate-slide">
-                <div class="w-full glass-card p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
-                        <!-- COLUMN 1: PATIENT DEMOGRAPHICS -->
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-3 pb-3 border-b border-indigo-100 dark:border-indigo-950">
-                                <span class="w-7 h-7 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-indigo-200 dark:shadow-none">1</span>
-                                <div>
-                                    <h4 class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Patient Identity & Clinical Demographics</h4>
-                                    <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Basic registration and case profiling</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Branch & Clinical ID -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Branch</label>
-                                    <select id="en-branch" onchange="generateClinicalID()" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm transition-all focus:border-indigo-500 cursor-pointer">
-                                        <option value="POC">Orthocare (POC)</option>
-                                        <option value="PHC">Homecare (PHC)</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Clinical ID</label>
-                                    <input type="text" id="en-id" readonly class="w-full p-3.5 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl font-black text-indigo-600 dark:text-indigo-400 outline-none text-sm">
-                                </div>
-                            </div>
+            <section id="tab-enroll" class="section-hidden animate-slide space-y-5 sm:space-y-6">
 
-                            <!-- Registration Date -->
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Registration Date</label>
-                                <input type="date" id="en-reg-date" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
+                <!-- ── TOP HEADER / BANNER ── -->
+                <div class="glass-card p-5 sm:p-6 rounded-[2rem] border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="user-plus" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white uppercase leading-none">New Patient Enrollment</h2>
+                                <span class="px-2 py-0.5 rounded-full text-[8px] font-black uppercase bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/40">Clinical Intake</span>
                             </div>
+                            <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-1">Complete registration, billing package setup & baseline SOAP anatomic mapping</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 self-end sm:self-auto">
+                        <button type="button" onclick="generateClinicalID(); showToast('Clinical ID synchronized', 'info');" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                            <span>Sync ID</span>
+                        </button>
+                    </div>
+                </div>
 
-                            <!-- Salutation + Full Name -->
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Patient Full Name</label>
-                                <div class="flex items-center bg-slate-50 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden">
-                                    <select id="en-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.')document.getElementById('en-gender').value='Male';else if(this.value==='Mrs.'||this.value==='Ms.')document.getElementById('en-gender').value='Female';" class="bg-transparent py-3.5 pl-3.5 pr-2 text-indigo-600 dark:text-indigo-400 font-black outline-none text-sm cursor-pointer border-r border-slate-200 dark:border-slate-800">
-                                        <option value="">Title</option>
-                                        <option value="Mr.">Mr.</option>
-                                        <option value="Mrs.">Mrs.</option>
-                                        <option value="Ms.">Ms.</option>
-                                        <option value="Dr.">Dr.</option>
-                                        <option value="Mast.">Mast.</option>
-                                        <option value="Baby">Baby</option>
-                                    </select>
-                                    <input type="text" id="en-name" placeholder="Enter Full Patient Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
-                                </div>
-                            </div>
+                <!-- ── STEP 1 & STEP 2 GRID ── -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
 
-                            <!-- Age & Gender -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Age</label>
-                                    <input type="number" id="en-age" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
-                                </div>
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Gender</label>
-                                    <select id="en-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer">
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Clinical Diagnosis -->
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Clinical Diagnosis</label>
-                                <input type="text" id="en-condition" placeholder="e.g. Cervical Radiculopathy, ACL Rehab" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
-                            </div>
-
-                            <!-- WhatsApp Phone Number -->
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">WhatsApp Number</label>
-                                <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
-                            </div>
-
-                            <!-- Patient Address -->
-                            <div>
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Patient Address (optional)</label>
-                                <input type="text" id="en-address" placeholder="Residential / Clinic Area Address" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
-                            </div>
-
-                            <!-- Instructions Section with Quick Add Modal -->
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5 ml-1">
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Clinical Instructions</label>
-                                    <div class="relative">
-                                        <button type="button" onclick="toggleInstructionPicker()" class="text-[9px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1.5 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-100 dark:border-indigo-800 transition-all flex items-center gap-1 shadow-sm active:scale-95">
-                                            <i data-lucide="list-plus" class="w-3.5 h-3.5"></i> Quick Add
-                                        </button>
+                    <!-- ── STEP 1: PATIENT DEMOGRAPHICS CARD ── -->
+                    <div class="glass-card p-5 sm:p-7 rounded-[2rem] border-l-4 border-l-indigo-500 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 sm:space-y-5 flex flex-col justify-between">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
+                                        01
                                     </div>
-                                    <div id="instruction-picker" class="instruction-modal-overlay">
-                                        <div class="instruction-modal-box">
-                                            <div class="instruction-modal-header">
-                                                <h4 class="text-sm font-black uppercase text-slate-800 dark:text-white">Quick Add Instructions</h4>
-                                                <button type="button" onclick="toggleInstructionPicker()" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button>
-                                            </div>
-                                            <div class="instruction-modal-body">
-                                                <div id="instruction-picker-list" class="space-y-4"></div>
-                                            </div>
-                                            <div class="instruction-modal-footer">
-                                                <button type="button" onclick="toggleInstructionPicker()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400">Cancel</button>
-                                                <button type="button" onclick="insertSelectedInstructions()" class="flex-[2] py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-black uppercase">Insert Selected</button>
-                                            </div>
+                                    <div>
+                                        <h3 class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Patient Identity & Clinical Demographics</h3>
+                                        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Basic registration, branch allocation & case profiling</p>
+                                    </div>
+                                </div>
+                                <span class="hidden sm:inline-flex px-2 py-0.5 rounded-md text-[8px] font-black uppercase bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/40">Demographics</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Branch & Clinical ID -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Branch</label>
+                                        <div class="relative">
+                                            <select id="en-branch" onchange="generateClinicalID()" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm transition-all focus:border-indigo-500 cursor-pointer appearance-none pr-9">
+                                                <option value="POC">Orthocare (POC)</option>
+                                                <option value="PHC">Homecare (PHC)</option>
+                                            </select>
+                                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between ml-1 mb-1">
+                                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Clinical ID</label>
+                                            <span class="text-[8px] font-black uppercase text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-1.5 py-0.2 rounded border border-indigo-100 dark:border-indigo-900/40">Auto</span>
+                                        </div>
+                                        <div class="relative">
+                                            <input type="text" id="en-id" readonly class="w-full p-3.5 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-2xl font-black text-indigo-600 dark:text-indigo-400 outline-none text-sm tracking-wider pl-9">
+                                            <i data-lucide="fingerprint" class="w-4 h-4 text-indigo-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
                                         </div>
                                     </div>
                                 </div>
-                                <textarea id="en-instructions" placeholder="Step-by-step instructions... (or use Quick Add)" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 resize-none" rows="3"></textarea>
-                            </div>
-                        </div>
 
-                        <!-- COLUMN 2: BILLING & PACKAGE + SUMMARY -->
-                        <div class="space-y-6">
-                            <div class="flex items-center gap-3 pb-3 border-b border-emerald-100 dark:border-emerald-950">
-                                <span class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-emerald-200 dark:shadow-none">2</span>
+                                <!-- Registration Date -->
                                 <div>
-                                    <h4 class="text-xs font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">Billing & Treatment Package</h4>
-                                    <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Rate setting, session count, and advance collection</p>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Registration Date</label>
+                                    <input type="date" id="en-reg-date" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
                                 </div>
-                            </div>
 
-                            <!-- Cost/Session & Sessions -->
-                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Salutation + Full Name -->
                                 <div>
-                                    <label class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider ml-1 block mb-1.5">Cost / Session (₹)</label>
-                                    <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full p-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900 rounded-2xl font-bold text-emerald-800 dark:text-emerald-300 outline-none text-sm focus:border-emerald-500">
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Patient Full Name</label>
+                                    <div class="flex items-center bg-slate-50 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden shadow-xs">
+                                        <select id="en-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.')document.getElementById('en-gender').value='Male';else if(this.value==='Mrs.'||this.value==='Ms.')document.getElementById('en-gender').value='Female';" class="bg-transparent py-3.5 pl-3.5 pr-2 text-indigo-600 dark:text-indigo-400 font-black outline-none text-sm cursor-pointer border-r border-slate-200 dark:border-slate-800">
+                                            <option value="">Title</option>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mast.">Mast.</option>
+                                            <option value="Baby">Baby</option>
+                                        </select>
+                                        <input type="text" id="en-name" placeholder="Enter Full Patient Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider ml-1 block mb-1.5">Total Sessions</label>
-                                    <input type="number" id="en-sessions" value="1" placeholder="1 for consultation" class="w-full p-3.5 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-2xl font-bold text-blue-800 dark:text-blue-300 outline-none text-sm focus:border-blue-500">
-                                </div>
-                            </div>
 
-                            <!-- Amount Paid & Payment Mode -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Amount Paid Now (₹)</label>
-                                    <input type="number" id="en-advance" value="0" placeholder="0" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
+                                <!-- Age & Gender -->
+                                <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Age</label>
+                                        <input type="number" id="en-age" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Gender</label>
+                                        <select id="en-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Payment Mode</label>
-                                    <select id="en-payment-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer">
-                                        <option value="" disabled selected>Select Mode</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Card">Card</option>
-                                        <option value="Split">Split (Cash + UPI)</option>
-                                        <option value="Advance">Advance (Pre-paid Package)</option>
-                                        <option value="Pending">Pending / Due</option>
-                                        <option value="Complimentary">Complimentary / Free</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <!-- Discount & Live Status -->
-                            <div class="grid grid-cols-2 gap-4 items-center">
+                                <!-- Clinical Diagnosis -->
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Discount (₹)</label>
-                                    <input type="number" id="en-discount" value="0" min="0" placeholder="e.g. 500" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Clinical Diagnosis</label>
+                                    <input type="text" id="en-condition" placeholder="e.g. Cervical Radiculopathy, ACL Rehab" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
                                 </div>
-                                <div id="en-calc-status" class="pt-5">
-                                    <!-- Live Status will appear here -->
-                                </div>
-                            </div>
 
-                            <!-- Total Package Summary Card -->
-                            <div class="p-6 rounded-[2.25rem] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-xl border border-slate-800/80 space-y-2">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Package Value</span>
-                                    <span id="en-pkg-val" class="text-xs font-black text-indigo-300">₹0</span>
+                                <!-- WhatsApp Phone Number -->
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">WhatsApp Number</label>
+                                    <div class="relative">
+                                        <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 pl-9 transition-all">
+                                        <i data-lucide="phone" class="w-4 h-4 text-emerald-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                    </div>
                                 </div>
-                                <h5 id="enroll-summary" class="text-3xl font-black text-emerald-400 tracking-tight leading-tight">₹0 Paid</h5>
-                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider pt-1 border-t border-slate-800">Financial status will update automatically upon entry</p>
+
+                                <!-- Patient Address -->
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Patient Address <span class="text-slate-400 lowercase font-normal">(optional)</span></label>
+                                    <input type="text" id="en-address" placeholder="Residential / Clinic Area Address" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
+                                </div>
+
+                                <!-- Instructions Section with Quick Add Modal -->
+                                <div>
+                                    <div class="flex items-center justify-between mb-1.5 ml-1">
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">Clinical Instructions</label>
+                                        <div class="relative">
+                                            <button type="button" onclick="toggleInstructionPicker()" class="text-[9px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1.5 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-100 dark:border-indigo-800 transition-all flex items-center gap-1 shadow-xs active:scale-95 cursor-pointer">
+                                                <i data-lucide="list-plus" class="w-3.5 h-3.5"></i> Quick Add
+                                            </button>
+                                        </div>
+                                        <div id="instruction-picker" class="instruction-modal-overlay">
+                                            <div class="instruction-modal-box">
+                                                <div class="instruction-modal-header">
+                                                    <h4 class="text-sm font-black uppercase text-slate-800 dark:text-white">Quick Add Instructions</h4>
+                                                    <button type="button" onclick="toggleInstructionPicker()" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+                                                </div>
+                                                <div class="instruction-modal-body">
+                                                    <div id="instruction-picker-list" class="space-y-4"></div>
+                                                </div>
+                                                <div class="instruction-modal-footer">
+                                                    <button type="button" onclick="toggleInstructionPicker()" class="flex-1 py-2 text-[9px] font-black uppercase text-slate-400 cursor-pointer">Cancel</button>
+                                                    <button type="button" onclick="insertSelectedInstructions()" class="flex-[2] py-2 bg-indigo-600 text-white rounded-xl text-[9px] font-black uppercase cursor-pointer">Insert Selected</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea id="en-instructions" placeholder="Step-by-step instructions... (or use Quick Add)" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 resize-none transition-all" rows="3"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- STEP 3: BODY CHART / PAIN MAP -->
-                    <div class="mt-12 pt-8 border-t border-slate-200/70 dark:border-slate-800">
-                        <div class="flex items-center gap-3 pb-3 border-b border-rose-100 dark:border-rose-950 mb-6">
-                            <span class="w-7 h-7 rounded-xl bg-rose-600 text-white flex items-center justify-center text-xs font-black shadow-md shadow-rose-200 dark:shadow-none">3</span>
+                    <!-- ── STEP 2: BILLING & TREATMENT PACKAGE CARD ── -->
+                    <div class="glass-card p-5 sm:p-7 rounded-[2rem] border-l-4 border-l-emerald-500 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4 sm:space-y-5 flex flex-col justify-between">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800 mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
+                                        02
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">Billing & Treatment Package</h3>
+                                        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Rate setting, session count, and advance collection</p>
+                                    </div>
+                                </div>
+                                <span class="hidden sm:inline-flex px-2 py-0.5 rounded-md text-[8px] font-black uppercase bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/40">Financials</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Cost/Session & Sessions -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider ml-1 block mb-1">Cost / Session (₹)</label>
+                                        <div class="relative">
+                                            <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full p-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/60 rounded-2xl font-bold text-emerald-900 dark:text-emerald-300 outline-none text-base focus:border-emerald-500 transition-all pl-8">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-black text-emerald-600 text-sm">₹</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider ml-1 block mb-1">Total Sessions</label>
+                                        <div class="relative">
+                                            <input type="number" id="en-sessions" value="1" placeholder="1 for consultation" class="w-full p-3.5 bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/60 rounded-2xl font-bold text-blue-900 dark:text-blue-300 outline-none text-base focus:border-blue-500 transition-all pl-8">
+                                            <i data-lucide="layers" class="w-4 h-4 text-blue-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Amount Paid & Payment Mode -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Amount Paid Now (₹)</label>
+                                        <div class="relative">
+                                            <input type="number" id="en-advance" value="0" placeholder="0" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all pl-8">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Payment Mode</label>
+                                        <div class="relative">
+                                            <select id="en-payment-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer appearance-none pr-9 transition-all">
+                                                <option value="" disabled selected>Select Mode</option>
+                                                <option value="Cash">Cash</option>
+                                                <option value="UPI">UPI</option>
+                                                <option value="Card">Card</option>
+                                                <option value="Split">Split (Cash + UPI)</option>
+                                                <option value="Advance">Advance (Pre-paid Package)</option>
+                                                <option value="Pending">Pending / Due</option>
+                                                <option value="Complimentary">Complimentary / Free</option>
+                                            </select>
+                                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Discount & Live Status -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 items-center">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Discount (₹)</label>
+                                        <div class="relative">
+                                            <input type="number" id="en-discount" value="0" min="0" placeholder="e.g. 500" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all pl-8">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
+                                        </div>
+                                    </div>
+                                    <div id="en-calc-status" class="pt-1 sm:pt-4">
+                                        <!-- Live Status will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Package Summary Card -->
+                        <div class="mt-4 p-6 rounded-[2.25rem] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-xl border border-slate-800/80 space-y-2 relative overflow-hidden">
+                            <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-500"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                                    <i data-lucide="sparkles" class="w-3 h-3 text-indigo-400"></i>
+                                    <span>Total Package Value</span>
+                                </span>
+                                <span id="en-pkg-val" class="text-sm font-black text-indigo-300 tracking-wide">₹0</span>
+                            </div>
+                            <h5 id="enroll-summary" class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight leading-tight">₹0 Paid</h5>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider pt-2 border-t border-slate-800/80 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span>Financial status will update automatically upon entry</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ── STEP 3: BODY CHART / PAIN MAP CARD ── -->
+                <div class="glass-card p-5 sm:p-7 rounded-[2rem] border-l-4 border-l-rose-500 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
+                    <!-- Card Header -->
+                    <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-900/50 text-rose-600 dark:text-rose-400 flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
+                                03
+                            </div>
                             <div>
-                                <h4 class="text-xs font-black uppercase text-rose-600 dark:text-rose-400 tracking-wider">Body Chart — Mark Pain / Findings (SOAP Assessment)</h4>
+                                <h3 class="text-xs font-black uppercase text-rose-600 dark:text-rose-400 tracking-wider">Body Chart — Mark Pain / Findings (SOAP Assessment)</h3>
                                 <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Interactive anatomic pain mapping for clinical record</p>
                             </div>
                         </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                            <div>
-                                <p class="text-[11px] text-slate-600 dark:text-slate-400 font-semibold mb-3">Click directly on the figure (front / side / back) to drop a marker at the affected area. Each marker becomes part of this patient's first SOAP note.</p>
-                                <div id="enroll-image-wrap" class="relative w-full leading-none cursor-crosshair select-none border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-inner">
-                                    <img id="enroll-anatomy-img" src="Anatomy.png" alt="Front, side and back muscular anatomy diagram" class="w-full block pointer-events-none">
-                                </div>
-                                <div class="flex gap-4 mt-3 text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">
-                                    <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block bg-emerald-500 shadow-sm shadow-emerald-300"></i>mild</span>
-                                    <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block bg-amber-500 shadow-sm shadow-amber-300"></i>moderate</span>
-                                    <span class="flex items-center gap-1.5"><i class="w-2.5 h-2.5 rounded-full inline-block bg-rose-500 shadow-sm shadow-rose-300"></i>severe</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div id="overlay">
-                                    <div class="modal">
-                                        <h3 id="modalRegion">Region</h3>
-                                        <div class="sub" id="modalPose">View</div>
-
-                                        <div class="field">
-                                            <label>Refine location label</label>
-                                            <input type="text" id="fRegion">
-                                        </div>
-
-                                        <div class="field">
-                                            <label>Pain / severity (0 none — 10 worst)</label>
-                                            <div class="pain-scale" id="painScale"></div>
-                                        </div>
-
-                                        <div class="field">
-                                            <label>Character</label>
-                                            <div class="qualifiers" id="qualifiers">
-                                                <label data-v="Sharp"><input type="checkbox">Sharp</label>
-                                                <label data-v="Dull/aching"><input type="checkbox">Dull / aching</label>
-                                                <label data-v="Burning"><input type="checkbox">Burning</label>
-                                                <label data-v="Throbbing"><input type="checkbox">Throbbing</label>
-                                                <label data-v="Stiffness"><input type="checkbox">Stiffness</label>
-                                                <label data-v="Numbness"><input type="checkbox">Numbness</label>
-                                                <label data-v="Tingling"><input type="checkbox">Tingling</label>
-                                                <label data-v="Weakness"><input type="checkbox">Weakness</label>
-                                                <label data-v="Swelling"><input type="checkbox">Swelling</label>
-                                                <label data-v="Radiating"><input type="checkbox">Radiating</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="field">
-                                            <label>Onset / duration</label>
-                                            <input type="text" id="fOnset" placeholder="e.g. 3 weeks ago, sudden">
-                                        </div>
-
-                                        <div class="field">
-                                            <label>Notes</label>
-                                            <textarea id="fNotes" placeholder="Aggravating/relieving factors, mechanism of injury, prior treatment..."></textarea>
-                                        </div>
-
-                                        <div class="modal-actions">
-                                            <button class="btn secondary" id="cancelBtn" type="button">Cancel</button>
-                                            <button class="btn" id="saveBtn" type="button">Save finding</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="enroll-empty-findings" class="border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center text-slate-500 text-xs italic">No findings marked yet — click the figure to add one.</div>
-                                <div id="enroll-findings-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
-                            </div>
-                        </div>
+                        <span class="hidden sm:inline-flex px-2 py-0.5 rounded-md text-[8px] font-black uppercase bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/40">Clinical SOAP</span>
                     </div>
 
-                    <!-- SUBMIT ENROLLMENT BUTTON -->
-                    <button onclick="saveEnrollment()" class="w-full mt-10 bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-5 rounded-2xl shadow-xl shadow-indigo-600/30 hover:shadow-2xl active:scale-[0.98] transition-all uppercase tracking-wider text-xs flex items-center justify-center gap-2 cursor-pointer">
-                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                        <!-- Anatomy Canvas Column -->
+                        <div class="space-y-3">
+                            <p class="text-[11px] text-slate-600 dark:text-slate-400 font-semibold leading-relaxed">
+                                Click directly on the figure (front / side / back) to drop a marker at the affected area. Each marker becomes part of this patient's first SOAP note.
+                            </p>
+                            <div id="enroll-image-wrap" class="relative w-full leading-none cursor-crosshair select-none border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-inner">
+                                <img id="enroll-anatomy-img" src="Anatomy.png" alt="Front, side and back muscular anatomy diagram" class="w-full block pointer-events-none">
+                            </div>
+                            <!-- Severity Pill Legend -->
+                            <div class="flex flex-wrap items-center gap-2.5 pt-1">
+                                <span class="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-1">Severity:</span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold uppercase border border-emerald-200 dark:border-emerald-900/50">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-400"></span> Mild
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 text-[10px] font-bold uppercase border border-amber-200 dark:border-amber-900/50">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500 shadow-sm shadow-amber-400"></span> Moderate
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 text-[10px] font-bold uppercase border border-rose-200 dark:border-rose-900/50">
+                                    <span class="w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-400"></span> Severe
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Findings & Overlay Modal Column -->
+                        <div class="space-y-3">
+                            <div id="overlay">
+                                <div class="modal">
+                                    <h3 id="modalRegion">Region</h3>
+                                    <div class="sub" id="modalPose">View</div>
+
+                                    <div class="field">
+                                        <label>Refine location label</label>
+                                        <input type="text" id="fRegion">
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Pain / severity (0 none — 10 worst)</label>
+                                        <div class="pain-scale" id="painScale"></div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Character</label>
+                                        <div class="qualifiers" id="qualifiers">
+                                            <label data-v="Sharp"><input type="checkbox">Sharp</label>
+                                            <label data-v="Dull/aching"><input type="checkbox">Dull / aching</label>
+                                            <label data-v="Burning"><input type="checkbox">Burning</label>
+                                            <label data-v="Throbbing"><input type="checkbox">Throbbing</label>
+                                            <label data-v="Stiffness"><input type="checkbox">Stiffness</label>
+                                            <label data-v="Numbness"><input type="checkbox">Numbness</label>
+                                            <label data-v="Tingling"><input type="checkbox">Tingling</label>
+                                            <label data-v="Weakness"><input type="checkbox">Weakness</label>
+                                            <label data-v="Swelling"><input type="checkbox">Swelling</label>
+                                            <label data-v="Radiating"><input type="checkbox">Radiating</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Onset / duration</label>
+                                        <input type="text" id="fOnset" placeholder="e.g. 3 weeks ago, sudden">
+                                    </div>
+
+                                    <div class="field">
+                                        <label>Notes</label>
+                                        <textarea id="fNotes" placeholder="Aggravating/relieving factors, mechanism of injury, prior treatment..."></textarea>
+                                    </div>
+
+                                    <div class="modal-actions">
+                                        <button class="btn secondary" id="cancelBtn" type="button">Cancel</button>
+                                        <button class="btn" id="saveBtn" type="button">Save finding</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between ml-1 mb-1">
+                                <span class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">Recorded Anatomic Findings</span>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase">SOAP Baseline</span>
+                            </div>
+
+                            <div id="enroll-empty-findings" class="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/30">
+                                <i data-lucide="mouse-pointer-click" class="w-6 h-6 text-slate-300 dark:text-slate-600"></i>
+                                <span>No findings marked yet — click directly on the anatomy figure to add one.</span>
+                            </div>
+                            <div id="enroll-findings-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── COMPLETE ENROLLMENT SUBMIT BUTTON ── -->
+                <div class="pt-2 pb-6">
+                    <button onclick="saveEnrollment()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4.5 sm:py-5 rounded-2xl shadow-xl shadow-indigo-600/30 hover:shadow-2xl active:scale-[0.98] transition-all uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2.5 cursor-pointer">
+                        <i data-lucide="user-check" class="w-5 h-5"></i>
                         <span>Complete Patient Enrollment</span>
                     </button>
                 </div>
+
             </section>
 
             <!-- LOG SESSIONS -->
@@ -7807,6 +8051,39 @@ try {
             if (!menu || menu.classList.contains('hidden')) return;
             if (!menu.contains(e.target) && (!btn || !btn.contains(e.target))) {
                 menu.classList.add('hidden');
+            }
+        });
+
+        // ---------- COLLAPSIBLE DESKTOP SIDEBAR ----------
+        function toggleSidebarCollapse() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            const isCollapsed = sidebar.classList.toggle('sidebar-collapsed');
+            try {
+                localStorage.setItem('prism_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+            } catch(e) {}
+            if (window.lucide && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
+        }
+        window.toggleSidebarCollapse = toggleSidebarCollapse;
+
+        // Restore saved sidebar collapsed state on load
+        try {
+            if (localStorage.getItem('prism_sidebar_collapsed') === 'true') {
+                const sb = document.getElementById('sidebar');
+                if (sb) sb.classList.add('sidebar-collapsed');
+            }
+        } catch(e) {}
+
+        // Global shortcut Ctrl+B or Cmd+B to toggle sidebar
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+                const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                if (tag !== 'input' && tag !== 'textarea') {
+                    e.preventDefault();
+                    toggleSidebarCollapse();
+                }
             }
         });
 
