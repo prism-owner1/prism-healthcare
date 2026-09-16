@@ -461,6 +461,12 @@
         body:not(.dark-mode) #dark-toggle-btn [data-lucide="sun"] {
             display: none;
         }
+        body.dark-mode .settings-moon-icon {
+            display: none !important;
+        }
+        body:not(.dark-mode) .settings-sun-icon {
+            display: none !important;
+        }
 
 
         .log-card {
@@ -754,13 +760,13 @@
         }
 
         /* ============================================================
-           CLINICAL GRADE LOCK / LOGIN SCREEN (ClinioSphere)
+           MINIMAL LIGHT TEAL-AZURE LOGIN SCREEN (ClinioSphere)
            ============================================================ */
         #lock-screen {
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: linear-gradient(145deg, #f0fdfa 0%, #f8fafc 42%, #f0f9ff 100%);
+            background: linear-gradient(155deg, #037fc0 0%, #0582b5 25%, #077ea0 50%, #0b7a8a 75%, #0e7672 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -769,243 +775,167 @@
             padding: 1.5rem;
         }
 
-        .lock-blob {
+        /* Subtle ambient lighting for light, radiant depth */
+        .lock-ambient-glow {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.45;
+            filter: blur(80px);
+            pointer-events: none;
             will-change: transform;
-            pointer-events: none;
         }
-        .lock-blob.b1 { 
-            width: 520px; 
-            height: 520px; 
-            background: radial-gradient(circle, #38bdf8 0%, #0284c7 60%, transparent 80%); 
-            top: -180px; 
-            left: -140px; 
-            animation: driftA 18s ease-in-out infinite; 
+        .lock-ambient-glow.glow-1 {
+            width: 580px;
+            height: 580px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.24) 0%, rgba(3, 127, 192, 0) 70%);
+            top: -160px;
+            left: -140px;
+            animation: glowDrift1 18s ease-in-out infinite alternate;
         }
-        .lock-blob.b2 { 
-            width: 480px; 
-            height: 480px; 
-            background: radial-gradient(circle, #34d399 0%, #0d9488 60%, transparent 80%); 
-            bottom: -180px; 
-            right: -120px; 
-            animation: driftB 22s ease-in-out infinite; 
+        .lock-ambient-glow.glow-2 {
+            width: 540px;
+            height: 540px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(14, 118, 114, 0) 70%);
+            bottom: -150px;
+            right: -120px;
+            animation: glowDrift2 20s ease-in-out infinite alternate;
         }
-        .lock-blob.b3 { 
-            width: 380px; 
-            height: 380px; 
-            background: radial-gradient(circle, #818cf8 0%, #6366f1 60%, transparent 80%); 
-            bottom: 12%; 
-            left: 8%; 
-            animation: driftC 25s ease-in-out infinite; 
-            opacity: 0.25; 
+        @keyframes glowDrift1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 35px) scale(1.08); }
+        }
+        @keyframes glowDrift2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-40px, -30px) scale(1.06); }
         }
 
-        @keyframes driftA { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(50px,35px) scale(1.06);} }
-        @keyframes driftB { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-45px,-25px) scale(1.08);} }
-        @keyframes driftC { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(25px,-45px) scale(0.96);} }
-
-        .lock-grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(14, 165, 233, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(14, 165, 233, 0.045) 1px, transparent 1px);
-            background-size: 36px 36px;
-            mask-image: radial-gradient(ellipse 75% 65% at 50% 48%, black 45%, transparent 92%);
-            pointer-events: none;
-        }
-
+        /* Frosted Glass Login Card */
         #lock-screen .lock-card {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.88);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(28px) saturate(180%);
             -webkit-backdrop-filter: blur(28px) saturate(180%);
-            border: 1.5px solid rgba(255, 255, 255, 0.95);
             border-radius: 2.25rem;
-            padding: 2.8rem 2.4rem 2.2rem;
-            width: 100%;
-            max-width: 420px;
+            padding: 3.2rem 2.8rem 2.6rem;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 
+                0 25px 60px -15px rgba(7, 126, 160, 0.4),
+                0 10px 25px -10px rgba(14, 118, 114, 0.25),
+                0 1px 0 rgba(255, 255, 255, 0.9) inset;
+            animation: cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
             text-align: center;
-            box-shadow:
-                0 25px 70px -12px rgba(2, 132, 199, 0.16),
-                0 8px 24px -6px rgba(15, 23, 42, 0.06),
-                0 0 0 1px rgba(14, 165, 233, 0.08),
-                0 1px 0 rgba(255, 255, 255, 0.95) inset;
-            animation: cardEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(18px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes cardEnter { from{opacity:0; transform:translateY(16px) scale(0.97);} to{opacity:1; transform:translateY(0) scale(1);} }
-
-        #lock-screen .lock-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 6px 15px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(16, 185, 129, 0.08));
-            border: 1px solid rgba(14, 165, 233, 0.22);
-            color: #0284c7;
-            font-size: 0.62rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
+        /* Brand & Logo */
+        .lock-brand-header {
+            margin-bottom: 2rem;
         }
-        #lock-screen .lock-badge .dot {
-            width: 6.5px; height: 6.5px; border-radius: 50%;
-            background: #10b981;
-            box-shadow: 0 0 10px #10b981;
-            animation: dotPulse 2s ease-in-out infinite;
-        }
-        @keyframes dotPulse { 0%,100%{opacity:1; transform: scale(1);} 50%{opacity:0.4; transform: scale(0.85);} }
-
-        #lock-screen .lock-logo-wrap {
-            position: relative;
-            width: 74px;
-            height: 74px;
-            margin: 0 auto 1.15rem;
+        .lock-logo-box {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 1.1rem;
+            border-radius: 1.4rem;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1.5px solid #bae6fd;
+            padding: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 12px 24px -6px rgba(3, 127, 192, 0.25);
         }
-
-        #lock-screen .lock-logo-ring {
-            position: absolute;
-            inset: -3px;
-            border-radius: 1.6rem;
-            background: linear-gradient(135deg, #0ea5e9, #10b981 55%, #0284c7);
-            opacity: 0.55;
-            filter: blur(14px);
-            animation: ringPulse 3.5s ease-in-out infinite;
-        }
-        @keyframes ringPulse { 0%,100%{opacity:0.45; transform:scale(0.98);} 50%{opacity:0.75; transform:scale(1.12);} }
-
-        .lock-icon {
-            position: relative;
-            width: 64px;
-            height: 64px;
-            border-radius: 1.35rem;
-            background: linear-gradient(145deg, #ffffff, #f0fdfa);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 24px -5px rgba(2, 132, 199, 0.24), 0 0 0 1px rgba(14, 165, 233, 0.12);
-            padding: 8px;
-            overflow: hidden;
-        }
-
-        .lock-pulse-line {
+        .lock-logo-img {
             width: 100%;
-            height: 22px;
-            margin: 0.1rem 0 1.25rem;
-            opacity: 0.75;
+            height: 100%;
+            object-fit: contain;
         }
-        .lock-pulse-line path {
-            fill: none;
-            stroke: url(#pulseGradient);
-            stroke-width: 1.8;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 200;
-            stroke-dashoffset: 200;
-            animation: pulseDraw 2.8s ease-in-out infinite;
-        }
-        @keyframes pulseDraw { 0%{stroke-dashoffset:200;} 48%{stroke-dashoffset:0;} 100%{stroke-dashoffset:-200;} }
-
-        #lock-screen h2 {
-            color: #0f172a;
+        .lock-brand-title {
+            font-size: 1.75rem;
             font-weight: 800;
-            font-size: 1.32rem;
+            color: #0f172a;
             letter-spacing: -0.025em;
-            margin-bottom: 0.25rem;
             line-height: 1.2;
+            margin-bottom: 0.35rem;
         }
-
-        #lock-screen p.lock-sub {
-            color: #64748b;
-            font-size: 0.78rem;
+        .lock-brand-sub {
+            font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 1.45rem;
+            color: #0284c7;
             letter-spacing: 0.2px;
         }
 
-        .lock-field { 
-            position: relative; 
-            margin-bottom: 1rem; 
-            text-align: left; 
+        /* Form Fields */
+        .lock-form-body {
+            text-align: left;
         }
-
-        .lock-field .lock-field-label {
+        .lock-field {
+            margin-bottom: 1.35rem;
+        }
+        .lock-field-label {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.62rem;
+            gap: 7px;
+            font-size: 0.78rem;
             font-weight: 800;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            color: #0369a1;
-            margin-bottom: 0.45rem;
-            padding-left: 0.25rem;
+            color: #475569;
+            margin-bottom: 0.55rem;
+            padding-left: 0.2rem;
         }
-
-        .lock-input-wrap { 
-            position: relative; 
+        .lock-field-label i {
+            color: #0284c7;
         }
-
+        .lock-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
         .lock-input-icon {
             position: absolute;
-            left: 1.05rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #0284c7;
+            left: 1.2rem;
+            color: #94a3b8;
             pointer-events: none;
             display: flex;
             transition: color 0.2s;
         }
-
         #lock-username, #lock-password {
             width: 100%;
-            border-radius: 1.15rem;
+            border-radius: 1.25rem;
             border: 1.5px solid #e2e8f0;
             background: #f8fafc;
             color: #0f172a;
             font-weight: 600;
-            font-size: 0.92rem;
+            font-size: 1rem;
             outline: none;
-            text-align: left;
-            letter-spacing: 0.4px;
-            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+            transition: all 0.2s ease;
+            padding: 1.05rem 1.25rem 1.05rem 3.15rem;
             -webkit-appearance: none;
         }
-
-        #lock-username {
-            padding: 0.95rem 1.1rem 0.95rem 2.85rem;
-        }
-
         #lock-password {
-            padding: 0.95rem 2.9rem 0.95rem 2.85rem;
+            padding-right: 3.25rem;
         }
-
         #lock-username:focus, #lock-password:focus {
-            border-color: #0ea5e9;
+            border-color: #0284c7;
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            box-shadow: 0 0 0 4px rgba(3, 127, 192, 0.14);
         }
-
-        #lock-username::placeholder, #lock-password::placeholder { 
-            color: #94a3b8; 
-            font-weight: 500; 
+        .lock-input-wrap:focus-within .lock-input-icon {
+            color: #0284c7;
         }
-
+        #lock-username::placeholder, #lock-password::placeholder {
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.92rem;
+        }
         .lock-toggle-visibility {
             position: absolute;
-            right: 0.85rem;
-            top: 50%;
-            transform: translateY(-50%);
+            right: 1rem;
             background: none;
             border: none;
             color: #94a3b8;
@@ -1016,51 +946,51 @@
             border-radius: 8px;
             transition: color 0.2s, background 0.2s;
         }
-        .lock-toggle-visibility:hover { 
-            color: #0284c7; 
-            background: rgba(14, 165, 233, 0.08); 
+        .lock-toggle-visibility:hover {
+            color: #0284c7;
+            background: #f0f9ff;
         }
 
+        /* Submit Button */
         #lock-submit {
             position: relative;
             width: 100%;
-            padding: 1.05rem;
-            border-radius: 1.15rem;
+            padding: 1.15rem 1.5rem;
+            border-radius: 1.25rem;
             border: none;
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 45%, #0f766e 100%);
-            color: white;
+            background: linear-gradient(135deg, #037fc0 0%, #077ea0 50%, #0e7672 100%);
+            color: #ffffff;
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.76rem;
+            font-size: 0.9rem;
             letter-spacing: 1.2px;
             cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
-            box-shadow: 0 14px 28px -6px rgba(2, 132, 199, 0.42);
+            transition: all 0.2s ease;
+            box-shadow: 0 12px 26px -4px rgba(3, 127, 192, 0.45);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 0.65rem;
+            margin-top: 1.6rem;
             -webkit-tap-highlight-color: transparent;
         }
-
-        #lock-submit:hover { 
-            transform: translateY(-1.5px); 
-            box-shadow: 0 18px 34px -6px rgba(2, 132, 199, 0.52); 
+        #lock-submit:hover {
+            transform: translateY(-1.5px);
+            box-shadow: 0 14px 28px -4px rgba(3, 127, 192, 0.55);
+            filter: brightness(1.06);
         }
-        #lock-submit:active { 
-            transform: translateY(0) scale(0.985); 
+        #lock-submit:active {
+            transform: translateY(0) scale(0.985);
         }
-        #lock-submit:disabled { 
-            opacity: 0.75; 
-            cursor: default; 
-            transform: none; 
+        #lock-submit:disabled {
+            opacity: 0.75;
+            cursor: default;
+            transform: none;
         }
-
         .lock-spinner {
-            width: 15px; 
-            height: 15px;
-            border: 2px solid rgba(255,255,255,0.35);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
@@ -1068,88 +998,43 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* Error Message */
         #lock-error {
             color: #e11d48;
-            font-size: 0.74rem;
+            font-size: 0.76rem;
             font-weight: 700;
-            margin-top: 0.85rem;
+            margin-top: 0.75rem;
             min-height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
+            text-align: center;
         }
-
-        .lock-card.shake { 
-            animation: cardEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) both, shakeErr 0.4s ease; 
+        .lock-card.shake {
+            animation: cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both, shakeErr 0.4s ease;
         }
         @keyframes shakeErr {
-            10%,90%{transform:translateX(-2px);}
-            20%,80%{transform:translateX(3px);}
-            30%,50%,70%{transform:translateX(-5px);}
-            40%,60%{transform:translateX(5px);}
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(3px); }
+            30%, 50%, 70% { transform: translateX(-5px); }
+            40%, 60% { transform: translateX(5px); }
         }
 
-        .lock-features {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 1.25rem;
-            flex-wrap: wrap;
-        }
-        .lock-features span {
-            display: flex;
-            align-items: center;
-            gap: 4.5px;
-            font-size: 0.62rem;
-            font-weight: 800;
-            color: #0f766e;
-            background: rgba(13, 148, 136, 0.08);
-            border: 1px solid rgba(13, 148, 136, 0.18);
-            padding: 4px 9px;
-            border-radius: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-        .lock-features svg { 
-            width: 11px; 
-            height: 11px; 
-            color: #0d9488; 
-        }
-
-        .lock-footer-note {
+        /* Minimal Card Footer */
+        .lock-card-footer {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            margin-top: 1.35rem;
-            padding-top: 1.1rem;
-            border-top: 1px solid #f1f5f9;
-            color: #94a3b8;
-            font-size: 0.64rem;
+            gap: 6px;
+            font-size: 0.78rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
+            color: #64748b;
+            margin-top: 1.85rem;
+            padding-top: 1.35rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        .lock-card-footer i {
+            color: #0e7672;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .lock-blob, .lock-logo-ring, .lock-pulse-line path, #lock-screen .lock-card, .lock-badge .dot {
-                animation: none !important;
-            }
-        }
-
-        /* Desktop Hero Side Panel (Hidden on Mobile & Tablet) */
-        .lock-desktop-side {
-            display: none;
-        }
-        .lock-form-column {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-
-        /* Strict global rule: If lock-screen has .hidden or display: none, force hide everywhere */
+        /* Global strict rule: When locked screen is closed, hide completely */
         #lock-screen.hidden,
         #lock-screen[style*="display: none"],
         #lock-screen[style*="display:none"] {
@@ -1160,261 +1045,33 @@
             z-index: -9999 !important;
         }
 
-        /* ---------- DESKTOP WHOLE-SCREEN CLINICAL PORTAL (>= 1024px) ---------- */
-        @media (min-width: 1024px) {
-            #lock-screen:not(.hidden) {
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                align-items: stretch;
-                width: 100vw;
-                height: 100vh;
-                overflow: hidden;
-                background: #f8fafc;
-            }
-
-            .lock-blob {
-                opacity: 0.25;
-            }
-
-            /* Left Column: Full-Height Hero Showcase */
-            .lock-desktop-side {
-                display: flex;
-                flex: 1.25;
-                height: 100vh;
-                background: linear-gradient(155deg, #075985 0%, #0284c7 40%, #0f766e 100%);
-                position: relative;
-                padding: 3.5rem 4rem;
-                color: white;
-                align-items: center;
-                justify-content: center;
-                overflow-y: auto;
-                box-shadow: 12px 0 40px -10px rgba(15, 23, 42, 0.2);
-                z-index: 10;
-            }
-
-            .lock-desktop-content {
-                max-width: 540px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 1.65rem;
-                position: relative;
-                z-index: 2;
-            }
-
-            .lock-hero-pill {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 6px 14px;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.12);
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                font-size: 0.65rem;
-                font-weight: 800;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                width: fit-content;
-                backdrop-filter: blur(8px);
-            }
-            .lock-hero-dot {
-                width: 7px;
-                height: 7px;
-                border-radius: 50%;
-                background: #34d399;
-                box-shadow: 0 0 10px #34d399;
-                animation: dotPulse 2s ease-in-out infinite;
-            }
-
-            .lock-hero-brand {
-                display: flex;
-                align-items: center;
-                gap: 1.25rem;
-            }
-            .lock-hero-logo-box {
-                width: 76px;
-                height: 76px;
-                border-radius: 1.4rem;
-                background: rgba(255, 255, 255, 0.95);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 9px;
-                box-shadow: 0 16px 32px -5px rgba(3, 105, 161, 0.35);
-                flex-shrink: 0;
-            }
-            .lock-hero-logo-img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-            .lock-hero-title {
-                font-size: 2.35rem;
-                font-weight: 900;
-                letter-spacing: -0.03em;
-                line-height: 1.1;
-                color: #ffffff;
-            }
-            .lock-hero-tagline {
-                font-size: 0.85rem;
-                color: #e0f2fe;
-                font-weight: 500;
-                margin-top: 0.35rem;
-                line-height: 1.4;
-            }
-
-            .lock-hero-cards {
-                display: flex;
-                flex-direction: column;
-                gap: 0.9rem;
-                margin-top: 0.2rem;
-            }
-            .lock-hero-card {
-                display: flex;
-                align-items: flex-start;
-                gap: 1rem;
-                padding: 1.1rem 1.25rem;
-                border-radius: 1.25rem;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.18);
-                backdrop-filter: blur(12px);
-                transition: transform 0.2s, background 0.2s;
-            }
-            .lock-hero-card:hover {
-                transform: translateX(4px);
-                background: rgba(255, 255, 255, 0.15);
-            }
-            .lock-hero-card-icon {
-                width: 38px;
-                height: 38px;
-                border-radius: 0.9rem;
-                background: rgba(255, 255, 255, 0.2);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                color: #ffffff;
-            }
-            .lock-hero-card h4 {
-                font-size: 0.85rem;
-                font-weight: 800;
-                color: #ffffff;
-                letter-spacing: -0.01em;
-            }
-            .lock-hero-card p {
-                font-size: 0.72rem;
-                color: #bae6fd;
-                font-weight: 500;
-                margin-top: 0.2rem;
-                line-height: 1.35;
-            }
-
-            .lock-hero-ecg-wrap {
-                padding: 1rem 1.25rem;
-                border-radius: 1.15rem;
-                background: rgba(15, 23, 42, 0.22);
-                border: 1px solid rgba(255, 255, 255, 0.12);
-            }
-            .lock-hero-ecg-label {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 0.65rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.8px;
-                color: #67e8f9;
-                margin-bottom: 0.45rem;
-            }
-            .lock-hero-pulse {
-                width: 100%;
-                height: 24px;
-            }
-            .lock-hero-pulse path {
-                fill: none;
-                stroke: #38bdf8;
-                stroke-width: 2;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-dasharray: 300;
-                stroke-dashoffset: 300;
-                animation: pulseDraw 3.2s ease-in-out infinite;
-            }
-
-            .lock-hero-footer {
-                font-size: 0.72rem;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.8);
-                letter-spacing: 0.3px;
-                border-top: 1px solid rgba(255, 255, 255, 0.15);
-                padding-top: 1rem;
-            }
-
-            /* Right Column: Full-Height Vertical Login Panel */
-            .lock-form-column {
-                flex: 1;
-                height: 100vh;
-                overflow-y: auto;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 3rem 2.5rem;
-                background: linear-gradient(165deg, #ffffff 0%, #f8fafc 50%, #f0fdfa 100%);
-                position: relative;
-                z-index: 5;
-            }
-
-            #lock-screen .lock-card {
-                max-width: 440px;
-                border-radius: 2rem;
-                padding: 2.8rem 2.5rem 2.2rem;
-                background: rgba(255, 255, 255, 0.96);
-                border: 1.5px solid rgba(226, 232, 240, 0.85);
-                box-shadow: 0 20px 50px -10px rgba(2, 132, 199, 0.12), 0 0 0 1px rgba(14, 165, 233, 0.06);
-            }
-        }
-
-        /* ---------- RESPONSIVE TUNING (Mobile, Tablet, Small Screens) ---------- */
         @media (max-width: 480px) {
-            #lock-screen { 
-                padding: 1rem 0.85rem; 
-                align-items: center; 
+            #lock-screen {
+                padding: 1rem;
             }
             #lock-screen .lock-card {
                 padding: 2.2rem 1.4rem 1.8rem;
-                border-radius: 1.85rem;
-                max-width: 100%;
-                box-shadow: 0 20px 50px -10px rgba(2, 132, 199, 0.18);
+                border-radius: 1.75rem;
             }
-            #lock-screen .lock-logo-wrap { width: 62px; height: 62px; margin-bottom: 0.95rem; }
-            .lock-icon { width: 54px; height: 54px; border-radius: 1.2rem; }
-            #lock-screen h2 { font-size: 1.2rem; }
-            #lock-screen p.lock-sub { font-size: 0.74rem; margin-bottom: 1.25rem; }
-            #lock-username, #lock-password { font-size: 1rem; } /* 1rem (16px) prevents iOS/Android auto-zoom on mobile */
-            #lock-username { padding: 0.95rem 1rem 0.95rem 2.85rem; }
-            #lock-password { padding: 0.95rem 2.85rem 0.95rem 2.85rem; }
-            #lock-submit { padding: 1rem; font-size: 0.74rem; }
-            .lock-blob.b1 { width: 340px; height: 340px; top: -100px; left: -80px; }
-            .lock-blob.b2 { width: 300px; height: 300px; bottom: -100px; right: -70px; }
-            .lock-blob.b3 { display: none; }
-            .lock-features { gap: 8px; }
-            .lock-features span { font-size: 0.58rem; padding: 3px 7px; }
-        }
-
-        @media (max-width: 360px) {
-            #lock-screen .lock-card { padding: 1.8rem 1.15rem 1.5rem; }
-            #lock-screen h2 { font-size: 1.1rem; }
-            #lock-screen p.lock-sub { font-size: 0.7rem; }
-        }
-
-        @media (max-height: 700px) and (max-width: 480px) {
-            #lock-screen .lock-card { padding: 1.6rem 1.25rem; }
-            #lock-screen .lock-logo-wrap { margin-bottom: 0.7rem; }
-            #lock-screen p.lock-sub { margin-bottom: 0.9rem; }
-            .lock-pulse-line { margin-bottom: 0.85rem; }
-            .lock-features { margin-top: 0.85rem; }
-            .lock-footer-note { margin-top: 0.95rem; padding-top: 0.8rem; }
+            .lock-logo-box {
+                width: 58px;
+                height: 58px;
+                margin-bottom: 0.75rem;
+            }
+            .lock-brand-title {
+                font-size: 1.3rem;
+            }
+            #lock-username, #lock-password {
+                font-size: 1rem; /* prevents iOS auto-zoom */
+                padding: 0.85rem 1rem 0.85rem 2.75rem;
+            }
+            #lock-password {
+                padding-right: 2.85rem;
+            }
+            #lock-submit {
+                padding: 0.95rem;
+                font-size: 0.78rem;
+            }
         }
         #app-root {
             display: none;
@@ -2093,146 +1750,65 @@ html.dark .instruction-modal-footer {
 
     <!-- ---------- PASSWORD LOCK SCREEN ---------- -->
     <div id="lock-screen">
-        <div class="lock-blob b1"></div>
-        <div class="lock-blob b2"></div>
-        <div class="lock-blob b3"></div>
-        <div class="lock-grid-overlay"></div>
+        <!-- Ambient subtle background lighting -->
+        <div class="lock-ambient-glow glow-1"></div>
+        <div class="lock-ambient-glow glow-2"></div>
 
-        <!-- DESKTOP HERO SHOWCASE PANEL (Visible on Desktop >= 1024px) -->
-        <div class="lock-desktop-side">
-            <div class="lock-desktop-content">
-                <!-- Top Brand Tag -->
-                <div class="lock-hero-pill">
-                    <span class="lock-hero-dot"></span>
-                    <span>PRISM HEALTHCARE SYSTEM · CLINICAL CLOUD</span>
+        <!-- Minimal Centered Frosted Glass Login Card -->
+        <div class="lock-card" id="lock-card">
+            <!-- Brand & Logo -->
+            <div class="lock-brand-header">
+                <div class="lock-logo-box">
+                    <img src="prismapplogo.png" onerror="this.onerror=null; this.src='PrismLogo-removebg-preview.png';" alt="Prism Logo" class="lock-logo-img">
                 </div>
-
-                <!-- Main Branding Heading -->
-                <div class="lock-hero-brand">
-                    <div class="lock-hero-logo-box">
-                        <img src="prismapplogo.png" onerror="this.onerror=null; this.src='PrismLogo-removebg-preview.png';" alt="Prism Healthcare Logo" class="lock-hero-logo-img">
-                    </div>
-                    <div>
-                        <h1 class="lock-hero-title">ClinioSphere</h1>
-                        <p class="lock-hero-tagline">Clinical Intelligence, Rehabilitation Protocols & Practice Management</p>
-                    </div>
-                </div>
-
-                <!-- Clinical Value Feature Cards -->
-                <div class="lock-hero-cards">
-                    <div class="lock-hero-card">
-                        <div class="lock-hero-card-icon">
-                            <i data-lucide="dumbbell" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h4>560+ Clinical Exercise Protocols (exercises.js)</h4>
-                            <p>Direct 1-tap HEP prescription across 10 body regions with dosage presets and instant WhatsApp routine delivery.</p>
-                        </div>
-                    </div>
-
-                    <div class="lock-hero-card">
-                        <div class="lock-hero-card-icon">
-                            <i data-lucide="users" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h4>Complete Patient Registry & Logs</h4>
-                            <p>Instant case tracking, automated clinical logs, diagnostic records, daily registry, and attendance history.</p>
-                        </div>
-                    </div>
-
-                    <div class="lock-hero-card">
-                        <div class="lock-hero-card-icon">
-                            <i data-lucide="shield-check" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <h4>Enterprise Clinical Security</h4>
-                            <p>256-Bit SSL encryption, automated Google Sheet cloud backups & HIPAA-ready session authorization.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ECG Live Rhythm Wave -->
-                <div class="lock-hero-ecg-wrap">
-                    <div class="lock-hero-ecg-label">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span>Clinical Vitals & Practice Monitoring Active</span>
-                    </div>
-                    <svg class="lock-hero-pulse" viewBox="0 0 450 32" preserveAspectRatio="none">
-                        <path d="M0,16 L100,16 L115,16 L125,4 L138,28 L148,16 L165,16 L280,16 L295,16 L305,4 L318,28 L328,16 L345,16 L450,16" />
-                    </svg>
-                </div>
-
-                <!-- Footer Authority Note -->
-                <div class="lock-hero-footer">
-                    <span>Dr Ravi Kumar, PT • Prism Physiotherapy & Rehabilitation Center</span>
-                </div>
+                <h1 class="lock-brand-title">ClinioSphere</h1>
+                <p class="lock-brand-sub">Practice Management Portal</p>
             </div>
-        </div>
 
-        <!-- FORM COLUMN (Mobile & Tablet centered card, Desktop right panel) -->
-        <div class="lock-form-column">
-            <div class="lock-card" id="lock-card">
-                <span class="lock-badge"><span class="dot"></span>Clinical Intelligence Platform</span>
-
-                <div class="lock-logo-wrap">
-                    <div class="lock-logo-ring"></div>
-                    <div class="lock-icon">
-                        <img src="prismapplogo.png" onerror="this.onerror=null; this.src='PrismLogo-removebg-preview.png';" style="width: 100%; height: 100%; object-fit: contain; border-radius: 0.7rem;" alt="Prism Healthcare Logo">
+            <!-- Login Form -->
+            <div class="lock-form-body">
+                <!-- Username -->
+                <div class="lock-field">
+                    <label class="lock-field-label" for="lock-username">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span>Username</span>
+                    </label>
+                    <div class="lock-input-wrap">
+                        <span class="lock-input-icon"><i data-lucide="user-check" class="w-4 h-4"></i></span>
+                        <input type="text" id="lock-username" placeholder="Enter username" autocomplete="username" autofocus onkeydown="if(event.key==='Enter')document.getElementById('lock-password').focus()">
                     </div>
                 </div>
 
-                <h2>ClinioSphere Portal</h2>
-                <p class="lock-sub">Clinical Intelligence & Rehabilitation Management</p>
-
-                <svg width="0" height="0" style="position:absolute">
-                    <defs>
-                        <linearGradient id="pulseGradient" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stop-color="#0ea5e9"/>
-                            <stop offset="50%" stop-color="#10b981"/>
-                            <stop offset="100%" stop-color="#0284c7"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <svg class="lock-pulse-line" viewBox="0 0 300 26" preserveAspectRatio="none">
-                    <path d="M0,13 L70,13 L85,13 L95,3 L105,23 L115,13 L130,13 L300,13" />
-                </svg>
-
+                <!-- Password -->
                 <div class="lock-field">
-                    <span class="lock-field-label"><i data-lucide="user-check" class="w-3.5 h-3.5 text-sky-600"></i> Clinician Username</span>
+                    <label class="lock-field-label" for="lock-password">
+                        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                        <span>Password</span>
+                    </label>
                     <div class="lock-input-wrap">
-                        <span class="lock-input-icon"><i data-lucide="user" class="w-4 h-4"></i></span>
-                        <input type="text" id="lock-username" placeholder="Enter clinician username" autocomplete="off" onkeydown="if(event.key==='Enter')document.getElementById('lock-password').focus()">
-                    </div>
-                </div>
-                <div class="lock-field">
-                    <span class="lock-field-label"><i data-lucide="shield" class="w-3.5 h-3.5 text-sky-600"></i> Access Password</span>
-                    <div class="lock-input-wrap">
-                        <span class="lock-input-icon"><i data-lucide="lock" class="w-4 h-4"></i></span>
-                        <input type="password" id="lock-password" placeholder="Enter access password" autocomplete="off" inputmode="text" onkeydown="if(event.key==='Enter')checkLockPassword()">
-                        <button type="button" class="lock-toggle-visibility" onclick="toggleLockPasswordVisibility()" aria-label="Show password">
+                        <span class="lock-input-icon"><i data-lucide="key-round" class="w-4 h-4"></i></span>
+                        <input type="password" id="lock-password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkLockPassword()">
+                        <button type="button" class="lock-toggle-visibility" onclick="toggleLockPasswordVisibility()" aria-label="Toggle password visibility">
                             <i data-lucide="eye" class="w-4 h-4" id="lock-eye-icon"></i>
                         </button>
                     </div>
                 </div>
 
+                <!-- Submit Button -->
                 <button id="lock-submit" onclick="checkLockPassword()">
-                    <i data-lucide="key-round" class="w-4 h-4"></i>
-                    <span id="lock-submit-label">Unlock Clinical Dashboard</span>
+                    <span id="lock-submit-label">Sign In</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     <span class="lock-spinner" id="lock-spinner"></span>
                 </button>
 
+                <!-- Error Display -->
                 <div id="lock-error"></div>
+            </div>
 
-                <div class="lock-features">
-                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>256-Bit SSL</span>
-                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Real-time Sync</span>
-                    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>HIPAA-Ready</span>
-                </div>
-
-                <div class="lock-footer-note">
-                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
-                    <span>Verified Medical Session · Prism Healthcare Systems</span>
-                </div>
+            <!-- Minimal Card Footer -->
+            <div class="lock-card-footer">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                <span>Prism Healthcare Systems &bull; Secure Portal</span>
             </div>
         </div>
     </div>
@@ -2301,250 +1877,261 @@ html.dark .instruction-modal-footer {
                         <span id="connection-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
-                    <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
-                    <button id="sync-indicator" onclick="loadAdminData(true)" class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 hover:rotate-180 active:scale-95 transition-all" title="Refresh Data"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
-                    <button onclick="logoutApp()" class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-300 active:scale-95 transition-all flex items-center justify-center" title="Logout">
+
+                    <!-- DESKTOP ACTIONS (>= 1024px) -->
+                    <button id="dark-toggle-btn" onclick="toggleDarkMode()" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Toggle dark mode"><i data-lucide="moon" class="w-5 h-5 text-slate-600"></i><i data-lucide="sun" class="w-5 h-5 text-amber-500"></i></button>
+                    <button id="sync-indicator" onclick="if(event.shiftKey){performHardReset();}else{loadAdminData(true);}" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 hover:rotate-180 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Refresh Data (Shift+Click for Hard Reset)"><i data-lucide="refresh-cw" class="w-5 h-5 text-slate-600"></i></button>
+                    <button id="hard-reset-btn" onclick="performHardReset()" class="hidden lg:flex p-2.5 bg-rose-50/90 dark:bg-rose-950/50 border border-rose-200/80 dark:border-rose-900/70 rounded-2xl shadow-sm hover:shadow hover:bg-rose-100 dark:hover:bg-rose-900/80 hover:border-rose-300 active:scale-95 transition-all text-rose-600 dark:text-rose-400 items-center justify-center cursor-pointer" title="Hard Reset: Clear all cases, wipe cache & reload fresh from sheet"><i data-lucide="rotate-ccw" class="w-5 h-5"></i></button>
+                    <button onclick="logoutApp()" class="hidden lg:flex p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-300 active:scale-95 transition-all items-center justify-center cursor-pointer" title="Logout">
                         <i data-lucide="log-out" class="w-5 h-5 text-rose-500"></i>
                     </button>
+
+                    <!-- MOBILE & TABLET SETTINGS DROPDOWN TRIGGER (< 1024px: in place of logout button) -->
+                    <div class="relative lg:hidden">
+                        <button id="mobile-settings-btn" onclick="toggleMobileSettingsMenu(event)" class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all flex items-center justify-center text-slate-700 dark:text-slate-300 cursor-pointer" title="Settings & Options" aria-label="Settings">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </button>
+
+                        <!-- Mobile & Tablet Settings Dropdown Menu -->
+                        <div id="mobile-settings-menu" class="hidden absolute right-0 top-full mt-2 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                            <!-- Header / Title -->
+                            <div class="px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between mb-1">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Quick Settings</span>
+                                <span class="flex items-center gap-1.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online
+                                </span>
+                            </div>
+
+                            <!-- Option 1: Dark / Light Mode -->
+                            <button onclick="toggleDarkMode();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="moon" class="w-4 h-4 settings-moon-icon"></i>
+                                        <i data-lucide="sun" class="w-4 h-4 settings-sun-icon text-amber-500"></i>
+                                    </div>
+                                    <span>Dark / Light Mode</span>
+                                </div>
+                                <span class="text-[9px] px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-black uppercase">Theme</span>
+                            </button>
+
+                            <!-- Option 2: Refresh Data -->
+                            <button onclick="toggleMobileSettingsMenu(); loadAdminData(true);" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                    </div>
+                                    <span>Refresh Data</span>
+                                </div>
+                                <span class="text-[9px] px-2 py-0.5 rounded-lg bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 font-black uppercase">Sync</span>
+                            </button>
+
+                            <!-- Option 3: Hard Refresh -->
+                            <button onclick="toggleMobileSettingsMenu(); performHardReset();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 active:scale-[0.98] transition-all cursor-pointer">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                    </div>
+                                    <span>Hard Refresh</span>
+                                </div>
+                                <span class="text-[9px] px-2 py-0.5 rounded-lg bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-black uppercase">Reset</span>
+                            </button>
+
+                            <div class="my-1 border-t border-slate-100 dark:border-slate-800"></div>
+
+                            <!-- Option 4: Logout -->
+                            <button onclick="toggleMobileSettingsMenu(); logoutApp();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 active:scale-[0.98] transition-all cursor-pointer">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="log-out" class="w-4 h-4"></i>
+                                    </div>
+                                    <span>Logout</span>
+                                </div>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5 opacity-60"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </header>
 
 <!-- OVERVIEW -->
-<section id="tab-overview" class="animate-slide space-y-6">
+<section id="tab-overview" class="animate-slide">
 
-  <!-- TOP HERO STATS BENTO ROW -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <!-- TOP HERO STATS ROW -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <!-- Total Sessions -->
-    <div class="glass-card p-6 rounded-[2.25rem] flex items-center justify-between border-l-4 border-l-indigo-600 bg-gradient-to-br from-indigo-50/50 via-white to-slate-50/50 dark:from-slate-900/90 dark:via-slate-900/80 dark:to-indigo-950/20 shadow-lg shadow-indigo-100/40 dark:shadow-none hover:shadow-xl hover:-translate-y-0.5 transition-all">
-      <div class="flex items-center gap-4">
-        <div class="w-14 h-14 rounded-2xl bg-indigo-600/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-200/50 dark:border-indigo-500/30 shadow-sm">
-          <i data-lucide="activity" class="w-7 h-7"></i>
-        </div>
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Total Sessions</span>
-          <h3 id="stat-total" class="text-3xl font-black text-slate-900 dark:text-white leading-none mt-1">0</h3>
-        </div>
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-indigo-500 bg-gradient-to-r from-indigo-50/40 to-white dark:from-slate-900 dark:to-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all">
+      <div class="w-12 h-12 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center flex-shrink-0">
+        <i data-lucide="activity" class="w-6 h-6 text-white"></i>
       </div>
-      <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900">All-Time</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-1">Total Sessions</p>
+        <h3 id="stat-total" class="text-3xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+      </div>
     </div>
 
     <!-- Registered Patients -->
-    <div class="glass-card p-6 rounded-[2.25rem] flex items-center justify-between border-l-4 border-l-emerald-500 bg-gradient-to-br from-emerald-50/50 via-white to-slate-50/50 dark:from-slate-900/90 dark:via-slate-900/80 dark:to-emerald-950/20 shadow-lg shadow-emerald-100/40 dark:shadow-none hover:shadow-xl hover:-translate-y-0.5 transition-all">
-      <div class="flex items-center gap-4">
-        <div class="w-14 h-14 rounded-2xl bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-200/50 dark:border-emerald-500/30 shadow-sm">
-          <i data-lucide="users" class="w-7 h-7"></i>
-        </div>
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Registered Patients</span>
-          <h3 id="stat-registered" class="text-3xl font-black text-slate-900 dark:text-white leading-none mt-1">0</h3>
-        </div>
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-l-emerald-500 bg-gradient-to-r from-emerald-50/40 to-white dark:from-slate-900 dark:to-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-600 shadow-lg shadow-emerald-200 dark:shadow-none flex items-center justify-center flex-shrink-0">
+        <i data-lucide="users" class="w-6 h-6 text-white"></i>
       </div>
-      <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900">Enrolled</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-1">Registered Patients</p>
+        <h3 id="stat-registered" class="text-3xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+      </div>
     </div>
 
-    <!-- Total Collection (Hero Highlight Card) -->
-    <div class="p-6 rounded-[2.25rem] flex items-center justify-between bg-gradient-to-br from-indigo-600 via-indigo-700 to-slate-900 text-white shadow-xl shadow-indigo-600/25 hover:shadow-2xl hover:shadow-indigo-600/30 hover:-translate-y-0.5 transition-all relative overflow-hidden">
-      <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-white/5 pointer-events-none blur-2xl"></div>
-      <div class="flex items-center gap-4 relative z-10">
-        <div class="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-inner">
-          <i data-lucide="indian-rupee" class="w-7 h-7"></i>
-        </div>
-        <div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-indigo-200">Total Collection</span>
-          <h3 id="stat-revenue" class="text-3xl font-black text-white leading-none mt-1">₹0</h3>
-        </div>
+    <!-- Total Collection (Highlight Card) -->
+    <div class="glass-card p-6 rounded-[2rem] flex items-center gap-5 border border-indigo-500/20 bg-gradient-to-br from-indigo-600 to-indigo-900 shadow-xl shadow-indigo-200/60 dark:shadow-indigo-950/50 transition-all transform hover:scale-[1.01]">
+      <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="indian-rupee" class="w-6 h-6 text-white"></i>
       </div>
-      <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-xl bg-white/15 backdrop-blur-sm text-white border border-white/20 relative z-10">Gross</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-indigo-100 tracking-widest mb-1">Total Collection</p>
+        <h3 id="stat-revenue" class="text-3xl font-black text-white leading-none">₹0</h3>
+      </div>
     </div>
   </div>
 
-  <!-- BRANCH + ACTIVE + DUES BENTO ROW -->
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+  <!-- BRANCH + ACTIVE + DUES ROW -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-6">
     <!-- Orthocare (POC) -->
-    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[2rem] border-blue-200/80 dark:border-blue-900/50 bg-gradient-to-b from-blue-50/60 to-white dark:from-slate-900 dark:to-slate-900/90 text-left hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-0.5 transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-3">
-        <div>
-          <span class="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest block">Prism Orthocare</span>
-          <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Clinic OPD</span>
-        </div>
+    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border border-blue-200/80 dark:border-blue-900/50 bg-gradient-to-b from-blue-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-none transition-all group cursor-pointer">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest leading-tight">Prism<br>Orthocare</span>
         <span class="text-[9px] font-black bg-blue-600 text-white px-2 py-0.5 rounded-lg shadow-sm">POC</span>
       </div>
       <h3 id="stat-poc-revenue" class="text-2xl font-black text-blue-950 dark:text-blue-100 leading-tight">₹0</h3>
-      <div class="flex items-center gap-1 mt-2.5 pt-2 border-t border-blue-100/60 dark:border-blue-950">
-        <span class="text-[9px] text-blue-500 dark:text-blue-400 font-black uppercase tracking-wider group-hover:text-blue-600 transition-colors">Branch Details</span>
-        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-400 group-hover:translate-x-1 transition-transform"></i>
+      <div class="flex items-center gap-1 mt-2">
+        <span class="text-[9px] text-blue-500 font-bold uppercase tracking-wide">View Branch</span>
+        <i data-lucide="chevron-right" class="w-3 h-3 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
       </div>
     </button>
 
-    <!-- Homecare (PHC) -->
-    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[2rem] border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-50/60 to-white dark:from-slate-900 dark:to-slate-900/90 text-left hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-0.5 transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-3">
-        <div>
-          <span class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest block">Home Care</span>
-          <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Home Visits</span>
-        </div>
+    <!-- Home Care (PHC) -->
+    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-100 dark:hover:shadow-none transition-all group cursor-pointer">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-tight">Home<br>Care</span>
         <span class="text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-lg shadow-sm">PHC</span>
       </div>
       <h3 id="stat-phc-revenue" class="text-2xl font-black text-emerald-950 dark:text-emerald-100 leading-tight">₹0</h3>
-      <div class="flex items-center gap-1 mt-2.5 pt-2 border-t border-emerald-100/60 dark:border-emerald-950">
-        <span class="text-[9px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-wider group-hover:text-emerald-700 transition-colors">Branch Details</span>
-        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-1 transition-transform"></i>
+      <div class="flex items-center gap-1 mt-2">
+        <span class="text-[9px] text-emerald-500 font-bold uppercase tracking-wide">View Branch</span>
+        <i data-lucide="chevron-right" class="w-3 h-3 text-emerald-500 group-hover:translate-x-1 transition-transform"></i>
       </div>
     </button>
 
     <!-- Active Cases -->
-    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[2rem] border-rose-200/80 dark:border-rose-900/50 bg-gradient-to-b from-rose-50/60 to-white dark:from-slate-900 dark:to-slate-900/90 text-left hover:border-rose-400 hover:shadow-xl hover:shadow-rose-500/10 hover:-translate-y-0.5 transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-3">
-        <div>
-          <span class="text-[9px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest block">Active Cases</span>
-          <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Under Treatment</span>
-        </div>
-        <span class="relative flex h-3 w-3 mt-0.5">
+    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border border-rose-200/80 dark:border-rose-900/50 bg-gradient-to-b from-rose-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-rose-100 dark:hover:shadow-none transition-all group cursor-pointer">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[9px] font-black text-rose-600 dark:text-rose-400 uppercase tracking-widest leading-tight">Active<br>Cases</span>
+        <span class="relative flex h-2.5 w-2.5 mt-1">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
         </span>
       </div>
       <h3 id="stat-active-count" class="text-2xl font-black text-rose-950 dark:text-rose-100 leading-tight">0</h3>
-      <div class="flex items-center gap-1 mt-2.5 pt-2 border-t border-rose-100/60 dark:border-rose-950">
-        <span class="text-[9px] text-rose-500 dark:text-rose-400 font-black uppercase tracking-wider group-hover:text-rose-600 transition-colors">View Caseload</span>
-        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-rose-400 group-hover:translate-x-1 transition-transform"></i>
-      </div>
+      <p class="text-[9px] text-rose-500 font-bold mt-2 uppercase tracking-wide">Under Treatment</p>
     </button>
 
     <!-- Outstanding Dues -->
-    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[2rem] border-amber-200/80 dark:border-amber-900/50 bg-gradient-to-b from-amber-50/60 to-white dark:from-slate-900 dark:to-slate-900/90 text-left hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 hover:-translate-y-0.5 transition-all group cursor-pointer">
-      <div class="flex justify-between items-start mb-3">
-        <div>
-          <span class="text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest block">Outstanding Dues</span>
-          <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Pending Collection</span>
-        </div>
-        <div class="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
-        </div>
+    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border border-amber-200/80 dark:border-amber-900/50 bg-gradient-to-b from-amber-50/50 to-white dark:from-slate-900 dark:to-slate-900 text-left hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-100 dark:hover:shadow-none transition-all group cursor-pointer">
+      <div class="flex justify-between items-start mb-2">
+        <span class="text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest leading-tight">Outstanding<br>Dues</span>
+        <i data-lucide="alert-circle" class="w-4 h-4 text-amber-500 mt-0.5"></i>
       </div>
       <h3 id="stat-outstanding" class="text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight">₹0</h3>
-      <div class="flex items-center gap-1 mt-2.5 pt-2 border-t border-amber-100/60 dark:border-amber-950">
-        <span class="text-[9px] text-amber-600 dark:text-amber-400 font-black uppercase tracking-wider group-hover:text-amber-700 transition-colors">Review Dues</span>
-        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-amber-400 group-hover:translate-x-1 transition-transform"></i>
-      </div>
+      <p class="text-[9px] text-amber-500 font-bold mt-2 uppercase tracking-wide">Pending Dues</p>
     </button>
   </div>
 
   <!-- QUICK FILTER BAR -->
-  <div class="glass-card p-3 rounded-[2rem] flex flex-wrap items-center justify-between gap-3 border-slate-200/70 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70">
-    <div class="flex items-center gap-2 pl-2">
-      <div class="w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-        <i data-lucide="filter" class="w-3.5 h-3.5"></i>
-      </div>
-      <span class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">Scope Filter:</span>
-    </div>
-    <div class="flex items-center gap-2">
-      <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-600 hover:text-white font-black text-[10px] uppercase tracking-wider transition-all border border-indigo-200/60 dark:border-indigo-800 active:scale-95 shadow-sm">Orthocare (POC)</button>
-      <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-600 hover:text-white font-black text-[10px] uppercase tracking-wider transition-all border border-emerald-200/60 dark:border-emerald-800 active:scale-95 shadow-sm">Homecare (PHC)</button>
-      <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-900 hover:text-white font-black text-[10px] uppercase tracking-wider transition-all border border-slate-200 dark:border-slate-700 active:scale-95 shadow-sm">All Branches</button>
-    </div>
+  <div class="glass-card px-5 py-3.5 rounded-[1.75rem] mb-6 flex flex-wrap items-center gap-2.5 border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm">
+    <span class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mr-1">Quick Filter:</span>
+    <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100 dark:border-indigo-900/50 active:scale-95 cursor-pointer">Orthocare</button>
+    <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/50 active:scale-95 cursor-pointer">Homecare</button>
+    <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95 cursor-pointer">All Branches</button>
   </div>
 
-  <!-- COLLECTION SUMMARY DOCK -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- COLLECTION SUMMARY TRIO -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <!-- Today -->
-    <div class="glass-card p-5 rounded-[2rem] flex items-center justify-between border-slate-200/70 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center">
-          <i data-lucide="calendar" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <span class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest block">Today's Inflow</span>
-          <h4 id="stat-daily" class="text-2xl font-black text-slate-900 dark:text-white leading-tight mt-0.5">₹0</h4>
-        </div>
+    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm">
+      <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 md:mb-1">
+        <i data-lucide="calendar" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
       </div>
-      <span class="text-[8px] font-black uppercase px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">24H</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-0.5">Today</p>
+        <h4 id="stat-daily" class="text-2xl font-black text-slate-900 dark:text-white leading-tight">₹0</h4>
+      </div>
     </div>
 
     <!-- This Month -->
-    <div class="glass-card p-5 rounded-[2rem] flex items-center justify-between border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-br from-indigo-50/70 to-white dark:from-slate-900 dark:to-indigo-950/30 shadow-sm">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-200 dark:shadow-none">
-          <i data-lucide="calendar-days" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <span class="text-[9px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest block">This Month</span>
-          <h4 id="stat-monthly" class="text-2xl font-black text-indigo-700 dark:text-indigo-300 leading-tight mt-0.5">₹0</h4>
-        </div>
+    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/30 shadow-sm">
+      <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 flex items-center justify-center flex-shrink-0 md:mb-1">
+        <i data-lucide="calendar-days" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
       </div>
-      <span class="text-[8px] font-black uppercase px-2 py-1 rounded-lg bg-indigo-100/80 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">MTD</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest mb-0.5">This Month</p>
+        <h4 id="stat-monthly" class="text-2xl font-black text-indigo-700 dark:text-indigo-300 leading-tight">₹0</h4>
+      </div>
     </div>
 
     <!-- This Year -->
-    <div class="glass-card p-5 rounded-[2rem] flex items-center justify-between border-slate-200/70 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 shadow-sm">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center">
-          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <span class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest block">This Year</span>
-          <h4 id="stat-yearly" class="text-2xl font-black text-slate-900 dark:text-white leading-tight mt-0.5">₹0</h4>
-        </div>
+    <div class="glass-card p-5 rounded-2xl md:rounded-[2rem] flex items-center gap-4 md:flex-col md:justify-center md:text-center border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 shadow-sm">
+      <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 md:mb-1">
+        <i data-lucide="bar-chart-3" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
       </div>
-      <span class="text-[8px] font-black uppercase px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">YTD</span>
+      <div>
+        <p class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mb-0.5">This Year</p>
+        <h4 id="stat-yearly" class="text-2xl font-black text-slate-900 dark:text-white leading-tight">₹0</h4>
+      </div>
     </div>
   </div>
 
-  <!-- CHARTS BENTO ROW -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- CHARTS ROW -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
     <!-- Revenue Trend Chart -->
-    <div class="glass-card p-6 lg:p-7 rounded-[2.5rem] shadow-xl border-t-4 border-t-indigo-600 bg-white/80 dark:bg-slate-900/80 border-slate-200/70 dark:border-slate-800">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-            <i data-lucide="trending-up" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Revenue Trend</h4>
-            <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Monthly Financial Growth & Velocity</p>
-          </div>
+    <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-t-4 border-t-indigo-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h4 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300 tracking-wider">Revenue Trend</h4>
+          <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Monthly Performance</p>
         </div>
-        <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">Monthly</span>
+        <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <i data-lucide="trending-up" class="w-4 h-4"></i>
+        </div>
       </div>
       <canvas id="revenueChart" height="170"></canvas>
     </div>
 
     <!-- Daily Collection Chart -->
-    <div class="glass-card p-6 lg:p-7 rounded-[2.5rem] shadow-xl border-t-4 border-t-emerald-500 bg-white/80 dark:bg-slate-900/80 border-slate-200/70 dark:border-slate-800">
-      <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Daily Collection</h4>
-            <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Rolling 14-Day Inflow Trajectory</p>
-          </div>
+    <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-t-4 border-t-emerald-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h4 class="text-xs font-black uppercase text-slate-700 dark:text-slate-300 tracking-wider">Daily Collection</h4>
+          <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Last 14 Days</p>
         </div>
-        <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900">14 Days</span>
+        <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+        </div>
       </div>
       <canvas id="dailyChart" height="170"></canvas>
     </div>
   </div>
 
   <!-- OUTSTANDING DUES CARD -->
-  <div class="glass-card p-6 lg:p-7 rounded-[2.5rem] shadow-xl border-l-4 border-l-rose-500 bg-white/80 dark:bg-slate-900/80 border-slate-200/70 dark:border-slate-800">
-    <div class="flex items-center justify-between mb-5">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-          <i data-lucide="alert-octagon" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Outstanding Dues & Balances</h4>
-          <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Active Patient Receivables Requiring Settlement</p>
-        </div>
+  <div class="glass-card p-6 rounded-[2.25rem] shadow-sm border-l-4 border-l-rose-500 border border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
+    <div class="flex items-center justify-between mb-5 pb-3 border-b border-slate-100 dark:border-slate-800">
+      <div>
+        <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Outstanding Dues</h4>
+        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Pending Patient Balances</p>
       </div>
       <span class="text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-3 py-1.5 rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-sm flex items-center gap-1.5">
-        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+        <i data-lucide="clock" class="w-3 h-3"></i>
         <span>Action Required</span>
       </span>
     </div>
-    <div id="dues-list" class="max-h-72 overflow-y-auto pr-1 space-y-2.5"></div>
+    <div id="dues-list" class="max-h-64 overflow-y-auto pr-1 space-y-2.5"></div>
   </div>
 
 </section>
@@ -2818,22 +2405,24 @@ html.dark .instruction-modal-footer {
                 <div class="max-w-7xl mx-auto space-y-6">
 
                     <!-- SMART SEARCH BAR -->
-                    <div class="glass-card p-4 lg:p-5 rounded-[2.5rem] shadow-xl flex items-center gap-3 relative z-[210] border-indigo-200/60 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 border border-indigo-100 dark:border-indigo-900">
-                            <i data-lucide="search" class="w-5 h-5"></i>
+                    <div class="glass-card p-4 lg:p-5 rounded-[2.5rem] shadow-xl border-indigo-200/60 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 relative z-[210]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 border border-indigo-100 dark:border-indigo-900 shadow-sm">
+                                <i data-lucide="search" class="w-5 h-5"></i>
+                            </div>
+                            <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search patient by name, clinical ID or phone number..." class="flex-1 p-2 bg-transparent border-none outline-none font-bold text-base lg:text-lg text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                            <button onclick="document.getElementById('patient-search-input').value=''; searchPatient();" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all flex-shrink-0 cursor-pointer" title="Clear search">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
                         </div>
-                        <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search patient by name, ID or phone number..." class="flex-1 p-2 bg-transparent border-none outline-none font-bold text-base lg:text-lg text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600">
-                        <button onclick="document.getElementById('patient-search-input').value=''; searchPatient();" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all flex-shrink-0 cursor-pointer" title="Clear">
-                            <i data-lucide="x" class="w-4 h-4"></i>
-                        </button>
-                        <div id="search-results" class="hidden absolute top-[76px] left-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[2rem] shadow-2xl max-h-80 overflow-y-auto p-2 z-[300]"></div>
+                        <div id="search-results" class="hidden absolute top-[78px] left-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200 dark:border-slate-800 rounded-[2rem] shadow-2xl max-h-80 overflow-y-auto p-2 z-[300] divide-y divide-slate-100 dark:divide-slate-800"></div>
                     </div>
 
                     <!-- ACTIVE CASES GRID -->
                     <div id="active-cases-container" class="glass-card p-6 rounded-[2.5rem] shadow-xl border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80">
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm">
                                     <i data-lucide="users" class="w-4 h-4"></i>
                                 </div>
                                 <div>
@@ -2843,42 +2432,60 @@ html.dark .instruction-modal-footer {
                             </div>
                             <span id="active-cases-count" class="text-[10px] font-black bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-3.5 py-1.5 rounded-xl uppercase border border-indigo-100 dark:border-indigo-900 shadow-sm">0 Active</span>
                         </div>
-                        <div id="active-cases-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-56 overflow-y-auto pr-1 no-scrollbar"></div>
+                        <div id="active-cases-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-60 overflow-y-auto pr-1 table-scroll"></div>
                     </div>
 
-                    <!-- PATIENT WORKSPACE (2-column) -->
-                    <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                    <!-- EMPTY WORKSPACE GUIDANCE (Shown when no patient is active) -->
+                    <div id="log-empty-workspace-state" class="glass-card p-8 lg:p-12 rounded-[2.5rem] text-center border-dashed border-2 border-indigo-200/80 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+                        <div class="w-16 h-16 rounded-3xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center mb-4 border border-indigo-100 dark:border-indigo-900 shadow-sm">
+                            <i data-lucide="calendar-plus" class="w-7 h-7"></i>
+                        </div>
+                        <h4 class="text-sm lg:text-base font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider mb-1">Session Logging Workspace</h4>
+                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-4">Select an active patient above or search by name to log clinical attendance, record procedures & view billing history.</p>
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-wider border border-indigo-100 dark:border-indigo-900">
+                            <i data-lucide="mouse-pointer-click" class="w-3.5 h-3.5"></i> Tap any patient card above to begin
+                        </div>
+                    </div>
 
-                        <!-- LEFT: Session History & Patient Profile -->
-                        <div class="flex flex-col gap-5">
+                    <!-- PATIENT WORKSPACE (2-column on laptop, stacked on mobile) -->
+                    <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+
+                        <!-- LEFT COLUMN: Session History & Patient Profile -->
+                        <div class="flex flex-col gap-6">
 
                             <!-- Patient Header Card -->
                             <div class="glass-card p-5 lg:p-6 rounded-[2.25rem] border-indigo-200/80 dark:border-slate-800 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50/60 dark:from-slate-900 dark:via-slate-900/90 dark:to-indigo-950/30 shadow-xl">
                                 <div class="flex items-start justify-between gap-3 mb-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-black shadow-md shadow-indigo-200 dark:shadow-none">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-700 text-white flex items-center justify-center font-black shadow-md shadow-indigo-200 dark:shadow-none flex-shrink-0">
                                             <i data-lucide="user" class="w-6 h-6"></i>
                                         </div>
-                                        <div>
+                                        <div class="min-w-0">
                                             <span class="text-[9px] font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-widest block">Selected Patient</span>
-                                            <h3 id="active-patient-name" class="text-lg lg:text-xl font-black text-slate-900 dark:text-white uppercase leading-tight mt-0.5"></h3>
+                                            <h3 id="active-patient-name" class="text-base lg:text-xl font-black text-slate-900 dark:text-white uppercase leading-tight mt-0.5 truncate"></h3>
                                         </div>
                                     </div>
                                     <div id="workspace-remaining" class="bg-slate-950 dark:bg-slate-800 text-white px-3.5 py-1.5 rounded-xl text-[9px] font-black uppercase shadow-md flex-shrink-0 tracking-wider">REGULAR</div>
                                 </div>
+
+                                <!-- Mobile Primary CTA: Open Calendar Sheet -->
+                                <button onclick="toggleSessionDrawer(true)" class="lg:hidden w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 active:scale-[0.98] text-white font-black py-3.5 px-4 rounded-2xl shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-xs uppercase tracking-wider transition-all mb-3 cursor-pointer">
+                                    <i data-lucide="calendar-plus" class="w-4 h-4"></i> Open Calendar & Log Session
+                                </button>
+
                                 <!-- Action Buttons Row -->
-                                <div class="flex flex-wrap gap-2 pt-3 border-t border-indigo-100/70 dark:border-slate-800">
-                                    <button onclick="toggleSessionDrawer(true)" class="lg:hidden bg-indigo-600 text-white px-3.5 py-2.5 rounded-xl text-[9px] font-black uppercase shadow-md flex items-center gap-1.5 active:scale-95 transition-all">
-                                        <i data-lucide="calendar-plus" class="w-3.5 h-3.5"></i> Log Session
-                                    </button>
-                                    <button onclick="sendTomorrowReminder()" class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-amber-500 hover:text-white dark:hover:bg-amber-600 hover:border-amber-500 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                                <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-indigo-100/70 dark:border-slate-800">
+                                    <button onclick="sendTomorrowReminder()" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-amber-500 hover:text-white dark:hover:bg-amber-600 hover:border-amber-500 transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
                                         <i data-lucide="bell" class="w-3.5 h-3.5"></i> Remind
                                     </button>
-                                    <button onclick="openTopupBalance()" class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 hover:border-emerald-500 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                                    <button onclick="openTopupBalance()" class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 hover:border-emerald-500 transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
                                         <i data-lucide="wallet" class="w-3.5 h-3.5"></i> Topup
                                     </button>
-                                    <button onclick="openMidPackage()" class="bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 hover:border-indigo-600 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                                    <button onclick="openMidPackage()" class="bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 px-3.5 py-2 rounded-xl text-[9px] font-black uppercase hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 hover:border-indigo-600 transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer">
                                         <i data-lucide="package-plus" class="w-3.5 h-3.5"></i> Package
+                                    </button>
+                                    <button onclick="deselectPatientWorkspace()" class="ml-auto text-slate-400 hover:text-rose-500 dark:text-slate-500 dark:hover:text-rose-400 px-2.5 py-2 rounded-xl text-[9px] font-black uppercase transition-all flex items-center gap-1 cursor-pointer" title="Deselect patient">
+                                        <i data-lucide="x" class="w-3.5 h-3.5"></i> Close
                                     </button>
                                 </div>
                             </div>
@@ -2896,7 +2503,7 @@ html.dark .instruction-modal-footer {
                                         </div>
                                     </div>
                                 </div>
-                                <div id="recent-logs-cards" class="max-h-[420px] lg:max-h-[500px] overflow-y-auto pr-1 no-scrollbar space-y-2.5"></div>
+                                <div id="recent-logs-cards" class="max-h-[420px] lg:max-h-[500px] overflow-y-auto pr-1 table-scroll space-y-2.5"></div>
                             </div>
                         </div>
                         
@@ -2904,24 +2511,43 @@ html.dark .instruction-modal-footer {
                         <div id="session-drawer-backdrop" onclick="toggleSessionDrawer(false)" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[9990] hidden lg:hidden max-lg:opacity-0 transition-opacity duration-300"></div>
 
                         <!-- Calendar Logging Container with mobile drawer properties -->
-                        <div id="session-form-container" class="glass-card p-6 lg:p-8 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-4 h-fit border-slate-200/70 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 z-[200]
-                            max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:h-fit max-lg:max-h-[96vh] max-lg:overflow-y-auto max-lg:rounded-t-[2.5rem] max-lg:border-t max-lg:border-slate-200/50 
-                            max-lg:bg-white dark:max-lg:bg-slate-900 max-lg:p-5 max-lg:pb-8 max-lg:z-[9999]
+                        <div id="session-form-container" class="glass-card p-6 lg:p-8 rounded-[2.5rem] lg:rounded-[3rem] shadow-2xl sticky lg:top-4 h-fit border-slate-200/70 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 z-[200]
+                            max-lg:fixed max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:h-fit max-lg:max-h-[92vh] max-lg:overflow-y-auto max-lg:rounded-t-[2.5rem] max-lg:border-t max-lg:border-slate-200/80 dark:max-lg:border-slate-800
+                            max-lg:bg-white dark:max-lg:bg-slate-900 max-lg:p-5 max-lg:pb-10 max-lg:z-[9999]
                             max-lg:translate-y-full max-lg:transition-transform max-lg:duration-300 max-lg:ease-out">
                             
-                            <!-- Mobile Drawer Header with Close Button -->
-                            <div class="flex lg:hidden justify-between items-center mb-4 pb-2.5 border-b border-slate-100 dark:border-slate-800">
-                                <span id="mobile-drawer-patient-name" class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Select Patient</span>
-                                <button type="button" onclick="toggleSessionDrawer(false)" class="p-2.5 active:bg-slate-200 dark:active:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 flex items-center justify-center min-w-[44px] min-h-[44px] -mr-2 cursor-pointer" aria-label="Close drawer">
-                                    <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
-                                </button>
+                            <!-- Mobile Drawer Drag Handle & Header -->
+                            <div class="lg:hidden">
+                                <div class="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto mb-3.5"></div>
+                                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                                            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                        </div>
+                                        <span id="mobile-drawer-patient-name" class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider truncate max-w-[200px]">Select Patient</span>
+                                    </div>
+                                    <button type="button" onclick="toggleSessionDrawer(false)" class="p-2 active:bg-slate-200 dark:active:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 flex items-center justify-center min-w-[36px] min-h-[36px] cursor-pointer" aria-label="Close drawer">
+                                        <i data-lucide="x" class="w-4 h-4 pointer-events-none"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Desktop Header (Laptop Only) -->
+                            <div class="hidden lg:flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm">
+                                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                                    </div>
+                                    <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Session Logger & Calendar</h4>
+                                </div>
+                                <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase">Interactive Date Selector</span>
                             </div>
 
                             <!-- Calendar Header Navigation -->
-                            <div class="flex justify-between items-center mb-5 px-1">
-                                <button onclick="changeMonth(-1)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 cursor-pointer"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+                            <div class="flex justify-between items-center mb-4 px-1">
+                                <button onclick="changeMonth(-1)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer active:scale-95"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
                                 <h4 id="calendar-month-year" class="font-black uppercase text-xs lg:text-sm tracking-widest text-slate-700 dark:text-slate-200"></h4>
-                                <button onclick="changeMonth(1)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 cursor-pointer"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+                                <button onclick="changeMonth(1)" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer active:scale-95"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
                             </div>
 
                             <!-- Calendar Day of Week Headers -->
@@ -2936,7 +2562,17 @@ html.dark .instruction-modal-footer {
                             </div>
 
                             <!-- Interactive Calendar Grid -->
-                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-6 max-lg:gap-1 max-lg:mb-3"></div>
+                            <div id="calendar-grid" class="grid grid-cols-7 gap-2 mb-3 max-lg:gap-1"></div>
+
+                            <!-- Calendar Status Legend -->
+                            <div class="flex flex-wrap items-center justify-center gap-2.5 py-1.5 px-3 mb-4 rounded-xl bg-slate-50/90 dark:bg-slate-800/40 text-[9px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-slate-800/60">
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> 1 Logged</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-700"></span> 2+ Logged</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Partial</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Due</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500"></span> Enrolled</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-indigo-600"></span> Selected</span>
+                            </div>
 
                             <!-- Base Rate & Add-on Fee -->
                             <div class="grid grid-cols-2 gap-4 mb-4 max-lg:gap-2 max-lg:mb-2">
@@ -2946,8 +2582,8 @@ html.dark .instruction-modal-footer {
                                 </div>
                                 <div>
                                     <label class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase ml-1 block mb-1">Add-on Fee (₹)</label>
-                                    <input type="number" id="session-add-fee" value="0" class="w-full p-3.5 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 rounded-2xl text-xs font-black text-indigo-700 dark:text-indigo-300 outline-none">
-                                    <input type="text" id="session-add-fee-name" placeholder="Procedure name (e.g. IFT, SWD)" class="w-full mt-2 p-2.5 bg-white dark:bg-slate-800 border border-indigo-100 dark:border-indigo-900 rounded-xl text-[10px] font-bold outline-none placeholder:text-slate-400">
+                                    <input type="number" id="session-add-fee" value="0" class="w-full p-3.5 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 rounded-2xl text-xs font-black text-indigo-700 dark:text-indigo-300 outline-none focus:border-indigo-500">
+                                    <input type="text" id="session-add-fee-name" placeholder="Procedure name (e.g. IFT, SWD)" class="w-full mt-2 p-2.5 bg-white dark:bg-slate-800 border border-indigo-100 dark:border-indigo-900 rounded-xl text-[10px] font-bold outline-none placeholder:text-slate-400 focus:border-indigo-500">
                                 </div>
                             </div>
 
@@ -3409,55 +3045,96 @@ html.dark .instruction-modal-footer {
                                     <i data-lucide="clipboard-list" class="w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Patient Inquiry & Clinical Lead</h4>
+                                    <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Patient Inquiry Registration</h4>
                                     <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Capture clinical inquiries, consultation scheduling & intake pipeline</p>
                                 </div>
                             </div>
                             <span id="iq-count-badge" class="px-3.5 py-1.5 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm">0 Inquiries</span>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Demographics -->
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                            <!-- COLUMN 1: IDENTITY & CONTACT -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block tracking-wider">Identity & Contact</label>
+                                <div class="flex items-center gap-2.5 pb-2.5 border-b border-indigo-100 dark:border-indigo-950">
+                                    <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-[10px] font-black shadow-sm">1</span>
+                                    <div>
+                                        <h5 class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Identity & Contact</h5>
+                                        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Patient demographic & contact info</p>
+                                    </div>
+                                </div>
+
                                 <!-- Salutation & Full Name inline -->
-                                <div class="flex items-center bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden">
-                                    <select id="iq-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.')document.getElementById('iq-gender').value='Male';else if(this.value==='Mrs.'||this.value==='Ms.')document.getElementById('iq-gender').value='Female';" class="p-3.5 pr-2 bg-transparent font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs border-r border-slate-200 dark:border-slate-800 cursor-pointer">
-                                        <option value="Mr.">Mr.</option>
-                                        <option value="Mrs.">Mrs.</option>
-                                        <option value="Ms.">Ms.</option>
-                                        <option value="Dr.">Dr.</option>
-                                        <option value="Mast.">Mast.</option>
-                                        <option value="Baby">Baby</option>
-                                    </select>
-                                    <input type="text" id="iq-name" placeholder="Patient Full Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Patient Full Name</label>
+                                    <div class="flex items-center bg-slate-50 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden shadow-sm">
+                                        <select id="iq-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.')document.getElementById('iq-gender').value='Male';else if(this.value==='Mrs.'||this.value==='Ms.')document.getElementById('iq-gender').value='Female';" class="p-3.5 pr-2 bg-transparent font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs border-r border-slate-200 dark:border-slate-800 cursor-pointer">
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mast.">Mast.</option>
+                                            <option value="Baby">Baby</option>
+                                        </select>
+                                        <input type="text" id="iq-name" placeholder="Enter Patient Full Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
+                                    </div>
                                 </div>
+
+                                <!-- Age & Gender inline -->
                                 <div class="grid grid-cols-2 gap-4">
-                                    <input type="number" id="iq-age" placeholder="Age" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
-                                    <select id="iq-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer">
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Age</label>
+                                        <input type="number" id="iq-age" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all shadow-sm">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Gender</label>
+                                        <select id="iq-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all shadow-sm">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <input type="tel" id="iq-phone" value="+91" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500">
+
+                                <!-- Phone -->
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Mobile Number (WhatsApp)</label>
+                                    <div class="relative flex items-center">
+                                        <input type="tel" id="iq-phone" value="+91" class="w-full p-3.5 pl-4 pr-11 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all shadow-sm">
+                                        <div class="absolute right-3.5 text-emerald-500 dark:text-emerald-400 pointer-events-none flex items-center">
+                                            <i data-lucide="phone" class="w-4 h-4"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Clinical Assessment -->
+                            <!-- COLUMN 2: CLINICAL DETAILS & ACTION -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block tracking-wider">Clinical Details</label>
-                                <input type="text" id="iq-diagnosis" placeholder="Clinical Diagnosis / Condition" class="w-full p-3.5 bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900 rounded-2xl font-bold outline-none text-indigo-700 dark:text-indigo-300 text-sm focus:border-indigo-500">
-                                <textarea id="iq-note" placeholder="History / Complaints / Notes / Referral Info" rows="3" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 resize-none"></textarea>
-                            </div>
-
-                            <!-- Pipeline info card & Save Button -->
-                            <div class="flex flex-col justify-end space-y-4">
-                                <div class="p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900 text-slate-600 dark:text-slate-400 text-xs font-semibold">
-                                    <p class="font-bold text-indigo-700 dark:text-indigo-300 mb-1 flex items-center gap-1.5"><i data-lucide="info" class="w-3.5 h-3.5"></i> Clinical Lead Pipeline</p>
-                                    Inquiries sync with <span class="font-black text-slate-700 dark:text-slate-300">Inquiry_Registry</span>. Follow up with patients via WhatsApp or convert directly to an Enrolled Patient with 1-click.
+                                <div class="flex items-center gap-2.5 pb-2.5 border-b border-indigo-100 dark:border-indigo-950">
+                                    <span class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-[10px] font-black shadow-sm">2</span>
+                                    <div>
+                                        <h5 class="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Clinical Details & Action</h5>
+                                        <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Condition assessment & inquiry submission</p>
+                                    </div>
                                 </div>
-                                <button id="iq-save-btn" onclick="saveInquiryToCloud()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4.5 rounded-2xl shadow-xl shadow-indigo-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 tracking-wider text-xs uppercase cursor-pointer">
-                                    <i data-lucide="cloud-upload" class="w-4 h-4"></i> Log Inquiry
-                                </button>
+
+                                <!-- Clinical Diagnosis -->
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Clinical Diagnosis / Condition</label>
+                                    <input type="text" id="iq-diagnosis" placeholder="e.g. Cervical Spondylosis, Knee Pain" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all shadow-sm">
+                                </div>
+
+                                <!-- History / Notes -->
+                                <div>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">History / Complaints / Notes / Referral</label>
+                                    <textarea id="iq-note" placeholder="Enter patient complaints, doctor referral, or follow-up notes..." rows="2" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 resize-none transition-all shadow-sm"></textarea>
+                                </div>
+
+                                <!-- Action Button -->
+                                <div class="pt-1.5">
+                                    <button id="iq-save-btn" onclick="saveInquiryToCloud()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4 px-6 rounded-2xl shadow-xl shadow-indigo-600/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 tracking-wider text-xs uppercase cursor-pointer">
+                                        <i data-lucide="cloud-upload" class="w-4 h-4"></i> Log Inquiry
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3558,7 +3235,10 @@ html.dark .instruction-modal-footer {
                         </div>
                         <h3 class="text-xl font-black text-slate-900 dark:text-white">Active Cases Under Treatment</h3>
                     </div>
-                    <button onclick="closeCaseModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="performHardReset()" class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 rounded-xl text-[10px] font-black uppercase flex items-center gap-1.5 transition-all shadow-sm cursor-pointer" title="Purge local cases and reload fresh from sheet"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Cases</button>
+                        <button onclick="closeCaseModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+                    </div>
                 </div>
                 <div class="overflow-y-auto pr-2 table-scroll">
                     <table class="w-full text-left text-sm">
@@ -4097,6 +3777,32 @@ html.dark .instruction-modal-footer {
     </div><!-- /#app-root -->
 
     <script>
+        // ─── 1. CLIENT SHIELD & DEVTOOLS LOCKDOWN (Production Security) ───
+        (function() {
+            const isDebug = window.location.search.includes('debug=true');
+            if (!isDebug) {
+                // Silence all standard console printing
+                const noop = function() {};
+                ['log', 'debug', 'info', 'warn', 'table'].forEach(m => { console[m] = noop; });
+
+                // Block right-click context menu
+                document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; }, false);
+
+                // Block F12, Ctrl+Shift+I/J/C, Ctrl+U (Inspect and View Source)
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+                    if (e.ctrlKey && e.shiftKey && ['I','J','C','i','j','c'].includes(e.key)) { e.preventDefault(); return false; }
+                    if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) { e.preventDefault(); return false; }
+                    if (e.metaKey && e.altKey && ['i','j','I','J'].includes(e.key)) { e.preventDefault(); return false; }
+                }, false);
+
+                // Anti-debugging freeze loop (freezes DevTools if forced open)
+                setInterval(function() {
+                    (function() { return false; }['constructor']('debugger')());
+                }, 150);
+            }
+        })();
+
         // ---------- AUTO-SCALING FOR MOBILE BILL VIEW ----------
         function adjustBillScale() {
             const container = document.getElementById('bill-content-pages');
@@ -4304,7 +4010,8 @@ async function checkLockPassword() {
             body: JSON.stringify({
                 action: "verifyPassword",
                 username: user,
-                password: val
+                password: val,
+                clientToken: APP_CLIENT_TOKEN
             })
         });
         const rawText = await response.text();
@@ -4362,7 +4069,10 @@ try {
             deferredInstallPrompt = e;
         });
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybF18o7B1C2AX0HedfgUpNc9iAtws-RyExG4xL6MUHfmU9YkJ_fC4cRNkW_FLCttLF/exec';
+        // ─── APPLICATION SECURITY SIGNATURE & ENCRYPTED ENDPOINT ───
+        const APP_CLIENT_TOKEN = "PRISM_SECURE_TOKEN_2026_9xK2";
+        const _0x1a = ["aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4a0xTTGY5cWR1bW5YSkVrcGdZako2c3VjZ3BfUngyTnpoa1NrSU5YdXJyS3prbkV5bkJHNm5LLWNhRDA3T1NkbTgwQS9leGVj"];
+        const SCRIPT_URL = atob(_0x1a[0]);
         const VERIFY_BASE_URL = 'https://prismhealthcare.in/verify.html';
         const PRISM_LOGO_SRC = "https://prismhealthcare.in/prism1.png";
 
@@ -4750,6 +4460,35 @@ function resetEnrollBodyChart(){
             }, 2500);
         }
 
+        function updateGlobalStats() {
+            try {
+                if (typeof patientLookup === 'undefined' || !patientLookup) return;
+                if (statEl.activeCount) {
+                    statEl.activeCount.innerText = Object.values(patientLookup).filter(p => !p.closed).length;
+                }
+                if (statEl.registered) {
+                    statEl.registered.innerText = Object.keys(patientLookup).length;
+                }
+                if (statEl.total && typeof globalData !== 'undefined' && Array.isArray(globalData)) {
+                    const count = globalData.filter(r => {
+                        const t = String(r[7] || '').trim().toLowerCase();
+                        return (t.includes('rehab') || t.includes('session')) && !['case closed', 'case restarted', 'bill issued'].includes(t);
+                    }).length;
+                    statEl.total.innerText = count;
+                }
+                const outEl = document.getElementById('stat-outstanding');
+                if (outEl) {
+                    let totalOut = 0;
+                    Object.values(patientLookup).forEach(p => {
+                        totalOut += Number(p.outstandingDue) || 0;
+                    });
+                    outEl.innerText = "₹" + Math.round(totalOut).toLocaleString('en-IN');
+                }
+            } catch (e) {
+                console.warn("updateGlobalStats notice:", e);
+            }
+        }
+
         async function fetchWithRetry(url, options, retries = 1) {
             let lastErr;
             for (let i = 0; i <= retries; i++) {
@@ -4767,24 +4506,45 @@ function resetEnrollBodyChart(){
 
         async function syncToBackend(payload) {
             try {
+                const finalPayload = Object.assign({ clientToken: APP_CLIENT_TOKEN }, payload || {});
                 const res = await fetchWithRetry(SCRIPT_URL, {
                     method: 'POST',
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(finalPayload)
                 }, 1);
                 const rawText = await res.text();
-let json;
-try {
-    json = JSON.parse(rawText);
-} catch (e) {
-    console.error('Non-JSON response from server:', rawText);
-    throw new Error('Server returned an invalid response (check deployment/access settings)');
-}
-                if (json.status === 'error') throw new Error(json.message);
+                let json;
+                try {
+                    json = JSON.parse(rawText);
+                } catch (e) {
+                    console.error('Non-JSON response from server:', rawText);
+                    throw new Error('Server returned an invalid response (check deployment/access settings)');
+                }
+                if (json.status === 'error') throw new Error(json.message || 'Server action failed');
                 return json;
             } catch (err) {
-                showToast('Cloud sync failed — tap refresh to verify', 'error');
+                console.error('syncToBackend error:', err);
                 throw err;
             }
+        }
+
+        // ── SMART DEBOUNCED BACKGROUND RECONCILER ──
+        // Debounces and coalesces background re-fetches so writes to Google Sheets
+        // commit immediately without lock contention, and subsequent reads run once.
+        let _reconcileTimer = null;
+        let _isReconciling = false;
+        function scheduleBackgroundReconcile(delayMs = 3000) {
+            if (_reconcileTimer) clearTimeout(_reconcileTimer);
+            _reconcileTimer = setTimeout(async () => {
+                if (_isReconciling) return;
+                _isReconciling = true;
+                try {
+                    await loadAdminData(false);
+                } catch (e) {
+                    console.warn("Background reconcile error:", e);
+                } finally {
+                    _isReconciling = false;
+                }
+            }, delayMs);
         }
 
         // Helper to map and assign raw Sheet data into frontend arrays
@@ -4892,7 +4652,13 @@ try {
                             if (!p.packageBreakdown) p.packageBreakdown = { packages: [], totalRemaining: 0 };
                             const exists = p.packageBreakdown.packages.find(x => x.id === pkg.packageId || x.packageId === pkg.packageId);
                             if (!exists) p.packageBreakdown.packages.push(pkg);
-                            if (pkg.status === 'Active') p.activePackageId = pkg.packageId;
+                            if (pkg.status === 'Active') {
+                                p.activePackageId = pkg.packageId;
+                                const pkgRate = Number(pkg.perSessionValue || pkg.ratePerDay) || 0;
+                                if (pkgRate > 0 && (!p.baseRate || p.baseRate === 0)) {
+                                    p.baseRate = pkgRate;
+                                }
+                            }
                         }
                     });
                 });
@@ -4936,6 +4702,11 @@ try {
             renderTables();
             renderDuesWidget();
             if (typeof renderIqTable === 'function') renderIqTable();
+            if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
+            const caseModal = document.getElementById('case-modal');
+            if (caseModal && !caseModal.classList.contains('hidden') && typeof openCaseModal === 'function') {
+                openCaseModal();
+            }
 
             // Refresh active patient calendar & workspace if open
             if (selectedPatientName && patientLookup[selectedPatientName]) {
@@ -4986,7 +4757,85 @@ try {
             }
         }
 
-        async function loadAdminData(isManual) {
+        // Perform complete Hard Reset: Clears local state/cases, purges server cache, and reloads fresh from sheet
+        async function performHardReset() {
+            if (!confirm("Are you sure you want to perform a Hard Reset?\n\nThis will clear all local cases, wipe cached data, and fetch fresh records directly from Google Sheets.")) {
+                return;
+            }
+
+            const syncBtn = document.getElementById('sync-indicator');
+            const hardResetBtn = document.getElementById('hard-reset-btn');
+            if (syncBtn) syncBtn.classList.add('animate-spin');
+            if (hardResetBtn) {
+                hardResetBtn.disabled = true;
+                hardResetBtn.classList.add('opacity-50', 'animate-pulse');
+            }
+
+            showToast('Hard Reset: Purging cache & clearing cases...', 'info');
+
+            // 1. Purge client storage
+            try {
+                localStorage.removeItem('prism_data_snapshot_v1');
+                localStorage.removeItem('prism_active_patient');
+                sessionStorage.clear();
+            } catch(e) {
+                console.warn('Cache clear warn:', e);
+            }
+
+            // 2. Wipe in-memory datasets and lookup tables
+            patientLookup = {};
+            globalData = [];
+            window.rawTransactions = [];
+            window.rawAuditData = [];
+            window.rawAssessments = [];
+            window.rawExercises = [];
+            window.rawBills = [];
+            window.rawUsers = [];
+            window.rawInquiries = [];
+            window.rawPackages = [];
+            selectedPatientName = null;
+            currentSelectedPatient = null;
+            globalBillCounter = 0;
+
+            // 3. Clear UI cases & lists immediately
+            const grid = document.getElementById('active-cases-grid');
+            if (grid) {
+                grid.innerHTML = `<div class="col-span-full py-8 text-center flex flex-col items-center justify-center">
+                    <div class="inline-block animate-spin w-7 h-7 border-2 border-indigo-600 border-t-transparent rounded-full mb-3"></div>
+                    <p class="text-xs font-black uppercase text-indigo-600 tracking-wider">Reloading fresh cases from sheet...</p>
+                </div>`;
+            }
+            const countBadge = document.getElementById('active-cases-count');
+            if (countBadge) countBadge.innerText = '0 Active';
+
+            if (statEl.activeCount) statEl.activeCount.innerText = '0';
+            if (statEl.registered) statEl.registered.innerText = '0';
+            if (statEl.total) statEl.total.innerText = '0';
+
+            const pBody = document.getElementById('patient-table-body');
+            if (pBody) pBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 italic">Syncing with Google Sheets...</td></tr>`;
+
+            const caseListBody = document.getElementById('case-list-body');
+            if (caseListBody) caseListBody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 italic">Syncing with Google Sheets...</td></tr>`;
+
+            // 4. Force fresh fetch directly from Google Sheets
+            try {
+                await loadAdminData(true, true);
+                showToast('Hard Reset complete: All cases refreshed from sheet', 'success');
+            } catch (err) {
+                console.error('Hard reset error:', err);
+                showToast('Hard Reset failed: ' + (err.message || 'Network error'), 'error');
+            } finally {
+                if (syncBtn) syncBtn.classList.remove('animate-spin');
+                if (hardResetBtn) {
+                    hardResetBtn.disabled = false;
+                    hardResetBtn.classList.remove('opacity-50', 'animate-pulse');
+                }
+            }
+        }
+        window.performHardReset = performHardReset;
+
+        async function loadAdminData(isManual, isHardReset) {
             const syncBtn = document.getElementById('sync-indicator');
             if (syncBtn) syncBtn.classList.add('animate-spin');
 
@@ -4994,12 +4843,17 @@ try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 60000);
 
+                const bypass = Boolean(isManual || isHardReset);
+                const url = SCRIPT_URL + (bypass ? (SCRIPT_URL.includes('?') ? '&' : '?') + '_ts=' + Date.now() : '');
+
                 // Fetch main sheet dataset
-                const adminFetch = fetch(SCRIPT_URL, {
+                const adminFetch = fetch(url, {
                     method: 'POST',
                     body: JSON.stringify({
-                        action: "fetchAdminData",
-                        bypassCache: isManual
+                        action: isHardReset ? "hardReset" : "fetchAdminData",
+                        bypassCache: bypass,
+                        forceFresh: bypass,
+                        clientToken: APP_CLIENT_TOKEN
                     }),
                     signal: controller.signal,
                     priority: 'high'
@@ -5009,6 +4863,11 @@ try {
                 clearTimeout(timeoutId);
 
                 if (result && result.adminData) {
+                    if (isHardReset) {
+                        patientLookup = {};
+                        globalData = [];
+                    }
+
                     let balResult = null;
                     let statsResult = null;
                     let pkgResult = null;
@@ -5021,9 +4880,9 @@ try {
                     } else {
                         // 2. PARALLEL PIPELINE: Fetch remaining 3 calls concurrently instead of in series
                         const [bRes, sRes, pRes] = await Promise.all([
-                            syncToBackend({ action: "fetchPatientBalances" }).catch(() => null),
-                            syncToBackend({ action: "fetchRevenueStats" }).catch(() => null),
-                            syncToBackend({ action: "fetchPackages" }).catch(() => null)
+                            syncToBackend({ action: "fetchPatientBalances", bypassCache: bypass }).catch(() => null),
+                            syncToBackend({ action: "fetchRevenueStats", bypassCache: bypass }).catch(() => null),
+                            syncToBackend({ action: "fetchPackages", bypassCache: bypass }).catch(() => null)
                         ]);
                         balResult = bRes;
                         statsResult = sRes;
@@ -5043,7 +4902,9 @@ try {
                     }
                     saveLocalDataSnapshot(result, balResult, statsResult, pkgResult);
 
-                    if (isManual) {
+                    if (isHardReset) {
+                        showToast('Hard Reset complete: Fresh sheet data loaded', 'success');
+                    } else if (isManual) {
                         showToast('Data refreshed & synced', 'success');
                     }
                 } else {
@@ -5052,7 +4913,9 @@ try {
             } catch (e) {
                 console.error("Background sync error:", e);
                 const errMsg = e.name === 'AbortError' ? 'Sync timed out (took > 60s)' : (e.message || 'Connection failed');
-                if (isManual) {
+                if (isHardReset) {
+                    showToast('Hard Reset error: ' + errMsg, 'error');
+                } else if (isManual) {
                     showToast('Sync error: ' + errMsg, 'error');
                 } else {
                     showToast('Using local cache (' + errMsg + ')', 'warning');
@@ -5560,54 +5423,73 @@ renderTables();
 
         async function closePatientCase(name, event) {
             const btn = event.target.closest('button');
-            armConfirm(btn, 'Confirm Close?', async () => {
+            armConfirm(btn, 'Confirm Close?', () => {
                 const p = patientLookup[name];
                 if (!p) return;
                 const dateStr = getLocalISOString();
 
-                // Optimistic local update
+                // ── INSTANT OPTIMISTIC UI UPDATE ──
                 p.closed = true;
                 p.closedDate = new Date().toISOString();
+                const closeRow = [new Date().toISOString(), p.id, name, p.phone || '', p.age || '', p.gender || '', p.diag || '', "Case Closed", dateStr, 0, 0, 0, 0, "", p.address || '', "Cash"];
+                p.logs.push(closeRow);
+                globalData.push(closeRow);
+
                 if (statEl.activeCount) {
                     statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
                 }
+                renderActiveCasesForLog();
+                renderTables();
+                const modal = document.getElementById('case-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    openCaseModal();
+                }
+                if (selectedPatientName === name) {
+                    updatePatientWorkspaceUI(name, p, false);
+                }
+                showToast(`${name}'s case closed`, 'success');
 
-                try {
-                    const result = await syncToBackend({
-                        action: "logAppointment",
-                        id: p.id,
-                        name: name,
-                        phone: p.phone,
-                        condition: p.diag,
-                        fee: 0,
-                        purchased: 0,
-                        advance: 0,
-                        discount: 0,
-                        type: "Case Closed",
-                        date: dateStr,
-                        paymentMode: "Cash",
-                        amountPaid: 0,
-                        requestId: "CLOSE-" + p.id + "-" + Date.now()
-                    });
-                    if (result && result.status === 'error') throw new Error(result.message);
-                    showToast(`${name}'s case closed`, 'success');
-
-                    await loadAdminData(false);
-                    const modal = document.getElementById('case-modal');
-                    if (modal && !modal.classList.contains('hidden')) {
-                        openCaseModal();
-                    }
-                    if (selectedPatientName === name) {
-                        selectPatient(name, false);
-                    }
-                } catch(e) {
+                // ── NON-BLOCKING BACKGROUND SYNC ──
+                syncToBackend({
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: p.diag,
+                    fee: 0,
+                    purchased: 0,
+                    advance: 0,
+                    discount: 0,
+                    type: "Case Closed",
+                    date: dateStr,
+                    paymentMode: "Cash",
+                    amountPaid: 0,
+                    requestId: "CLOSE-" + p.id + "-" + Date.now()
+                }).then(() => {
+                    scheduleBackgroundReconcile(3000);
+                }).catch(e => {
+                    console.error("Case close sync error:", e);
                     p.closed = false;
                     p.closedDate = null;
+                    const idxP = p.logs.indexOf(closeRow);
+                    if (idxP >= 0) p.logs.splice(idxP, 1);
+                    const idxG = globalData.indexOf(closeRow);
+                    if (idxG >= 0) globalData.splice(idxG, 1);
+
                     if (statEl.activeCount) {
                         statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
                     }
-                    showToast('Case close failed — ' + e.message, 'error');
-                }
+                    renderActiveCasesForLog();
+                    renderTables();
+                    const m = document.getElementById('case-modal');
+                    if (m && !m.classList.contains('hidden')) {
+                        openCaseModal();
+                    }
+                    if (selectedPatientName === name) {
+                        updatePatientWorkspaceUI(name, p, false);
+                    }
+                    showToast('Case close failed to sync — ' + (e.message || 'please retry'), 'error');
+                });
             });
         }
 
@@ -5648,6 +5530,10 @@ renderTables();
         return;
     }
     const p = patientLookup[selectedPatientName];
+    if (!p) {
+        showToast('Patient not found', 'error');
+        return;
+    }
     const btn = document.getElementById('submit-btn');
     const paymentMode = document.getElementById('session-payment-mode').value;
 
@@ -5656,16 +5542,26 @@ renderTables();
         return;
     }
 
-    // ⚠️ UX-only pre-checks against last-known cached wallet figure — can be
-    // stale. Server-side gate in handleLogSessionBatch() is authoritative.
+    let effectiveBaseRate = Number(p.baseRate) || 0;
+    if (effectiveBaseRate <= 0) {
+        effectiveBaseRate = Number(document.getElementById('base-rate-display').value) || 0;
+    }
+    if (effectiveBaseRate <= 0 && p.packageBreakdown && p.packageBreakdown.packages) {
+        const activePkg = p.packageBreakdown.packages.find(x => x.status === 'Active') || p.packageBreakdown.packages[0];
+        if (activePkg) effectiveBaseRate = Number(activePkg.perSessionValue || activePkg.ratePerDay) || 0;
+    }
+    if (effectiveBaseRate > 0) p.baseRate = effectiveBaseRate;
+
+    const addOn = Number(document.getElementById('session-add-fee').value) || 0;
+    const addOnName = document.getElementById('session-add-fee-name').value.trim();
+    const discPct = Number(document.getElementById('session-discount-pct')?.value) || 0;
+    let feePerSession = effectiveBaseRate + addOn;
+    if (discPct > 0) feePerSession = Math.round(feePerSession * (1 - discPct / 100));
+    const totalNeeded = feePerSession * selectedDates.length;
+
+    // UX pre-checks
     if (paymentMode === "Advance") {
         const wallet = p.walletBalance || 0;
-        const baseRate = p.baseRate || 0;
-        const addOn = Number(document.getElementById('session-add-fee').value) || 0;
-        const discPct = Number(document.getElementById('session-discount-pct')?.value) || 0;
-        let feePerSession = baseRate + addOn;
-        if (discPct > 0) feePerSession = Math.round(feePerSession * (1 - discPct / 100));
-        const totalNeeded = feePerSession * selectedDates.length;
         if (wallet <= 0) {
             showToast(`No advance balance left for ${selectedPatientName}. Please use Cash/UPI or top up.`, 'warning');
             return;
@@ -5676,17 +5572,20 @@ renderTables();
         }
     }
 
+    let splitCash = 0, splitUpi = 0;
     if (paymentMode === 'Split') {
-        const cash = Number(document.getElementById('split-cash')?.value) || 0;
-        const upi = Number(document.getElementById('split-upi')?.value) || 0;
-        if (cash + upi <= 0) {
+        splitCash = Number(document.getElementById('split-cash')?.value) || 0;
+        splitUpi = Number(document.getElementById('split-upi')?.value) || 0;
+        if (splitCash + splitUpi <= 0) {
             showToast('Enter at least one Split amount (Cash or UPI)', 'warning');
             return;
         }
     }
 
+    const amountPaidVal = document.getElementById('session-amount-paid').value;
+    let refundAmt = 0;
     if (paymentMode === 'Refund') {
-        const refundAmt = Number(document.getElementById('session-amount-paid')?.value) || 0;
+        refundAmt = Number(amountPaidVal) || 0;
         if (refundAmt <= 0) {
             showToast('Enter a valid refund amount', 'warning');
             return;
@@ -5694,77 +5593,156 @@ renderTables();
     }
 
     const datesToSubmit = [...selectedDates];
-    btn.disabled = true;
+    const sessionNote = document.getElementById('session-note').value || p.diag;
 
-    try {
-        // ── SOURCE OF TRUTH = BACKEND ────────────────────────────
-        // logSessionBatch computes fee, applies discount, and — for
-        // Advance mode — silently debits the wallet server-side via
-        // the same engine as computeAllPatientBalances(). No local
-        // wallet math, no globalData row fabrication.
-        // ──────────────────────────────────────────────────────────
-        const result = await syncToBackend({
-            action: "logSessionBatch",
-            id: p.id,
-            name: selectedPatientName,
-            baseRate: p ? p.baseRate : 0,
-            phone: p.phone,
-            dates: datesToSubmit,
-            paymentMode: paymentMode,
-            addonFee: Number(document.getElementById('session-add-fee').value) || 0,
-            addonName: document.getElementById('session-add-fee-name').value.trim(),
-            discountPct: Number(document.getElementById('session-discount-pct')?.value) || 0,
-            amountPaid: document.getElementById('session-amount-paid').value,
-            splitCash: Number(document.getElementById('split-cash')?.value) || 0,
-            splitUpi: Number(document.getElementById('split-upi')?.value) || 0,
-            refundAmount: Number(document.getElementById('session-amount-paid')?.value) || 0,
-            note: document.getElementById('session-note').value || p.diag,
-            condition: document.getElementById('session-note').value || p.diag
-        });
+    // ── 1. INSTANT OPTIMISTIC STATE SNAPSHOT (0ms Latency) ──
+    const prevWallet = p.walletBalance;
+    const prevDue = p.outstandingDue;
+    const prevSessionsRem = p.sessionsRemaining;
+    const addedRows = [];
 
-        document.getElementById('session-note').value = "";
-        document.getElementById('session-amount-paid').value = "";
-        document.getElementById('session-add-fee-name').value = "";
-        document.getElementById('session-add-fee').value = 0;
-        const discEl = document.getElementById('session-discount-pct');
-        if (discEl) discEl.value = 0;
-        const splitCashEl = document.getElementById('split-cash');
-        const splitUpiEl = document.getElementById('split-upi');
-        if (splitCashEl) splitCashEl.value = 0;
-        if (splitUpiEl) splitUpiEl.value = 0;
-        document.getElementById('split-payment-row').classList.add('hidden');
-        document.getElementById('session-discount-row').classList.add('hidden');
+    // Create and push optimistic session rows into p.logs and globalData
+    datesToSubmit.forEach(d => {
+        const row = [
+            new Date().toISOString(),
+            p.id,
+            selectedPatientName,
+            p.phone || '',
+            p.age || '',
+            p.gender || '',
+            sessionNote,
+            "Rehab Session",
+            d,
+            feePerSession,
+            0,
+            0,
+            discPct,
+            "",
+            p.address || '',
+            paymentMode
+        ];
+        p.logs.push(row);
+        globalData.push(row);
+        addedRows.push(row);
+    });
 
-        selectedDates = [];
-        toggleSessionDrawer(false);
-
-        showToast(`${result.sessionsLogged || datesToSubmit.length} session(s) logged`, 'success');
-        btn.innerText = "Saved ✓";
-        setTimeout(() => { btn.innerText = "Submit Session(s)"; }, 1200);
-
-        if (paymentMode === 'Refund') {
-            showToast(`Refund recorded for ${selectedPatientName}`, 'info');
+    // Optimistically adjust balances
+    if (paymentMode === "Advance") {
+        p.walletBalance = Math.max(0, (p.walletBalance || 0) - totalNeeded);
+        p.sessionsRemaining = Math.max(0, (p.sessionsRemaining || 0) - datesToSubmit.length);
+    } else if (paymentMode === "Split") {
+        const totalPaid = splitCash + splitUpi;
+        if (totalPaid < totalNeeded) {
+            p.outstandingDue = (p.outstandingDue || 0) + (totalNeeded - totalPaid);
         }
-
-        // Pull fresh wallet/due for this patient, then full background reconcile
-        const balRes = await syncToBackend({ action: "fetchPatientBalances", patientId: p.id });
-        const bal = (balRes && balRes.balances && balRes.balances[p.id]) || {};
-        p.walletBalance     = bal.walletBalance || 0;
-        p.outstandingDue    = bal.outstandingDue || 0;
-        p.dueSessionCount   = bal.dueSessionCount || 0;
-        p.sessionsRemaining = bal.sessionsRemaining || 0;
-        p.activePackageId   = bal.activePackageId || null;
-
-        selectPatient(selectedPatientName); // re-render workspace with fresh numbers
-        loadAdminData(false);
-    } catch (e) {
-        // Surface the specific backend rejection reason (e.g. INSUFFICIENT_WALLET)
-        // instead of a generic failure message.
-        const msg = (e && e.message) ? e.message : 'Session log failed — please retry';
-        showToast(msg, 'error');
-    } finally {
-        btn.disabled = false;
+    } else if (paymentMode === "Cash" || paymentMode === "UPI" || paymentMode === "Card") {
+        const paid = Number(amountPaidVal) || 0;
+        if (paid < totalNeeded) {
+            p.outstandingDue = (p.outstandingDue || 0) + (totalNeeded - paid);
+        }
     }
+
+    // Immediately clear form inputs
+    document.getElementById('session-note').value = "";
+    document.getElementById('session-amount-paid').value = "";
+    document.getElementById('session-add-fee-name').value = "";
+    document.getElementById('session-add-fee').value = 0;
+    const discEl = document.getElementById('session-discount-pct');
+    if (discEl) discEl.value = 0;
+    const splitCashEl = document.getElementById('split-cash');
+    const splitUpiEl = document.getElementById('split-upi');
+    if (splitCashEl) splitCashEl.value = 0;
+    if (splitUpiEl) splitUpiEl.value = 0;
+    document.getElementById('split-payment-row').classList.add('hidden');
+    document.getElementById('session-discount-row').classList.add('hidden');
+
+    // Immediately close drawer and reset date selection
+    selectedDates = [];
+    toggleSessionDrawer(false);
+
+    // ── 2. INSTANT UI RE-RENDER (< 15ms) ──
+    renderCalendar();
+    updatePatientWorkspaceUI(selectedPatientName, p, false);
+    renderActiveCasesForLog();
+    renderTables();
+    renderDuesWidget();
+    updateGlobalStats();
+
+    showToast(`${datesToSubmit.length} session(s) logged`, 'success');
+    if (btn) {
+        btn.innerText = "Saved ✓";
+        btn.disabled = false;
+        setTimeout(() => { if (btn) btn.innerText = "Submit Session(s)"; }, 1500);
+    }
+
+    if (paymentMode === 'Refund') {
+        showToast(`Refund recorded for ${selectedPatientName}`, 'info');
+    }
+
+    // ── 3. NON-BLOCKING BACKGROUND SYNC TO GOOGLE APPS SCRIPT ──
+    syncToBackend({
+        action: "logSessionBatch",
+        id: p.id,
+        name: selectedPatientName,
+        baseRate: effectiveBaseRate,
+        packageId: p.activePackageId || "",
+        type: "Rehab Session",
+        phone: p.phone,
+        dates: datesToSubmit,
+        paymentMode: paymentMode,
+        addonFee: addOn,
+        addonName: addOnName,
+        discountPct: discPct,
+        amountPaid: amountPaidVal,
+        splitCash: splitCash,
+        splitUpi: splitUpi,
+        refundAmount: refundAmt,
+        note: sessionNote,
+        condition: sessionNote,
+        requestId: "BATCH-" + p.id + "-" + Date.now()
+    }).then(result => {
+        if (result && result.newWalletBalance !== undefined) {
+            p.walletBalance = result.newWalletBalance;
+            if (selectedPatientName === p.name) {
+                updatePatientWorkspaceUI(selectedPatientName, p, false);
+            }
+        }
+        if (result && result.balances && result.balances[p.id]) {
+            const bal = result.balances[p.id];
+            p.walletBalance     = bal.walletBalance || 0;
+            p.outstandingDue    = bal.outstandingDue || 0;
+            p.dueSessionCount   = bal.dueSessionCount || 0;
+            p.sessionsRemaining = bal.sessionsRemaining || 0;
+            p.activePackageId   = bal.activePackageId || null;
+            if (selectedPatientName === p.name) {
+                updatePatientWorkspaceUI(selectedPatientName, p, false);
+            }
+        }
+        // Quiet debounced background reconcile - runs once writes settle without lock contention
+        scheduleBackgroundReconcile(3000);
+    }).catch(e => {
+        console.error("Session sync failed:", e);
+        // Roll back optimistic state on error
+        addedRows.forEach(r => {
+            const idxP = p.logs.indexOf(r);
+            if (idxP >= 0) p.logs.splice(idxP, 1);
+            const idxG = globalData.indexOf(r);
+            if (idxG >= 0) globalData.splice(idxG, 1);
+        });
+        p.walletBalance = prevWallet;
+        p.outstandingDue = prevDue;
+        p.sessionsRemaining = prevSessionsRem;
+
+        renderCalendar();
+        updatePatientWorkspaceUI(selectedPatientName, p, false);
+        renderActiveCasesForLog();
+        renderTables();
+        renderDuesWidget();
+        updateGlobalStats();
+
+        const msg = (e && e.message) ? e.message : 'Session sync failed — please retry';
+        showToast(msg, 'error');
+    });
 }
 
               function sendQuickSessionReceipt(p, row) {
@@ -5853,7 +5831,6 @@ async function saveEnrollment() {
     saveEnrollmentBodyChartAsSoap(name, enrolledId);
 
     try {
-        console.log('Enrolling with SCRIPT_URL:', SCRIPT_URL);
         const result = await syncToBackend({
             action: "enrollPatient",
             id: enrolledId,
@@ -5886,7 +5863,8 @@ async function saveEnrollment() {
             amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
         });
 
-        await loadAdminData(false);
+        // Debounced reconcile ensures Google Sheet completes write before full read
+        scheduleBackgroundReconcile(2500);
     } catch (e) {
         console.error('Enroll FAILED:', e.message, e);
         showToast('Enrollment failed to sync — ' + e.message, 'error');
@@ -6094,26 +6072,33 @@ function showEnrollmentSuccessPopup(patient) {
     }
     const dateStr = getLocalISOString();
 
-    try {
-        const result = await syncToBackend({
-            action: "markAsPaid",
-            id: p.id,
-            name: selectedPatientName,
-            phone: p.phone,
-            condition: p.diag,
-            amountPaid: topup,
-            paymentMode: "Cash",
-            billNo: "",
-            requestId: "TOPUP-" + Date.now()
-        });
-        if (result && result.status === 'error') throw new Error(result.message);
+    // ── OPTIMISTIC LOCAL UPDATE ──
+    const prevWallet = p.walletBalance || 0;
+    p.walletBalance = prevWallet + topup;
+    updatePatientWorkspaceUI(selectedPatientName, p, false);
+    renderTables();
+    renderDuesWidget();
+    showToast(`Topup of ₹${topup} added to wallet`, "success");
 
-        showToast(`Topup of ₹${topup} added to wallet`, "success");
-        await loadAdminData(false);
-        selectPatient(selectedPatientName);
-    } catch (e) {
+    syncToBackend({
+        action: "markAsPaid",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: p.diag,
+        amountPaid: topup,
+        paymentMode: "Cash",
+        billNo: "",
+        requestId: "TOPUP-" + Date.now()
+    }).then(() => {
+        scheduleBackgroundReconcile(3000);
+    }).catch(e => {
+        p.walletBalance = prevWallet;
+        updatePatientWorkspaceUI(selectedPatientName, p, false);
+        renderTables();
+        renderDuesWidget();
         showToast('Topup failed to sync — ' + e.message, 'error');
-    }
+    });
 }
 
 function openMidPackage() {
@@ -6147,30 +6132,48 @@ function openMidPackage() {
     }
     const dateStr = getLocalISOString();
 
-    try {
-        const result = await syncToBackend({
-            action: "enrollPatient",
-            id: p.id,
-            name: selectedPatientName,
-            phone: p.phone,
-            condition: p.diag,
-            grossAmount: gross,
-            totalSessions: sessions,
-            discount: discount,
-            amountPaid: advance,
-            paymentMode: mode || "Cash",
-            date: dateStr,
-            requestId: "PKG-" + Date.now()
-        });
-        if (result && result.status === 'error') throw new Error(result.message);
+    // ── OPTIMISTIC LOCAL UPDATE ──
+    const prevPurchased = p.purchased || 0;
+    const prevRemaining = p.sessionsRemaining || 0;
+    const prevWallet = p.walletBalance || 0;
+    p.purchased = prevPurchased + sessions;
+    p.sessionsRemaining = prevRemaining + sessions;
+    if (advance > 0) p.walletBalance = prevWallet + advance;
+    if (rate > 0) p.baseRate = rate;
 
-        closeMidPackage();
-        showToast('Package added', 'success');
-        await loadAdminData(false); // repopulates p.activePackageId from the new package
-        selectPatient(selectedPatientName);
-    } catch (e) {
+    closeMidPackage();
+    updatePatientWorkspaceUI(selectedPatientName, p, false);
+    renderActiveCasesForLog();
+    renderTables();
+    renderDuesWidget();
+    showToast('Package added', 'success');
+
+    syncToBackend({
+        action: "enrollPatient",
+        id: p.id,
+        name: selectedPatientName,
+        phone: p.phone,
+        condition: p.diag,
+        grossAmount: gross,
+        totalSessions: sessions,
+        discount: discount,
+        amountPaid: advance,
+        paymentMode: mode || "Cash",
+        date: dateStr,
+        requestId: "PKG-" + Date.now()
+    }).then(result => {
+        if (result && result.packageId) p.activePackageId = result.packageId;
+        scheduleBackgroundReconcile(3000);
+    }).catch(e => {
+        p.purchased = prevPurchased;
+        p.sessionsRemaining = prevRemaining;
+        p.walletBalance = prevWallet;
+        updatePatientWorkspaceUI(selectedPatientName, p, false);
+        renderActiveCasesForLog();
+        renderTables();
+        renderDuesWidget();
         showToast('Package sync failed — ' + e.message, 'error');
-    }
+    });
 }
 
         function renderCharts(data) {
@@ -6292,6 +6295,7 @@ function openMidPackage() {
             if (id === 'visit-registry') renderDailyRegistry();
             if (id === 'inquiry' && typeof renderIqTable === 'function') renderIqTable();
             if (id === 'exercises' && typeof initExerciseTab === 'function') initExerciseTab();
+            if (window.lucide) lucide.createIcons();
             
             // Auto scroll main window back to top on switch for mobile readability
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -6341,28 +6345,35 @@ function openMidPackage() {
                         const isClosed = p.closed;
                         
                         return `
-                        <div onclick="selectPatient('${name.replace(/'/g, "\\'")}')" class="group flex items-center justify-between p-4 hover:bg-indigo-50 rounded-2xl cursor-pointer border-b border-slate-50 last:border-none transition-all">
-                            <div class="flex flex-col">
-                                <span class="font-black text-slate-800 uppercase text-sm">${name}</span>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-indigo-500 text-[10px] font-bold">${p.id}</span>
-                                    <span class="text-slate-400 text-[10px] truncate max-w-[150px]">• ${p.diag || 'Consultation'}</span>
+                        <div onclick="selectPatient('${name.replace(/'/g, "\\'")}')" class="group flex items-center justify-between p-3.5 lg:p-4 hover:bg-indigo-50/80 dark:hover:bg-slate-800 rounded-2xl cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-none transition-all">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs flex-shrink-0">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-black text-slate-800 dark:text-slate-100 uppercase text-xs lg:text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">${name}</span>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">${p.id}</span>
+                                        <span class="text-slate-400 dark:text-slate-500 text-[10px] truncate max-w-[160px]">• ${p.diag || 'Consultation'}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 ${isClosed ? 
-                                    '<div class="flex flex-col items-end gap-1"><span class="bg-rose-100 text-rose-600 text-[8px] font-black px-2 py-0.5 rounded uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>' : 
-                                    '<span class="bg-emerald-100 text-emerald-600 text-[8px] font-black px-2 py-1 rounded uppercase">Active Case</span>'
+                                    '<div class="flex flex-col items-end gap-0.5"><span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-0.5 rounded-md uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>' : 
+                                    (p.outstandingDue > 0 ? 
+                                        `<span class="bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">₹${p.outstandingDue.toLocaleString()} Due</span>` : 
+                                        '<span class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">Active Case</span>')
                                 }
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all"></i>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all"></i>
                             </div>
                         </div>`;
                     }).join('');
                 } else {
                     res.innerHTML = `
-                        <div class="p-10 text-center">
-                            <p class="text-slate-400 text-xs font-bold italic">No patient records found matching "${val}"</p>
-                            <p class="text-[9px] text-slate-300 uppercase mt-2">Check spelling or try searching by Phone Number</p>
+                        <div class="p-8 text-center">
+                            <p class="text-slate-400 dark:text-slate-500 text-xs font-bold italic">No patient records found matching "${val}"</p>
+                            <p class="text-[9px] text-slate-400 dark:text-slate-600 uppercase mt-1.5">Check spelling or search with 10-digit Phone Number</p>
                         </div>`;
                 }
                 
@@ -6430,8 +6441,16 @@ function openMidPackage() {
             document.getElementById('patient-search-input').value = n;
             document.getElementById('search-results').classList.add('hidden');
             document.getElementById('active-patient-name').innerText = n;
+            if ((!p.baseRate || p.baseRate === 0) && p.packageBreakdown && p.packageBreakdown.packages) {
+                const activePkg = p.packageBreakdown.packages.find(x => x.status === 'Active') || p.packageBreakdown.packages[0];
+                if (activePkg) {
+                    p.baseRate = Number(activePkg.perSessionValue || activePkg.ratePerDay) || 0;
+                }
+            }
             document.getElementById('base-rate-display').value = p.baseRate || 0;
             document.getElementById('patient-workspace').classList.remove('hidden');
+            const emptyState = document.getElementById('log-empty-workspace-state');
+            if (emptyState) emptyState.classList.add('hidden');
             
             const mobNameEl = document.getElementById('mobile-drawer-patient-name');
             if (mobNameEl) mobNameEl.innerText = n;
@@ -6575,52 +6594,50 @@ function openMidPackage() {
             fetchAndSyncPatientBackend(n);
         }
 
-        let _patientFetchInFlight = false;
+        function deselectPatientWorkspace() {
+            selectedPatientName = null;
+            const ws = document.getElementById('patient-workspace');
+            if (ws) ws.classList.add('hidden');
+            const emptyState = document.getElementById('log-empty-workspace-state');
+            if (emptyState) emptyState.classList.remove('hidden');
+            const searchInput = document.getElementById('patient-search-input');
+            if (searchInput) searchInput.value = '';
+            toggleSessionDrawer(false);
+            renderActiveCasesForLog();
+        }
+        window.deselectPatientWorkspace = deselectPatientWorkspace;
+
+        const _patientBalanceFetchTimes = {};
         async function fetchAndSyncPatientBackend(patientName) {
-            if (_patientFetchInFlight) return;
             const p = patientLookup[patientName];
-            if (!p) return;
+            if (!p || !p.id) return;
             const pid = p.id;
 
-            const syncBtn = document.getElementById('sync-indicator');
-            if (syncBtn) syncBtn.classList.add('animate-spin');
-            _patientFetchInFlight = true;
+            // Throttle: avoid repeated network round-trips for the same patient within 20 seconds
+            const now = Date.now();
+            if (_patientBalanceFetchTimes[pid] && (now - _patientBalanceFetchTimes[pid] < 20000)) {
+                return;
+            }
+            _patientBalanceFetchTimes[pid] = now;
 
             try {
-                const [adminRes, balRes] = await Promise.all([
-                    syncToBackend({ action: "fetchAdminData" }).catch(e => {
-                        console.warn("fetchAdminData background sync:", e);
-                        return null;
-                    }),
-                    pid ? syncToBackend({ action: "fetchPatientBalances", patientId: pid }).catch(e => {
-                        console.warn("fetchPatientBalances background sync:", e);
-                        return null;
-                    }) : Promise.resolve(null)
-                ]);
-
-                if (adminRes && adminRes.adminData) {
-                    applyFetchedData(adminRes);
-                    processData();
-                }
-
-                const freshP = patientLookup[patientName] || p;
-                if (balRes && balRes.balances && pid && balRes.balances[pid]) {
+                // Fetch only this patient's balances without downloading the entire spreadsheet
+                const balRes = await syncToBackend({ action: "fetchPatientBalances", patientId: pid });
+                if (balRes && balRes.balances && balRes.balances[pid]) {
                     const bal = balRes.balances[pid];
+                    const freshP = patientLookup[patientName] || p;
                     freshP.walletBalance     = bal.walletBalance     || 0;
                     freshP.outstandingDue    = bal.outstandingDue    || 0;
                     freshP.dueSessionCount   = bal.dueSessionCount   || 0;
                     freshP.sessionsRemaining = bal.sessionsRemaining || 0;
                     freshP.activePackageId   = bal.activePackageId   || null;
-                }
 
-                if (selectedPatientName === patientName) {
-                    updatePatientWorkspaceUI(patientName, freshP, false);
+                    if (selectedPatientName === patientName) {
+                        updatePatientWorkspaceUI(patientName, freshP, false);
+                    }
                 }
             } catch (err) {
-                console.warn("fetchAndSyncPatientBackend error:", err);
-            } finally {
-                _patientFetchInFlight = false;
-                if (syncBtn) syncBtn.classList.remove('animate-spin');
+                console.warn("fetchPatientBalances light sync error:", err);
             }
         }
 
@@ -6706,7 +6723,7 @@ function openMidPackage() {
                     isLogged = stats.count > 0;
 
                 const btn = document.createElement('div');
-                let dayClass = `h-10 max-lg:h-7 flex items-center justify-center rounded-xl max-lg:rounded-lg border font-bold text-[10px] select-none ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer'} `;
+                let dayClass = `h-10 lg:h-11 max-lg:h-9 flex items-center justify-center rounded-xl max-lg:rounded-lg border font-bold text-xs max-lg:text-[11px] select-none ${isFuture ? 'calendar-day-disabled' : 'cursor-pointer active:scale-95'} `;
 
                 // STATUS PRIORITY:
                 // 1. Selected date = existing selected appearance
@@ -6729,7 +6746,7 @@ function openMidPackage() {
                 } else if (stats.count === 1) {
                     dayClass += 'calendar-day-logged ';
                 } else if (!isFuture) {
-                    dayClass += 'bg-white border-slate-100 hover:border-indigo-300 text-slate-700 ';
+                    dayClass += 'bg-white dark:bg-slate-800/90 border-slate-200/80 dark:border-slate-700/70 hover:border-indigo-400 dark:hover:border-indigo-500 text-slate-800 dark:text-slate-200 shadow-sm transition-all ';
                 }
 
                 btn.className = dayClass;
@@ -6754,60 +6771,60 @@ function openMidPackage() {
         }
 
         function renderActiveCasesForLog() {
-    const grid = document.getElementById('active-cases-grid');
-    const countBadge = document.getElementById('active-cases-count');
-    if (!grid) return;
-    const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
-    
-    if (countBadge) countBadge.innerText = `${names.length} Active`;
-    
-    if (!names.length) {
-        grid.innerHTML = `<p class="text-xs text-slate-400 italic col-span-full py-4 text-center">No active cases — enroll a patient to begin.</p>`;
-        return;
-    }
-    grid.innerHTML = names.map(n => {
-        const p = patientLookup[n];
-        const rem = getRemainingSessions(p);
-        const wallet = p.walletBalance || 0;
-        const hasDue = p.outstandingDue > 0;
-        const active = selectedPatientName === n;
-        const safeName = n.replace(/"/g, '&quot;');
-
-        // Status indicator color
-        const statusColor = hasDue ? 'bg-rose-500' : rem > 0 ? 'bg-indigo-500' : 'bg-emerald-500';
-        const statusText = hasDue ? `₹${p.outstandingDue.toLocaleString()} due` : rem > 0 ? `${rem} left` : 'Regular';
-
-        return `<div data-name="${safeName}" 
-            class="relative p-3 rounded-2xl border-2 cursor-pointer transition-all select-none
-            ${active 
-                ? 'bg-indigo-600 border-indigo-600 shadow-xl shadow-indigo-200 scale-[0.98]' 
-                : 'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-md'
-            }"
-            onclick="selectPatient('${safeName}')">
-            <!-- Status dot -->
-            <span class="absolute top-3 right-3 w-2 h-2 rounded-full ${active ? 'bg-white/60' : statusColor}"></span>
+            const grid = document.getElementById('active-cases-grid');
+            const countBadge = document.getElementById('active-cases-count');
+            if (!grid) return;
+            const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
             
-            <p class="font-black text-[11px] uppercase truncate pr-4 ${active ? 'text-white' : 'text-slate-800'} mb-0.5">${n}</p>
-            <p class="text-[9px] font-bold truncate ${active ? 'text-indigo-200' : 'text-slate-400'} mb-2">${p.diag || 'General Consultation'}</p>
+            if (countBadge) countBadge.innerText = `${names.length} Active`;
             
-            <div class="flex items-center justify-between gap-1">
-                <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-md
+            if (!names.length) {
+                grid.innerHTML = `<p class="text-xs text-slate-400 italic col-span-full py-6 text-center">No active cases — enroll a patient to begin.</p>`;
+                return;
+            }
+            grid.innerHTML = names.map(n => {
+                const p = patientLookup[n];
+                const rem = getRemainingSessions(p);
+                const wallet = p.walletBalance || 0;
+                const hasDue = p.outstandingDue > 0;
+                const active = selectedPatientName === n;
+                const safeName = n.replace(/"/g, '&quot;');
+
+                // Status indicator color
+                const statusColor = hasDue ? 'bg-rose-500' : rem > 0 ? 'bg-indigo-500' : 'bg-emerald-500';
+                const statusText = hasDue ? `₹${p.outstandingDue.toLocaleString()} due` : rem > 0 ? `${rem} left` : 'Regular';
+
+                return `<div data-name="${safeName}" 
+                    class="relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none
                     ${active 
-                        ? 'bg-white/20 text-white' 
-                        : hasDue ? 'bg-rose-50 text-rose-600' : rem > 0 ? 'bg-indigo-50 text-indigo-600' : 'bg-emerald-50 text-emerald-600'
-                    }">${statusText}</span>
-                <button type="button" data-name="${safeName}" 
-                    class="log-case-btn text-[8px] font-black uppercase px-2.5 py-1 rounded-lg transition-all
-                    ${active ? 'bg-white text-indigo-700' : 'bg-indigo-600 text-white hover:bg-indigo-700'}">
-                    Log
-                </button>
-            </div>
-        </div>`;
-    }).join('');
-    grid.querySelectorAll('.log-case-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); selectPatient(btn.dataset.name); });
-    });
-}
+                        ? 'bg-gradient-to-br from-indigo-600 to-indigo-700 border-indigo-600 text-white shadow-xl shadow-indigo-200/50 dark:shadow-none scale-[0.98]' 
+                        : 'bg-white dark:bg-slate-900/90 border-slate-200/70 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md'
+                    }"
+                    onclick="selectPatient('${safeName}')">
+                    <!-- Status dot -->
+                    <span class="absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-white/80' : statusColor}"></span>
+                    
+                    <p class="font-black text-[11px] uppercase truncate pr-4 ${active ? 'text-white' : 'text-slate-800 dark:text-slate-100'} mb-0.5">${n}</p>
+                    <p class="text-[9px] font-bold truncate ${active ? 'text-indigo-200' : 'text-slate-400 dark:text-slate-500'} mb-2.5">${p.diag || 'General Consultation'}</p>
+                    
+                    <div class="flex items-center justify-between gap-1">
+                        <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-md
+                            ${active 
+                                ? 'bg-white/20 text-white' 
+                                : hasDue ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400' : rem > 0 ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400' : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400'
+                            }">${statusText}</span>
+                        <button type="button" data-name="${safeName}" 
+                            class="log-case-btn text-[8px] font-black uppercase px-2.5 py-1 rounded-lg transition-all cursor-pointer
+                            ${active ? 'bg-white text-indigo-700 font-black' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm'}">
+                            Log
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+            grid.querySelectorAll('.log-case-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); selectPatient(btn.dataset.name); });
+            });
+        }
         function renderTables() {
     const pBody = document.getElementById('patient-table-body'),
         bBody = document.getElementById('billing-table-body');
@@ -7767,6 +7784,32 @@ try {
         }
         applyDarkModePreference();
 
+        // ---------- MOBILE & TABLET SETTINGS MENU ----------
+        function toggleMobileSettingsMenu(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            const menu = document.getElementById('mobile-settings-menu');
+            if (!menu) return;
+            const isOpening = menu.classList.contains('hidden');
+            if (isOpening) {
+                menu.classList.remove('hidden');
+                if (window.lucide && typeof lucide.createIcons === 'function') {
+                    lucide.createIcons();
+                }
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+        window.toggleMobileSettingsMenu = toggleMobileSettingsMenu;
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobile-settings-menu');
+            const btn = document.getElementById('mobile-settings-btn');
+            if (!menu || menu.classList.contains('hidden')) return;
+            if (!menu.contains(e.target) && (!btn || !btn.contains(e.target))) {
+                menu.classList.add('hidden');
+            }
+        });
+
         // ---------- OUTSTANDING DUES WIDGET ----------
         function renderDuesWidget() {
             const el = document.getElementById('dues-list');
@@ -7917,7 +7960,7 @@ async function confirmMarkPaid() {
 
         renderTables();
         renderDuesWidget();
-        loadAdminData(false); // full reconcile in background
+        scheduleBackgroundReconcile(3000); // full reconcile in background
     } catch (e) {
         showToast('Payment sync failed — please retry', 'error');
     }
@@ -8144,43 +8187,70 @@ async function confirmMarkPaid() {
 
 async function restartPatientCase(name, event) {
     const btn = event.currentTarget;
-    armConfirm(btn, 'Confirm Restart?', async () => {
+    armConfirm(btn, 'Confirm Restart?', () => {
         const p = patientLookup[name];
         if (!p) return;
         const dateStr = getLocalISOString();
 
-        // Optimistic local update
+        // ── INSTANT OPTIMISTIC UI UPDATE ──
         p.closed = false;
         p.closedDate = null;
+        const restartRow = [new Date().toISOString(), p.id, name, p.phone || '', p.age || '', p.gender || '', p.diag || '', "Case Restarted", dateStr, 0, 0, 0, 0, "", p.address || '', "Cash"];
+        p.logs.push(restartRow);
+        globalData.push(restartRow);
+
         if (statEl.activeCount) {
             statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
         }
+        renderActiveCasesForLog();
+        renderTables();
+        const modal = document.getElementById('case-modal');
+        if (modal && !modal.classList.contains('hidden')) {
+            openCaseModal();
+        }
+        if (selectedPatientName === name) {
+            updatePatientWorkspaceUI(name, p, false);
+        }
+        showToast(`${name}'s case restarted`, 'success');
 
-        try {
-            const result = await syncToBackend({
-                action: "logAppointment",
-                id: p.id,
-                name: name,
-                phone: p.phone,
-                condition: p.diag,
-                fee: 0,
-                amountPaid: 0,
-                discount: 0,
-                type: "Case Restarted",
-                paymentMode: "Cash",
-                date: dateStr,
-                requestId: "RESTART-" + Date.now()
-            });
-            if (result && result.status === 'error') throw new Error(result.message);
-            showToast(`${name}'s case restarted`, 'success');
-            await loadAdminData(false);
-        } catch (e) {
+        // ── NON-BLOCKING BACKGROUND SYNC ──
+        syncToBackend({
+            action: "logAppointment",
+            id: p.id,
+            name: name,
+            phone: p.phone,
+            condition: p.diag,
+            fee: 0,
+            amountPaid: 0,
+            discount: 0,
+            type: "Case Restarted",
+            paymentMode: "Cash",
+            date: dateStr,
+            requestId: "RESTART-" + Date.now()
+        }).then(() => {
+            scheduleBackgroundReconcile(3000);
+        }).catch(e => {
+            console.error("Case restart sync error:", e);
             p.closed = true;
+            const idxP = p.logs.indexOf(restartRow);
+            if (idxP >= 0) p.logs.splice(idxP, 1);
+            const idxG = globalData.indexOf(restartRow);
+            if (idxG >= 0) globalData.splice(idxG, 1);
+
             if (statEl.activeCount) {
                 statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
             }
-            showToast('Restart failed to sync — ' + e.message, 'error');
-        }
+            renderActiveCasesForLog();
+            renderTables();
+            const m = document.getElementById('case-modal');
+            if (m && !m.classList.contains('hidden')) {
+                openCaseModal();
+            }
+            if (selectedPatientName === name) {
+                updatePatientWorkspaceUI(name, p, false);
+            }
+            showToast('Restart failed to sync — ' + (e.message || 'please retry'), 'error');
+        });
     });
 }
 
@@ -9530,21 +9600,38 @@ window.shareExTabViaWhatsApp = function() {
                     deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-3 h-3"></i> Delete';
                     deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase transition-all px-2 py-1 rounded-lg";
                     deleteBtn.onclick = (e) => {
-                        armConfirm(e.currentTarget, "Confirm Delete?", async () => {
+                        armConfirm(e.currentTarget, "Confirm Delete?", () => {
                             const timestamp = logData[0];
-                            try {
-                                const result = await syncToBackend({
-                                    action: "deleteSession",
-                                    id: p.id,
-                                    timestamp: timestamp
-                                });
-                                if (result && result.status === 'error') throw new Error(result.message);
-                                showToast("Session record removed", "error");
-                                await loadAdminData(false);
-                                selectPatient(name);
-                            } catch (err) {
+                            // ── OPTIMISTIC REMOVAL ──
+                            const idxP = p.logs.indexOf(logData);
+                            if (idxP >= 0) p.logs.splice(idxP, 1);
+                            const idxG = globalData.findIndex(r => r[0] === timestamp);
+                            let removedGlobal = null;
+                            if (idxG >= 0) removedGlobal = globalData.splice(idxG, 1)[0];
+
+                            renderCalendar();
+                            updatePatientWorkspaceUI(name, p, false);
+                            renderActiveCasesForLog();
+                            renderTables();
+                            renderDuesWidget();
+                            updateGlobalStats();
+                            showToast("Session record removed", "info");
+
+                            syncToBackend({
+                                action: "deleteSession",
+                                id: p.id,
+                                timestamp: timestamp
+                            }).then(() => {
+                                scheduleBackgroundReconcile(3000);
+                            }).catch(err => {
+                                if (idxP >= 0) p.logs.splice(idxP, 0, logData);
+                                if (removedGlobal && idxG >= 0) globalData.splice(idxG, 0, removedGlobal);
+                                renderCalendar();
+                                updatePatientWorkspaceUI(name, p, false);
+                                renderActiveCasesForLog();
+                                renderTables();
                                 showToast("Delete failed to sync — " + err.message, "warning");
-                            }
+                            });
                         });
                     };
 
@@ -9553,24 +9640,34 @@ window.shareExTabViaWhatsApp = function() {
                     editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase px-2 py-1 rounded-lg";
                     editBtn.onclick = () => {
                         const newFee = prompt(`Update fee for ${formatDateDMY(logData[8])}:`, logData[9]);
-                        if (newFee === null || newFee === "") return;
+                        if (newFee === null || newFee === "" || isNaN(Number(newFee))) return;
+                        const prevFee = logData[9];
+                        logData[9] = Number(newFee);
                         const timestamp = logData[0];
-                        (async () => {
-                            try {
-                                const result = await syncToBackend({
-                                    action: "updateFee",
-                                    id: p.id,
-                                    timestamp: timestamp,
-                                    newFee: Number(newFee)
-                                });
-                                if (result && result.status === 'error') throw new Error(result.message);
-                                showToast(`Fee updated to ₹${newFee}`, "success");
-                                await loadAdminData(false);
-                                selectPatient(name);
-                            } catch (err) {
-                                showToast("Update failed to sync — " + err.message, "error");
-                            }
-                        })();
+                        const gRow = globalData.find(r => r[0] === timestamp);
+                        if (gRow) gRow[9] = Number(newFee);
+
+                        updatePatientWorkspaceUI(name, p, false);
+                        renderTables();
+                        renderDuesWidget();
+                        updateGlobalStats();
+                        showToast(`Fee updated to ₹${newFee}`, "success");
+
+                        syncToBackend({
+                            action: "updateFee",
+                            id: p.id,
+                            timestamp: timestamp,
+                            newFee: Number(newFee)
+                        }).then(() => {
+                            scheduleBackgroundReconcile(3000);
+                        }).catch(err => {
+                            logData[9] = prevFee;
+                            if (gRow) gRow[9] = prevFee;
+                            updatePatientWorkspaceUI(name, p, false);
+                            renderTables();
+                            renderDuesWidget();
+                            showToast("Update failed to sync — " + err.message, "error");
+                        });
                     };
 
                     actionArea.appendChild(editBtn);
@@ -9639,12 +9736,6 @@ window.shareExTabViaWhatsApp = function() {
             fullName = `${salutation} ${rawName}`;
         }
 
-        if (btn) {
-            btn.disabled = true;
-            btn.innerHTML = '<i class="animate-spin w-4 h-4" data-lucide="refresh-cw"></i> SAVING...';
-            if (window.lucide) lucide.createIcons();
-        }
-
         const now = new Date();
         const newInquiry = {
             id: 'iq_' + Date.now(),
@@ -9661,47 +9752,52 @@ window.shareExTabViaWhatsApp = function() {
             rowIndex: null
         };
 
-        try {
-            if (!window.iqRegistry) window.iqRegistry = [];
-            window.iqRegistry.unshift(newInquiry);
-            window.saveInquiriesToStorage(window.iqRegistry);
-            renderIqTable();
+        // ── 1. INSTANT LOCAL UPDATE ──
+        if (!window.iqRegistry) window.iqRegistry = [];
+        window.iqRegistry.unshift(newInquiry);
+        window.saveInquiriesToStorage(window.iqRegistry);
+        renderIqTable();
 
-            // Reset form
-            if (document.getElementById('iq-name')) document.getElementById('iq-name').value = '';
-            if (document.getElementById('iq-diagnosis')) document.getElementById('iq-diagnosis').value = '';
-            if (document.getElementById('iq-note')) document.getElementById('iq-note').value = '';
-            if (document.getElementById('iq-age')) document.getElementById('iq-age').value = '';
-            if (document.getElementById('iq-phone')) document.getElementById('iq-phone').value = '+91';
+        // Reset form immediately
+        if (document.getElementById('iq-name')) document.getElementById('iq-name').value = '';
+        if (document.getElementById('iq-diagnosis')) document.getElementById('iq-diagnosis').value = '';
+        if (document.getElementById('iq-note')) document.getElementById('iq-note').value = '';
+        if (document.getElementById('iq-age')) document.getElementById('iq-age').value = '';
+        if (document.getElementById('iq-phone')) document.getElementById('iq-phone').value = '+91';
 
-            showToast("Inquiry recorded locally", "success");
-
-            // Sync to cloud
-            await syncToBackend({
-                action: "saveInquiry",
-                name: fullName,
-                phone: phone,
-                diagnosis: diagnosis,
-                notes: note,
-                age: age,
-                gender: gender,
-                status: "New"
-            });
-
-            // Reload fresh data from sheet so rowIndex and IDs match backend
-            await loadAdminData(false);
-            showToast("Synced with Google Sheet", "info");
-
-        } catch (e) {
-            showToast("Inquiry saved locally (Cloud sync failed: " + e.message + ")", "warning");
-            console.error(e);
-        } finally {
-            if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = '<i data-lucide="cloud-upload" class="w-5 h-5"></i> Log Inquiry';
-                if (window.lucide) lucide.createIcons();
-            }
+        showToast("Inquiry recorded", "success");
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i> Recorded ✓';
+            if (window.lucide) lucide.createIcons();
+            setTimeout(() => {
+                if (btn) {
+                    btn.innerHTML = '<i data-lucide="cloud-upload" class="w-5 h-5"></i> Log Inquiry';
+                    if (window.lucide) lucide.createIcons();
+                }
+            }, 1500);
         }
+
+        // ── 2. NON-BLOCKING BACKGROUND SYNC ──
+        syncToBackend({
+            action: "saveInquiry",
+            name: fullName,
+            phone: phone,
+            diagnosis: diagnosis,
+            notes: note,
+            age: age,
+            gender: gender,
+            status: "New"
+        }).then(result => {
+            if (result && result.rowIndex) {
+                newInquiry.rowIndex = result.rowIndex;
+                window.saveInquiriesToStorage(window.iqRegistry);
+            }
+            scheduleBackgroundReconcile(3000);
+        }).catch(e => {
+            console.error("Inquiry cloud sync error:", e);
+            showToast("Inquiry saved locally (Cloud sync failed: " + e.message + ")", "warning");
+        });
     };
 
     // 2. Filter & Search Controls
@@ -9818,7 +9914,7 @@ window.shareExTabViaWhatsApp = function() {
     };
 
     // 4. Mark Inquiry Confirmed (Local + Cloud)
-    window.markInquiryConfirmed = async function(inquiryId) {
+    window.markInquiryConfirmed = function(inquiryId) {
         if (!window.iqRegistry) return;
         const entry = window.iqRegistry.find(i => i.id === inquiryId || i.id == inquiryId);
         if (!entry) {
@@ -9832,18 +9928,16 @@ window.shareExTabViaWhatsApp = function() {
         renderIqTable();
         showToast('Marked as confirmed', 'success');
 
-        try {
-            const sheetRowIndex = entry.rowIndex;
-            if (sheetRowIndex) {
-                await syncToBackend({
-                    action: "markInquiryConfirmed",
-                    rowIndex: Number(sheetRowIndex)
-                });
-                showToast('Synced to Google Sheet', 'info');
-                await loadAdminData(false);
-            }
-        } catch (e) {
-            showToast('Cloud sync pending: ' + e.message, 'warning');
+        const sheetRowIndex = entry.rowIndex;
+        if (sheetRowIndex) {
+            syncToBackend({
+                action: "markInquiryConfirmed",
+                rowIndex: Number(sheetRowIndex)
+            }).then(() => {
+                scheduleBackgroundReconcile(3000);
+            }).catch(e => {
+                showToast('Cloud sync pending: ' + e.message, 'warning');
+            });
         }
     };
 
@@ -9870,7 +9964,7 @@ window.shareExTabViaWhatsApp = function() {
                     action: "markInquiryConfirmed",
                     rowIndex: Number(inq.rowIndex)
                 }).then(() => {
-                    loadAdminData(false);
+                    scheduleBackgroundReconcile(3000);
                 }).catch(err => console.warn("Background confirmation sync error:", err));
             }
         }
