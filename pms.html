@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Prism | Clinical Intelligence</title>
 
     <!-- ---------- PWA / INSTALLABILITY ---------- -->
@@ -26,6 +26,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* --- Strict Mobile Viewport & Zero-Sliding Core Rules --- */
+        .hidden { display: none !important; }
+        html, body {
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: none;
+        }
+        #app-root, main {
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f4f7fa;
@@ -462,38 +481,53 @@
                 display: none !important;
             }
             main {
-                padding: 1rem 1rem 5.5rem 1rem !important; 
+                padding: 0.75rem 0.75rem 6.5rem 0.75rem !important; 
                 height: auto !important;
                 overflow-y: visible !important;
-                max-width: 100vw;
-                overflow-x: hidden;
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box;
             }
             #app-root {
                 min-height: 100vh;
                 display: block !important;
-                max-width: 100vw;
-                overflow-x: hidden;
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box;
             }
             header h1 {
-                font-size: 1.4rem !important;
+                font-size: 1.3rem !important;
             }
             .glass-card {
                 border-radius: 1.25rem !important;
-                padding: 1.25rem !important;
+                padding: 1rem !important;
             }
             .table-scroll {
                 display: block;
-                width: 100%;
-                max-width: 100%;
+                width: 100% !important;
+                max-width: 100% !important;
                 overflow-x: auto !important;
                 -webkit-overflow-scrolling: touch;
                 border-radius: 1rem;
             }
             table {
-                min-width: 680px; /* Default horizontal scroll for detailed tables */
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
             }
             table.no-mobile-scroll {
-                min-width: 100% !important; /* Forces the table to fit fully on the mobile screen width */
+                min-width: 100% !important;
+                width: 100% !important;
+            }
+            #patient-table-body td, #tab-patients th,
+            #registry-table-body td, #tab-visit-registry th,
+            #billing-table-body td, #tab-billing th,
+            #iq-table-body td, #tab-inquiry th {
+                padding: 0.6rem 0.35rem !important;
+                font-size: 11px !important;
+                word-break: break-word;
             }
         }
 
@@ -1159,7 +1193,10 @@
 
         @media (max-width: 1024px) {
             body {
-                overflow: auto;
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100vw !important;
+                display: block !important;
             }
 
             #hamburger-btn {
@@ -1825,6 +1862,10 @@ html.dark .instruction-modal-footer {
             #tab-patients th:nth-child(6), 
             #patient-table-body td:nth-child(6) {
                 display: none !important;
+            }
+            .glass-card {
+                padding: 0.85rem !important;
+                border-radius: 1.15rem !important;
             }
         }
     </style>
@@ -2636,13 +2677,13 @@ html.dark .instruction-modal-footer {
                 </div>
 
                 <!-- ── COMPLETE ENROLLMENT SUBMIT BUTTON ── -->
-                <div class="pt-2 pb-6">
+                <div class="pt-2 pb-24 sm:pb-8">
                     <button onclick="saveEnrollment()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4.5 sm:py-5 rounded-2xl shadow-xl shadow-indigo-600/30 hover:shadow-2xl active:scale-[0.98] transition-all uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2.5 cursor-pointer">
                         <i data-lucide="user-check" class="w-5 h-5"></i>
                         <span>Complete Patient Enrollment</span>
                     </button>
                 </div>
-
+                <div class="h-6 lg:hidden"></div>
             </section>
 
             <!-- LOG SESSIONS -->
@@ -3984,39 +4025,92 @@ html.dark .instruction-modal-footer {
 
         <div id="toast-container" class="fixed bottom-6 right-6 z-[1000] flex flex-col gap-3 items-end pointer-events-none"></div>
 
-    <!-- MOBILE BOTTOM NAVIGATION (Visible only on Mobile - Horizontally Scrollable on Narrow Screens) -->
-        <div id="mobile-bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-950/90 border-t border-slate-200/80 dark:border-slate-800/80 py-2 flex items-center justify-around overflow-x-auto no-scrollbar gap-1 px-3 z-50 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] backdrop-blur-xl">
-            <button onclick="switchTab('overview', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all mobile-nav-active flex-shrink-0 cursor-pointer">
+    <!-- MOBILE "MORE" BOTTOM SHEET / ACTION DRAWER -->
+    <div id="mobile-more-backdrop" onclick="closeMobileMoreSheet()" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 transition-opacity duration-200 lg:hidden"></div>
+    <div id="mobile-more-sheet" class="hidden fixed bottom-[58px] left-0 right-0 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 rounded-t-3xl shadow-2xl p-4 pb-5 z-40 lg:hidden max-h-[75vh] overflow-y-auto">
+        <div class="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto mb-3"></div>
+        <div class="flex items-center justify-between px-1 mb-3">
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">More Clinical Modules</span>
+            <button onclick="closeMobileMoreSheet()" class="p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-white cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+            <!-- Billing Tile -->
+            <button onclick="switchTab('billing'); closeMobileMoreSheet();" class="more-sheet-item p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60 flex items-center gap-3 text-left active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="credit-card" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="text-xs font-black uppercase text-slate-800 dark:text-slate-100 truncate">Billing</div>
+                    <div class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase truncate">Invoices & Dues</div>
+                </div>
+            </button>
+
+            <!-- Visit Registry Tile -->
+            <button onclick="switchTab('visit-registry'); closeMobileMoreSheet();" class="more-sheet-item p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 flex items-center gap-3 text-left active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="text-xs font-black uppercase text-slate-800 dark:text-slate-100 truncate">Registry</div>
+                    <div class="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase truncate">Daily Visits</div>
+                </div>
+            </button>
+
+            <!-- Exercises Tile -->
+            <button onclick="switchTab('exercises'); closeMobileMoreSheet();" class="more-sheet-item p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900/60 flex items-center gap-3 text-left active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="dumbbell" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="text-xs font-black uppercase text-slate-800 dark:text-slate-100 truncate">Exercises</div>
+                    <div class="text-[9px] font-bold text-amber-600 dark:text-amber-400 uppercase truncate">HEP Plans</div>
+                </div>
+            </button>
+
+            <!-- Inquiries Tile -->
+            <button onclick="switchTab('inquiry'); closeMobileMoreSheet();" class="more-sheet-item p-3.5 rounded-2xl bg-sky-50/70 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-900/60 flex items-center gap-3 text-left active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="text-xs font-black uppercase text-slate-800 dark:text-slate-100 truncate">Inquiries</div>
+                    <div class="text-[9px] font-bold text-sky-600 dark:text-sky-400 uppercase truncate">Pipeline</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Quick Actions Row inside More Sheet -->
+        <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+            <button onclick="toggleDarkMode();" class="flex-1 py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-black uppercase flex items-center justify-center gap-1.5 cursor-pointer">
+                <i data-lucide="moon" class="w-3.5 h-3.5"></i> Theme
+            </button>
+            <button onclick="loadAdminData(true); closeMobileMoreSheet();" class="flex-1 py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/50 text-[10px] font-black uppercase flex items-center justify-center gap-1.5 cursor-pointer">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Sync Data
+            </button>
+        </div>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION (Visible only on Mobile - 5 Equal Grid Columns, 100% Non-Sliding) -->
+        <div id="mobile-bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-950/95 border-t border-slate-200/90 dark:border-slate-800/90 py-1.5 grid grid-cols-5 items-center z-50 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] backdrop-blur-xl">
+            <button onclick="switchTab('overview', this); closeMobileMoreSheet();" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8.5px] font-black uppercase transition-all mobile-nav-active cursor-pointer">
                 <i data-lucide="layout-grid" class="w-5 h-5 transition-transform duration-200"></i>
                 <span>Home</span>
             </button>
-            <button onclick="switchTab('enroll', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
+            <button onclick="switchTab('enroll', this); closeMobileMoreSheet();" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8.5px] font-black uppercase transition-all cursor-pointer">
                 <i data-lucide="user-plus" class="w-5 h-5 transition-transform duration-200"></i>
                 <span>Enroll</span>
             </button>
-            <button onclick="switchTab('log-session', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
+            <button onclick="switchTab('log-session', this); closeMobileMoreSheet();" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8.5px] font-black uppercase transition-all cursor-pointer">
                 <i data-lucide="calendar-plus" class="w-5 h-5 transition-transform duration-200"></i>
                 <span>Log</span>
             </button>
-            <button onclick="switchTab('visit-registry', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
-                <i data-lucide="book-open" class="w-5 h-5 transition-transform duration-200"></i>
-                <span>Registry</span>
-            </button>
-            <button onclick="switchTab('patients', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
+            <button onclick="switchTab('patients', this); closeMobileMoreSheet();" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8.5px] font-black uppercase transition-all cursor-pointer">
                 <i data-lucide="users" class="w-5 h-5 transition-transform duration-200"></i>
                 <span>Patients</span>
             </button>
-            <button onclick="switchTab('exercises', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
-                <i data-lucide="dumbbell" class="w-5 h-5 transition-transform duration-200"></i>
-                <span>Exercises</span>
-            </button>
-            <button onclick="switchTab('billing', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
-                <i data-lucide="credit-card" class="w-5 h-5 transition-transform duration-200"></i>
-                <span>Billing</span>
-            </button>
-            <button onclick="switchTab('inquiry', this)" class="mobile-nav-btn flex flex-col items-center gap-1 py-1.5 px-2.5 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8px] font-black uppercase transition-all flex-shrink-0 cursor-pointer">
-                <i data-lucide="clipboard-list" class="w-5 h-5 transition-transform duration-200"></i>
-                <span>Inquiries</span>
+            <button id="mobile-more-btn" onclick="toggleMobileMoreSheet()" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 py-1 text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 text-[8.5px] font-black uppercase transition-all cursor-pointer">
+                <i data-lucide="more-horizontal" class="w-5 h-5 transition-transform duration-200"></i>
+                <span id="mobile-more-btn-label">More</span>
             </button>
         </div>
     </div><!-- /#app-root -->
@@ -5170,11 +5264,22 @@ function resetEnrollBodyChart(){
             }
         }
 
+        // Ensure all currency and number formatting in frontend strips any numbers after decimal
+        if (!Number.prototype._prismLocHooked) {
+            const _origNumberToLocaleString = Number.prototype.toLocaleString;
+            Number.prototype.toLocaleString = function(locales, options) {
+                const roundedVal = Math.round(Number(this) || 0);
+                const opts = Object.assign({ maximumFractionDigits: 0, minimumFractionDigits: 0 }, options || {});
+                return _origNumberToLocaleString.call(roundedVal, locales || 'en-IN', opts);
+            };
+            Number.prototype._prismLocHooked = true;
+        }
+
         function toNum(v) {
-    if (v === null || v === undefined || v === "") return 0;
-    const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
-    return isNaN(n) ? 0 : n;
-}
+            if (v === null || v === undefined || v === "") return 0;
+            const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
+            return isNaN(n) ? 0 : Math.round(n);
+        }
 
 function getRemainingSessions(p) {
     // Backend-computed only. Never derive from p.purchased - p.logs.length locally.
@@ -5631,7 +5736,7 @@ renderTables();
                     tbody.innerHTML += `<tr class="hover:bg-slate-50">
                         <td class="p-4 font-bold uppercase">${name}</td>
                         <td class="p-4 text-center"><span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg font-black text-xs">${rem} Sessions</span></td>
-                        <td class="p-4 text-right font-bold text-slate-600">₹${p.advance}</td>
+                        <td class="p-4 text-right font-bold text-slate-600">₹${Math.round(toNum(p.advance)).toLocaleString()}</td>
                     </tr>`;
                 }
             });
@@ -6531,8 +6636,26 @@ function openMidPackage() {
             const desktopBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(`'${id}'`));
             if (desktopBtn) desktopBtn.classList.add('sidebar-active');
 
-            const mobileBtn = Array.from(document.querySelectorAll('.mobile-nav-btn')).find(b => b.getAttribute('onclick')?.includes(`'${id}'`));
-            if (mobileBtn) mobileBtn.classList.add('mobile-nav-active');
+            const mobileBtn = Array.from(document.querySelectorAll('.mobile-nav-btn:not(#mobile-more-btn)')).find(b => b.getAttribute('onclick')?.includes(`'${id}'`));
+            const moreBtn = document.getElementById('mobile-more-btn');
+            const moreLabel = document.getElementById('mobile-more-btn-label');
+            const moreTabs = ['billing', 'visit-registry', 'exercises', 'inquiry'];
+
+            if (mobileBtn) {
+                mobileBtn.classList.add('mobile-nav-active');
+                if (moreLabel) moreLabel.innerText = 'More';
+            } else if (moreTabs.includes(id)) {
+                if (moreBtn) moreBtn.classList.add('mobile-nav-active');
+                if (moreLabel) {
+                    const shortNames = {
+                        'billing': 'Billing',
+                        'visit-registry': 'Registry',
+                        'exercises': 'Exercises',
+                        'inquiry': 'Inquiries'
+                    };
+                    moreLabel.innerText = shortNames[id] || 'More';
+                }
+            }
 
             const titles = {
                 'overview': 'DASHBOARD',
@@ -7219,8 +7342,8 @@ document.getElementById('pd-sessions').innerText = consumed;
     document.getElementById('pd-diag').innerText = p.diag || '—';
     const wallet = p.walletBalance || 0;
     document.getElementById('pd-package').innerText = p.purchased > 0
-        ? `${remaining} of ${p.purchased} sessions left @ ₹${p.baseRate}/session | Wallet: ₹${wallet.toLocaleString()}`
-        : `Regular @ ₹${p.baseRate || 0}/session | Wallet: ₹${wallet.toLocaleString()}`;
+        ? `${remaining} of ${p.purchased} sessions left @ ₹${Math.round(toNum(p.baseRate))}/session | Wallet: ₹${wallet.toLocaleString()}`
+        : `Regular @ ₹${Math.round(toNum(p.baseRate))}/session | Wallet: ₹${wallet.toLocaleString()}`;
 
     const statusEl = document.getElementById('pd-status');
     statusEl.innerText = p.closed
@@ -7653,7 +7776,7 @@ try {
                         <span style="font-size:10px; color:${isConsult ? '#7c3aed' : '#4f46e5'}; font-weight:700">${periodLabel}</span>
                     </td>
                     <td style="padding:14px; text-align:center; font-weight:800" class="editable">${g.qty}</td>
-                    <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${fee}</td>
+                    <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${Math.round(fee)}</td>
                     <td style="padding:14px; text-align:right; font-weight:900" class="editable">₹${subtotal.toLocaleString()}</td>
                 </tr>`;
             });
@@ -7685,7 +7808,7 @@ try {
                         <span style="font-size:10px; color:#f97316; font-weight:700">${periodLabel}</span>
                     </td>
                     <td style="padding:14px; text-align:center; font-weight:800" class="editable">${g.qty}</td>
-                    <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${g.addon}</td>
+                    <td style="padding:14px; text-align:center; color:#64748b" class="editable">₹${Math.round(g.addon)}</td>
                     <td style="padding:14px; text-align:right; font-weight:900; color:#f97316" class="editable">₹${subtotal.toLocaleString()}</td>
                 </tr>`;
             });
@@ -7706,7 +7829,7 @@ try {
                             <div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${globalIdx + 1}.</div>
                             <div class="editable" style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDateDMY(l[8])}</div>
                             <div class="editable" style="flex:1; color:#64748b; font-size:13px;">${getSessionTypeLabel(p.id)}</div>
-                            <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${fee}</div>
+                            <div class="editable" style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${Math.round(fee)}</div>
                         </div>`;
                     });
                     const pageLabel = ledgerChunks.length > 1 ? ` (Page ${pageIdx + 1} of ${ledgerChunks.length})` : '';
@@ -7788,7 +7911,7 @@ try {
                             </tr>
                             <tr style="background:#f5f3ff;">
                                 <td colspan="3" style="padding:8px 18px; text-align:right; font-weight:800; font-size:11px; color:#6366f1; text-transform:uppercase">Sessions in Package</td>
-                                <td style="padding:8px 18px; text-align:right; font-weight:800; color:#4f46e5; font-size:12px" class="editable">${p.purchased} Session(s) @ ₹${p.baseRate}/session</td>
+                                <td style="padding:8px 18px; text-align:right; font-weight:800; color:#4f46e5; font-size:12px" class="editable">${p.purchased} Session(s) @ ₹${Math.round(toNum(p.baseRate))}/session</td>
                             </tr>
                             <tr style="background:#f5f3ff; border-bottom:1px solid #e0e7ff;">
                                 <td colspan="3" style="padding:8px 18px; text-align:right; font-weight:800; font-size:11px; color:#6366f1; text-transform:uppercase">Wallet Balance Remaining</td>
@@ -8004,14 +8127,14 @@ try {
         ['en-rate', 'en-sessions', 'en-discount', 'en-advance'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('input', () => {
-        const r = Number(document.getElementById('en-rate').value) || 0;
-        const s = Number(document.getElementById('en-sessions').value) || 1;
-        const discAmt = Math.max(0, Number(document.getElementById('en-discount').value) || 0);
-        const advance = Number(document.getElementById('en-advance').value) || 0;
-        const gross = r * Math.max(1, s);
+        const r = Math.round(Number(document.getElementById('en-rate').value) || 0);
+        const s = Math.round(Number(document.getElementById('en-sessions').value) || 1);
+        const discAmt = Math.round(Math.max(0, Number(document.getElementById('en-discount').value) || 0));
+        const advance = Math.round(Number(document.getElementById('en-advance').value) || 0);
+        const gross = Math.round(r * Math.max(1, s));
         const cappedDiscAmt = Math.min(discAmt, gross);
-        const net = Math.max(0, gross - cappedDiscAmt);
-        const due = Math.max(0, net - advance);
+        const net = Math.max(0, Math.round(gross - cappedDiscAmt));
+        const due = Math.max(0, Math.round(net - advance));
         document.getElementById('en-pkg-val').innerText = `₹${gross.toLocaleString()}`;
         document.getElementById('enroll-summary').innerText = `₹${advance.toLocaleString()} Paid — ₹${due.toLocaleString()} Due`;
         const statusEl = document.getElementById('en-calc-status');
@@ -10393,6 +10516,28 @@ window.addEventListener('resize', () => {
     }
 });
 
+// Mobile "More" modules bottom sheet controller
+function toggleMobileMoreSheet() {
+    const sheet = document.getElementById('mobile-more-sheet');
+    const backdrop = document.getElementById('mobile-more-backdrop');
+    if (!sheet || !backdrop) return;
+    const isHidden = sheet.classList.contains('hidden');
+    if (isHidden) {
+        sheet.classList.remove('hidden');
+        backdrop.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons({ root: sheet });
+    } else {
+        closeMobileMoreSheet();
+    }
+}
+
+function closeMobileMoreSheet() {
+    const sheet = document.getElementById('mobile-more-sheet');
+    const backdrop = document.getElementById('mobile-more-backdrop');
+    if (sheet) sheet.classList.add('hidden');
+    if (backdrop) backdrop.classList.add('hidden');
+}
+
 // Tracks the active auto-hide timer for mobile inquiry action rows
 let iqActionsTimeout;
 
@@ -11034,6 +11179,13 @@ function syncModalHistoryOnClose() {
 
 // 1. HELPER: Close whatever overlay/modal/drawer is currently open (one step at a time)
 function closeActiveOverlay() {
+    // A0. Mobile More modules bottom sheet
+    const moreSheet = document.getElementById('mobile-more-sheet');
+    if (moreSheet && !moreSheet.classList.contains('hidden')) {
+        closeMobileMoreSheet();
+        return true;
+    }
+
     // A. Search results dropdown
     const searchRes = document.getElementById('search-results');
     if (searchRes && !searchRes.classList.contains('hidden')) {
