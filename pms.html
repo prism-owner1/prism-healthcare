@@ -5488,7 +5488,10 @@ renderTables();
 
             if (statEl.activeCount) statEl.activeCount.innerText = activeCount;
             statEl.registered.innerText = Object.keys(patientLookup).length;
-            renderDailyRegistry();
+            const regTab = document.getElementById('tab-visit-registry');
+            if (regTab && !regTab.classList.contains('section-hidden')) {
+                renderDailyRegistry();
+            }
         }  // ← closes processData()
 
         async function renderDailyRegistry() {
@@ -5847,6 +5850,15 @@ renderTables();
     const addedRows = [];
 
     // Create and push optimistic session rows into p.logs and globalData
+    let paidValForLog = 0;
+    if (paymentMode === 'Advance' || paymentMode === 'Complimentary' || paymentMode === 'Pending') {
+        paidValForLog = 0;
+    } else if (paymentMode === 'Split') {
+        paidValForLog = Math.round(((Number(splitCash) || 0) + (Number(splitUpi) || 0)) / (datesToSubmit.length || 1));
+    } else {
+        paidValForLog = (amountPaidVal !== '' && amountPaidVal != null) ? (Number(amountPaidVal) || 0) : feePerSession;
+    }
+
     datesToSubmit.forEach(d => {
         const row = [
             new Date().toISOString(),
@@ -5862,9 +5874,9 @@ renderTables();
             0,
             0,
             discPct,
-            "",
+            paymentMode,
             p.address || '',
-            paymentMode
+            paidValForLog
         ];
         p.logs.push(row);
         globalData.push(row);
@@ -6001,42 +6013,40 @@ renderTables();
     const p = patientLookup[selectedPatientName];
     if (!p) return;
 
-    // Pull fresh figures for this patient directly from the backend engine
-    // instead of trusting locally cached p.walletBalance/p.outstandingDue,
-    // which may be stale between full loadAdminData() cycles.
-    let bal;
+    const renderHintUI = (wallet, due, sessionsRemaining) => {
+        hint.classList.remove('hidden');
+        if (sessionsRemaining > 0 && due === 0) {
+            hint.innerHTML = `
+                <div class="flex flex-col gap-1">
+                    <span class="text-[8px] font-black text-indigo-400 uppercase">Active Package</span>
+                    <span class="text-xs font-black">Available: ${sessionsRemaining} Sessions</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet Balance: ₹${wallet.toLocaleString()}</span>
+                </div>`;
+            hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center font-bold uppercase shadow-sm";
+        } else {
+            const isDue = due > 0;
+            const displayAmt = isDue ? due : wallet;
+            hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Payment Status</span>
+                              <span class="block ${isDue ? 'text-rose-700' : 'text-emerald-700'} font-black text-xs">
+                              ${isDue ? 'Due' : 'Wallet Balance'}: ₹${displayAmt.toLocaleString()}</span>`;
+            hint.className = `mt-2.5 p-3 ${isDue ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'} rounded-2xl text-center font-bold uppercase`;
+        }
+    };
+
+    // 1. INSTANT (0ms) render from local memory
+    renderHintUI(p.walletBalance || 0, p.outstandingDue || 0, p.sessionsRemaining || 0);
+
+    // 2. Background fresh fetch without blocking UI
     try {
         const res = await syncToBackend({ action: "fetchPatientBalances", patientId: p.id });
-        bal = (res && res.balances && res.balances[p.id]) || {};
-    } catch (e) {
-        bal = {};
-    }
-
-    const wallet = bal.walletBalance ?? p.walletBalance ?? 0;
-    const due = bal.outstandingDue ?? p.outstandingDue ?? 0;
-    const sessionsRemaining = bal.sessionsRemaining ?? p.sessionsRemaining ?? 0;
-    p.walletBalance = wallet;
-    p.outstandingDue = due;
-    p.sessionsRemaining = sessionsRemaining;
-
-    hint.classList.remove('hidden');
-
-    if (sessionsRemaining > 0 && due === 0) {
-        hint.innerHTML = `
-            <div class="flex flex-col gap-1">
-                <span class="text-[8px] font-black text-indigo-400 uppercase">Active Package</span>
-                <span class="text-xs font-black">Available: ${sessionsRemaining} Sessions</span>
-                <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet Balance: ₹${wallet.toLocaleString()}</span>
-            </div>`;
-        hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center font-bold uppercase shadow-sm";
-    } else {
-        const isDue = due > 0;
-        const displayAmt = isDue ? due : wallet;
-        hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Payment Status</span>
-                          <span class="block ${isDue ? 'text-rose-700' : 'text-emerald-700'} font-black text-xs">
-                          ${isDue ? 'Due' : 'Wallet Balance'}: ₹${displayAmt.toLocaleString()}</span>`;
-        hint.className = `mt-2.5 p-3 ${isDue ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'} rounded-2xl text-center font-bold uppercase`;
-    }
+        const bal = (res && res.balances && res.balances[p.id]);
+        if (bal) {
+            p.walletBalance = bal.walletBalance ?? p.walletBalance ?? 0;
+            p.outstandingDue = bal.outstandingDue ?? p.outstandingDue ?? 0;
+            p.sessionsRemaining = bal.sessionsRemaining ?? p.sessionsRemaining ?? 0;
+            renderHintUI(p.walletBalance, p.outstandingDue, p.sessionsRemaining);
+        }
+    } catch (e) { /* fall back silently to cached values */ }
 }
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
@@ -6540,7 +6550,10 @@ function openMidPackage() {
             if (id === 'visit-registry') renderDailyRegistry();
             if (id === 'inquiry' && typeof renderIqTable === 'function') renderIqTable();
             if (id === 'exercises' && typeof initExerciseTab === 'function') initExerciseTab();
-            if (window.lucide) lucide.createIcons();
+            if (window.lucide) {
+                if (targetSection) lucide.createIcons({ root: targetSection });
+                else lucide.createIcons();
+            }
             
             // Auto scroll main window back to top on switch for mobile readability
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
@@ -7141,7 +7154,9 @@ function openMidPackage() {
     });
     pBody.innerHTML = pHtml;
     bBody.innerHTML = bHtml;
-    lucide.createIcons();
+    if (window.lucide) {
+        lucide.createIcons({ root: pBody });
+    }
 }
 
         async function viewPatientDetail(name) {
@@ -7151,14 +7166,14 @@ function openMidPackage() {
     const totalFees = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
     
     // Find the most recent actual payment (where Amount Paid > 0)
-    // We use row[0] because it is the immutable system timestamp of the transaction
-    const paymentLogs = p.logs.filter(l => toNum(l[16]) > 0);
+    // In Database row schema, index 15 is Amount Paid
+    const paymentLogs = p.logs.filter(l => toNum(l[15]) > 0);
     paymentLogs.sort((a, b) => new Date(b[0]) - new Date(a[0]));
     const lastPayEntry = paymentLogs[0];
     
     let lastPayDisplay = "No payments yet";
     if (lastPayEntry) {
-        const lastAmount = toNum(lastPayEntry[16]);
+        const lastAmount = toNum(lastPayEntry[15]);
         const lastDate = formatDateDMY(lastPayEntry[0]); // Using system timestamp date
         lastPayDisplay = `Last: ₹${lastAmount.toLocaleString()} | ${lastDate}`;
     }
@@ -7216,7 +7231,7 @@ document.getElementById('pd-sessions').innerText = consumed;
     const sortedLogs = p.logs.slice().sort((a, b) => new Date(b[8]) - new Date(a[8]));
     datesList.innerHTML = sortedLogs.length
         ? sortedLogs.map(l => {
-            const mode = l[15] || 'Cash';
+            const mode = l[13] || (isNaN(Number(l[15])) ? l[15] : '') || 'Cash';
             const badgeColor = mode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
             const note = l[6] ? `<span class="text-slate-400 italic ml-2">"${l[6]}"</span>` : '';
             return `<div class="p-3 bg-slate-50 rounded-xl text-[10px] font-bold text-slate-600 flex justify-between items-center gap-2">
@@ -7249,7 +7264,9 @@ document.getElementById('pd-sessions').innerText = consumed;
     modal.querySelector('.bg-white').appendChild(actionButtons);
 
     document.getElementById('patient-detail-modal').classList.remove('hidden');
-    lucide.createIcons();
+    if (window.lucide) {
+        lucide.createIcons({ root: modal });
+    }
 }
 
         function closePatientDetailModal() {
@@ -7970,7 +7987,8 @@ try {
             const searchVal = document.getElementById('bill-search-input').value.toUpperCase();
             const rows = document.querySelectorAll('#billing-table-body tr');
             rows.forEach(row => {
-                const patient = row.getAttribute('data-patient').toUpperCase();
+                const attr = row.getAttribute('data-patient');
+                const patient = (attr || row.innerText || '').toUpperCase();
                 row.style.display = patient.includes(searchVal) ? '' : 'none';
             });
         }
