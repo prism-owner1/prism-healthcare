@@ -7267,10 +7267,9 @@ function openMidPackage() {
                         <td class="p-5 font-black text-xs text-slate-600 hidden lg:table-cell">${p.id}</td>
                         <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
                         <td class="p-5 text-center">
-                            <button onclick="generateBill('${name}')" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 lg:px-6 py-2 rounded-lg text-[9px] font-black uppercase transition-all shadow-md">
-                                <span class="hidden lg:inline">Generate Bill</span>
-                                <span class="lg:hidden">View Bill</span>
-                            </button>
+                            <button onclick="generateBill('${name}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase shadow-md transition-all whitespace-nowrap inline-flex items-center justify-center min-w-[100px]">
+    Generate Bill
+</button>
                         </td>
                     </tr>`;
         }
