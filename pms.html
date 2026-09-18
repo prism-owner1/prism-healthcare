@@ -1140,6 +1140,129 @@
             color: #0e7672;
         }
 
+        .lock-switch-link {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: none;
+            border: none;
+            margin-top: 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #0284c7;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .lock-switch-link:hover { color: #037fc0; }
+
+        .lock-mpin-input-container {
+    position: relative;
+    width: 100%;
+    margin: 0.6rem 0 1rem;
+}
+
+.lock-mpin-boxes {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mpin-box {
+    flex: 1;
+    height: 58px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    transition: all 0.15s ease;
+}
+
+.mpin-box.filled {
+    border-color: #0284c7;
+    background: #f0f9ff;
+}
+
+.lock-mpin-input-container:focus-within .mpin-box {
+    border-color: #0284c7;
+}
+
+#lock-mpin-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 58px;
+    opacity: 0;
+    color: transparent;
+    caret-color: transparent;
+    background: transparent;
+    cursor: text;
+    z-index: 10;
+    border: none;
+    outline: none;
+    letter-spacing: normal;
+}
+
+.mpin-box {
+    position: relative;
+}
+
+.mpin-box.active::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 24px;
+    background: #0284c7;
+    border-radius: 2px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: mpinCaretBlink 1s step-end infinite;
+    pointer-events: none;
+}
+
+@keyframes mpinCaretBlink {
+    0%, 45% {
+        opacity: 1;
+    }
+    46%, 100% {
+        opacity: 0;
+    }
+}
+
+#lock-mpin-input::selection {
+    background: transparent;
+    color: transparent;
+}
+
+        #lock-mpin-submit {
+            position: relative;
+            width: 100%;
+            padding: 1.15rem 1.5rem;
+            border-radius: 1.25rem;
+            border: none;
+            background: linear-gradient(135deg, #037fc0 0%, #077ea0 50%, #0e7672 100%);
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 0.6rem;
+            box-shadow: 0 12px 26px -4px rgba(3, 127, 192, 0.45);
+        }
+        #lock-mpin-submit:hover { filter: brightness(1.06); }
+
         /* Global strict rule: When locked screen is closed, hide completely */
         #lock-screen.hidden,
         #lock-screen[style*="display: none"],
@@ -1892,6 +2015,7 @@ html.dark .instruction-modal-footer {
 
             <!-- Login Form -->
             <div class="lock-form-body">
+                <div id="lock-password-panel">
                 <!-- Username -->
                 <div class="lock-field">
                     <label class="lock-field-label" for="lock-username">
@@ -1925,6 +2049,49 @@ html.dark .instruction-modal-footer {
                     <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     <span class="lock-spinner" id="lock-spinner"></span>
                 </button>
+                </div>
+
+                <!-- mPIN Quick Login Panel -->
+                <div id="lock-mpin-panel" class="hidden">
+                    <div class="lock-field">
+                        <label class="lock-field-label"><i data-lucide="user-check" class="w-3.5 h-3.5"></i><span>Signed in as</span></label>
+                        <div id="lock-mpin-username-display" style="font-weight:800;font-size:1rem;color:#0f172a;padding:0.4rem 0.2rem;text-align:center;"></div>
+                    </div>
+                    <div class="lock-field">
+                        <label class="lock-field-label"><i data-lucide="grid-3x3" class="w-3.5 h-3.5"></i><span>Enter mPIN</span></label>
+                        <div class="lock-mpin-dots" id="lock-mpin-dots">
+                            <span class="mpin-dot" data-i="0"></span><span class="mpin-dot" data-i="1"></span><span class="mpin-dot" data-i="2"></span><span class="mpin-dot" data-i="3"></span>
+                        </div>
+                        <div class="lock-mpin-input-container">
+    <div class="lock-mpin-boxes" id="lock-mpin-dots">
+        <span class="mpin-box" data-i="0"></span>
+        <span class="mpin-box" data-i="1"></span>
+        <span class="mpin-box" data-i="2"></span>
+        <span class="mpin-box" data-i="3"></span>
+    </div>
+
+    <input
+        type="tel"
+        id="lock-mpin-input"
+        maxlength="4"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        autocomplete="one-time-code"
+        aria-label="Enter 4-digit mPIN"
+        oninput="renderMPinDots()"
+        onkeydown="if(event.key==='Enter')checkMPinLogin()"
+    >
+
+ </div>
+                    </div>
+                    <button id="lock-mpin-submit" onclick="checkMPinLogin()">
+                        <span>Unlock</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                    <button type="button" class="lock-switch-link" onclick="showPasswordLogin()">Use Password Instead</button>
+                </div>
+
+                <button type="button" id="lock-mpin-toggle" class="lock-switch-link hidden" onclick="showMPinPanel()">Login with mPIN instead</button>
 
                 <!-- Error Display -->
                 <div id="lock-error"></div>
@@ -1934,6 +2101,31 @@ html.dark .instruction-modal-footer {
             <div class="lock-card-footer">
                 <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
                 <span>Prism Healthcare Systems &bull; Secure Portal</span>
+                        </div>
+        </div>
+    </div>
+
+    <!-- MPIN SETUP MODAL -->
+    <div id="mpin-setup-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[9998] flex items-center justify-center p-6">
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl border border-slate-200/80 dark:border-slate-800">
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                        <i data-lucide="grid-3x3" class="w-4 h-4"></i>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white">Create your mPIN</h3>
+                </div>
+                <button onclick="closeMPinSetupModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+            </div>
+            <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-5">Set a 4-digit mPIN for <span id="mpin-setup-username" class="text-indigo-600 dark:text-indigo-400"></span> to sign in faster next time on this device.</p>
+            <div class="space-y-3">
+                <input type="password" id="mpin-setup-value" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="Enter new mPIN" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-black text-center tracking-[0.5em] text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-lg">
+                <input type="password" id="mpin-setup-confirm" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="Confirm mPIN" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-black text-center tracking-[0.5em] text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-lg">
+                <div id="mpin-setup-error" class="text-rose-500 text-[11px] font-bold text-center min-h-[14px]"></div>
+            </div>
+            <div class="flex gap-3 pt-5">
+                <button onclick="closeMPinSetupModal()" class="flex-1 py-3.5 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">Skip</button>
+                <button onclick="saveMPinSetup()" class="flex-[2] py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-indigo-600/30 active:scale-95 transition-all cursor-pointer">Save mPIN</button>
             </div>
         </div>
     </div>
@@ -4311,6 +4503,8 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         if (localStorage.getItem('prism_unlocked') === '1') {
             unlockApp();
+        } else {
+            initMPinUI();
         }
     } catch (e) {}
 });
@@ -4365,6 +4559,7 @@ try {
             errEl.innerText = '';
             try { sessionStorage.setItem('prism_user', user); } catch (e) {}
             unlockApp();
+            checkAndPromptMPinSetup(user);
         } else {
             throw new Error(result.message || 'Incorrect username or password.');
         }
@@ -4381,8 +4576,161 @@ try {
         spinner.style.display = 'none';
     }
 }
-        // ---------- MOBILE SIDEBAR DRAWER ----------
-        function openSidebar() {
+
+        // ---------- mPIN CREATE / VERIFY ----------
+        async function checkAndPromptMPinSetup(username) {
+            try {
+                const res = await syncToBackend({ action: "checkMPinStatus", username: username });
+                if (res && res.hasMPin) {
+                    try { localStorage.setItem('prism_mpin_user', username); } catch (e) {}
+                    return;
+                }
+                setTimeout(() => openMPinSetupModal(username), 600);
+            } catch (e) {
+                console.warn('mPIN status check failed:', e);
+            }
+        }
+
+        function openMPinSetupModal(username) {
+            document.getElementById('mpin-setup-username').innerText = username;
+            document.getElementById('mpin-setup-value').value = '';
+            document.getElementById('mpin-setup-confirm').value = '';
+            document.getElementById('mpin-setup-error').innerText = '';
+            document.getElementById('mpin-setup-modal').classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeMPinSetupModal() {
+            document.getElementById('mpin-setup-modal').classList.add('hidden');
+        }
+
+        async function saveMPinSetup() {
+            const username = document.getElementById('mpin-setup-username').innerText.trim();
+            const pin = document.getElementById('mpin-setup-value').value.trim();
+            const confirmPin = document.getElementById('mpin-setup-confirm').value.trim();
+            const errEl = document.getElementById('mpin-setup-error');
+
+            if (!/^\d{4,6}$/.test(pin)) {
+                errEl.innerText = 'mPIN must be 4-6 digits';
+                return;
+            }
+            if (pin !== confirmPin) {
+                errEl.innerText = 'mPIN entries do not match';
+                return;
+            }
+
+            try {
+                const res = await syncToBackend({ action: "setMPin", username: username, mpin: pin });
+                if (res && res.status === 'error') throw new Error(res.message);
+                try { localStorage.setItem('prism_mpin_user', username); } catch (e) {}
+                closeMPinSetupModal();
+                showToast('mPIN created — use it to sign in faster next time', 'success');
+            } catch (e) {
+                errEl.innerText = e.message || 'Failed to save mPIN';
+            }
+        }
+
+        function renderMPinDots() {
+    const input = document.getElementById('lock-mpin-input');
+
+    const val = input.value
+        .replace(/\D/g, '')
+        .substring(0, 4);
+
+    input.value = val;
+
+    const boxes = document.querySelectorAll('#lock-mpin-dots .mpin-box');
+
+    boxes.forEach((box, i) => {
+        const digit = val[i] || '';
+
+        box.classList.remove('filled', 'active');
+
+        if (digit) {
+            box.classList.add('filled');
+            box.textContent = mpinVisible ? digit : '•';
+        } else {
+            box.textContent = '';
+        }
+    });
+
+    // Put the cursor exactly inside the next empty box
+    if (val.length < 4 && boxes[val.length]) {
+        boxes[val.length].classList.add('active');
+    }
+
+    // Remove cursor when all 4 digits are entered
+    if (val.length === 4) {
+        boxes.forEach(box => box.classList.remove('active'));
+        checkMPinLogin();
+    }
+}
+
+let mpinVisible = false;
+
+        function showMPinPanel() {
+            const savedUser = localStorage.getItem('prism_mpin_user');
+            if (!savedUser) return;
+            document.getElementById('lock-mpin-username-display').innerText = savedUser;
+            document.getElementById('lock-password-panel').classList.add('hidden');
+            document.getElementById('lock-mpin-panel').classList.remove('hidden');
+            document.getElementById('lock-mpin-toggle').classList.add('hidden');
+            document.getElementById('lock-mpin-input').value = '';
+            renderMPinDots();
+            setTimeout(() => { const el = document.getElementById('lock-mpin-input'); if (el) el.focus(); }, 150);
+        }
+
+        function showPasswordLogin() {
+            document.getElementById('lock-password-panel').classList.remove('hidden');
+            document.getElementById('lock-mpin-panel').classList.add('hidden');
+            if (localStorage.getItem('prism_mpin_user')) {
+                document.getElementById('lock-mpin-toggle').classList.remove('hidden');
+            }
+            const el = document.getElementById('lock-username');
+            if (el) el.focus();
+        }
+
+        async function checkMPinLogin() {
+            const username = localStorage.getItem('prism_mpin_user');
+            const pin = document.getElementById('lock-mpin-input').value.trim();
+            const errEl = document.getElementById('lock-error');
+            const btn = document.getElementById('lock-mpin-submit');
+            if (!username || pin.length < 4) return;
+
+            if (btn) btn.disabled = true;
+            errEl.innerText = '';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "verifyMPin", username: username, mpin: pin, clientToken: APP_CLIENT_TOKEN })
+                });
+                const result = await response.json();
+                if (result && result.status === 'success') {
+                    try { sessionStorage.setItem('prism_user', username); } catch (e) {}
+                    unlockApp();
+                } else {
+                    throw new Error((result && result.message) || 'Incorrect mPIN');
+                }
+            } catch (e) {
+                errEl.innerText = e.message || 'mPIN verification failed';
+                document.getElementById('lock-mpin-input').value = '';
+                renderMPinDots();
+                const card = document.getElementById('lock-card');
+                if (card) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        }
+
+        function initMPinUI() {
+            if (localStorage.getItem('prism_mpin_user')) {
+                showMPinPanel();
+            }
+        }
+
+        // ---------- MOBILE SIDEBAR DRAWER ----------        
+            function openSidebar() {
             document.getElementById('sidebar').classList.add('sidebar-open');
             document.getElementById('sidebar-overlay').classList.add('active');
         }
@@ -11601,7 +11949,6 @@ window.unlockApp = function() {
 })();
 // Calendar visual states (enrolled, full due, partial due, multiple sessions, single session) are natively handled in renderCalendar().
 
-    </script>
+</script>
 </body>
-
 </html>
