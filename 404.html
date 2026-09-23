@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prism Physiotherapy</title>
+</head>
+<body>
+    <p style="font-family:Arial;text-align:center;margin-top:60px;">
+        Please wait...
+    </p>
+
+    <script>
+        (function () {
+
+            const path = window.location.pathname;
+
+            // Handle secure bill URLs:
+            // https://prismhealthcare.in/b/Bxxxxxxxx
+            if (path.startsWith('/b/')) {
+
+                const billToken = path
+                    .substring(3)
+                    .split('/')[0]
+                    .trim();
+
+                if (billToken) {
+
+                    const appsScriptUrl =
+                        'https://script.google.com/macros/s/AKfycbye_jZTPOeIyGdarFVFhR7p8ohQeVP66b16XGaw92rPerEvxIPsQE7vh-Ube666pmkb/exec';
+
+                    window.location.replace(
+                        appsScriptUrl +
+                        '?billToken=' +
+                        encodeURIComponent(billToken)
+                    );
+
+                    return;
+                }
+            }
+
+            // Normal GitHub Pages 404
+            document.body.innerHTML = `
+                <div style="
+                    font-family:Arial,sans-serif;
+                    text-align:center;
+                    padding:60px 20px;
+                ">
+                    <h1>404</h1>
+                    <p>Page not found.</p>
+                    <a href="/">Return to Prism Physiotherapy</a>
+                </div>
+            `;
+
+        })();
+    </script>
+</body>
+</html>
