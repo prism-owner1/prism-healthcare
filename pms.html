@@ -2365,22 +2365,18 @@ html.dark .instruction-modal-footer {
 <section id="tab-overview" class="animate-slide space-y-4 sm:space-y-6">
 
   <!-- ── 0. PERSONALIZED CLINICAL WELCOME BANNER ── -->
-  <div id="overview-greeting-card" class="p-4 sm:p-5 rounded-[1.75rem] bg-gradient-to-r from-indigo-50/90 via-white to-purple-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/40 border border-indigo-100/70 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-      <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-indigo-200 dark:shadow-none">
-              <i data-lucide="sun" id="overview-greeting-icon" class="w-5 h-5 text-amber-300"></i>
+    <div id="overview-greeting-card" class="flex items-center gap-3.5 px-4 py-3.5 sm:px-5 sm:py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+      <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="sun" id="overview-greeting-icon" class="w-5 h-5"></i>
+      </div>
+      <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+              <h2 id="overview-greeting-text" class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Good day, Administrator</h2>
+              <span id="overview-user-badge" class="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 text-[9px] font-black uppercase tracking-wide">Admin</span>
           </div>
-          <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                  <h2 id="overview-greeting-text" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">Good day, Administrator</h2>
-                  <span id="overview-user-badge" class="px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 text-[10px] font-black uppercase">Admin</span>
-              </div>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-2">
-                  <span>ClinioSphere Health Portal</span>
-                  <span class="text-slate-300 dark:text-slate-600">•</span>
-                  <span class="font-mono text-[10px] text-slate-400 dark:text-slate-500 font-bold" id="overview-session-badge">SESS-Active</span>
-              </p>
-          </div>
+          <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-0.5">
+              Session <span id="overview-session-badge" class="font-mono">SESS-Active</span>
+          </p>
       </div>
   </div>
 
@@ -5218,7 +5214,7 @@ let mpinVisible = false;
             finally { mpinLoginBusy = false; }
         }
 
-        async function checkMPinLoginInner() {{
+        async function checkMPinLoginInner() {
             const username = localStorage.getItem('prism_mpin_user');
             const pin = document.getElementById('lock-mpin-input').value.trim();
             const errEl = document.getElementById('lock-error');
