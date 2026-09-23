@@ -1,91 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prism Physiotherapy</title>
+    <title>Prism Physiotherapy &amp; Rehabilitation Center</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08), 0 5px 15px rgba(15, 23, 42, 0.04);
+            padding: 36px 28px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .logo-wrap {
+            margin-bottom: 20px;
+        }
+        .clinic-logo {
+            max-height: 52px;
+            max-width: 180px;
+            object-fit: contain;
+        }
+        .brand-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+        }
+        .brand-sub {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        .status-box {
+            padding: 20px 16px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .spinner {
+            width: 42px;
+            height: 42px;
+            border: 3.5px solid #e2e8f0;
+            border-top-color: #0284c7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .status-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+        .status-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .btn-primary {
+            background: #0284c7;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background: #0369a1;
+        }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            margin-top: 10px;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px auto;
+        }
+        .icon-success {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .icon-error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .icon-warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .footer-note {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <p style="font-family:Arial;text-align:center;margin-top:60px;">
-        Please wait...
-    </p>
+    <div class="card" id="appCard">
+        <div class="logo-wrap">
+            <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy" class="clinic-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="brand-title">Prism Physiotherapy</div>
+        <div class="brand-sub">&amp; Rehabilitation Center</div>
+
+        <div id="contentArea">
+            <div class="status-box">
+                <div class="spinner" id="mainSpinner"></div>
+                <div class="status-title" id="statusTitle">Connecting securely...</div>
+                <div class="status-desc" id="statusDesc">Please hold on while we prepare your official document.</div>
+            </div>
+        </div>
+
+        <div class="footer-note">Official Document Verification &bull; Prism Clinical PMS</div>
+    </div>
 
     <script>
         (function () {
-
+            const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbye_jZTPOeIyGdarFVFhR7p8ohQeVP66b16XGaw92rPerEvxIPsQE7vh-Ube666pmkb/exec';
             const path = window.location.pathname;
+            const contentArea = document.getElementById('contentArea');
 
-            // Handle secure bill URLs:
-            // https://prismhealthcare.in/b/Bxxxxxxxx
+            // Check if URL matches secure bill path: /b/<token>
             if (path.startsWith('/b/')) {
-
-                const billToken = path
-                    .substring(3)
-                    .split('/')[0]
-                    .trim();
+                const billToken = path.substring(3).split('/')[0].trim();
 
                 if (billToken) {
-
-                    const appsScriptUrl =
-                        'https://script.google.com/macros/s/AKfycbye_jZTPOeIyGdarFVFhR7p8ohQeVP66b16XGaw92rPerEvxIPsQE7vh-Ube666pmkb/exec';
-
-                    const callbackName =
-    'prismBillDownload_' + Date.now();
-
-window[callbackName] = function (data) {
-
-    try {
-        if (!data || !data.success || !data.downloadUrl) {
-            throw new Error('Bill download URL not received.');
-        }
-
-        const downloadFrame = document.createElement('iframe');
-
-        downloadFrame.style.display = 'none';
-        downloadFrame.src = data.downloadUrl;
-
-        document.body.appendChild(downloadFrame);
-
-    } catch (error) {
-        console.error('Bill download error:', error);
-    }
-
-    try {
-        delete window[callbackName];
-    } catch (e) {}
-};
-
-const script = document.createElement('script');
-
-script.src =
-    appsScriptUrl +
-    '?billToken=' +
-    encodeURIComponent(billToken) +
-    '&callback=' +
-    encodeURIComponent(callbackName);
-
-script.onerror = function () {
-    console.error('Unable to resolve bill download.');
-};
-
-document.body.appendChild(script);
-
-return;
+                    resolveAndDownloadBill(billToken);
+                    return;
                 }
             }
 
-            // Normal GitHub Pages 404
-            document.body.innerHTML = `
-                <div style="
-                    font-family:Arial,sans-serif;
-                    text-align:center;
-                    padding:60px 20px;
-                ">
-                    <h1>404</h1>
-                    <p>Page not found.</p>
-                    <a href="/">Return to Prism Physiotherapy</a>
-                </div>
-            `;
+            // Normal 404 for any other path
+            showNormal404();
+
+            function updateUI(html) {
+                if (contentArea) contentArea.innerHTML = html;
+            }
+
+            function b64toBlob(b64Data, contentType, sliceSize) {
+                contentType = contentType || 'application/pdf';
+                sliceSize = sliceSize || 512;
+                const byteCharacters = atob(b64Data);
+                const byteArrays = [];
+                for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                    const slice = byteCharacters.slice(offset, offset + sliceSize);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    byteArrays.push(new Uint8Array(byteNumbers));
+                }
+                return new Blob(byteArrays, { type: contentType });
+            }
+
+            async function resolveAndDownloadBill(token, retryCount = 0) {
+                const maxRetries = 4;
+
+                updateUI(`
+                    <div class="status-box">
+                        <div class="spinner"></div>
+                        <div class="status-title">Preparing Your Bill Download...</div>
+                        <div class="status-desc">Fetching your verified clinical statement, session ledger, and completion certificate.</div>
+                    </div>
+                `);
+
+                try {
+                    const endpoint = `${APPS_SCRIPT_URL}?billToken=${encodeURIComponent(token)}&format=json&_ts=${Date.now()}`;
+                    const res = await fetch(endpoint, {
+                        method: 'GET',
+                        cache: 'no-store'
+                    });
+
+                    const rawText = await res.text();
+                    let data = null;
+
+                    try {
+                        data = JSON.parse(rawText);
+                    } catch (parseErr) {
+                        // If Apps Script has not yet deployed JSON handler, fallback to direct redirect
+                        if (rawText.includes('drive.google.com') || rawText.includes('Bill')) {
+                            window.location.replace(`${APPS_SCRIPT_URL}?billToken=${encodeURIComponent(token)}`);
+                            return;
+                        }
+                        throw new Error('Invalid response from clinical server.');
+                    }
+
+                    if (!data) throw new Error('Empty response from clinical server.');
+
+                    // Case 1: Bill document is still preparing in Google Drive
+                    if (data.status === 'PREPARING' || (data.valid === false && data.message && data.message.toLowerCase().includes('prepared'))) {
+                        if (retryCount < maxRetries) {
+                            updateUI(`
+                                <div class="status-box">
+                                    <div class="spinner"></div>
+                                    <div class="status-title">Finalizing Clinical PDF...</div>
+                                    <div class="status-desc">Your bill has been generated and is finalizing in secure storage. Rechecking in 3 seconds... (Attempt ${retryCount + 1}/${maxRetries})</div>
+                                </div>
+                            `);
+                            setTimeout(function () {
+                                resolveAndDownloadBill(token, retryCount + 1);
+                            }, 3000);
+                            return;
+                        }
+                    }
+
+                    // Case 2: Bill token not found or invalid
+                    if (data.valid === false || data.status === 'NOT_FOUND') {
+                        updateUI(`
+                            <div class="status-box">
+                                <div class="icon-wrap icon-error">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                </div>
+                                <div class="status-title" style="color:#b91c1c;">Bill Not Found</div>
+                                <div class="status-desc">${data.message || 'This bill link is invalid or has expired. If you believe this is an error, please contact Prism Physiotherapy.'}</div>
+                            </div>
+                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                        `);
+                        return;
+                    }
+
+                    // Case 3: Valid bill with Base64 PDF (Primary high-reliability flow)
+                    if (data.valid && data.pdfBase64) {
+                        const fileName = data.fileName || `Prism_Bill_${data.billNo || 'Statement'}.pdf`;
+                        const blob = b64toBlob(data.pdfBase64, 'application/pdf');
+                        const blobUrl = URL.createObjectURL(blob);
+
+                        // Trigger automatic browser download
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = blobUrl;
+                        a.download = fileName;
+                        document.body.appendChild(a);
+                        a.click();
+
+                        setTimeout(function () {
+                            try { document.body.removeChild(a); } catch (e) {}
+                        }, 500);
+
+                        updateUI(`
+                            <div class="status-box">
+                                <div class="icon-wrap icon-success">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="status-title" style="color:#15803d;">Download Started!</div>
+                                <div class="status-desc">Your clinical bill PDF (Statement, Narrative Ledger, and Certificate) has been downloaded to your device.</div>
+                            </div>
+                            <a href="${blobUrl}" download="${fileName}" class="btn btn-primary" id="btnDownloadAgain">Download Again</a>
+                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                        `);
+                        return;
+                    }
+
+                    // Case 4: Valid bill with direct Drive download URL fallback
+                    if (data.valid && data.downloadUrl) {
+                        const fileName = data.fileName || `Prism_Bill_${data.billNo || 'Statement'}.pdf`;
+                        updateUI(`
+                            <div class="status-box">
+                                <div class="icon-wrap icon-success">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="status-title" style="color:#15803d;">Download Ready</div>
+                                <div class="status-desc">Starting download... If it does not start automatically, please click below.</div>
+                            </div>
+                            <a href="${data.downloadUrl}" target="_blank" class="btn btn-primary">Download PDF Now</a>
+                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                        `);
+                        window.location.href = data.downloadUrl;
+                        return;
+                    }
+
+                    throw new Error('Bill document could not be located.');
+
+                } catch (err) {
+                    console.error('Download resolution error:', err);
+                    updateUI(`
+                        <div class="status-box">
+                            <div class="icon-wrap icon-warning">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            </div>
+                            <div class="status-title">Connection Notice</div>
+                            <div class="status-desc">We had trouble downloading the file directly. Click below to retrieve your bill.</div>
+                        </div>
+                        <button onclick="window.location.replace('${APPS_SCRIPT_URL}?billToken=' + encodeURIComponent('${token}'))" class="btn btn-primary">Download Bill Document</button>
+                        <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                    `);
+                }
+            }
+
+            function showNormal404() {
+                updateUI(`
+                    <div class="status-box">
+                        <div class="status-title" style="font-size:24px;font-weight:700;">404</div>
+                        <div class="status-desc">The requested page does not exist.</div>
+                    </div>
+                    <a href="https://prismhealthcare.in" class="btn btn-primary">Return to Prism Physiotherapy</a>
+                `);
+            }
 
         })();
     </script>
