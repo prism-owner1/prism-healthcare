@@ -5216,7 +5216,15 @@ let mpinVisible = false;
             if (el) el.focus();
         }
 
+        let mpinLoginBusy = false;
         async function checkMPinLogin() {
+            if (mpinLoginBusy) return;          // ignore auto-submit + button-click duplicates
+            mpinLoginBusy = true;
+            try { await checkMPinLoginInner(); }
+            finally { mpinLoginBusy = false; }
+        }
+
+        async function checkMPinLoginInner() {{
             const username = localStorage.getItem('prism_mpin_user');
             const pin = document.getElementById('lock-mpin-input').value.trim();
             const errEl = document.getElementById('lock-error');
@@ -5369,15 +5377,28 @@ let mpinVisible = false;
         }
         window.registerPhoneBiometrics = registerPhoneBiometrics;
 
-        async function triggerBiometricLogin() {
+               let bioAbortCtrl = null;
+
+        async function triggerBiometricLogin(isAuto) {
+            isAuto = (isAuto === true);
             const bioUser = localStorage.getItem('prism_bio_user');
             const errEl = document.getElementById('lock-error');
             if (errEl) errEl.innerText = '';
 
             if (!bioUser) {
-                if (errEl) errEl.innerText = 'No biometric profile registered yet on this device. Sign in with password first to enable.';
+                if (!isAuto && errEl) errEl.innerText = 'No biometric profile registered yet on this device. Sign in with password first to enable.';
                 return;
             }
+
+            // A fingerprint / face prompt is already open
+            if (bioAbortCtrl) {
+                if (isAuto) return;
+                try { bioAbortCtrl.abort(); } catch (e) {}
+                bioAbortCtrl = null;
+                await new Promise(r => setTimeout(r, 300));
+            }
+            bioAbortCtrl = new AbortController();
+            const myCtrl = bioAbortCtrl;
 
             try {
                 const challenge = new Uint8Array(32);
@@ -5409,8 +5430,9 @@ let mpinVisible = false;
                     getOptions.rpId = window.location.hostname;
                 }
 
-                const assertion = await navigator.credentials.get({
-                    publicKey: getOptions
+                                const assertion = await navigator.credentials.get({
+                    publicKey: getOptions,
+                    signal: myCtrl.signal
                 });
 
                 if (assertion) {
@@ -5434,20 +5456,51 @@ let mpinVisible = false;
                     if (typeof updateUserGreeting === 'function') updateUserGreeting();
                     showToast('Unlocked via Biometrics: Welcome ' + bioUser, 'success');
                 }
-            } catch (err) {
+                        } catch (err) {
                 console.error('Biometric authentication error:', err);
-                if (err.name !== 'NotAllowedError' && errEl) {
-                    errEl.innerText = 'Biometric unlock failed: ' + (err.message || 'Sensor error');
+                const quiet = isAuto || err.name === 'NotAllowedError' || err.name === 'AbortError';
+                if (!quiet && errEl) {
+                    errEl.innerText = (err.name === 'InvalidStateError')
+                        ? 'Biometric prompt was busy. Please tap the button once more.'
+                        : 'Biometric unlock failed: ' + (err.message || 'Sensor error');
                 }
+            } finally {
+                if (bioAbortCtrl === myCtrl) bioAbortCtrl = null;
             }
         }
         window.triggerBiometricLogin = triggerBiometricLogin;
 
-        function initMPinUI() {
-            checkBiometricAvailability();
+                async function initMPinUI() {
+            warmUpBackend();                        // wakes the Google Script so mPIN login is fast
+            await checkBiometricAvailability();
             if (localStorage.getItem('prism_mpin_user')) {
                 showMPinPanel();
             }
+            autoBiometricPrompt();                  // shows fingerprint / face scan automatically
+        }
+
+        function warmUpBackend() {
+            try {
+                const u = localStorage.getItem('prism_mpin_user');
+                if (!u) return;
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ action: "checkMPinStatus", username: u, clientToken: APP_CLIENT_TOKEN })
+                }).catch(() => {});
+            } catch (e) {}
+        }
+
+        function autoBiometricPrompt() {
+            try {
+                if (localStorage.getItem('prism_unlocked') === '1') return;
+                if (!localStorage.getItem('prism_bio_user')) return;
+                const b1 = document.getElementById('lock-biometric-btn');
+                const b2 = document.getElementById('lock-mpin-biometric-btn');
+                const supported = (b1 && !b1.classList.contains('hidden')) || (b2 && !b2.classList.contains('hidden'));
+                if (!supported) return;
+                setTimeout(() => triggerBiometricLogin(true), 350);
+            } catch (e) {}
         }
 
         // ---------- MOBILE SIDEBAR DRAWER ----------        
