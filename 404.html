@@ -29,13 +29,18 @@
                     const appsScriptUrl =
                         'https://script.google.com/macros/s/AKfycbye_jZTPOeIyGdarFVFhR7p8ohQeVP66b16XGaw92rPerEvxIPsQE7vh-Ube666pmkb/exec';
 
-                    window.location.replace(
-                        appsScriptUrl +
-                        '?billToken=' +
-                        encodeURIComponent(billToken)
-                    );
+                    const downloadFrame = document.createElement('iframe');
 
-                    return;
+downloadFrame.style.display = 'none';
+
+downloadFrame.src =
+    appsScriptUrl +
+    '?billToken=' +
+    encodeURIComponent(billToken);
+
+document.body.appendChild(downloadFrame);
+
+return;
                 }
             }
 
