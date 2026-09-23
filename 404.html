@@ -29,16 +29,46 @@
                     const appsScriptUrl =
                         'https://script.google.com/macros/s/AKfycbye_jZTPOeIyGdarFVFhR7p8ohQeVP66b16XGaw92rPerEvxIPsQE7vh-Ube666pmkb/exec';
 
-                    const downloadFrame = document.createElement('iframe');
+                    const callbackName =
+    'prismBillDownload_' + Date.now();
 
-downloadFrame.style.display = 'none';
+window[callbackName] = function (data) {
 
-downloadFrame.src =
+    try {
+        if (!data || !data.success || !data.downloadUrl) {
+            throw new Error('Bill download URL not received.');
+        }
+
+        const downloadFrame = document.createElement('iframe');
+
+        downloadFrame.style.display = 'none';
+        downloadFrame.src = data.downloadUrl;
+
+        document.body.appendChild(downloadFrame);
+
+    } catch (error) {
+        console.error('Bill download error:', error);
+    }
+
+    try {
+        delete window[callbackName];
+    } catch (e) {}
+};
+
+const script = document.createElement('script');
+
+script.src =
     appsScriptUrl +
     '?billToken=' +
-    encodeURIComponent(billToken);
+    encodeURIComponent(billToken) +
+    '&callback=' +
+    encodeURIComponent(callbackName);
 
-document.body.appendChild(downloadFrame);
+script.onerror = function () {
+    console.error('Unable to resolve bill download.');
+};
+
+document.body.appendChild(script);
 
 return;
                 }
