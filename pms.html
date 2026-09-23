@@ -5340,6 +5340,8 @@ let mpinVisible = false;
                         pubKeyCredParams: [{ type: "public-key", alg: -7 }, { type: "public-key", alg: -257 }],
                         authenticatorSelection: {
                             authenticatorAttachment: "platform",
+                            residentKey: "preferred",
+                            requireResidentKey: false,
                             userVerification: "required"
                         },
                         timeout: 60000,
@@ -5386,6 +5388,23 @@ let mpinVisible = false;
                     userVerification: "required",
                     timeout: 60000
                 };
+
+                // Tell the browser exactly which registered credential to use
+                const savedCredId = localStorage.getItem('prism_bio_credential_id');
+                if (savedCredId) {
+                    try {
+                        const b64 = savedCredId.replace(/-/g, '+').replace(/_/g, '/');
+                        const padded = b64 + '='.repeat((4 - (b64.length % 4)) % 4);
+                        const raw = Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+                        getOptions.allowCredentials = [{
+                            type: "public-key",
+                            id: raw,
+                            transports: ["internal"]
+                        }];
+                    } catch (e) {
+                        console.warn('Could not decode saved credential id', e);
+                    }
+                }
                 if (window.location.hostname && window.location.hostname !== '') {
                     getOptions.rpId = window.location.hostname;
                 }
@@ -8248,7 +8267,7 @@ renderTables();
 
         document.getElementById('session-payment-mode').addEventListener('change', updateAdvanceHint);
 
-async function saveEnrollment() {
+function saveEnrollment() {
     const rawName = document.getElementById('en-name').value.trim();
     if (!rawName) {
         showToast("Enter the patient's name first", 'warning');
@@ -8286,49 +8305,47 @@ async function saveEnrollment() {
 
     saveEnrollmentBodyChartAsSoap(name, enrolledId);
 
-    try {
-        const result = await syncToBackend({
-            action: "enrollPatient",
-            id: enrolledId,
-            name: name,
-            doctor: assignedDoctor,
-            age: document.getElementById('en-age').value,
-            gender: document.getElementById('en-gender').value,
-            phone: enrolledPhone,
-            condition: enrolledDiag,
-            grossAmount: gross,
-            totalSessions: enrolledSessions,
-            discount: enrolledDiscount,
-            address: address,
-            date: dateStr,
-            paymentMode: paymentMode,
-            amountPaid: advanceAmount,
-            billNo: "",
-            requestId: "ENROLL-" + enrolledId + "-" + Date.now()
-        });
-        console.log('Enroll result:', JSON.stringify(result));
+    // ── 1. INSTANT UI FEEDBACK — don't make the clinician wait on the network ──
+    if (!patientLookup[name]) patientLookup[name] = { id: enrolledId, name: name, logs: [], enrollTime: Date.now() };
+    patientLookup[name].doctor = assignedDoctor;
 
+    resetEnrollForm();
+    showToast(`${name} enrolled successfully`, 'success');
+    showEnrollmentSuccessPopup({
+        name: name,
+        id: enrolledId,
+        phone: enrolledPhone,
+        diag: enrolledDiag,
+        amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
+    });
+
+    // ── 2. NON-BLOCKING BACKGROUND SYNC ──
+    syncToBackend({
+        action: "enrollPatient",
+        id: enrolledId,
+        name: name,
+        doctor: assignedDoctor,
+        age: document.getElementById('en-age').value,
+        gender: document.getElementById('en-gender').value,
+        phone: enrolledPhone,
+        condition: enrolledDiag,
+        grossAmount: gross,
+        totalSessions: enrolledSessions,
+        discount: enrolledDiscount,
+        address: address,
+        date: dateStr,
+        paymentMode: paymentMode,
+        amountPaid: advanceAmount,
+        billNo: "",
+        requestId: "ENROLL-" + enrolledId + "-" + Date.now()
+    }).then(result => {
         if (result && result.status === 'error') throw new Error(result.message);
-
-        if (!patientLookup[name]) patientLookup[name] = { id: enrolledId, name: name, logs: [] };
-        patientLookup[name].doctor = assignedDoctor;
-
-        resetEnrollForm();
-        showToast(`${name} enrolled successfully`, 'success');
-        showEnrollmentSuccessPopup({
-            name: name,
-            id: enrolledId,
-            phone: enrolledPhone,
-            diag: enrolledDiag,
-            amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
-        });
-
-        // Debounced reconcile ensures Google Sheet completes write before full read
-        scheduleBackgroundReconcile(2500);
-    } catch (e) {
-        console.error('Enroll FAILED:', e.message, e);
-        showToast('Enrollment failed to sync — ' + e.message, 'error');
-    }
+        // Pull the authoritative record (balances, package, doctor, etc.) now the sheet write is done
+        scheduleBackgroundReconcile(2000);
+    }).catch(e => {
+        console.error('Enroll FAILED to sync:', e.message, e);
+        showToast('Enrollment did not save to the sheet — ' + e.message + '. Please check and re-save.', 'error');
+    });
 }
 
 function showEnrollmentSuccessPopup(patient) {
@@ -9396,18 +9413,40 @@ function openMidPackage() {
             }
         }
 
-        async function viewPatientDetail(name) {
+        function viewPatientDetail(name) {
+    const p = patientLookup[name];
+    if (!p) return;
+
+    // 1. Paint the modal INSTANTLY from whatever is already cached locally
+    renderPatientDetailModal(name);
+
+    // 2. Quietly refresh wallet/due/session figures in the background and repaint if needed
+    syncToBackend({ action: "fetchPatientBalances", patientId: p.id }).then(res => {
+        const liveBal = (res && res.balances && res.balances[p.id]) || {};
+        p.walletBalance     = liveBal.walletBalance     ?? p.walletBalance     ?? 0;
+        p.outstandingDue    = liveBal.outstandingDue    ?? p.outstandingDue    ?? 0;
+        p.sessionsRemaining = liveBal.sessionsRemaining ?? p.sessionsRemaining ?? 0;
+        p.dueSessionCount   = liveBal.dueSessionCount   ?? p.dueSessionCount   ?? 0;
+
+        const modal = document.getElementById('patient-detail-modal');
+        if (modal && !modal.classList.contains('hidden') && document.getElementById('pd-name')?.innerText === name) {
+            renderPatientDetailModal(name);
+        }
+    }).catch(() => { /* fall back silently to cached p.* values */ });
+}
+
+function renderPatientDetailModal(name) {
     const p = patientLookup[name];
     if (!p) return;
     // Calculate total fees
     const totalFees = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
-    
+
     // Find the most recent actual payment (where Amount Paid > 0)
     // In Database row schema, index 15 is Amount Paid
     const paymentLogs = p.logs.filter(l => toNum(l[15]) > 0);
     paymentLogs.sort((a, b) => new Date(b[0]) - new Date(a[0]));
     const lastPayEntry = paymentLogs[0];
-    
+
     let lastPayDisplay = "No payments yet";
     if (lastPayEntry) {
         const lastAmount = toNum(lastPayEntry[15]);
@@ -9415,18 +9454,7 @@ function openMidPackage() {
         lastPayDisplay = `Last: ₹${lastAmount.toLocaleString()} | ${lastDate}`;
     }
 
-    // Fetch authoritative package/session figures for this one patient
-    let liveBal = {};
-    try {
-        const res = await syncToBackend({ action: "fetchPatientBalances", patientId: p.id });
-        liveBal = (res && res.balances && res.balances[p.id]) || {};
-        p.walletBalance     = liveBal.walletBalance     ?? p.walletBalance     ?? 0;
-        p.outstandingDue    = liveBal.outstandingDue    ?? p.outstandingDue    ?? 0;
-        p.sessionsRemaining = liveBal.sessionsRemaining ?? p.sessionsRemaining ?? 0;
-        p.dueSessionCount   = liveBal.dueSessionCount   ?? p.dueSessionCount   ?? 0;
-    } catch (e) { /* fall back silently to cached p.* values */ }
-
-    const remaining = getRemainingSessions(p); // now reads the just-refreshed p.sessionsRemaining
+    const remaining = getRemainingSessions(p);
 
     document.getElementById('pd-name').innerText = name;
     document.getElementById('pd-id-badge').innerText = p.id;
@@ -9435,7 +9463,7 @@ function openMidPackage() {
     return !['enrollment','package added','case closed','case restarted','bill issued'].includes(t) && toNum(l[9]) > 0;
 }).length;
 document.getElementById('pd-sessions').innerText = consumed;
-    
+
     // Update the Total Paid card to show both Total and the Last Payment Date
     document.getElementById('pd-payment').innerHTML = `
         <span class="block">₹${totalFees.toLocaleString()}</span>
@@ -10551,25 +10579,36 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
 
        let markPaidContext = null;
 
-    async function openMarkPaidPrompt(name) {
+    function openMarkPaidPrompt(name) {
     const p = patientLookup[name];
     if (!p) return;
-    const result = await syncToBackend({ action: "getUnpaidSessions", patientId: p.id });
-    if (!result.unpaidLogs || !result.unpaidLogs.length) {
-        showToast('No unpaid sessions found', 'info');
-        return;
-    }
-    markPaidContext = { name, p, ...result };
+
+    // Open the modal immediately with cached figures, then refine with live data
+    markPaidContext = { name, p };
     document.getElementById('mp-patient-name').innerText = name;
-    document.getElementById('mp-total-due').innerText =
-        result.walletApplied > 0
-            ? `₹${result.rawDue.toLocaleString()} − ₹${result.walletApplied.toLocaleString()} wallet = ₹${result.totalDue.toLocaleString()}`
-            : `₹${result.totalDue.toLocaleString()}`;
-    document.getElementById('mp-session-count').innerText = result.unpaidLogs.length;
-    document.getElementById('mp-amount').value = result.totalDue;
+    document.getElementById('mp-total-due').innerText = `₹${(p.outstandingDue || 0).toLocaleString()}`;
+    document.getElementById('mp-session-count').innerText = p.dueSessionCount || '…';
+    document.getElementById('mp-amount').value = p.outstandingDue || 0;
     document.getElementById('mp-mode').value = '';
     document.getElementById('markpaid-modal').classList.remove('hidden');
     lucide.createIcons();
+
+    syncToBackend({ action: "getUnpaidSessions", patientId: p.id }).then(result => {
+        if (!result.unpaidLogs || !result.unpaidLogs.length) {
+            closeMarkPaidModal();
+            showToast('No unpaid sessions found', 'info');
+            return;
+        }
+        markPaidContext = { name, p, ...result };
+        document.getElementById('mp-total-due').innerText =
+            result.walletApplied > 0
+                ? `₹${result.rawDue.toLocaleString()} − ₹${result.walletApplied.toLocaleString()} wallet = ₹${result.totalDue.toLocaleString()}`
+                : `₹${result.totalDue.toLocaleString()}`;
+        document.getElementById('mp-session-count').innerText = result.unpaidLogs.length;
+        document.getElementById('mp-amount').value = result.totalDue;
+    }).catch(() => {
+        showToast('Could not refresh due sessions — showing cached amount', 'warning');
+    });
 }
 
 function closeMarkPaidModal() {
@@ -11282,7 +11321,7 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
     if (window.lucide) lucide.createIcons();
 }
 
-        async function saveExercise() {
+        function saveExercise() {
     const sets = document.getElementById('ex-input-sets').value.trim();
     const freq = document.getElementById('ex-input-freq').value.trim();
     const instrText = document.getElementById('ex-input-instructions').value.trim();
@@ -11291,10 +11330,11 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
 
     if (!exercisePlans[selectedPatientId]) exercisePlans[selectedPatientId] = [];
 
+    const pendingSyncs = [];
+
     // CASE 1: If there are library items in the cart
     if (exCart.length > 0) {
-        showToast(`Saving ${exCart.length} exercises...`, 'info');
-        for (const item of exCart) {
+        exCart.forEach(item => {
             const exerciseData = {
                 name: item.name,
                 setsReps: sets,
@@ -11306,8 +11346,8 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 isGeneral: false // Mark as specific exercise
             };
             exercisePlans[selectedPatientId].push(exerciseData);
-            
-            await syncToBackend({
+
+            pendingSyncs.push({
                 action: "saveExercise",
                 id: selectedPatientId,
                 name: selectedPatientName,
@@ -11316,9 +11356,9 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 instructions: item.steps,
                 videoLink: item.video || "",
                 date: prescribedDate
-            }).catch(() => {});
-        }
-    } 
+            });
+        });
+    }
     // CASE 2: If the cart is empty but there is General Instruction text
     else if (instrText !== "") {
         const generalData = {
@@ -11332,8 +11372,8 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             isGeneral: true
         };
         exercisePlans[selectedPatientId].push(generalData);
-        
-        await syncToBackend({
+
+        pendingSyncs.push({
             action: "saveExercise",
             id: selectedPatientId,
             name: selectedPatientName,
@@ -11342,19 +11382,24 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             instructions: instrText,
             videoLink: "",
             date: prescribedDate
-        }).catch(() => {});
-    } 
+        });
+    }
     else {
         showToast('Please add an exercise or type instructions', 'warning');
         return;
     }
 
+    // ── INSTANT UI UPDATE — don't make the clinician wait on the network ──
     renderExercisePlanList();
     if (typeof renderExTabPatientExercises === 'function' && selectedPatientName) {
         renderExTabPatientExercises(selectedPatientName);
     }
     clearExerciseForm();
     showToast('Saved successfully', 'success');
+
+    // ── NON-BLOCKING BACKGROUND SYNC (fired together, not one-by-one) ──
+    Promise.all(pendingSyncs.map(payload => syncToBackend(payload).catch(() => {})))
+        .then(() => scheduleBackgroundReconcile(2000));
 }
 
         function deleteProgressNote(patientId, index) {
