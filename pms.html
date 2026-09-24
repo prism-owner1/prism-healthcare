@@ -81,23 +81,27 @@
 
             #iq-table-body .flex.items-center.justify-center {
                 flex-direction: row !important;
-                gap: 4px !important;
+                gap: 3px !important;
             }
 
-            #iq-table-body button,
-            #iq-table-body a.iq-action-btn {
-                padding: 5px 8px !important;
-                font-size: 8px !important;
-                border-radius: 8px !important;
-                white-space: nowrap !important;
-                text-decoration: none !important;
-            }
+#iq-table-body button,
+#iq-table-body a.iq-action-btn {
+    width: 28px !important;
+min-width: 28px !important;
+max-width: 28px !important;
+height: 28px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
 
             #iq-table-body button i,
-            #iq-table-body a.iq-action-btn i {
-                width: 11px !important;
-                height: 11px !important;
-            }
+#iq-table-body a.iq-action-btn i {
+    width: 14px !important;
+    height: 14px !important;
+}
 
             #iq-table-body td:last-child {
                 white-space: nowrap !important;
@@ -1997,6 +2001,30 @@ html.dark .instruction-modal-footer {
                 border-radius: 1.15rem !important;
             }
         }
+        /* Compact square inquiry buttons */
+#iq-table-body .iq-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    border: none;
+    border-radius: 10px !important;
+    color: #fff !important;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+#iq-table-body .iq-btn svg { width: 18px !important; height: 18px !important; }
+#iq-table-body .iq-btn .lbl-full, #iq-table-body .iq-btn .lbl-short { display: none !important; }
+.iq-btn-enroll { background: #4f46e5; }
+.iq-btn-wa { background: #25D366; }
+.iq-btn-call { background: #0284c7; }
+
+@media (max-width: 1024px) {
+    #iq-table-body .iq-btn { width: 32px !important; height: 32px !important; }
+    #iq-table-body .iq-btn svg { width: 16px !important; height: 16px !important; }
+}
     </style>
     <link rel="stylesheet" href="tailwind.css">
 </head>
@@ -2418,7 +2446,7 @@ html.dark .instruction-modal-footer {
       </div>
       <div>
         <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5">Total Collection</p>
-        <h3 id="stat-revenue" class="text-2xl sm:text-3xl font-black text-white leading-none">\u20B90</h3>
+        <h3 id="stat-revenue" class="text-2xl sm:text-3xl font-black text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
@@ -2434,7 +2462,7 @@ html.dark .instruction-modal-footer {
         <span class="text-[9px] font-black bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">POC</span>
       </div>
       <div>
-        <h3 id="stat-poc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">\u20B90</h3>
+        <h3 id="stat-poc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
         <div class="flex items-center gap-1 text-[9px] font-bold text-blue-500 uppercase tracking-wide">
           <span>View Branch</span>
           <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
@@ -2451,7 +2479,7 @@ html.dark .instruction-modal-footer {
         <span class="text-[9px] font-black bg-emerald-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">PHC</span>
       </div>
       <div>
-        <h3 id="stat-phc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">\u20B90</h3>
+        <h3 id="stat-phc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
         <div class="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-wide">
           <span>View Branch</span>
           <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
@@ -2485,7 +2513,7 @@ html.dark .instruction-modal-footer {
         <i data-lucide="alert-circle" class="w-4 h-4 text-amber-500 mt-0.5"></i>
       </div>
       <div>
-        <h3 id="stat-outstanding" class="text-xl sm:text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight mb-2">\u20B90</h3>
+        <h3 id="stat-outstanding" class="text-xl sm:text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight mb-2">₹0</h3>
         <p class="text-[9px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide">Pending Dues</p>
       </div>
     </button>
@@ -2515,7 +2543,7 @@ html.dark .instruction-modal-footer {
           <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">Today</p>
           <span class="text-[8px] font-black text-sky-600 dark:text-sky-400 uppercase bg-sky-50 dark:bg-sky-950/60 px-2 py-0.5 rounded-md border border-sky-100 dark:border-sky-900/50">Daily</span>
         </div>
-        <h3 id="stat-daily" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">\u20B90</h3>
+        <h3 id="stat-daily" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
@@ -2529,7 +2557,7 @@ html.dark .instruction-modal-footer {
           <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">This Month</p>
           <span class="text-[8px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900/50">MTD</span>
         </div>
-        <h3 id="stat-monthly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">\u20B90</h3>
+        <h3 id="stat-monthly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
@@ -2543,7 +2571,7 @@ html.dark .instruction-modal-footer {
           <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">This Year</p>
           <span class="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-md border border-purple-100 dark:border-purple-900/50">YTD</span>
         </div>
-        <h3 id="stat-yearly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">\u20B90</h3>
+        <h3 id="stat-yearly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
@@ -2811,10 +2839,10 @@ html.dark .instruction-modal-footer {
                                 <!-- Cost/Session & Sessions -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                     <div>
-                                        <label class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider ml-1 block mb-1">Cost / Session (\u20B9)</label>
+                                        <label class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider ml-1 block mb-1">Cost / Session (₹)</label>
                                         <div class="relative">
                                             <input type="number" id="en-rate" placeholder="e.g. 500" class="w-full p-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/60 rounded-2xl font-bold text-emerald-900 dark:text-emerald-300 outline-none text-base focus:border-emerald-500 transition-all pl-8">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-black text-emerald-600 text-sm">\u20B9</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-black text-emerald-600 text-sm">₹</span>
                                         </div>
                                     </div>
                                     <div>
@@ -2829,10 +2857,10 @@ html.dark .instruction-modal-footer {
                                 <!-- Amount Paid & Payment Mode -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                                     <div>
-                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Amount Paid Now (\u20B9)</label>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Amount Paid Now (₹)</label>
                                         <div class="relative">
                                             <input type="number" id="en-advance" value="0" placeholder="0" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all pl-8">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">\u20B9</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
                                         </div>
                                     </div>
                                     <div>
@@ -2856,10 +2884,10 @@ html.dark .instruction-modal-footer {
                                 <!-- Discount & Live Status -->
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 items-center">
                                     <div>
-                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Discount (\u20B9)</label>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Discount (₹)</label>
                                         <div class="relative">
                                             <input type="number" id="en-discount" value="0" min="0" placeholder="e.g. 500" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all pl-8">
-                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">\u20B9</span>
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">₹</span>
                                         </div>
                                     </div>
                                     <div id="en-calc-status" class="pt-1 sm:pt-4">
@@ -2877,9 +2905,9 @@ html.dark .instruction-modal-footer {
                                     <i data-lucide="sparkles" class="w-3 h-3 text-indigo-400"></i>
                                     <span>Total Package Value</span>
                                 </span>
-                                <span id="en-pkg-val" class="text-sm font-black text-indigo-300 tracking-wide">\u20B90</span>
+                                <span id="en-pkg-val" class="text-sm font-black text-indigo-300 tracking-wide">₹0</span>
                             </div>
-                            <h5 id="enroll-summary" class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight leading-tight">\u20B90 Paid</h5>
+                            <h5 id="enroll-summary" class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight leading-tight">₹0 Paid</h5>
                             <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider pt-2 border-t border-slate-800/80 flex items-center gap-1.5">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                 <span>Financial status will update automatically upon entry</span>
@@ -3185,11 +3213,11 @@ html.dark .instruction-modal-footer {
                             <!-- Base Rate & Add-on Fee -->
                             <div class="grid grid-cols-2 gap-4 mb-4 max-lg:gap-2 max-lg:mb-2">
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Base Rate (\u20B9)</label>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Base Rate (₹)</label>
                                     <input type="number" id="base-rate-display" readonly class="w-full p-3.5 bg-slate-100 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-800 rounded-2xl text-xs font-black text-slate-800 dark:text-slate-200 outline-none">
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase ml-1 block mb-1">Add-on Fee (\u20B9)</label>
+                                    <label class="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase ml-1 block mb-1">Add-on Fee (₹)</label>
                                     <input type="number" id="session-add-fee" value="0" class="w-full p-3.5 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 rounded-2xl text-xs font-black text-indigo-700 dark:text-indigo-300 outline-none focus:border-indigo-500">
                                     <input type="text" id="session-add-fee-name" placeholder="Procedure name (e.g. IFT, SWD)" class="w-full mt-2 p-2.5 bg-white dark:bg-slate-800 border border-indigo-100 dark:border-indigo-900 rounded-xl text-[10px] font-bold outline-none placeholder:text-slate-400 focus:border-indigo-500">
                                 </div>
@@ -3213,18 +3241,18 @@ html.dark .instruction-modal-footer {
                                     <div id="advance-remaining-hint" class="mt-2.5 p-3 rounded-2xl text-center font-bold text-[10px] uppercase transition-all"></div>
                                 </div>
                                 <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Amount Paid (\u20B9)</label>
+                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Amount Paid (₹)</label>
                                     <input type="number" id="session-amount-paid" placeholder="Auto = Fee" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-indigo-500">
-                                    <p id="partial-payment-hint" class="hidden mt-1.5 text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase ml-1">⚠ Partial — \u20B9<span id="partial-due-amount">0</span> will be marked as due</p>
+                                    <p id="partial-payment-hint" class="hidden mt-1.5 text-[9px] font-black text-amber-600 dark:text-amber-400 uppercase ml-1">⚠ Partial — ₹<span id="partial-due-amount">0</span> will be marked as due</p>
                                     
                                     <!-- Split payment second field -->
                                     <div id="split-payment-row" class="hidden mt-2 grid grid-cols-2 gap-2">
                                         <div>
-                                            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">Cash (\u20B9)</label>
+                                            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">Cash (₹)</label>
                                             <input type="number" id="split-cash" value="0" class="w-full mt-0.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl font-bold outline-none text-xs border border-slate-200 dark:border-slate-700">
                                         </div>
                                         <div>
-                                            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">UPI (\u20B9)</label>
+                                            <label class="text-[8px] font-black text-slate-500 uppercase ml-1">UPI (₹)</label>
                                             <input type="number" id="split-upi" value="0" class="w-full mt-0.5 p-2 bg-slate-50 dark:bg-slate-800 rounded-xl font-bold outline-none text-xs border border-slate-200 dark:border-slate-700">
                                         </div>
                                     </div>
@@ -3311,7 +3339,7 @@ html.dark .instruction-modal-footer {
                             </div>
                             <div>
                                 <p class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Date Collection Total</p>
-                                <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 leading-none">\u20B90</h3>
+                                <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 leading-none">₹0</h3>
                             </div>
                         </div>
                     </div>
@@ -3335,12 +3363,12 @@ html.dark .instruction-modal-footer {
                                 <!-- Desktop Footer Row -->
                                 <tr class="hidden lg:table-row">
                                     <td colspan="6" class="p-5 text-right font-black text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider">Daily Collection Total:</td>
-                                    <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 dark:text-indigo-400 text-lg">\u20B90</td>
+                                    <td id="registry-footer-total" class="p-5 text-right font-black text-indigo-600 dark:text-indigo-400 text-lg">₹0</td>
                                 </tr>
                                 <!-- Mobile Footer Row (Responsive layout) -->
                                 <tr class="lg:hidden">
                                     <td colspan="3" class="p-4 text-right font-black text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider">Total:</td>
-                                    <td id="registry-footer-total-mobile" class="p-4 text-right font-black text-indigo-600 dark:text-indigo-400 text-lg">\u20B90</td>
+                                    <td id="registry-footer-total-mobile" class="p-4 text-right font-black text-indigo-600 dark:text-indigo-400 text-lg">₹0</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -3990,14 +4018,14 @@ html.dark .instruction-modal-footer {
                     <h3 id="bd-title" class="text-xl font-black text-slate-900 dark:text-white">Branch Revenue</h3>
                     <button onclick="closeBranchDetailModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
                 </div>
-                <p id="bd-total" class="text-sm font-bold text-slate-600 dark:text-slate-400 mb-6 pb-2 border-b border-slate-100 dark:border-slate-800">Total: \u20B90</p>
+                <p id="bd-total" class="text-sm font-bold text-slate-600 dark:text-slate-400 mb-6 pb-2 border-b border-slate-100 dark:border-slate-800">Total: ₹0</p>
                 <div class="overflow-y-auto pr-2 table-scroll">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 dark:bg-slate-800/80 text-[10px] uppercase font-black text-slate-500 dark:text-slate-400 sticky top-0 border-b border-slate-200 dark:border-slate-800">
                             <tr>
                                 <th class="p-4">Month</th>
                                 <th class="p-4 text-center">Sessions</th>
-                                <th class="p-4 text-right">Collection (\u20B9)</th>
+                                <th class="p-4 text-right">Collection (₹)</th>
                             </tr>
                         </thead>
                         <tbody id="bd-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium"></tbody>
@@ -4020,16 +4048,16 @@ html.dark .instruction-modal-footer {
                         <input type="number" id="mi-sessions" placeholder="Number of Sessions" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
                     </div>
                     <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Rate per Session (\u20B9)</label>
-                        <input type="number" id="mi-rate" placeholder="Rate per Session (\u20B9)" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Rate per Session (₹)</label>
+                        <input type="number" id="mi-rate" placeholder="Rate per Session (₹)" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
                     </div>
                     <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Discount (\u20B9) — optional</label>
-                        <input type="number" id="mi-discount" placeholder="Discount (\u20B9) — optional" value="0" min="0" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Discount (₹) — optional</label>
+                        <input type="number" id="mi-discount" placeholder="Discount (₹) — optional" value="0" min="0" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
                     </div>
                     <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Advance Paid (\u20B9)</label>
-                        <input type="number" id="mi-advance" placeholder="Advance Paid (\u20B9)" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Advance Paid (₹)</label>
+                        <input type="number" id="mi-advance" placeholder="Advance Paid (₹)" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
                     </div>
                     <div>
                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Payment Mode</label>
@@ -4620,7 +4648,7 @@ html.dark .instruction-modal-footer {
 
                 <div class="space-y-4">
                     <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Amount Received (\u20B9)</label>
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Amount Received (₹)</label>
                         <input type="number" id="mp-amount" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all">
                     </div>
                     <div>
@@ -4927,7 +4955,7 @@ function setupPhoneInputFormatting(inputElement) {
 
         // Reapply formatting
         if (truncated.length > 0) {
-            e.target.value = '+91 ' + truncated;
+            e.target.value = '+91' + truncated;
         } else {
             e.target.value = '';
         }
@@ -4935,7 +4963,7 @@ function setupPhoneInputFormatting(inputElement) {
 
     // Prevent cursor from getting stuck on "+91 " when backspacing
     inputElement.addEventListener('keydown', function(e) {
-        if (this.value.length <= 5 && (e.key === 'Backspace' || e.key === 'Delete')) {
+        if (this.value.length <= 4 && (e.key === 'Backspace' || e.key === 'Delete')) {
             this.value = '';
             e.preventDefault();
         }
@@ -5479,8 +5507,7 @@ let mpinVisible = false;
 
         function warmUpBackend() {
             try {
-                const u = localStorage.getItem('prism_mpin_user');
-                if (!u) return;
+                const u = localStorage.getItem('prism_mpin_user') || 'admin';
                 fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -5954,7 +5981,7 @@ function resetEnrollBodyChart(){
                     Object.values(patientLookup).forEach(p => {
                         totalOut += Number(p.outstandingDue) || 0;
                     });
-                    outEl.innerText = "\u20B9" + Math.round(totalOut).toLocaleString('en-IN');
+                    outEl.innerText = "₹" + Math.round(totalOut).toLocaleString('en-IN');
                 }
             } catch (e) {
                 console.warn("updateGlobalStats notice:", e);
@@ -7139,18 +7166,18 @@ function resetEnrollBodyChart(){
                 });
                 const totalOut = balResult.totalOutstanding || 0;
                 const outstanding = document.getElementById('stat-outstanding');
-                if (outstanding) outstanding.innerText = "\u20B9" + totalOut.toLocaleString('en-IN');
+                if (outstanding) outstanding.innerText = "₹" + totalOut.toLocaleString('en-IN');
             }
 
             // Apply revenue stats
             if (statsResult) {
                 if (statEl.total)   statEl.total.innerText    = statsResult.sessionCount || 0;
-                if (statEl.revenue) statEl.revenue.innerText  = "\u20B9" + (statsResult.totalRevenue  || 0).toLocaleString('en-IN');
-                if (statEl.pocRev)  statEl.pocRev.innerText   = "\u20B9" + (statsResult.pocRevenue    || 0).toLocaleString('en-IN');
-                if (statEl.phcRev)  statEl.phcRev.innerText   = "\u20B9" + (statsResult.phcRevenue    || 0).toLocaleString('en-IN');
-                if (statEl.daily)   statEl.daily.innerText    = "\u20B9" + (statsResult.dailyRevenue  || 0).toLocaleString('en-IN');
-                if (statEl.monthly) statEl.monthly.innerText  = "\u20B9" + (statsResult.monthlyRevenue|| 0).toLocaleString('en-IN');
-                if (statEl.yearly)  statEl.yearly.innerText   = "\u20B9" + (statsResult.yearlyRevenue || 0).toLocaleString('en-IN');
+                if (statEl.revenue) statEl.revenue.innerText  = "₹" + (statsResult.totalRevenue  || 0).toLocaleString('en-IN');
+                if (statEl.pocRev)  statEl.pocRev.innerText   = "₹" + (statsResult.pocRevenue    || 0).toLocaleString('en-IN');
+                if (statEl.phcRev)  statEl.phcRev.innerText   = "₹" + (statsResult.phcRevenue    || 0).toLocaleString('en-IN');
+                if (statEl.daily)   statEl.daily.innerText    = "₹" + (statsResult.dailyRevenue  || 0).toLocaleString('en-IN');
+                if (statEl.monthly) statEl.monthly.innerText  = "₹" + (statsResult.monthlyRevenue|| 0).toLocaleString('en-IN');
+                if (statEl.yearly)  statEl.yearly.innerText   = "₹" + (statsResult.yearlyRevenue || 0).toLocaleString('en-IN');
                 if (statsResult.chartData && typeof renderCharts === 'function') renderCharts(statsResult.chartData);
                 if (statsResult.dailyMap && typeof renderDailyChart === 'function') renderDailyChart(statsResult.dailyMap);
             }
@@ -7802,7 +7829,7 @@ renderTables();
                             <td class="p-5 text-center hidden lg:table-cell"><span class="bg-slate-100 text-[10px] font-black uppercase px-3 py-1 rounded-lg">${branch}</span></td>
                             <td class="p-5 text-slate-600 italic truncate max-w-[200px] hidden lg:table-cell">${diag || '-'}</td>
                             <td class="p-5 text-center"><span class="${modeBadgeColor} text-[10px] font-black uppercase px-3 py-1 rounded-lg">${paymentDisplay}</span></td>
-                            <td class="p-5 text-right font-black text-slate-800">\u20B9${fee.toLocaleString()}</td>
+                            <td class="p-5 text-right font-black text-slate-800">₹${fee.toLocaleString()}</td>
                         </tr>`;
                     });
                 }
@@ -7810,10 +7837,10 @@ renderTables();
                 const collectionTotal = regResult.collectionTotal || 0;
                 tbody.innerHTML = html;
                 totalVisitsEl.innerText = visitCount;
-                totalFeeEl.innerText = "\u20B9" + collectionTotal.toLocaleString();
-                if (footerTotalEl) footerTotalEl.innerText = "\u20B9" + collectionTotal.toLocaleString();
+                totalFeeEl.innerText = "₹" + collectionTotal.toLocaleString();
+                if (footerTotalEl) footerTotalEl.innerText = "₹" + collectionTotal.toLocaleString();
                 const footerTotalMobileEl = document.getElementById('registry-footer-total-mobile');
-                if (footerTotalMobileEl) footerTotalMobileEl.innerText = "\u20B9" + collectionTotal.toLocaleString();
+                if (footerTotalMobileEl) footerTotalMobileEl.innerText = "₹" + collectionTotal.toLocaleString();
             } catch(e) {
                 console.error("Registry load error:", e);
                 tbody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-slate-600 italic">Failed to load registry.</td></tr>`;
@@ -7861,13 +7888,13 @@ renderTables();
                     return `<tr class="hover:bg-slate-50">
                         <td class="p-4 font-black text-slate-700">${label}</td>
                         <td class="p-4 text-center font-bold text-slate-600">${m.count}</td>
-                        <td class="p-4 text-right font-black text-indigo-600">\u20B9${m.fee.toLocaleString()}</td>
+                        <td class="p-4 text-right font-black text-indigo-600">₹${m.fee.toLocaleString()}</td>
                     </tr>`;
                 }).join('');
             }
 
             document.getElementById('bd-title').innerText = branchLabels[branch] || branch;
-            document.getElementById('bd-total').innerText = `Total: \u20B9${total.toLocaleString()}`;
+            document.getElementById('bd-total').innerText = `Total: ₹${total.toLocaleString()}`;
             document.getElementById('branch-detail-modal').classList.remove('hidden');
             lucide.createIcons();
         }
@@ -7889,7 +7916,7 @@ renderTables();
                     tbody.innerHTML += `<tr class="hover:bg-slate-50">
                         <td class="p-4 font-bold uppercase">${name}</td>
                         <td class="p-4 text-center"><span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg font-black text-xs">${rem} Sessions</span></td>
-                        <td class="p-4 text-right font-bold text-slate-600">\u20B9${Math.round(toNum(p.advance)).toLocaleString()}</td>
+                        <td class="p-4 text-right font-bold text-slate-600">₹${Math.round(toNum(p.advance)).toLocaleString()}</td>
                     </tr>`;
                 }
             });
@@ -8066,7 +8093,7 @@ renderTables();
             return;
         }
         if (wallet < totalNeeded) {
-            showToast(`Wallet \u20B9${wallet.toLocaleString()} insufficient for ${selectedDates.length} session(s) at \u20B9${feePerSession} each (\u20B9${totalNeeded.toLocaleString()} needed).`, 'warning');
+            showToast(`Wallet ₹${wallet.toLocaleString()} insufficient for ${selectedDates.length} session(s) at ₹${feePerSession} each (₹${totalNeeded.toLocaleString()} needed).`, 'warning');
             return;
         }
     }
@@ -8271,7 +8298,7 @@ renderTables();
                 <div class="flex flex-col gap-1">
                     <span class="text-[8px] font-black text-indigo-400 uppercase">Active Package</span>
                     <span class="text-xs font-black">Available: ${sessionsRemaining} Sessions</span>
-                    <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet Balance: \u20B9${wallet.toLocaleString()}</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1 uppercase">Wallet Balance: ₹${wallet.toLocaleString()}</span>
                 </div>`;
             hint.className = "mt-2.5 p-3 bg-indigo-50 border border-indigo-100 text-indigo-700 rounded-2xl text-center font-bold uppercase shadow-sm";
         } else {
@@ -8279,7 +8306,7 @@ renderTables();
             const displayAmt = isDue ? due : wallet;
             hint.innerHTML = `<span class="block text-slate-400 text-[8px] uppercase">Payment Status</span>
                               <span class="block ${isDue ? 'text-rose-700' : 'text-emerald-700'} font-black text-xs">
-                              ${isDue ? 'Due' : 'Wallet Balance'}: \u20B9${displayAmt.toLocaleString()}</span>`;
+                              ${isDue ? 'Due' : 'Wallet Balance'}: ₹${displayAmt.toLocaleString()}</span>`;
             hint.className = `mt-2.5 p-3 ${isDue ? 'bg-rose-50 border-rose-200' : 'bg-emerald-50 border-emerald-200'} rounded-2xl text-center font-bold uppercase`;
         }
     };
@@ -8349,7 +8376,7 @@ function saveEnrollment() {
     showEnrollmentSuccessPopup({
         name: name,
         id: enrolledId,
-        phone: enrolledPhone,
+        phone: "'" + String(enrolledPhone || '').replace(/\s+/g, ''),
         diag: enrolledDiag,
         amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
     });
@@ -8362,7 +8389,7 @@ function saveEnrollment() {
         doctor: assignedDoctor,
         age: document.getElementById('en-age').value,
         gender: document.getElementById('en-gender').value,
-        phone: enrolledPhone,
+        phone: "'" + String(enrolledPhone || '').replace(/\s+/g, ''),
         condition: enrolledDiag,
         grossAmount: gross,
         totalSessions: enrolledSessions,
@@ -8477,7 +8504,7 @@ function showEnrollmentSuccessPopup(patient) {
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.55rem; border-top:1px solid #e2e8f0; margin-top:0.1rem;">
                     <span style="font-size:0.62rem; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.6px;">Amount</span>
-                    <span style="font-size:1rem; font-weight:900; color:#059669;">\u20B9${Number(patient.amount || 0).toLocaleString()}</span>
+                    <span style="font-size:1rem; font-weight:900; color:#059669;">₹${Number(patient.amount || 0).toLocaleString()}</span>
                 </div>
             </div>
 
@@ -8566,7 +8593,7 @@ function showEnrollmentSuccessPopup(patient) {
             document.getElementById('en-gender').value = "Male";
             document.getElementById('en-branch').value = "POC";
             document.getElementById('en-reg-date').value = getLocalISOString();
-            document.getElementById('enroll-summary').innerText = "\u20B90";
+            document.getElementById('enroll-summary').innerText = "₹0";
             document.getElementById('en-payment-mode').value = "";
             generateClinicalID();
             resetEnrollBodyChart();
@@ -8590,7 +8617,7 @@ function showEnrollmentSuccessPopup(patient) {
     updatePatientWorkspaceUI(selectedPatientName, p, false);
     renderTables();
     renderDuesWidget();
-    showToast(`Topup of \u20B9${topup} added to wallet`, "success");
+    showToast(`Topup of ₹${topup} added to wallet`, "success");
 
     syncToBackend({
         action: "markAsPaid",
@@ -8907,7 +8934,7 @@ function openMidPackage() {
                                 ${isClosed ? 
                                     '<div class="flex flex-col items-end gap-0.5"><span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-0.5 rounded-md uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>' : 
                                     (p.outstandingDue > 0 ? 
-                                        `<span class="bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">\u20B9${p.outstandingDue.toLocaleString()} Due</span>` : 
+                                        `<span class="bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">₹${p.outstandingDue.toLocaleString()} Due</span>` : 
                                         '<span class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">Active Case</span>')
                                 }
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all"></i>
@@ -9015,10 +9042,10 @@ function openMidPackage() {
                 badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
             } else if (rem > 0 && p.purchased > 0) {
                 const pkgTag = p.activePackageId ? ` | Pkg: ${p.activePackageId.replace('PKG-','')}` : '';
-                badge.innerText = `Rem: ${rem} Sessions | Wallet: \u20B9${wallet.toLocaleString()}${pkgTag}`;
+                badge.innerText = `Rem: ${rem} Sessions | Wallet: ₹${wallet.toLocaleString()}${pkgTag}`;
                 badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
             } else {
-                badge.innerText = `REGULAR | Wallet: \u20B9${wallet.toLocaleString()}`;
+                badge.innerText = `REGULAR | Wallet: ₹${wallet.toLocaleString()}`;
                 badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
             }
 
@@ -9060,14 +9087,14 @@ function openMidPackage() {
 
                 // Fee display
                 const feeDisplay = (() => {
-                    if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+\u20B9${toNum(l[11]).toLocaleString()} wallet</span>`;
+                    if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+₹${toNum(l[11]).toLocaleString()} wallet</span>`;
                     if (fee <= 0) return `<span class="text-slate-400 font-bold text-[10px]">—</span>`;
 
                     // If there is actual outstanding due on this session
                     if (isPending && actualDue > 0) {
                         return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">\u20B9${fee.toLocaleString()}</span>
-                            <span class="block text-[8px] font-black text-rose-500 uppercase">\u20B9${actualDue.toLocaleString()} due</span>
+                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                            <span class="block text-[8px] font-black text-rose-500 uppercase">₹${actualDue.toLocaleString()} due</span>
                         </div>`;
                     }
 
@@ -9075,19 +9102,19 @@ function openMidPackage() {
                     if (paid > 0 && paid < fee) {
                         const walletCovered = fee - paid;
                         return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">\u20B9${fee.toLocaleString()}</span>
-                            <span class="block text-[8px] font-black text-emerald-600 uppercase">\u20B9${paid.toLocaleString()} + \u20B9${walletCovered.toLocaleString()} Wallet</span>
+                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                            <span class="block text-[8px] font-black text-emerald-600 uppercase">₹${paid.toLocaleString()} + ₹${walletCovered.toLocaleString()} Wallet</span>
                         </div>`;
                     }
 
                     if (paid === 0 && mode !== 'Complimentary' && mode !== 'Refund') {
                         return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">\u20B9${fee.toLocaleString()}</span>
+                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
                             <span class="block text-[8px] font-black text-emerald-600 uppercase">Settled (Wallet)</span>
                         </div>`;
                     }
 
-                    return `<span class="font-black text-[10px] text-slate-700">\u20B9${fee.toLocaleString()}</span>`;
+                    return `<span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>`;
                 })();
 
                 return `<div class="log-card ${isPending ? 'border-l-2 border-l-rose-400' : isEnroll ? 'border-l-2 border-l-indigo-400' : isPkg ? 'border-l-2 border-l-purple-400' : ''}">
@@ -9341,7 +9368,7 @@ function openMidPackage() {
 
                 // Status indicator color
                 const statusColor = hasDue ? 'bg-rose-500' : rem > 0 ? 'bg-indigo-500' : 'bg-emerald-500';
-                const statusText = hasDue ? `\u20B9${p.outstandingDue.toLocaleString()} due` : rem > 0 ? `${rem} left` : 'Regular';
+                const statusText = hasDue ? `₹${p.outstandingDue.toLocaleString()} due` : rem > 0 ? `${rem} left` : 'Regular';
 
                 return `<div data-name="${safeName}" 
                     class="relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none
@@ -9402,11 +9429,11 @@ function openMidPackage() {
                     if (p.closed) {
                         statusBadge = `<span class="${commonCls} bg-slate-100 text-slate-500 border-slate-200">CLOSED</span>`;
                     } else if (p.outstandingDue > 0) {
-                        statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-600 hover:text-white cursor-pointer">\u20B9${p.outstandingDue.toLocaleString()} DUE</button>`;
+                        statusBadge = `<button onclick="openMarkPaidPrompt('${name.replace(/'/g, "\\'")}')" class="${commonCls} bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-600 hover:text-white cursor-pointer">₹${p.outstandingDue.toLocaleString()} DUE</button>`;
                     } else if (rem > 0) {
-                        statusBadge = `<span class="${commonCls} bg-indigo-50 text-indigo-600 border-indigo-100">${rem} LEFT <span class="mx-1 opacity-30">|</span> \u20B9${wallet.toLocaleString()}</span>`;
+                        statusBadge = `<span class="${commonCls} bg-indigo-50 text-indigo-600 border-indigo-100">${rem} LEFT <span class="mx-1 opacity-30">|</span> ₹${wallet.toLocaleString()}</span>`;
                     } else if (wallet > 0) {
-                        statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">\u20B9${wallet.toLocaleString()} WALLET</span>`;
+                        statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">₹${wallet.toLocaleString()} WALLET</span>`;
                     } else {
                         statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">REGULAR</span>`;
                     }
@@ -9432,7 +9459,7 @@ function openMidPackage() {
                     bHtml += `<tr class="hover:bg-slate-50/50" data-patient="${name}">
                                 <td class="p-5 font-bold uppercase text-xs">${name}</td>
                                 <td class="p-5 font-black text-xs text-slate-600 hidden lg:table-cell">${p.id}</td>
-                                <td class="p-5 text-xs font-bold text-indigo-600">\u20B9${totalAmount.toLocaleString()}</td>
+                                <td class="p-5 text-xs font-bold text-indigo-600">₹${totalAmount.toLocaleString()}</td>
                                 <td class="p-5 text-center">
                                     <button onclick="generateBill('${name}')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase shadow-md transition-all whitespace-nowrap inline-flex items-center justify-center min-w-[100px]">
             Generate Bill
@@ -9690,7 +9717,7 @@ document.getElementById('pd-sessions').innerText = consumed;
 
         async function generateClinicalID() {
     const b = document.getElementById('en-branch').value;
-    const result = await syncToBackend({ action: "getNextPatientId", branch: b });
+    const result = await syncToBackend({ action: "getNextPatientId", branch: b, globalCounter: true });
     document.getElementById('en-id').value = result.newId;
 }
 
@@ -9773,7 +9800,7 @@ document.getElementById('pd-sessions').innerText = consumed;
             const msg = encodeURIComponent(
                 `Hello ${name},\n\n` +
                 `This is a gentle reminder from *Prism Physiotherapy & Rehabilitation Center* regarding a pending balance on your account.\n\n` +
-                `*Outstanding Amount:* \u20B9${due.toLocaleString()}\n` +
+                `*Outstanding Amount:* ₹${due.toLocaleString()}\n` +
                 `*Pending for:* ${sessionCount} session(s)\n\n` +
                 `You can clear this via UPI:\n` +
                 `*UPI ID:* ${UPI_ID}\n\n` +
@@ -10684,7 +10711,7 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
 
                 const msg = encodeURIComponent(
                     `Hello ${name},\n\n` +
-                    `Please find your official physiotherapy bill, session narrative ledger, and treatment completion certificate (Statement No: ${stmtNo}) for \u20B9${totalStr}.\n\n` +
+                    `Please find your official physiotherapy bill, session narrative ledger, and treatment completion certificate (Statement No: ${stmtNo}) for ₹${totalStr}.\n\n` +
                     `\uD83D\uDCC4 *Download Clinical Documents (PDF):*\n` +
                     `${billDownloadUrl}\n\n` +
                     `\uD83D\uDD0D *Verify Document Authenticity:*\n` +
@@ -10750,15 +10777,15 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
         const cappedDiscAmt = Math.min(discAmt, gross);
         const net = Math.max(0, Math.round(gross - cappedDiscAmt));
         const due = Math.max(0, Math.round(net - advance));
-        document.getElementById('en-pkg-val').innerText = `\u20B9${gross.toLocaleString()}`;
-        document.getElementById('enroll-summary').innerText = `\u20B9${advance.toLocaleString()} Paid — \u20B9${due.toLocaleString()} Due`;
+        document.getElementById('en-pkg-val').innerText = `₹${gross.toLocaleString()}`;
+        document.getElementById('enroll-summary').innerText = `₹${advance.toLocaleString()} Paid — ₹${due.toLocaleString()} Due`;
         const statusEl = document.getElementById('en-calc-status');
         if (statusEl) {
             if (discAmt > gross) {
                 statusEl.innerHTML = `<span class="text-rose-600 text-[9px] font-black uppercase">Discount exceeds package value</span>`;
             } else {
                 statusEl.innerHTML = due > 0
-                    ? `<span class="text-rose-600 text-[9px] font-black uppercase">\u20B9${due.toLocaleString()} balance due</span>`
+                    ? `<span class="text-rose-600 text-[9px] font-black uppercase">₹${due.toLocaleString()} balance due</span>`
                     : `<span class="text-emerald-600 text-[9px] font-black uppercase">Fully paid ✓</span>`;
             }
         }
@@ -10882,7 +10909,7 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
                         <span class="text-[8px] font-bold text-slate-400 ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">\u20B9${r.due.toLocaleString()} due</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">₹${r.due.toLocaleString()} due</span>
                         <button onclick="sendDueReminder('${r.name.replace(/'/g, "\\'")}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
                         <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
                     </div>
@@ -11001,11 +11028,11 @@ async function confirmMarkPaid() {
         // (a) clears existing due first, then (b) any remainder lands as wallet credit.
         // Frontend never re-derives which portion went where — just reflects newDue/newWallet.
         if (newDue === 0 && newWallet > 0) {
-            showToast(`\u20B9${amount} received — all dues cleared, \u20B9${newWallet.toLocaleString()} credited to wallet`, 'success');
+            showToast(`₹${amount} received — all dues cleared, ₹${newWallet.toLocaleString()} credited to wallet`, 'success');
         } else if (newDue === 0) {
-            showToast(`\u20B9${amount} received — all dues cleared`, 'success');
+            showToast(`₹${amount} received — all dues cleared`, 'success');
         } else {
-            showToast(`\u20B9${amount} received — \u20B9${newDue.toLocaleString()} still outstanding`, 'warning');
+            showToast(`₹${amount} received — ₹${newDue.toLocaleString()} still outstanding`, 'warning');
         }
 
         renderTables();
@@ -11036,7 +11063,7 @@ async function confirmMarkPaid() {
 
         function exportPatientsCSV() {
             const rows = [
-                ['Clinical ID', 'Patient Name', 'Age', 'Gender', 'Phone', 'Condition', 'Status', 'Sessions Purchased', 'Sessions Consumed', 'Outstanding Due (\u20B9)']
+                ['Clinical ID', 'Patient Name', 'Age', 'Gender', 'Phone', 'Condition', 'Status', 'Sessions Purchased', 'Sessions Consumed', 'Outstanding Due (₹)']
             ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
@@ -11054,7 +11081,7 @@ async function confirmMarkPaid() {
 
         function exportBillingCSV() {
             const rows = [
-                ['Patient Name', 'Clinical ID', 'Sessions Consumed', 'Sessions Purchased', 'Total Amount (\u20B9)', 'Outstanding Due (\u20B9)']
+                ['Patient Name', 'Clinical ID', 'Sessions Consumed', 'Sessions Purchased', 'Total Amount (₹)', 'Outstanding Due (₹)']
             ];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
@@ -12727,7 +12754,7 @@ window.shareExTabViaWhatsApp = function() {
                             renderTables();
                             renderDuesWidget();
                             updateGlobalStats();
-                            showToast(`Fee updated to \u20B9${newFee}`, "success");
+                            showToast(`Fee updated to ₹${newFee}`, "success");
 
                             syncToBackend({
                                 action: "updateFee",
@@ -12970,17 +12997,17 @@ window.shareExTabViaWhatsApp = function() {
                     </div>
                 </td>
                 <td class="p-2 lg:p-5 text-center whitespace-nowrap">
-                    <div class="flex items-center justify-center gap-1 lg:gap-2">
-                        <button onclick="convertInquiryToPatient('${idVal}')" class="bg-indigo-600 text-white px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 active:scale-95 transition-all" title="Convert & Enroll Patient">
-                            <i data-lucide="user-plus" class="w-3 h-3"></i> <span>Enroll</span>
-                        </button>
-                        <button onclick="sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="bg-[#25D366] text-white px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 active:scale-95 transition-all" title="Send WhatsApp Reminder">
-                            <i data-lucide="message-circle" class="w-3 h-3"></i> <span class="hidden sm:inline">WhatsApp</span><span class="sm:hidden">WA</span>
-                        </button>
-                        <a href="${callHref}" ${callOnClick} class="iq-action-btn bg-sky-600 hover:bg-sky-700 text-white px-2 lg:px-3 py-1 lg:py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-sm hover:scale-105 active:scale-95 transition-all no-underline inline-flex items-center justify-center" title="Call Patient Directly">
-                            <i data-lucide="phone" class="w-3 h-3"></i> <span>Call</span>
-                        </a>
-                    </div>
+                    <div class="flex items-center justify-center gap-1.5">
+    <button onclick="convertInquiryToPatient('${idVal}')" class="iq-btn iq-btn-enroll" title="Convert & Enroll Patient">
+    <i data-lucide="user-plus"></i>
+</button>
+<button onclick="sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="iq-btn iq-btn-wa" title="Send WhatsApp Reminder">
+    <i data-lucide="message-circle"></i>
+</button>
+<a href="${callHref}" ${callOnClick} class="iq-btn iq-btn-call" title="Call Patient Directly">
+    <i data-lucide="phone"></i>
+</a>
+</div>
                 </td>
             </tr>
             `;
@@ -13359,7 +13386,7 @@ resetInactivityTimer();
         const remaining = getRemainingSessions(p);
         const isPending = mode === 'Pending';
 
-        let msg = `Hello ${selectedPatientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: \u20B9${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
+        let msg = `Hello ${selectedPatientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: ₹${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
         if (p.purchased > 0) msg += `Remaining Sessions: *${remaining}*\n`;
         msg += `\nThank you! Wishing you a smooth recovery.\n\nPrism Physiotherapy & Rehabilitation Center`;
 
@@ -13370,10 +13397,10 @@ resetInactivityTimer();
             selectedPatientName,
             [
                 { label: 'Date', value: dateStr },
-                { label: 'Amount Paid', value: `\u20B9${paid.toLocaleString()}` },
+                { label: 'Amount Paid', value: `₹${paid.toLocaleString()}` },
                 ...(p.purchased > 0 ? [{ label: 'Sessions Remaining', value: `${remaining} / ${p.purchased}` }] : [])
             ],
-            isPending ? `Pending (\u20B9${toNum(row[9]).toLocaleString()})` : `Paid \u20B9${paid.toLocaleString()} via ${mode}`,
+            isPending ? `Pending (₹${toNum(row[9]).toLocaleString()})` : `Paid ₹${paid.toLocaleString()} via ${mode}`,
             isPending ? '#e11d48' : '#059669',
             msg,
             'Send Bill'
@@ -13387,7 +13414,7 @@ resetInactivityTimer();
         const due = p.outstandingDue;
         const sessions = p.dueSessionCount || 0;
 
-        const msg = `Hello ${name},\n\nGentle reminder from *Prism Physiotherapy & Rehabilitation Center*.\n\n*Outstanding Amount:* \u20B9${due.toLocaleString()}\n*Pending for:* ${sessions} session(s)\n\nPay via UPI: *dr.raviphysio01@oksbi*\n\nShare screenshot once paid, or pay at the clinic.\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
+        const msg = `Hello ${name},\n\nGentle reminder from *Prism Physiotherapy & Rehabilitation Center*.\n\n*Outstanding Amount:* ₹${due.toLocaleString()}\n*Pending for:* ${sessions} session(s)\n\nPay via UPI: *dr.raviphysio01@oksbi*\n\nShare screenshot once paid, or pay at the clinic.\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
 
         openWaPopup(
             p.phone,
@@ -13395,10 +13422,10 @@ resetInactivityTimer();
             '#e11d48',
             name,
             [
-                { label: 'Outstanding', value: `\u20B9${due.toLocaleString()}` },
+                { label: 'Outstanding', value: `₹${due.toLocaleString()}` },
                 { label: 'Sessions Pending', value: `${sessions}` }
             ],
-            `\u20B9${due.toLocaleString()} Due`,
+            `₹${due.toLocaleString()} Due`,
             '#e11d48',
             msg,
             'Send Reminder'
@@ -13423,12 +13450,12 @@ resetInactivityTimer();
         const newWallet = patientLookup[name]?.walletBalance  || 0;
 
         const statusText = newDue === 0
-            ? `All dues cleared. Wallet: \u20B9${newWallet.toLocaleString()}`
-            : `\u20B9${newDue.toLocaleString()} still outstanding`;
+            ? `All dues cleared. Wallet: ₹${newWallet.toLocaleString()}`
+            : `₹${newDue.toLocaleString()} still outstanding`;
 
-        const msg = `Hello ${name},\n\nWe have received your payment of \u20B9${amount.toLocaleString()} via ${mode}.\n\n` +
+        const msg = `Hello ${name},\n\nWe have received your payment of ₹${amount.toLocaleString()} via ${mode}.\n\n` +
             `*Date:* ${formatDateDMY(getLocalISOString())}\n` +
-            `*Outstanding Balance:* \u20B9${newDue.toLocaleString()}\n\n` +
+            `*Outstanding Balance:* ₹${newDue.toLocaleString()}\n\n` +
             `Thank you!\n\nPrism Physiotherapy & Rehabilitation Center`;
 
         openWaPopup(
@@ -13437,9 +13464,9 @@ resetInactivityTimer();
             '#059669',
             name,
             [
-                { label: 'Amount Received', value: `\u20B9${amount.toLocaleString()}` },
+                { label: 'Amount Received', value: `₹${amount.toLocaleString()}` },
                 { label: 'Mode', value: mode },
-                { label: 'Balance After', value: newDue === 0 ? '\u20B90 Due ✓' : `\u20B9${newDue.toLocaleString()} Due` }
+                { label: 'Balance After', value: newDue === 0 ? '₹0 Due ✓' : `₹${newDue.toLocaleString()} Due` }
             ],
             statusText,
             newDue === 0 ? '#059669' : '#e11d48',
@@ -13667,7 +13694,7 @@ document.getElementById('session-payment-mode').addEventListener('change', funct
     } else if (mode === 'Refund') {
         amountInput.value = 0;
         amountInput.readOnly = false;
-        amountInput.placeholder = 'Refund amount (\u20B9)';
+        amountInput.placeholder = 'Refund amount (₹)';
     } else if (mode === 'Split') {
         amountInput.readOnly = true;
         amountInput.placeholder = 'Auto = Cash + UPI';
@@ -13730,13 +13757,13 @@ function updatePartialHint() {
 
         if (netDue === 0) {
             hint.className = "mt-1 text-[8px] font-black text-emerald-600 uppercase ml-1";
-            hint.innerHTML = `✓ \u20B9${walletCovered.toLocaleString()} covered by advance wallet — \u20B90 due`;
+            hint.innerHTML = `✓ ₹${walletCovered.toLocaleString()} covered by advance wallet — ₹0 due`;
         } else if (walletCovered > 0) {
             hint.className = "mt-1 text-[8px] font-black text-amber-600 uppercase ml-1";
-            hint.innerHTML = `⚠ \u20B9${walletCovered.toLocaleString()} covered by wallet — \u20B9${netDue.toLocaleString()} will be marked as due`;
+            hint.innerHTML = `⚠ ₹${walletCovered.toLocaleString()} covered by wallet — ₹${netDue.toLocaleString()} will be marked as due`;
         } else {
             hint.className = "mt-1 text-[8px] font-black text-amber-600 uppercase ml-1";
-            hint.innerHTML = `⚠ Partial — \u20B9${gap.toLocaleString()} will be marked as due`;
+            hint.innerHTML = `⚠ Partial — ₹${gap.toLocaleString()} will be marked as due`;
         }
         hint.classList.remove('hidden');
     } else {
@@ -13788,9 +13815,9 @@ async function openDueSessionsModal(name) {
         <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid #f1f5f9;">
             <div>
                 <span style="font-size:0.8rem;font-weight:900;color:#0f172a;">${formatDateDMY(dateVal)}</span>
-                ${isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid \u20B9${paid.toLocaleString()} of \u20B9${fee.toLocaleString()}</span>` : ''}
+                ${isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid ₹${paid.toLocaleString()} of ₹${fee.toLocaleString()}</span>` : ''}
             </div>
-            <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">\u20B9${due.toLocaleString()} due</span>
+            <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">₹${due.toLocaleString()} due</span>
         </div>`;
     }).join('');
 
@@ -13806,7 +13833,7 @@ async function openDueSessionsModal(name) {
 
         <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:0.75rem;padding:0.6rem 1rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#e11d48;">Total Due</span>
-            <span style="font-size:1.1rem;font-weight:900;color:#be123c;">\u20B9${totalDue.toLocaleString()}</span>
+            <span style="font-size:1.1rem;font-weight:900;color:#be123c;">₹${totalDue.toLocaleString()}</span>
         </div>
 
         <div style="overflow-y:auto;flex:1;margin-bottom:1rem;">
@@ -14194,7 +14221,7 @@ window.unlockApp = function() {
                             </div>
                             <div style="background:#f8fafc;border-radius:.5rem;padding:6px 8px;text-align:center;">
                                 <span style="display:block;font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase;">Total Paid</span>
-                                <span style="font-weight:900;font-size:.95rem;color:#059669;">\u20B9${total.toLocaleString()}</span>
+                                <span style="font-weight:900;font-size:.95rem;color:#059669;">₹${total.toLocaleString()}</span>
                             </div>
                             <div style="background:#f8fafc;border-radius:.5rem;padding:6px 8px;text-align:center;">
                                 <span style="display:block;font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase;">Last Visit</span>
