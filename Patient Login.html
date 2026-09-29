@@ -24,8 +24,10 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
-        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.5); }
+        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.6); }
         .hero-gradient { background: #ffffff; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .bill-page { 
             width: 210mm; min-height: 297mm; background: white; padding: 20mm; 
@@ -51,17 +53,20 @@
         .doc-footer3 .doc-sign2 .sign-auth { display:block; font-size:9px; font-weight:900; color:#4f46e5; letter-spacing:0.5px; text-transform: uppercase; }
 
         @media screen and (max-width: 800px) {
-            .bill-page { transform: scale(0.4); transform-origin: top center; margin-bottom: -620px; }
+            .bill-page { transform: scale(0.44); transform-origin: top center; margin-bottom: -550px; }
+        }
+        @media screen and (max-width: 480px) {
+            .bill-page { transform: scale(0.38); transform-origin: top center; margin-bottom: -620px; }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
 
     <div id="login-section">
         <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
             <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
                 <a href="index.html" class="flex items-center group">
-                    <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy Logo" class="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                    <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy Logo" class="h-12 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
                 </a>
                 <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
                     <a href="index.html" class="hover:text-clinical-blue transition-all">Home</a>
@@ -71,37 +76,61 @@
                     <a href="Patient Login.html" class="text-clinical-blue hover:opacity-80 transition-all border-b-2 border-clinical-blue pb-1">Patient Login</a>
                     <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5">Make Appointment</a>
                 </div>
-                <button id="menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg"><i data-lucide="menu" class="w-8 h-8"></i></button>
+                <button id="menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl" aria-label="Toggle Menu">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
             </div>
         </nav>
 
-        <div id="login-screen" class="min-h-screen bg-white flex items-center justify-center px-6 pb-6 pt-28">
-            <div class="w-full max-w-md bg-white rounded-[3rem] p-10 shadow-2xl border border-slate-100 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full"></div>
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm lg:hidden flex justify-end">
+            <div class="w-72 bg-white h-full p-6 shadow-2xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+                        <img src="https://prismhealthcare.in/prism1.png" class="h-10" alt="Logo">
+                        <button id="close-menu" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    <div class="flex flex-col space-y-4 mt-6 text-sm font-bold text-slate-700">
+                        <a href="index.html" class="p-2 rounded-xl hover:bg-slate-50">Home</a>
+                        <a href="about.html" class="p-2 rounded-xl hover:bg-slate-50">About</a>
+                        <a href="services.html" class="p-2 rounded-xl hover:bg-slate-50">Services</a>
+                        <a href="careers.html" class="p-2 rounded-xl hover:bg-slate-50">Careers</a>
+                        <a href="Patient Login.html" class="p-2 rounded-xl bg-indigo-50 text-indigo-600">Patient Login</a>
+                    </div>
+                </div>
+                <a href="appointment.html" class="w-full bg-clinical-blue text-white py-3.5 rounded-2xl font-bold text-center text-sm shadow-lg">Make Appointment</a>
+            </div>
+        </div>
+
+        <div id="login-screen" class="min-h-screen bg-slate-50/50 flex items-center justify-center px-4 sm:px-6 pb-8 pt-28">
+            <div class="w-full max-w-md bg-white rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-10 shadow-2xl border border-slate-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 text-center">
-                    <img src="https://prismhealthcare.in/prism1.png" class="h-12 mx-auto mb-6">
+                    <img src="https://prismhealthcare.in/prism1.png" class="h-12 mx-auto mb-6" alt="Prism">
                     <h2 class="text-2xl font-black tracking-tight mb-2 text-slate-800">Clinical Portal</h2>
                     <p class="text-slate-400 text-sm mb-8 font-medium">Identify yourself to access medical records</p>
                     
                     <div class="space-y-4 text-left">
                         <div class="space-y-1">
-                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">User Id</label>
-                            <input type="text" id="login-name" placeholder="As per clinical record" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Full Name or Mobile No.</label>
+                            <input type="text" id="login-name" placeholder="e.g. Premshila Devi or 9523279977" class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 text-base ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
                         </div>
                         <div class="space-y-1">
-    <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Verification ID</label>
-    <div class="relative">
-        <input type="password" id="login-id" placeholder="Last 4 digits" maxlength="4" 
-            class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
-        <button type="button" onclick="toggleMask()" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl hover:scale-110 transition-transform" id="mask-btn">
-            👀
-        </button>
-    </div>
-</div>
-                        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Patient ID or Last 4 Digits</label>
+                            <div class="relative">
+                                <input type="password" id="login-id" placeholder="e.g. 1062 or PHC26/1062" 
+                                    class="w-full p-4 bg-slate-50 rounded-2xl border-none outline-none font-bold text-slate-700 text-base ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                                <button type="button" onclick="toggleMask()" class="absolute right-4 top-1/2 -translate-y-1/2 text-xl hover:scale-110 transition-transform" id="mask-btn" aria-label="Toggle password visibility">
+                                    👀
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-indigo-600 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
                             Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>
                         </button>
-                        <p id="login-error" class="text-rose-500 text-xs font-bold text-center hidden">Access denied. Please check your details.</p>
+                        <p id="login-error" class="text-rose-500 text-xs font-bold text-center hidden">Access denied. Please check your name/mobile and ID.</p>
                     </div>
                 </div>
             </div>
@@ -110,140 +139,352 @@
 
     <!-- MAIN DASHBOARD -->
     <div id="app-content" class="hidden min-h-screen">
-        <header class="glass-card sticky top-0 z-[100] px-6 py-4 flex justify-between items-center border-b border-slate-200/50">
-            <div class="flex items-center gap-3">
-                <img src="https://prismhealthcare.in/prism1.png" class="h-8">
-                <div class="h-6 w-[1px] bg-slate-200 mx-1"></div>
-                <span class="text-[10px] font-black text-indigo-600 tracking-tighter bg-indigo-50 px-2 py-1 rounded uppercase">Verified Portal</span>
+        <header class="glass-card sticky top-0 z-[100] px-4 md:px-6 py-3.5 sm:py-4 flex justify-between items-center border-b border-slate-200/60 shadow-xs">
+            <div class="flex items-center">
+                <img src="https://prismhealthcare.in/prism1.png" class="h-7 sm:h-8" alt="Prism Healthcare Logo">
             </div>
-            <button onclick="location.reload()" class="flex items-center gap-2 text-[10px] font-black text-slate-400 hover:text-rose-500 transition-all uppercase font-bold">
-                Logout <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
+            <div class="flex items-center">
+                <button onclick="logoutPatient()" class="inline-flex items-center gap-1.5 text-xs font-black text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/90 px-3.5 py-1.5 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95">
+                    Logout <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-600"></i>
+                </button>
+            </div>
         </header>
 
-        <main class="max-w-4xl mx-auto p-6 space-y-8">
+        <main class="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 md:space-y-8">
             <!-- Hero Patient Card -->
-            <div class="hero-gradient rounded-[3rem] p-10 shadow-2xl relative overflow-hidden border border-slate-100">
+            <div class="hero-gradient rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 shadow-xl relative overflow-hidden border border-slate-100">
                 <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <div class="flex items-center gap-2 mb-4">
+                        <div class="flex items-center gap-2 mb-3">
                             <span id="p-id-badge" class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">—</span>
                             <span class="bg-emerald-500 w-2 h-2 rounded-full animate-pulse"></span>
                         </div>
-                        <h1 id="p-name" class="text-4xl font-black tracking-tight mb-2 text-slate-800">—</h1>
-                        <p id="p-diag" class="text-indigo-600 font-bold italic opacity-90">—</p>
+                        <h1 id="p-name" class="text-3xl md:text-4xl font-black tracking-tight mb-2 text-slate-800 leading-tight">—</h1>
+                        <p id="p-diag" class="text-indigo-600 font-bold italic opacity-90 text-sm md:text-base">—</p>
+                        <div class="mt-3 flex items-center gap-2 flex-wrap">
+                            <span class="inline-flex items-center gap-1.5 bg-white/95 border border-indigo-100 text-indigo-950 text-[10px] sm:text-[11px] font-black px-3 py-1 rounded-full shadow-xs">
+                                <i data-lucide="stethoscope" class="w-3.5 h-3.5 text-indigo-600"></i>
+                                <span>Consultant: <strong id="p-doctor" class="font-black text-slate-900">—</strong></span>
+                            </span>
+                            <span id="p-doctor-reg" class="inline-flex items-center gap-1 bg-indigo-50 border border-indigo-100/80 text-indigo-700 text-[10px] font-black px-2.5 py-1 rounded-full">
+                                Reg No: 1045
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-2 text-right">
-                        <div class="bg-indigo-50 backdrop-blur-md rounded-2xl p-4 border border-indigo-100 text-center min-w-[140px]">
+                    <div class="flex flex-col gap-2 md:text-right">
+                        <div class="bg-indigo-50/70 backdrop-blur-md rounded-2xl p-4 border border-indigo-100 text-center min-w-[140px]">
                             <h3 id="p-rem-sessions" class="text-3xl font-black text-emerald-600">0</h3>
-                            <p class="text-[9px] font-bold text-slate-400 uppercase">Sessions Remaining</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Sessions Remaining</p>
                         </div>
                     </div>
                 </div>
-                <i data-lucide="activity" class="absolute right-[-30px] top-[-30px] w-64 h-64 text-indigo-50"></i>
+                <i data-lucide="activity" class="absolute right-[-30px] top-[-30px] w-64 h-64 text-indigo-50/70 pointer-events-none"></i>
             </div>
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
+                <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm text-center">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Age/Gender</p>
                     <p id="p-age-gender" class="font-black text-slate-800 text-sm">—</p>
                 </div>
-                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm text-center flex flex-col justify-center">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Wallet Balance</p>
                     <p id="p-advance" class="font-black text-indigo-600 text-sm">₹0</p>
+                    <p id="p-wallet-status" class="text-[9px] font-bold text-slate-400 truncate mt-0.5">Live Balance</p>
                 </div>
-                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm text-center flex flex-col justify-center">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Last Payment</p>
                     <p id="p-last-pay-amt" class="font-black text-emerald-600 text-sm">₹0</p>
+                    <p id="p-last-pay-date" class="text-[9px] font-bold text-slate-400 truncate mt-0.5">—</p>
                 </div>
-                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm text-center">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Phone No.</p>
-                    <p id="p-phone" class="font-black text-slate-800 text-sm">—</p>
+                    <p id="p-phone" class="font-black text-slate-800 text-sm truncate">—</p>
                 </div>
-                <div class="bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm text-center">
+                <div class="bg-white p-4 md:p-5 rounded-2xl md:rounded-[2rem] border border-slate-100 shadow-sm text-center col-span-2 sm:col-span-1">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Attended</p>
                     <p id="p-attended" class="font-black text-slate-800 text-sm">—</p>
                 </div>
             </div>
 
-            <!-- Home Exercise Plan Section (New) -->
-            <section id="exercise-section" class="hidden">
-                <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4 flex items-center gap-2">
-                    <i data-lucide="dumbbell" class="w-4 h-4"></i> Prescribed Home Exercises
-                </h3>
-                <div id="p-exercise-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </section>
-
-            <!-- Integration Buttons -->
-            <div class="flex flex-wrap gap-4">
-                <a id="book-btn" href="#" target="_blank" class="flex-1 min-w-[200px] bg-indigo-600 text-white p-5 rounded-[2rem] font-black text-xs uppercase flex items-center justify-center gap-3 shadow-xl hover:scale-[1.02] transition-all">
-                    <i data-lucide="calendar-plus"></i> Book Session
+            <!-- Integration Buttons (Mobile Optimized 4-Button Grid) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4">
+                <a id="book-btn" href="#" target="_blank" class="bg-indigo-600 text-white p-3.5 sm:p-4 md:p-5 rounded-2xl md:rounded-[2rem] font-black text-[11px] sm:text-xs uppercase flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] active:scale-95 transition-all text-center">
+                    <i data-lucide="calendar-plus" class="w-4 h-4 flex-shrink-0"></i> <span>Book Session</span>
                 </a>
-                <a id="wa-btn" href="#" target="_blank" class="flex-1 min-w-[200px] bg-white border border-slate-100 text-slate-800 p-5 rounded-[2rem] font-black text-xs uppercase flex items-center justify-center gap-3 shadow-sm hover:bg-slate-50 transition-all">
-                    <i data-lucide="message-circle" class="text-emerald-500"></i> Clinical Support
+                <a id="wa-btn" href="#" target="_blank" class="bg-white border border-slate-100 text-slate-800 p-3.5 sm:p-4 md:p-5 rounded-2xl md:rounded-[2rem] font-black text-[11px] sm:text-xs uppercase flex items-center justify-center gap-2 shadow-sm hover:bg-slate-50 active:scale-95 transition-all text-center">
+                    <i data-lucide="message-circle" class="text-emerald-500 w-4 h-4 flex-shrink-0"></i> <span>Support</span>
+                </a>
+                <a href="https://g.page/r/CbjaRxUysOqhEBM/review" target="_blank" class="bg-amber-50 border border-amber-200/80 text-amber-900 p-3.5 sm:p-4 md:p-5 rounded-2xl md:rounded-[2rem] font-black text-[11px] sm:text-xs uppercase flex items-center justify-center gap-2 shadow-sm hover:bg-amber-100 active:scale-95 transition-all text-center" title="Rate & Review on Google">
+                    <i data-lucide="star" class="text-amber-500 fill-amber-400 w-4 h-4 flex-shrink-0"></i> <span>Rate Us</span>
+                </a>
+                <a href="tel:+919708059081" class="bg-rose-50 border border-rose-200 text-rose-700 p-3.5 sm:p-4 md:p-5 rounded-2xl md:rounded-[2rem] font-black text-[11px] sm:text-xs uppercase flex items-center justify-center gap-2 shadow-sm hover:bg-rose-100 active:scale-95 transition-all text-center" title="Click to call emergency clinical hotline directly">
+                    <i data-lucide="phone-call" class="text-rose-600 w-4 h-4 animate-pulse flex-shrink-0"></i> <span>Hotline</span>
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4">
-                <section>
-                    <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4">Clinical Passbook</h3>
-                    <div id="passbook-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2"></div>
-                </section>
-                <section>
-                    <h3 class="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 ml-4">Issued Documents</h3>
-                    <div id="bill-list" class="space-y-3"></div>
-                </section>
+            <!-- Tab Switcher Navigation (Passbook, Billing, Exercises) -->
+            <div class="flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit border border-slate-200/60 no-scrollbar overflow-x-auto">
+                <button id="tab-btn-records" onclick="switchDashboardTab('records')" class="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[10px] sm:text-xs uppercase transition-all bg-white text-indigo-600 shadow-sm whitespace-nowrap">
+                    <i data-lucide="book-open" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
+                    <span><span class="hidden sm:inline">Clinical </span>Passbook</span>
+                </button>
+                <button id="tab-btn-bills" onclick="switchDashboardTab('bills')" class="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[10px] sm:text-xs uppercase transition-all text-slate-500 hover:text-slate-900 whitespace-nowrap">
+                    <i data-lucide="receipt" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
+                    <span>Billing<span class="hidden sm:inline"> Section</span></span>
+                    <span id="bill-badge-count" class="bg-slate-200 text-slate-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black">0</span>
+                </button>
+                <button id="tab-btn-exercises" onclick="switchDashboardTab('exercises')" class="flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[10px] sm:text-xs uppercase transition-all text-slate-500 hover:text-slate-900 whitespace-nowrap">
+                    <i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
+                    <span><span class="hidden sm:inline">Prescribed </span>Exercises</span>
+                    <span id="ex-badge-count" class="bg-indigo-100 text-indigo-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black">0</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: Clinical Passbook -->
+            <div id="view-records" class="space-y-4 pt-2">
+                <div class="flex items-center justify-between mb-2 px-1 sm:px-2 flex-wrap gap-2">
+                    <h3 class="text-[10px] sm:text-[11px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                        <i data-lucide="book-open" class="w-3.5 h-3.5 text-indigo-500"></i> Clinical Passbook & Attendance Ledger
+                    </h3>
+                    <div class="relative">
+                        <select id="passbook-filter" onchange="applyPassbookFilter(this.value)" class="text-[10px] sm:text-[11px] font-black bg-white border border-slate-200/90 text-slate-700 rounded-xl pl-2.5 pr-7 py-1.5 outline-none shadow-xs hover:border-indigo-300 focus:border-indigo-500 transition-all cursor-pointer appearance-none">
+                            <option value="all">All Months</option>
+                        </select>
+                        <i data-lucide="calendar-range" class="w-3.5 h-3.5 text-indigo-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div id="passbook-list" class="space-y-3 max-h-[600px] overflow-y-auto pr-1"></div>
+            </div>
+
+            <!-- TAB 2: Dedicated Billing Section -->
+            <div id="view-bills" class="hidden space-y-4 pt-2">
+                <div class="flex items-center justify-between mb-2 px-1 sm:px-2 flex-wrap gap-2">
+                    <h3 class="text-[10px] sm:text-[11px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                        <i data-lucide="receipt" class="w-3.5 h-3.5 text-indigo-500"></i> Issued Documents & Bills
+                    </h3>
+                    <a id="header-req-bill-btn" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black text-indigo-600 bg-indigo-50 border border-indigo-100 hover:bg-indigo-100 px-2.5 sm:px-3.5 py-1.5 rounded-xl transition-all shadow-xs" title="Request latest updated bill on WhatsApp">
+                        <i data-lucide="message-square-plus" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-600"></i> Request Latest Bill
+                    </a>
+                </div>
+                <div id="bill-list" class="space-y-3"></div>
+            </div>
+
+            <!-- TAB 3: Prescribed Exercises Section (Numbered) -->
+            <div id="view-exercises" class="hidden space-y-6 pt-2">
+                <div class="flex items-center justify-between px-1 sm:px-2 flex-wrap gap-1.5 mb-2">
+                    <h3 class="text-[10px] sm:text-[11px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                        <i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600"></i> Prescribed Home Exercises
+                    </h3>
+                    <span class="text-[10px] sm:text-xs text-slate-400 font-bold">Follow sequential order</span>
+                </div>
+
+                <div id="p-exercise-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                <!-- Prescribed Instructions Guidance Box -->
+                <div class="bg-indigo-50/70 border border-indigo-100/90 p-5 rounded-2xl md:rounded-[2rem] flex items-start gap-4">
+                    <div class="bg-indigo-600 text-white p-3 rounded-2xl flex-shrink-0 mt-0.5 shadow-md">
+                        <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black text-indigo-950 text-sm uppercase tracking-wide mb-1">Prescribed Clinical Instructions & Precautions</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed font-medium">Perform each prescribed exercise with slow, controlled movements. Rest 30 to 45 seconds between sets. Do not force movements beyond the comfortable pain-free barrier. In case of acute flare-ups, muscle sprains, or sharp pain, stop immediately and contact the clinic emergency hotline directly.</p>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
     <!-- DOCUMENT MODAL -->
-    <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[5000] overflow-y-auto flex flex-col items-center py-10 px-4">
-        <div class="sticky top-0 z-[5001] flex gap-4 mb-8">
-            <button onclick="closeModal()" class="bg-white/10 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase border border-white/10">Close</button>
-            <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase shadow-2xl flex items-center gap-2 hover:bg-indigo-700 transition-all">
-                <i data-lucide="download" class="w-5 h-5"></i> Download PDF
+    <div id="bill-modal" class="hidden fixed inset-0 bg-slate-900/95 z-[5000] overflow-y-auto flex flex-col items-center py-6 md:py-10 px-4">
+        <div class="sticky top-0 z-[5001] flex gap-3 md:gap-4 mb-6">
+            <button onclick="closeModal()" class="bg-white/10 hover:bg-white/20 text-white px-6 md:px-8 py-3 rounded-2xl font-black text-xs uppercase border border-white/10 transition-colors">Close</button>
+            <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-8 md:px-10 py-3.5 md:py-4 rounded-2xl font-black text-xs uppercase shadow-2xl flex items-center gap-2 hover:bg-indigo-700 transition-all">
+                <i data-lucide="download" class="w-4 h-4 md:w-5 md:h-5"></i> Download PDF
             </button>
         </div>
         <div id="full-document-render" class="w-full max-w-[210mm]"></div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyknqWUwUFsjAmFapjZBmziezQ-eedS8IpXv1A5qLu2_OXUQ1euHMWuqaZ-lyGe8F0lxQ/exec';
-// Utility function to safely strip currency symbols/commas and convert to number
-function toNum(v) {
-    if (v === null || v === undefined || v === "") return 0;
-    const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
-    return isNaN(n) ? 0 : n;
-}
+        // ==========================================
+        // PRISM GOOGLE APPS SCRIPT API ENDPOINTS
+        // ==========================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkLSLf9qdumnXJEkpgYjJ6sucgp_Rx2NzhkSkINXurrKzknEynBG6nK-caD07OSdm80A/exec';
+        const BACKUP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJRWlsDH01lLLy5sCVhlFnyYmRjHuN9YtTpcecfvYOXRC7IBbv3F7DnmmiYJQUX0Q3/exec';
+
+        // Utility function to safely strip currency symbols/commas and convert to number
+        function toNum(v) {
+            if (v === null || v === undefined || v === "") return 0;
+            const n = parseFloat(String(v).replace(/[^0-9.-]/g, ''));
+            return isNaN(n) ? 0 : n;
+        }
+
         const PRISM_LOGO = "https://prismhealthcare.in/prism1.png";
         
         let globalData = [];
         let exerciseData = [];
+        let billsData = [];
+        let doctorsData = [];
         let loggedInPatient = null;
         let patientLogs = [];
+        let patientBalance = null;
+        let currentTreatingDoctor = "Dr Ravi Kumar, PT";
+
+        // Normalizes names and IDs for resilient matching
+        function normalizeStr(s) {
+            return String(s || '')
+                .toLowerCase()
+                .replace(/^(mr|mrs|ms|dr|miss|shri|smt)\.?\s+/i, '')
+                .replace(/[^a-z0-9]/gi, '')
+                .trim();
+        }
+
+        // Resilient two-way patient finder: handles full/partial name, phone number, full ID or last 4 digits in any field
+        function findMatchingPatient(rows, valA, valB) {
+            const normA = normalizeStr(valA);
+            const normB = normalizeStr(valB);
+            const digitsA = String(valA || '').replace(/\D/g, '');
+            const digitsB = String(valB || '').replace(/\D/g, '');
+
+            return (rows || []).find(r => {
+                const rId = normalizeStr(r[1]);
+                const rName = normalizeStr(r[2]);
+                const rPhone = String(r[3] || '').replace(/\D/g, '');
+                const rIdDigits = String(r[1] || '').replace(/\D/g, '');
+
+                // ID check: either input matches ID (ends with, equals, contains)
+                const idMatchA = (rId && (rId === normA || rId.endsWith(normA) || (normA.length >= 4 && rId.includes(normA)))) ||
+                                (digitsA.length >= 4 && (rIdDigits.endsWith(digitsA) || (rIdDigits.length >= 4 && digitsA.endsWith(rIdDigits.slice(-4)))));
+                const idMatchB = (rId && (rId === normB || rId.endsWith(normB) || (normB.length >= 4 && rId.includes(normB)))) ||
+                                (digitsB.length >= 4 && (rIdDigits.endsWith(digitsB) || (rIdDigits.length >= 4 && digitsB.endsWith(rIdDigits.slice(-4)))));
+
+                // Name / Phone check: either input matches Name or Phone
+                const nameMatchA = (rName && (rName === normA || (normA.length >= 3 && (rName.includes(normA) || normA.includes(rName))))) ||
+                                  (digitsA.length >= 10 && rPhone.length >= 10 && rPhone.endsWith(digitsA.slice(-10)));
+                const nameMatchB = (rName && (rName === normB || (normB.length >= 3 && (rName.includes(normB) || normB.includes(rName))))) ||
+                                  (digitsB.length >= 10 && rPhone.length >= 10 && rPhone.endsWith(digitsB.slice(-10)));
+
+                // Either (A is Name/Phone & B is ID) OR (A is ID & B is Name/Phone)
+                return (nameMatchA && idMatchB) || (nameMatchB && idMatchA);
+            });
+        }
+
+        // Reusable sync helper with resilient retry and timeout
+        async function syncToBackend(payload, timeoutMs = 15000) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            try {
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timer);
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const text = await res.text();
+                return JSON.parse(text);
+            } catch(e) {
+                clearTimeout(timer);
+                console.warn("Primary endpoint retry:", e);
+                const res2 = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const text2 = await res2.text();
+                return JSON.parse(text2);
+            }
+        }
+
+        // Extracts actual payment transactions (Advance packages, top-ups, due settlements, and direct session payments)
+        function getActualPaymentHistory(logs) {
+            const advancePayments = [];
+            const directPayments = [];
+
+            (logs || []).forEach(r => {
+                const adv = toNum(r[11]);
+                const fee = toNum(r[9]);
+                const type = String(r[7] || '').trim().toLowerCase();
+                const modeRaw = String(r[15] || '').trim();
+                const modeLower = modeRaw.toLowerCase();
+                const dateStr = r[8] || r[0];
+                const cond = String(r[6] || '').toLowerCase();
+
+                const isDailySession = (type === 'rehab' || type.includes('session') || type === 'treatment');
+                const isDeposit = (type.includes('enroll') || type.includes('package') || type.includes('due') || type.includes('advance') || cond.includes('due') || cond.includes('advance') || cond.includes('package'));
+
+                // 1. Genuine Advance Deposits, Package purchases, and Due settlements
+                if (isDeposit && (adv > 0 || (toNum(modeRaw) > 0 && !isDailySession))) {
+                    const payAmt = adv > 0 ? adv : toNum(modeRaw);
+                    advancePayments.push({
+                        amount: payAmt,
+                        date: dateStr,
+                        category: (type.includes('due') || cond.includes('due')) ? 'Due Settlement' : (type.includes('package') ? 'Package Advance' : 'Advance Payment'),
+                        isAdvance: true,
+                        raw: r
+                    });
+                } else if (!isDailySession && adv > 0) {
+                    advancePayments.push({
+                        amount: adv,
+                        date: dateStr,
+                        category: 'Advance Payment',
+                        isAdvance: true,
+                        raw: r
+                    });
+                }
+                // 2. Direct pay-per-session payment (Cash, UPI, Online, etc. - NOT advance deduction, NOT pending, NOT complimentary)
+                else if (fee > 0 && !['advance', 'pending', 'complimentary', '0', ''].includes(modeLower) && !['case closed', 'bill issued', 'case restarted'].includes(type) && adv === 0) {
+                    directPayments.push({
+                        amount: fee,
+                        date: dateStr,
+                        category: `Direct (${modeRaw || 'Cash'})`,
+                        isAdvance: false,
+                        raw: r
+                    });
+                }
+            });
+
+            // Sort chronologically descending (latest payment first)
+            advancePayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            directPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const allSorted = [...advancePayments, ...directPayments].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            return {
+                all: allSorted,
+                advanceOnly: advancePayments,
+                directOnly: directPayments,
+                latestAdvance: advancePayments[0] || null,
+                latestPayment: advancePayments[0] || directPayments[0] || null
+            };
+        }
 
         async function attemptLogin() {
-            const name = document.getElementById('login-name').value.trim();
+            const userInput = document.getElementById('login-name').value.trim();
             const idLast4 = document.getElementById('login-id').value.trim();
             const btn = document.getElementById('login-btn');
+            const errEl = document.getElementById('login-error');
             
-            if(!name || !idLast4) return;
+            if(!userInput || !idLast4) {
+                if (errEl) {
+                    errEl.innerText = "Please enter both fields to access your portal.";
+                    errEl.classList.remove('hidden');
+                }
+                return;
+            }
+            if (errEl) errEl.classList.add('hidden');
             btn.disabled = true;
-            btn.innerHTML = `<span class="animate-spin border-2 border-white/20 border-t-white rounded-full h-5 w-5"></span>`;
+            btn.innerHTML = `<span class="inline-block animate-spin border-2 border-white/20 border-t-white rounded-full h-5 w-5"></span>`;
 
             try {
-                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "fetchAdminData" }) });
-                const response = await res.json();
+                const response = await syncToBackend({ action: "fetchAdminData" });
                 
                 globalData = response.adminData || [];
                 exerciseData = response.exercisePlans || [];
+                billsData = response.bills || [];
+                doctorsData = response.doctorsList || [];
 
-                const match = globalData.find(r => 
-                    String(r[2]).toLowerCase() === name.toLowerCase() && 
-                    String(r[1]).endsWith(idLast4)
-                );
+                const match = findMatchingPatient(globalData, userInput, idLast4);
 
                 if (match) {
                     loggedInPatient = { 
@@ -255,100 +496,568 @@ function toNum(v) {
                         diag: match[6], 
                         address: match[14] 
                     };
-                    patientLogs = globalData.filter(r => r[1] === loggedInPatient.id);
+                    patientLogs = globalData.filter(r => String(r[1] || '').trim() === loggedInPatient.id);
+
+                    // 1. Fast single-trip balance extraction from fetchAdminData if bundled
+                    if (response && response.balances && response.balances[loggedInPatient.id]) {
+                        patientBalance = response.balances[loggedInPatient.id];
+                    }
+
+                    // Save active session for instant reload persistence
+                    try {
+                        localStorage.setItem('prism_patient_cache', JSON.stringify({
+                            userInput: userInput,
+                            idLast4: idLast4,
+                            patient: loggedInPatient,
+                            patientBalance: patientBalance,
+                            patientLogs: patientLogs,
+                            globalData: globalData,
+                            exerciseData: exerciseData,
+                            billsData: billsData,
+                            doctorsData: doctorsData,
+                            timestamp: Date.now()
+                        }));
+                    } catch(e) { console.warn(e); }
+
+                    // Render UI immediately so login is instant!
                     renderUI();
+
+                    // 2. Fetch live balance in background without blocking UI
+                    syncToBackend({ action: "fetchPatientBalances", patientId: loggedInPatient.id })
+                        .then(balRes => {
+                            if (balRes && balRes.balances && balRes.balances[loggedInPatient.id]) {
+                                patientBalance = balRes.balances[loggedInPatient.id];
+                                renderUI();
+                            }
+                        })
+                        .catch(balErr => console.warn("Background patient balance update notice:", balErr));
                 } else {
-                    document.getElementById('login-error').classList.remove('hidden');
+                    if (errEl) {
+                        errEl.innerText = "Access denied. Please check your name/mobile and ID.";
+                        errEl.classList.remove('hidden');
+                    }
                 }
             } catch (e) { 
                 console.error(e);
-                alert("Secure Connection Failed"); 
+                alert("Secure Connection Failed. Please try again."); 
             }
             btn.disabled = false;
             btn.innerHTML = `Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>`;
             lucide.createIcons();
         }
 
+        function switchDashboardTab(tab) {
+            const recordsView = document.getElementById('view-records');
+            const billsView = document.getElementById('view-bills');
+            const exercisesView = document.getElementById('view-exercises');
+            const recordsBtn = document.getElementById('tab-btn-records');
+            const billsBtn = document.getElementById('tab-btn-bills');
+            const exercisesBtn = document.getElementById('tab-btn-exercises');
+            const billBadge = document.getElementById('bill-badge-count');
+            const exBadge = document.getElementById('ex-badge-count');
+
+            const activeClass = "flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[10px] sm:text-xs uppercase transition-all bg-white text-indigo-600 shadow-sm whitespace-nowrap";
+            const inactiveClass = "flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[10px] sm:text-xs uppercase transition-all text-slate-500 hover:text-slate-900 whitespace-nowrap";
+
+            // Hide all views first
+            if (recordsView) recordsView.classList.add('hidden');
+            if (billsView) billsView.classList.add('hidden');
+            if (exercisesView) exercisesView.classList.add('hidden');
+
+            // Reset all buttons and badges
+            if (recordsBtn) recordsBtn.className = inactiveClass;
+            if (billsBtn) billsBtn.className = inactiveClass;
+            if (exercisesBtn) exercisesBtn.className = inactiveClass;
+            if (billBadge) billBadge.className = "bg-slate-200 text-slate-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black";
+            if (exBadge) exBadge.className = "bg-slate-200 text-slate-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black";
+
+            if (tab === 'exercises') {
+                if (exercisesView) exercisesView.classList.remove('hidden');
+                if (exercisesBtn) exercisesBtn.className = activeClass;
+                if (exBadge) exBadge.className = "bg-indigo-100 text-indigo-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black";
+            } else if (tab === 'bills') {
+                if (billsView) billsView.classList.remove('hidden');
+                if (billsBtn) billsBtn.className = activeClass;
+                if (billBadge) billBadge.className = "bg-indigo-100 text-indigo-700 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-black";
+            } else {
+                if (recordsView) recordsView.classList.remove('hidden');
+                if (recordsBtn) recordsBtn.className = activeClass;
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
         function renderUI() {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('app-content').classList.remove('hidden');
+            try {
+                if (!loggedInPatient) return;
+                const loginSec = document.getElementById('login-section');
+                const appSec = document.getElementById('app-content');
+                if (loginSec) loginSec.classList.add('hidden');
+                if (appSec) appSec.classList.remove('hidden');
 
-            // Exclude administrative rows so only actual attended treatment sessions are counted (including enrollment)
+            // Exclude administrative rows so only actual attended treatment sessions are counted
             const sessions = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted'].includes(String(r[7]).toLowerCase()));
-            const totalPurchased = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment').reduce((s, r) => s + (toNum(r[10]) || 0), 0);
+            const totalPurchased = patientLogs.filter(r => String(r[7]).toLowerCase() === 'enrollment' || String(r[7]).toLowerCase().includes('package')).reduce((s, r) => s + (toNum(r[10]) || 0), 0);
             
-            // Calculate remaining wallet balance based on the cost of completed sessions (r[9])
+            // Wallet Balance: Single source of truth is backend Google Sheets (matching PMS)
             let walletBalance = 0;
-            patientLogs.forEach(r => {
-                const type = String(r[7] || '').trim().toLowerCase();
-                const fee = toNum(r[9]); // Column 9 (Fee) is always populated with the session rate
-                const advance = toNum(r[11]); // Initial advance package paid
-                const paymentMode = r[15] ? String(r[15]).trim() : "";
 
-                if (type === "enrollment" || type === "package added") {
-                    walletBalance += advance;
-                    // If an advance was paid, deduct the first session fee (Enrollment session) from the wallet
-                    if (advance > 0 && fee > 0) {
+            if (patientBalance && typeof patientBalance.walletBalance === 'number') {
+                walletBalance = patientBalance.walletBalance;
+            } else {
+                // Fallback calculation if backend balance hasn't resolved yet
+                patientLogs.forEach(r => {
+                    const type = String(r[7] || '').trim().toLowerCase();
+                    const fee = toNum(r[9]);
+                    const advance = toNum(r[11]);
+                    const paymentMode = String(r[15] || '').trim().toLowerCase();
+
+                    if (type === "enrollment" || type.includes("package")) {
+                        walletBalance += advance;
+                        if (advance > 0 && fee > 0) walletBalance -= fee;
+                    } else if (['advance', '0', ''].includes(paymentMode) && fee > 0 && !['case closed', 'case restarted', 'bill issued'].includes(type)) {
                         walletBalance -= fee;
                     }
-                } else if (paymentMode === "Advance" && !['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(type)) {
-                    walletBalance -= fee; // Deduct the correct rate/fee for each completed session
-                }
-            });
+                });
+            }
 
-            const lastPayment = patientLogs.filter(r => toNum(r[9]) > 0).sort((a,b) => new Date(b[8]) - new Date(a[8]))[0];
+            // Determine active per-session charge (rate)
+            let sessionCharge = 0;
+            const feeRows = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted'].includes(String(r[7]).toLowerCase()));
+            if (feeRows.length) {
+                // Rate from the latest attended session
+                sessionCharge = toNum(feeRows[feeRows.length - 1][9]);
+            }
+            if (sessionCharge <= 0) {
+                const enrollRow = patientLogs.find(r => String(r[7]).toLowerCase().includes('enrollment') && toNum(r[9]) > 0);
+                if (enrollRow) sessionCharge = toNum(enrollRow[9]);
+            }
+            if (sessionCharge <= 0) {
+                const anyFee = patientLogs.find(r => toNum(r[9]) > 0);
+                if (anyFee) sessionCharge = toNum(anyFee[9]);
+            }
+
+            // Calculate remaining sessions: Wallet Balance divided by Per-Session Rate
+            let remSessionsDisplay = "Regular";
+            if (walletBalance > 0 && sessionCharge > 0) {
+                const remFromWallet = Math.round(walletBalance / sessionCharge);
+                remSessionsDisplay = remFromWallet > 0 ? remFromWallet : 0;
+            } else if (patientBalance && typeof patientBalance.sessionsRemaining === 'number' && patientBalance.sessionsRemaining > 0) {
+                remSessionsDisplay = patientBalance.sessionsRemaining;
+            } else if ((totalPurchased - sessions.length) > 0) {
+                remSessionsDisplay = totalPurchased - sessions.length;
+            } else {
+                remSessionsDisplay = "Regular";
+            }
+
+            // Actual Payment History & Last Payment Detection (Prioritize genuine advance deposits/top-ups)
+            const paymentHistory = getActualPaymentHistory(patientLogs);
+            const lastPayment = paymentHistory.latestAdvance || paymentHistory.latestPayment;
 
             document.getElementById('p-name').innerText = loggedInPatient.name;
             document.getElementById('p-diag').innerText = loggedInPatient.diag || "Clinical Rehabilitation Plan";
+
+            // 1. Detect primary treating doctor from latest session or enrollment
+            let treatingDoctorName = '';
+            for (let i = patientLogs.length - 1; i >= 0; i--) {
+                const doc = String(patientLogs[i][16] || '').trim();
+                if (doc && doc.toLowerCase() !== 'undefined' && doc.toLowerCase() !== 'null' && doc !== '-') {
+                    treatingDoctorName = doc;
+                    break;
+                }
+            }
+            if (!treatingDoctorName) {
+                treatingDoctorName = "Dr Ravi Kumar, PT";
+            }
+            currentTreatingDoctor = treatingDoctorName;
+
+            // Find registration details from doctorsData or default
+            const docInfo = (doctorsData || []).find(d => {
+                const dName = String(d[0] || '').toLowerCase();
+                const tName = treatingDoctorName.toLowerCase();
+                return dName.includes(tName) || tName.includes(dName);
+            });
+            const docRegNo = docInfo && docInfo[1] ? String(docInfo[1]) : '1045';
+
+            const doctorEl = document.getElementById('p-doctor');
+            if (doctorEl) doctorEl.innerText = treatingDoctorName;
+            const doctorRegEl = document.getElementById('p-doctor-reg');
+            if (doctorRegEl) doctorRegEl.innerText = `Reg No: ${docRegNo}`;
             document.getElementById('p-age-gender').innerText = `${loggedInPatient.age || '-'}Y / ${loggedInPatient.gender || '-'}`;
             document.getElementById('p-phone').innerText = loggedInPatient.phone || '-';
             document.getElementById('p-id-badge').innerText = loggedInPatient.id;
             document.getElementById('p-attended').innerText = sessions.length;
-            document.getElementById('p-rem-sessions').innerText = (totalPurchased - sessions.length) > 0 ? (totalPurchased - sessions.length) : "Regular";
+            const remEl = document.getElementById('p-rem-sessions');
+            if (remEl) {
+                remEl.innerText = remSessionsDisplay;
+                if (walletBalance > 0 && sessionCharge > 0) {
+                    remEl.title = `₹${Math.round(walletBalance).toLocaleString('en-IN')} wallet balance ÷ ₹${Math.round(sessionCharge).toLocaleString('en-IN')}/session = ${remSessionsDisplay} sessions remaining`;
+                } else {
+                    remEl.title = '';
+                }
+            }
             
-            // Display remaining advance wallet balance safely
-            document.getElementById('p-advance').innerText = "₹" + walletBalance.toLocaleString();
-            document.getElementById('p-last-pay-amt').innerText = lastPayment ? "₹" + toNum(lastPayment[9]).toLocaleString() : "₹0";
-
-            // Home Exercises Logic
-            const myExercises = exerciseData.filter(ex => ex[1] === loggedInPatient.name);
-            if(myExercises.length > 0) {
-                document.getElementById('exercise-section').classList.remove('hidden');
-                document.getElementById('p-exercise-list').innerHTML = myExercises.map(ex => `
-                    <div class="bg-emerald-50 p-5 rounded-[2rem] border border-emerald-100 shadow-sm">
-                        <h4 class="font-black text-emerald-800 text-sm mb-1">${ex[2]}</h4>
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-3">${ex[3]} • ${ex[6]}</p>
-                        <p class="text-[11px] text-slate-600 mb-4 leading-relaxed">${ex[4]}</p>
-                        <div class="flex gap-3 flex-wrap mb-3">
-                            ${ex[7] ? `<span class="text-[9px] font-black text-slate-500 uppercase bg-white px-3 py-1.5 rounded-lg">Prescribed: ${formatDate(ex[7])}</span>` : ''}
-                            ${ex[8] ? `<span class="text-[9px] font-black text-amber-700 uppercase bg-amber-50 px-3 py-1.5 rounded-lg">Review: ${formatDate(ex[8])}</span>` : ''}
-                        </div>
-                        ${ex[5] ? `<a href="${ex[5]}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-black text-blue-600 bg-white px-4 py-2 rounded-xl shadow-sm"><i data-lucide="play-circle" class="w-3 h-3"></i> Watch Video</a>` : ''}
-                    </div>
-                `).join('');
+            // Display remaining advance wallet balance (formatted in Indian currency)
+            document.getElementById('p-advance').innerText = "₹" + Math.round(Number(walletBalance)).toLocaleString('en-IN');
+            const walletStatusEl = document.getElementById('p-wallet-status');
+            if (walletStatusEl) {
+                const outstanding = (patientBalance && typeof patientBalance.outstandingDue === 'number') ? patientBalance.outstandingDue : 0;
+                if (outstanding > 0) {
+                    walletStatusEl.innerText = "Due: ₹" + Math.round(outstanding).toLocaleString('en-IN');
+                    walletStatusEl.className = "text-[9px] font-bold text-rose-500 truncate mt-0.5";
+                    walletStatusEl.title = `Outstanding Pending Fee: ₹${Math.round(outstanding).toLocaleString('en-IN')}`;
+                } else if (walletBalance > 0) {
+                    walletStatusEl.innerText = "Available Credit";
+                    walletStatusEl.className = "text-[9px] font-bold text-indigo-500 truncate mt-0.5";
+                    walletStatusEl.title = `Active Advance Balance: ₹${Math.round(walletBalance).toLocaleString('en-IN')}`;
+                } else if (walletBalance === 0) {
+                    walletStatusEl.innerText = "Settled";
+                    walletStatusEl.className = "text-[9px] font-bold text-slate-400 truncate mt-0.5";
+                    walletStatusEl.title = "All payments settled";
+                } else {
+                    walletStatusEl.innerText = "Overdrawn";
+                    walletStatusEl.className = "text-[9px] font-bold text-rose-500 truncate mt-0.5";
+                    walletStatusEl.title = `Account overdrawn by ₹${Math.abs(Math.round(walletBalance)).toLocaleString('en-IN')}`;
+                }
             }
 
-            const waMsg = encodeURIComponent("Hello Prism, I am " + loggedInPatient.name + " (ID: " + loggedInPatient.id + "). I want to book my next session.");
-            document.getElementById('book-btn').href = `https://wa.me/919708059081?text=${waMsg}`;
-            document.getElementById('wa-btn').href = `https://wa.me/919708059081?text=${encodeURIComponent("Clinical Assistance required for ID: " + loggedInPatient.id)}`;
+            // Display Last Payment Amount and Actual Payment Date
+            const lastPayAmtEl = document.getElementById('p-last-pay-amt');
+            const lastPayDateEl = document.getElementById('p-last-pay-date');
+            if (lastPayment) {
+                lastPayAmtEl.innerText = "₹" + Math.round(Number(lastPayment.amount)).toLocaleString('en-IN');
+                const formattedDate = formatDate(lastPayment.date);
+                if (lastPayDateEl) {
+                    lastPayDateEl.innerText = formattedDate;
+                    lastPayDateEl.title = `${lastPayment.category}: ₹${Math.round(Number(lastPayment.amount)).toLocaleString('en-IN')} on ${formattedDate}`;
+                }
+            } else {
+                lastPayAmtEl.innerText = "₹0";
+                if (lastPayDateEl) {
+                    lastPayDateEl.innerText = "No payments";
+                    lastPayDateEl.title = "No payments recorded";
+                }
+            }
 
-            document.getElementById('passbook-list').innerHTML = sessions.length ? sessions.map(s => `
-                <div class="bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between shadow-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
-                        <div><p class="text-xs font-black text-slate-800">${formatDate(s[8])}</p><p class="text-[10px] text-slate-400 font-bold uppercase">${s[6] || 'Treatment'}</p></div>
+            // Home Exercises Logic (Numbered Wise with Detailed Instructions)
+            const patName = (loggedInPatient.name || '').trim().toLowerCase();
+            const patId = (loggedInPatient.id || '').trim().toLowerCase();
+            const myExercises = exerciseData.filter(ex => {
+                const rowRef = String(ex[1] || '').trim().toLowerCase();
+                return rowRef === patName || (patId && rowRef === patId) || (patId && rowRef.endsWith(patId.slice(-4)));
+            });
+
+            const badgeCountEl = document.getElementById('ex-badge-count');
+            if (badgeCountEl) badgeCountEl.innerText = myExercises.length;
+
+            if (myExercises.length > 0) {
+                document.getElementById('p-exercise-list').innerHTML = myExercises.map((ex, idx) => `
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:border-indigo-200 transition-all">
+                        <div class="absolute top-0 left-0 w-2.5 h-full bg-indigo-500"></div>
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <span class="bg-indigo-50 text-indigo-700 text-xs font-black px-3.5 py-1.5 rounded-xl uppercase tracking-wider">Exercise #${String(idx + 1).padStart(2, '0')}</span>
+                                ${ex[6] ? `<span class="bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase px-3 py-1 rounded-xl border border-emerald-100">${ex[6]}</span>` : ''}
+                            </div>
+                            <h4 class="font-black text-slate-900 text-base mb-1">${ex[2] || 'Physiotherapy Routine'}</h4>
+                            <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">${ex[3] || 'Prescribed Routine'}</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-500"></i> Prescribed Instructions & Technique:
+                                </p>
+                                <p class="text-xs text-slate-700 leading-relaxed font-semibold">${ex[4] || 'Follow prescribed movements with smooth rhythm and controlled breathing as instructed by your physiotherapist.'}</p>
+                            </div>
+                            
+                            <div class="flex gap-2 flex-wrap mb-4 text-[10px] font-black text-slate-500 uppercase">
+                                ${ex[7] ? `<span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200/60">Prescribed: ${formatDate(ex[7])}</span>` : ''}
+                                ${ex[8] ? `<span class="bg-amber-50 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200">Review: ${formatDate(ex[8])}</span>` : ''}
+                            </div>
+                        </div>
+                        ${ex[5] ? `<a href="${ex[5]}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 text-xs font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 py-3 rounded-2xl transition-colors shadow-sm"><i data-lucide="play-circle" class="w-4 h-4"></i> Watch Video Guide</a>` : ''}
                     </div>
-                    <span class="text-[10px] font-black text-indigo-600 border border-indigo-100 px-2 py-1 rounded">₹${toNum(s[9])}</span>
-                </div>
-            `).reverse().join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No history recorded yet.</div>';
+                `).join('');
+            } else {
+                document.getElementById('p-exercise-list').innerHTML = `
+                    <div class="col-span-1 md:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 text-center shadow-sm">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-black text-slate-800 text-base mb-1">In-Clinic Rehabilitation Program Active</h4>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto mb-4 leading-relaxed">No home-specific exercise routine assigned in your record. Please continue following the customized in-clinic rehabilitation plan directed by Dr. Ravi Kumar, PT.</p>
+                        <div class="inline-flex items-center gap-2 text-[10px] font-black text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full uppercase border border-emerald-100">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Follow Guided In-Clinic Routine
+                        </div>
+                    </div>
+                `;
+            }
 
-            const bills = patientLogs.filter(r => String(r[7]).toLowerCase() === 'bill issued');
-            document.getElementById('bill-list').innerHTML = bills.length ? bills.map(b => `
-                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex justify-between items-center">
-                    <div><p class="text-[9px] font-black text-indigo-500 uppercase tracking-widest">Statement No: ${b[13]}</p><h4 class="font-black text-slate-800">${formatDate(b[8])}</h4></div>
-                    <button onclick="generateOfficialDoc('${b[13]}')" class="bg-indigo-600 text-white p-4 rounded-2xl shadow-lg hover:scale-105 transition-all"><i data-lucide="file-text" class="w-5 h-5"></i></button>
+            // Short & Formal Clinical Support WhatsApp Message
+            const clinicalSupportMsg = 
+`Hello Dr. Ravi & Prism Clinical Team,
+This is *Patient Name:* ${loggedInPatient.name}, *Patient ID:* ${loggedInPatient.id}.
+Diagnosis: ${loggedInPatient.diag || 'Physiotherapy Rehabilitation'}.
+I require clinical guidance regarding my ongoing treatment protocol and rehabilitation exercises. Please advise.
+Thank you!`;
+
+            const waBtn = document.getElementById('wa-btn');
+            if (waBtn) waBtn.href = `https://wa.me/919708059081?text=${encodeURIComponent(clinicalSupportMsg)}`;
+
+            // Short & Formal Appointment Booking WhatsApp Message
+            const bookMsg = 
+`Hello Prism Team,
+This is *Patient Name:* ${loggedInPatient.name}, *Patient ID:* ${loggedInPatient.id}.
+I would like to schedule my next physiotherapy session. Please share available appointment slots.
+Thank you!`;
+
+            const bookBtn = document.getElementById('book-btn');
+            if (bookBtn) bookBtn.href = `https://wa.me/919708059081?text=${encodeURIComponent(bookMsg)}`;
+
+            // Request Latest Bill WhatsApp Message
+            const requestLatestBillMsg = 
+`Hello Prism Accounts Team,
+This is *Patient Name:* ${loggedInPatient.name}, *Patient ID:* ${loggedInPatient.id}.
+Please generate and share my latest official bill & treatment statement with the direct download link.
+Thank you!`;
+
+            const reqLatestBillUrl = `https://wa.me/919708059081?text=${encodeURIComponent(requestLatestBillMsg)}`;
+            const headerReqBtn = document.getElementById('header-req-bill-btn');
+            if (headerReqBtn) headerReqBtn.href = reqLatestBillUrl;
+
+            // Render Clinical Passbook with active filter
+            renderPassbook(currentPassbookFilter);
+
+            // Collect patient's official statements & bills from Bill_Records and Database logs
+            const myBills = [];
+            const seenStmts = new Set();
+            const patIdLower = String(loggedInPatient.id || '').trim().toLowerCase();
+            const patNameLower = String(loggedInPatient.name || '').trim().toLowerCase();
+            const patIdNorm = normalizeStr(loggedInPatient.id);
+            const patNameNorm = normalizeStr(loggedInPatient.name);
+            const patIdLast4 = (loggedInPatient.id || '').replace(/\D/g, '').slice(-4);
+
+            // 1. From Bill_Records sheet (primary official bills)
+            (billsData || []).forEach(b => {
+                const stmt = String(b[1] || b.billNo || '').trim();
+                // Skip header row if present
+                if (!stmt || stmt.toLowerCase() === 'bill no') return;
+
+                const bPid = String(b[2] || b.patientId || '').trim();
+                const bName = String(b[3] || b.patientName || '').trim();
+                const bPidNorm = normalizeStr(bPid);
+                const bNameNorm = normalizeStr(bName);
+
+                const matches = (patIdLower && bPid.toLowerCase() === patIdLower) ||
+                                (patNameLower && bName.toLowerCase() === patNameLower) ||
+                                (patIdNorm && bPidNorm === patIdNorm) ||
+                                (patNameNorm && bNameNorm === patNameNorm) ||
+                                (patIdLast4 && bPidNorm.endsWith(patIdLast4));
+
+                if (matches && !seenStmts.has(stmt)) {
+                    seenStmts.add(stmt);
+                    myBills.push({
+                        stmt: stmt,
+                        date: b[0] || b.date,
+                        fee: toNum(b[6] || b.fee),
+                        paid: toNum(b[7] || b.amountPaid),
+                        balance: toNum(b[8] || b.balance),
+                        mode: b[9] || b.paymentMode || 'Cash',
+                        token: String(b[11] || b.billToken || '').trim(),
+                        driveFileId: b[12] || b.driveFileId || '',
+                        billUrl: String(b[15] || b.billUrl || '').trim()
+                    });
+                }
+            });
+
+            // 2. From Database logs (type === 'bill issued') if any exist and not yet captured
+            patientLogs.filter(r => String(r[7]).toLowerCase() === 'bill issued').forEach(b => {
+                const stmt = String(b[13] || '').trim();
+                if (stmt && !seenStmts.has(stmt)) {
+                    seenStmts.add(stmt);
+                    const rawUrl = String(b[17] || '').trim();
+                    const tokenMatch = rawUrl.match(/prismhealthcare\.in\/b\/([a-zA-Z0-9_-]+)/i);
+                    myBills.push({
+                        stmt: stmt,
+                        date: b[8] || b[0],
+                        fee: toNum(b[9]),
+                        paid: toNum(b[11]),
+                        balance: toNum(b[12]),
+                        mode: b[15] || 'Cash',
+                        token: tokenMatch ? tokenMatch[1] : '',
+                        driveFileId: '',
+                        billUrl: rawUrl
+                    });
+                }
+            });
+
+            // Sort bills descending by date
+            myBills.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const billBadgeCountEl = document.getElementById('bill-badge-count');
+            if (billBadgeCountEl) billBadgeCountEl.innerText = myBills.length;
+
+            document.getElementById('bill-list').innerHTML = myBills.length ? myBills.map(b => {
+                const stmt = b.stmt;
+                
+                // Resolve official generated link from sheet: https://prismhealthcare.in/b/<TOKEN>
+                let token = b.token;
+                if (!token && b.billUrl) {
+                    const tm = b.billUrl.match(/prismhealthcare\.in\/b\/([a-zA-Z0-9_-]+)/i);
+                    if (tm) token = tm[1];
+                }
+
+                let directDownloadUrl = '';
+                if (token) {
+                    directDownloadUrl = `https://prismhealthcare.in/b/${encodeURIComponent(token)}`;
+                } else if (b.billUrl && b.billUrl.includes('prismhealthcare.in/b/')) {
+                    const urlMatch = b.billUrl.match(/https?:\/\/prismhealthcare\.in\/b\/[a-zA-Z0-9_-]+/i);
+                    directDownloadUrl = urlMatch ? urlMatch[0] : b.billUrl;
+                } else if (b.driveFileId) {
+                    directDownloadUrl = `https://drive.google.com/uc?export=download&id=${encodeURIComponent(b.driveFileId)}`;
+                } else if (b.billUrl && b.billUrl.startsWith('http')) {
+                    directDownloadUrl = b.billUrl;
+                }
+
+                return `
+                <div class="bg-white p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 hover:border-indigo-100 transition-all">
+                    <div>
+                        <span class="text-[10px] font-black text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-1.5">Statement #${stmt}</span>
+                        <h4 class="font-black text-slate-800 text-sm md:text-base flex items-center gap-1.5">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> ${formatDate(b.date)}
+                        </h4>
+                    </div>
+                    <div class="flex items-center w-full sm:w-auto">
+                        ${directDownloadUrl ? `
+                        <a href="${directDownloadUrl}" target="_blank" download class="w-full sm:w-auto text-center bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-2xl text-[11px] font-black uppercase shadow-sm hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2" title="Direct Download Official Bill PDF">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Bill
+                        </a>
+                        ` : ''}
+                    </div>
                 </div>
-            `).join('') : '<div class="p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No statements issued.</div>';
+                `;
+            }).join('') : `
+                <div class="p-8 md:p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed border-slate-200">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="receipt" class="w-6 h-6"></i>
+                    </div>
+                    <p class="mb-2 text-slate-700 font-bold not-italic text-sm">No official bills generated yet</p>
+                    <p class="text-xs text-slate-400 mb-4 not-italic">You can request your latest statement & official bill from the clinic administration.</p>
+                    <a href="${reqLatestBillUrl}" target="_blank" class="inline-flex items-center gap-2 text-xs font-black text-white bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 rounded-2xl transition-all shadow-md not-italic">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Request Latest Bill
+                    </a>
+                </div>
+            `;
+            if (window.lucide) lucide.createIcons();
+            } catch (renderErr) {
+                console.error("renderUI error:", renderErr);
+            }
+        }
+
+        let currentPassbookFilter = null;
+
+        function applyPassbookFilter(month) {
+            currentPassbookFilter = month;
+            renderPassbook(month);
+        }
+
+        function renderPassbook(selectedMonth = currentPassbookFilter) {
+            const sessions = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted'].includes(String(r[7]).toLowerCase()));
+            const sortedSessions = [...sessions].sort((a, b) => new Date(b[8] || b[0]) - new Date(a[8] || a[0]));
+            
+            const monthGroups = {};
+            sortedSessions.forEach(s => {
+                const rawDate = s[8] || s[0];
+                const d = new Date(rawDate);
+                const monthKey = !isNaN(d.getTime()) 
+                    ? d.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+                    : 'Recent Sessions';
+                if (!monthGroups[monthKey]) monthGroups[monthKey] = [];
+                monthGroups[monthKey].push(s);
+            });
+
+            const monthKeys = Object.keys(monthGroups);
+
+            // By default, select the month of the latest/last session date
+            if (!currentPassbookFilter || (currentPassbookFilter !== 'all' && !monthKeys.includes(currentPassbookFilter))) {
+                selectedMonth = monthKeys.length ? monthKeys[0] : 'all';
+                currentPassbookFilter = selectedMonth;
+            } else {
+                selectedMonth = currentPassbookFilter;
+            }
+
+            // Update dropdown options - only write clean month names without session counts
+            const filterEl = document.getElementById('passbook-filter');
+            if (filterEl) {
+                let optionsHtml = '';
+                monthKeys.forEach(mKey => {
+                    optionsHtml += `<option value="${mKey}" ${selectedMonth === mKey ? 'selected' : ''}>${mKey}</option>`;
+                });
+                optionsHtml += `<option value="all" ${selectedMonth === 'all' ? 'selected' : ''}>All Months</option>`;
+                filterEl.innerHTML = optionsHtml;
+            }
+
+            const listEl = document.getElementById('passbook-list');
+            if (!listEl) return;
+
+            if (!sortedSessions.length) {
+                listEl.innerHTML = '<div class="p-8 md:p-10 text-center text-slate-400 italic bg-white rounded-3xl border border-dashed">No history recorded yet.</div>';
+                return;
+            }
+
+            const activeKeys = selectedMonth === 'all' ? monthKeys : monthKeys.filter(k => k === selectedMonth);
+
+            if (!activeKeys.length) {
+                listEl.innerHTML = `
+                    <div class="p-8 text-center text-slate-400 bg-white rounded-3xl border border-dashed">
+                        <p class="text-xs font-semibold mb-2">No records found for ${selectedMonth}.</p>
+                        <button onclick="applyPassbookFilter('all')" class="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl hover:bg-indigo-100 transition-colors">Show All Months</button>
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = activeKeys.map(mKey => {
+                const mSessions = monthGroups[mKey] || [];
+                return `
+                <div class="space-y-2 mb-4">
+                    <div class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm py-1.5 px-3 rounded-xl flex items-center justify-between border border-slate-200/60 shadow-xs">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            <span class="text-[11px] font-black text-slate-700 uppercase tracking-wider">${mKey}</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        ${mSessions.map(s => {
+                            const fee = Math.round(toNum(s[9]));
+                            const doc = String(s[16] || currentTreatingDoctor || '').trim();
+                            const payMode = String(s[15] || '').trim();
+                            return `
+                            <div class="bg-white p-3.5 md:p-4 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs hover:border-indigo-100 transition-all">
+                                <div class="flex items-start sm:items-center gap-3">
+                                    <div class="bg-indigo-50 text-indigo-600 p-2 md:p-2.5 rounded-xl flex-shrink-0 mt-0.5 sm:mt-0">
+                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <p class="text-xs md:text-sm font-black text-slate-800">${formatDate(s[8])}</p>
+                                            <span class="text-[9px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${s[6] || 'Rehab Visit'}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 flex-wrap mt-1 text-[10px]">
+                                            ${doc && doc.toLowerCase() !== 'undefined' ? `<span class="inline-flex items-center gap-1 font-bold text-slate-600"><i data-lucide="stethoscope" class="w-3 h-3 text-indigo-500"></i> ${doc}</span>` : ''}
+                                            ${payMode && payMode !== '0' ? `<span class="inline-flex items-center gap-1 font-bold text-indigo-600 bg-indigo-50 border border-indigo-100/70 px-1.5 py-0.5 rounded">${payMode}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between sm:justify-end gap-2 pl-11 sm:pl-0">
+                                    <span class="text-xs font-black text-indigo-600 border border-indigo-100/80 bg-indigo-50/60 px-2.5 py-1 rounded-xl flex-shrink-0">₹${fee.toLocaleString('en-IN')}</span>
+                                </div>
+                            </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                `;
+            }).join('');
+
             lucide.createIcons();
         }
 
@@ -356,7 +1065,7 @@ function toNum(v) {
             const p = loggedInPatient;
             const logs = patientLogs.filter(l => !['case closed', 'bill issued'].includes(String(l[7]).toLowerCase()));
             const billRec = patientLogs.find(r => r[13] === stmtNo);
-            const dateStr = formatDate(billRec[8]);
+            const dateStr = billRec ? formatDate(billRec[8]) : formatDate(new Date());
             
             let total = 0; const groups = {};
             logs.forEach(l => {
@@ -387,12 +1096,15 @@ function toNum(v) {
             </div>`;
 
             const rowHtml = Object.keys(groups).map(fee => `
-                <tr style="border-bottom:1px solid #edf2f7"><td style="padding:14px"><strong>Physiotherapy Session</strong><br><span style="font-size:10px; color:#4f46e5; font-weight:700">Period: ${formatDate(groups[fee].dates[0])} - ${formatDate(groups[fee].dates.at(-1))}</span></td><td style="text-align:center; font-weight:800">${groups[fee].qty}</td><td style="text-align:center; color:#64748b">₹${fee}</td><td style="text-align:right; font-weight:900">₹${(fee*groups[fee].qty).toLocaleString()}</td></tr>
+                <tr style="border-bottom:1px solid #edf2f7"><td style="padding:14px"><strong>Physiotherapy Session</strong><br><span style="font-size:10px; color:#4f46e5; font-weight:700">Period: ${formatDate(groups[fee].dates[0])} - ${formatDate(groups[fee].dates.at(-1))}</span></td><td style="text-align:center; font-weight:800">${groups[fee].qty}</td><td style="text-align:center; color:#64748b">₹${Math.round(toNum(fee)).toLocaleString('en-IN')}</td><td style="text-align:right; font-weight:900">₹${Math.round(fee*groups[fee].qty).toLocaleString('en-IN')}</td></tr>
             `).join('');
 
             const ledgerRows = logs.map((l, i) => `
-                <div style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;"><div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${i+1}.</div><div style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDate(l[8])}</div><div style="flex:1; color:#64748b; font-size:13px;">Physiotherapy Session</div><div style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${l[9]}</div></div>
+                <div style="display:flex; align-items:center; padding:16px 4px; border-bottom:1px solid #f1f5f9;"><div style="width:34px; color:#6366f1; font-weight:800; font-size:13px;">${i+1}.</div><div style="width:120px; color:#4f46e5; font-weight:800; font-size:13px;">${formatDate(l[8])}</div><div style="flex:1; color:#64748b; font-size:13px;">Physiotherapy Session</div><div style="font-weight:800; font-size:14px; color:#0f172a; text-align:right; min-width:80px;">₹${Math.round(toNum(l[9])).toLocaleString('en-IN')}</div></div>
             `).join('');
+
+            const startDateStr = logs.length ? formatDate(logs[0][8]) : dateStr;
+            const endDateStr = logs.length ? formatDate(logs.at(-1)[8]) : dateStr;
 
             document.getElementById('full-document-render').innerHTML = `
                 <div class="bill-page">${header}
@@ -400,10 +1112,10 @@ function toNum(v) {
                         <div><p class="section-label2">Patient Information</p><strong style="font-size:20px;">${p.name}</strong><p style="font-size:12px; color:#475569; margin:2px 0;">ID: <span style="font-weight:800; color:#0f172a">${p.id}</span></p><p style="font-size:12px; color:#475569; margin:2px 0;">Gender: ${p.gender} | Age: ${p.age} Y</p><p style="font-size:12px; color:#475569; margin:2px 0;">Addr: ${p.address || ''}</p><p class="section-label2" style="margin-top:14px">Clinical Diagnosis</p><strong style="font-size:14px; color:#0f172a">${p.diag}</strong></div>
                         <div style="text-align:right"><p class="section-label2">Provider Details</p><strong style="font-size:15px; color:#0f172a">Dr Ravi Kumar, PT</strong><p style="margin:2px 0; font-size:11px; color:#64748b">Reg No: UDYAM-BR-06-0028454</p><p style="margin:2px 0; font-size:11px; color:#64748b">Ph: +91 97080 59081</p><p style="margin:2px 0; font-size:11px; color:#64748b">Prismhealthcare.in</p><p class="section-label2" style="text-align:right; margin-top:14px">Bill Date</p><strong style="font-size:13px">${dateStr}</strong></div>
                     </div>
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:20px"><thead style="background:#f8fafc; text-align:left; border-bottom:2px solid #e2e8f0; font-size:11px; color:#64748b"><th style="padding:12px;">PROCEDURE DESCRIPTION</th><th style="padding:12px; text-align:center">QTY</th><th style="padding:12px; text-align:center">RATE</th><th style="padding:12px; text-align:right">SUBTOTAL</th></thead><tbody>${rowHtml}</tbody><tfoot><tr style="background:#f8fafc"><td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td><td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px">₹${total.toLocaleString()}</td></tr></tfoot></table>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:20px"><thead style="background:#f8fafc; text-align:left; border-bottom:2px solid #e2e8f0; font-size:11px; color:#64748b"><th style="padding:12px;">PROCEDURE DESCRIPTION</th><th style="padding:12px; text-align:center">QTY</th><th style="padding:12px; text-align:center">RATE</th><th style="padding:12px; text-align:right">SUBTOTAL</th></thead><tbody>${rowHtml}</tbody><tfoot><tr style="background:#f8fafc"><td colspan="3" style="padding:18px; text-align:right; font-weight:900; font-size:13px; color:#4f46e5; text-transform:uppercase">Total Payable Balance</td><td style="padding:18px; text-align:right; font-weight:900; color:#0f172a; font-size:20px">₹${Math.round(total).toLocaleString('en-IN')}</td></tr></tfoot></table>
                 ${footer}</div>
                 <div class="bill-page">${header}<h2 style="font-size:19px; font-weight:900; letter-spacing:0.5px; color:#0f172a; margin:0 0 6px;">SESSION NARRATIVE LEDGER</h2><div style="height:4px; width:100%; background:#4f46e5; border-radius:4px; margin-bottom:10px;"></div><div style="margin-bottom:30px; margin-top:14px">${ledgerRows}</div>${footer}</div>
-                <div class="bill-page">${header}<h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2><p style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">This is to certify that <strong>${p.name}</strong> (Age: ${p.age} Y, Gender: ${p.gender}) has been under our care for the clinical diagnosis of <strong>${p.diag}</strong>.<br><br>The patient has successfully completed <strong>${logs.length}</strong> session(s) of Physiotherapy Rehabilitation by Dr Ravi Kumar, PT.<br><br>These therapeutic sessions were administered during the period from <strong>${formatDate(logs[0][8])}</strong> to <strong>${formatDate(logs.at(-1)[8])}</strong>.<br><br>This certificate is issued at the request of the patient for records and health insurance claim purposes.</p><div style="text-align:right; margin-top:60px"><strong>Dr Ravi Kumar, PT</strong><br><span style="font-size:11px; color:#64748b">Consulting Physiotherapist</span></div>${footer}</div>
+                <div class="bill-page">${header}<h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2><p style="font-size:16px; line-height:2.1; color:#334155; text-align:justify; margin-bottom:40px">This is to certify that <strong>${p.name}</strong> (Age: ${p.age} Y, Gender: ${p.gender}) has been under our care for the clinical diagnosis of <strong>${p.diag}</strong>.<br><br>The patient has successfully completed <strong>${logs.length}</strong> session(s) of Physiotherapy Rehabilitation by Dr Ravi Kumar, PT.<br><br>These therapeutic sessions were administered during the period from <strong>${startDateStr}</strong> to <strong>${endDateStr}</strong>.<br><br>This certificate is issued at the request of the patient for records and health insurance claim purposes.</p><div style="text-align:right; margin-top:60px"><strong>Dr Ravi Kumar, PT</strong><br><span style="font-size:11px; color:#64748b">Consulting Physiotherapist</span></div>${footer}</div>
             `;
             document.getElementById('bill-modal').classList.remove('hidden');
             lucide.createIcons();
@@ -417,6 +1129,127 @@ function toNum(v) {
         function closeModal() { document.getElementById('bill-modal').classList.add('hidden'); }
         function formatDate(d) { if(!d) return '-'; return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
 
+        function toggleMask() {
+            const input = document.getElementById('login-id');
+            const btn = document.getElementById('mask-btn');
+            
+            if (input.type === "password") {
+                input.type = "text";
+                btn.innerHTML = "🙈";
+            } else {
+                input.type = "password";
+                btn.innerHTML = "👀";
+            }
+        }
+
+        function logoutPatient() {
+            try {
+                localStorage.removeItem('prism_patient_cache');
+                sessionStorage.clear();
+            } catch(e) {}
+            location.reload();
+        }
+
+        function restoreSavedSession() {
+            try {
+                const cached = localStorage.getItem('prism_patient_cache');
+                if (!cached) return;
+                const session = JSON.parse(cached);
+                if (session && session.userInput && session.idLast4 && session.patient) {
+                    // Pre-fill credentials in background inputs
+                    const nameEl = document.getElementById('login-name');
+                    const idEl = document.getElementById('login-id');
+                    if (nameEl) nameEl.value = session.userInput;
+                    if (idEl) idEl.value = session.idLast4;
+
+                    // Immediately restore cached patient data for instant page refresh without delay
+                    loggedInPatient = session.patient;
+                    patientBalance = session.patientBalance || null;
+                    patientLogs = session.patientLogs || [];
+                    globalData = session.globalData || [];
+                    exerciseData = session.exerciseData || [];
+                    billsData = session.billsData || [];
+                    doctorsData = session.doctorsData || [];
+
+                    renderUI();
+
+                    // Silently sync fresh records from Google Sheets in the background
+                    syncPatientData(session.userInput, session.idLast4);
+                }
+            } catch(e) {
+                console.error("Session restore error:", e);
+            }
+        }
+
+        async function syncPatientData(userInput, idLast4) {
+            try {
+                const targetPid = (loggedInPatient && loggedInPatient.id) ? loggedInPatient.id : null;
+                // Fetch admin database and live sheet balances concurrently (matching PMS)
+                const [adminRes, balRes] = await Promise.all([
+                    syncToBackend({ action: "fetchAdminData" }).catch(() => null),
+                    targetPid ? syncToBackend({ action: "fetchPatientBalances", patientId: targetPid }).catch(() => null) : Promise.resolve(null)
+                ]);
+
+                if (adminRes && adminRes.adminData) {
+                    const freshAdminData = adminRes.adminData || [];
+                    const freshExerciseData = adminRes.exercisePlans || [];
+                    const freshBillsData = adminRes.bills || [];
+                    const freshDoctorsData = adminRes.doctorsList || [];
+
+                    const match = findMatchingPatient(freshAdminData, userInput, idLast4);
+
+                    if (match) {
+                        globalData = freshAdminData;
+                        exerciseData = freshExerciseData;
+                        billsData = freshBillsData;
+                        doctorsData = freshDoctorsData;
+                        loggedInPatient = { 
+                            name: match[2], 
+                            id: match[1], 
+                            phone: match[3], 
+                            age: match[4], 
+                            gender: match[5], 
+                            diag: match[6], 
+                            address: match[14] 
+                        };
+                        patientLogs = globalData.filter(r => String(r[1] || '').trim() === loggedInPatient.id);
+
+                        if (balRes && balRes.balances && balRes.balances[loggedInPatient.id]) {
+                            patientBalance = balRes.balances[loggedInPatient.id];
+                        } else if (adminRes && adminRes.balances && adminRes.balances[loggedInPatient.id]) {
+                            patientBalance = adminRes.balances[loggedInPatient.id];
+                        }
+
+                        // Update local cache with fresh synchronized data
+                        try {
+                            localStorage.setItem('prism_patient_cache', JSON.stringify({
+                                userInput: userInput,
+                                idLast4: idLast4,
+                                patient: loggedInPatient,
+                                patientBalance: patientBalance,
+                                patientLogs: patientLogs,
+                                globalData: globalData,
+                                exerciseData: exerciseData,
+                                billsData: billsData,
+                                doctorsData: doctorsData,
+                                timestamp: Date.now()
+                            }));
+                        } catch(e) {}
+
+                        renderUI();
+                    }
+                } else if (balRes && balRes.balances && loggedInPatient && balRes.balances[loggedInPatient.id]) {
+                    patientBalance = balRes.balances[loggedInPatient.id];
+                    renderUI();
+                } else if (adminRes && adminRes.balances && loggedInPatient && adminRes.balances[loggedInPatient.id]) {
+                    patientBalance = adminRes.balances[loggedInPatient.id];
+                    renderUI();
+                }
+            } catch(err) {
+                console.warn("Background session sync paused:", err);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             const menuBtn = document.getElementById('menu-btn');
@@ -424,19 +1257,24 @@ function toNum(v) {
             const mobileMenu = document.getElementById('mobile-menu');
             if (menuBtn && mobileMenu) menuBtn.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
             if (closeMenuBtn && mobileMenu) closeMenuBtn.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+
+            // Allow Enter key to trigger login
+            const loginIdInput = document.getElementById('login-id');
+            const loginNameInput = document.getElementById('login-name');
+            if (loginIdInput) {
+                loginIdInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') attemptLogin();
+                });
+            }
+            if (loginNameInput) {
+                loginNameInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') attemptLogin();
+                });
+            }
+
+            // Automatically restore session on page refresh
+            restoreSavedSession();
         });
-function toggleMask() {
-    const input = document.getElementById('login-id');
-    const btn = document.getElementById('mask-btn');
-    
-    if (input.type === "password") {
-        input.type = "text";
-        btn.innerHTML = "🙈"; // Show monkey when password is visible
-    } else {
-        input.type = "password";
-        btn.innerHTML = "👀"; // Show search icon when password is hidden
-    }
-}
     </script>
 </body>
 </html>
