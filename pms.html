@@ -27,6 +27,7 @@
     <style>
         /* --- Strict Mobile Viewport & Zero-Sliding Core Rules --- */
         .hidden { display: none !important; }
+        #patient-workspace { scroll-margin-top: 1.5rem; }
 
         /* Fixed Blue Rectangle with Curved Edges for LOG button */
         .log-case-btn {
@@ -3064,11 +3065,71 @@ html.dark .instruction-modal-footer {
                     </div>
                 </div>
 
+                <!-- ── STEP 4: HOME EXERCISE PLAN (HEP) CARD ── -->
+                <div class="glass-card p-5 sm:p-7 rounded-[2rem] border-l-4 border-l-amber-500 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
+                    <!-- Card Header -->
+                    <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center font-black text-xs shadow-xs flex-shrink-0">
+                                04
+                            </div>
+                            <div>
+                                <h3 class="text-xs font-black uppercase text-amber-600 dark:text-amber-400 tracking-wider">Home Exercise Plan (HEP Prescription)</h3>
+                                <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Assign initial home rehabilitation exercises, dosage & routine</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="enroll-hep-count-badge" class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50">0 Exercises</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls Row: Fast Search & Browse Library Button -->
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                            <div class="relative flex-1">
+                                <input type="text" id="enroll-hep-search" oninput="searchEnrollHepExercises(this.value)" placeholder="🔍 Search exercise to add (e.g. Chin Tuck, SLR, Wall Slide, Bridging)..." class="w-full p-3.5 pl-10 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs sm:text-sm focus:border-amber-500 transition-all placeholder:text-slate-400">
+                                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                                <div id="enroll-hep-search-dropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl max-h-60 overflow-y-auto p-2 z-[100] space-y-1"></div>
+                            </div>
+                            <button type="button" onclick="openEnrollHepLibraryModal()" class="px-4 py-3.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer whitespace-nowrap">
+                                <i data-lucide="book-open" class="w-4 h-4"></i>
+                                <span>Browse HEP Library</span>
+                            </button>
+                            <button type="button" onclick="openEnrollCustomExerciseModal()" class="px-4 py-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer whitespace-nowrap">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                <span>Custom Exercise</span>
+                            </button>
+                        </div>
+
+                        <!-- Prescribed Exercises List Container -->
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between ml-1 mb-1">
+                                <span class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">Prescribed Exercises for this Patient</span>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase">Intake Routine</span>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div id="enroll-hep-empty-state" class="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl p-7 text-center text-slate-400 text-xs flex flex-col items-center justify-center gap-2 bg-slate-50/50 dark:bg-slate-900/30">
+                                <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500 flex items-center justify-center">
+                                    <i data-lucide="dumbbell" class="w-5 h-5"></i>
+                                </div>
+                                <span class="font-semibold text-slate-500 dark:text-slate-400">No exercises added yet.</span>
+                                <span class="text-[10px] text-slate-400">Search above or click "Browse HEP Library" to add routine exercises during enrollment.</span>
+                            </div>
+
+                            <!-- Cards Container -->
+                            <div id="enroll-hep-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── COMPLETE ENROLLMENT SUBMIT BUTTON ── -->
-                <div class="pt-2 pb-24 sm:pb-8">
-                    <button onclick="saveEnrollment()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4.5 sm:py-5 rounded-2xl shadow-xl shadow-indigo-600/30 hover:shadow-2xl active:scale-[0.98] transition-all uppercase tracking-wider text-xs sm:text-sm flex items-center justify-center gap-2.5 cursor-pointer">
-                        <i data-lucide="user-check" class="w-5 h-5"></i>
-                        <span>Complete Patient Enrollment</span>
+                <div class="pt-4 pb-32 sm:pb-16 px-1">
+                    <button onclick="saveEnrollment()" class="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 hover:from-indigo-700 hover:to-indigo-900 text-white font-black py-4.5 sm:py-5 px-6 rounded-2xl sm:rounded-[1.75rem] shadow-xl shadow-indigo-600/35 hover:shadow-2xl hover:shadow-indigo-600/45 active:scale-[0.98] transition-all uppercase tracking-wider text-sm sm:text-base flex items-center justify-center gap-3 cursor-pointer min-h-[60px] sm:min-h-[64px] border border-indigo-400/30">
+                        <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 shadow-inner">
+                            <i data-lucide="user-check" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="tracking-wide font-black">Complete Patient Enrollment</span>
                     </button>
                 </div>
                 <div class="h-6 lg:hidden"></div>
@@ -3084,7 +3145,7 @@ html.dark .instruction-modal-footer {
                             <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 border border-indigo-100 dark:border-indigo-900 shadow-sm">
                                 <i data-lucide="search" class="w-5 h-5"></i>
                             </div>
-                            <input type="text" id="patient-search-input" onkeyup="searchPatient()" placeholder="Search patient by name, clinical ID or phone number..." class="flex-1 p-2 bg-transparent border-none outline-none font-bold text-base lg:text-lg text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
+                            <input type="text" id="patient-search-input" oninput="searchPatient()" onkeyup="searchPatient()" onfocus="if(this.value.trim()) searchPatient();" placeholder="Search patient by name, clinical ID or phone number..." class="flex-1 p-2 bg-transparent border-none outline-none font-bold text-base lg:text-lg text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500">
                             <button onclick="document.getElementById('patient-search-input').value=''; searchPatient();" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all flex-shrink-0 cursor-pointer" title="Clear search">
                                 <i data-lucide="x" class="w-4 h-4"></i>
                             </button>
@@ -3106,7 +3167,7 @@ html.dark .instruction-modal-footer {
                             </div>
                             <span id="active-cases-count" class="text-[10px] font-black bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-3.5 py-1.5 rounded-xl uppercase border border-indigo-100 dark:border-indigo-900 shadow-sm">0 Active</span>
                         </div>
-                        <div id="active-cases-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-60 overflow-y-auto pr-1 table-scroll"></div>
+                        <div id="active-cases-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
                     </div>
 
                     <!-- EMPTY WORKSPACE GUIDANCE (Shown when no patient is active) -->
@@ -3122,7 +3183,7 @@ html.dark .instruction-modal-footer {
                     </div>
 
                     <!-- PATIENT WORKSPACE (2-column on laptop, stacked on mobile) -->
-                    <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                    <div id="patient-workspace" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start scroll-mt-6">
 
                         <!-- LEFT COLUMN: Session History & Patient Profile -->
                         <div class="flex flex-col gap-6">
@@ -3341,28 +3402,12 @@ html.dark .instruction-modal-footer {
                             <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 block mb-2 ml-1 tracking-wider">Search Registered Visits</label>
                             <div class="flex gap-2.5">
                                 <input type="text" id="registry-search-input" onkeyup="filterRegistryTable()" placeholder="Patient name or clinical ID..." class="flex-1 p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 transition-all text-sm placeholder:text-slate-400">
-                                <button onclick="printDailyRegistry()" class="toolbar-btn bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 flex-shrink-0 px-5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer" title="Print this day's registry">
-                                    <i data-lucide="printer" class="w-4 h-4"></i> 
-                                    <span>Print</span>
+                                <button onclick="openRegistryDownloadModal()" class="toolbar-btn bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 flex-shrink-0 px-5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer" title="Download Registry CSV">
+                                    <i data-lucide="download" class="w-4 h-4"></i> 
+                                    <span>Download CSV</span>
                                 </button>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- DATE RANGE CSV EXPORT DOCK -->
-                    <div class="glass-card p-6 rounded-[2.5rem] shadow-xl border-indigo-200/70 dark:border-slate-800 bg-gradient-to-br from-indigo-50/50 via-white to-slate-50/50 dark:from-slate-900 dark:to-indigo-950/20 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-                        <div>
-                            <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 block mb-2 ml-1 tracking-wider">From Date</label>
-                            <input type="date" id="registry-range-from" class="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-black text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 block mb-2 ml-1 tracking-wider">To Date</label>
-                            <input type="date" id="registry-range-to" class="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-black text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
-                        </div>
-                        <button onclick="openRegistryDownloadModal()" class="toolbar-btn bg-indigo-600 hover:bg-indigo-700 text-white justify-center py-4 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all active:scale-95 cursor-pointer">
-                            <i data-lucide="download" class="w-4 h-4"></i> 
-                            <span>Download Range (CSV)</span>
-                        </button>
                     </div>
 
                     <!-- TELEMETRY STATS -->
@@ -3397,7 +3442,7 @@ html.dark .instruction-modal-footer {
                                     <th class="p-5 hidden lg:table-cell">Clinical ID</th>
                                     <th class="p-5 text-center hidden lg:table-cell">Branch</th>
                                     <th class="p-5 hidden lg:table-cell">Diagnosis / Note</th>
-                                    <th class="p-5 text-center">Payment</th>
+                                    <th class="p-5 text-center">Payment / Paid</th>
                                     <th class="p-5 text-right">Fee</th>
                                 </tr>
                             </thead>
@@ -4003,22 +4048,48 @@ html.dark .instruction-modal-footer {
         </div>
 
         <!-- REGISTRY BRANCH DOWNLOAD MODAL -->
-        <div id="registry-download-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-6">
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-sm w-full shadow-2xl border border-slate-200/80 dark:border-slate-800">
+        <div id="registry-download-modal" onclick="if(event.target===this)closeRegistryDownloadModal()" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl border border-slate-200/80 dark:border-slate-800">
                 <div class="flex justify-between items-center mb-5 pb-2 border-b border-slate-100 dark:border-slate-800">
                     <div class="flex items-center gap-2.5">
                         <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                             <i data-lucide="download" class="w-4 h-4"></i>
                         </div>
-                        <h3 class="text-lg font-black text-slate-900 dark:text-white">Export Registry</h3>
+                        <h3 class="text-lg font-black text-slate-900 dark:text-white">Download Registry CSV</h3>
                     </div>
                     <button onclick="closeRegistryDownloadModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
                 </div>
-                <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Choose branch to export</p>
-                <div class="space-y-3">
-                    <button onclick="downloadRegistryRangeCSV('ALL')" class="w-full py-4 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 cursor-pointer">Download All Branches</button>
-                    <button onclick="downloadRegistryRangeCSV('POC')" class="w-full py-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-black text-xs uppercase tracking-wider hover:bg-indigo-600 hover:text-white transition-all active:scale-95 cursor-pointer">Prism Orthocare (POC)</button>
-                    <button onclick="downloadRegistryRangeCSV('PHC')" class="w-full py-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-black text-xs uppercase tracking-wider hover:bg-emerald-600 hover:text-white transition-all active:scale-95 cursor-pointer">Homecare (PHC)</button>
+
+                <!-- Date Range Selection Inside Modal -->
+                <div class="mb-5 space-y-2">
+                    <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Select Date Range</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 block mb-1">From Date</label>
+                            <input type="date" id="registry-range-from" class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 block mb-1">To Date</label>
+                            <input type="date" id="registry-range-to" class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs">
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Choose Branch & Download</p>
+                <div class="space-y-2.5">
+                    <button onclick="downloadRegistryRangeCSV('ALL')" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Download All Branches</span>
+                    </button>
+                    <button onclick="downloadRegistryRangeCSV('POC')" class="w-full py-3.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 font-black text-xs uppercase tracking-wider hover:bg-indigo-600 hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
+                        <span>Prism Orthocare (POC)</span>
+                    </button>
+                    <button onclick="downloadRegistryRangeCSV('PHC')" class="w-full py-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-black text-xs uppercase tracking-wider hover:bg-emerald-600 hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
+                        <span>Homecare (PHC)</span>
+                    </button>
+                    <button onclick="downloadRegistryRangeCSV('PRC')" class="w-full py-3.5 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 font-black text-xs uppercase tracking-wider hover:bg-sky-600 hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
+                        <span>Rehab Clinic (PRC)</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -4569,6 +4640,104 @@ html.dark .instruction-modal-footer {
             </div>
         </div>
 
+        <!-- ENROLLMENT HEP LIBRARY BROWSER MODAL -->
+        <div id="enroll-hep-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[260] flex items-center justify-center p-3 sm:p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-5 sm:p-7 max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200/80 dark:border-slate-800">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-900 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm flex-shrink-0">
+                            <i data-lucide="book-open" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white">Home Exercise Library</h3>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">Click to prescribe exercises for this patient's intake plan</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeEnrollHepModal()" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Search & Filters -->
+                <div class="py-4 space-y-3 flex-shrink-0">
+                    <div class="relative">
+                        <input type="text" id="enroll-modal-search" oninput="renderEnrollHepModalCards()" placeholder="Search library by name, category or region..." class="w-full p-3 pl-10 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500 transition-all placeholder:text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                    <!-- Region Pills Carousel/Wrap -->
+                    <div id="enroll-hep-region-pills" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-xs font-bold"></div>
+                </div>
+
+                <!-- Exercise Cards Scroll Area -->
+                <div id="enroll-hep-modal-cards" class="flex-1 overflow-y-auto space-y-2.5 pr-1 min-h-[300px]"></div>
+
+                <!-- Modal Footer -->
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span id="enroll-modal-selected-count" class="text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-wider">0 selected</span>
+                    </div>
+                    <button type="button" onclick="closeEnrollHepModal()" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-black text-xs uppercase tracking-wider shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer">
+                        Done Prescribing
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENROLLMENT CUSTOM EXERCISE MODAL -->
+        <div id="enroll-custom-ex-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[260] flex items-center justify-center p-3 sm:p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 space-y-5">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-900 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm flex-shrink-0">
+                            <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black tracking-tight text-slate-900 dark:text-white">Add Custom Exercise</h3>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">Prescribe non-library or personalized movement</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeEnrollCustomExModal()" class="p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1.5">Exercise Name *</label>
+                        <input type="text" id="enroll-custom-name" placeholder="e.g. Scapular Clock, Isometric Quad Press..." class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1.5">Dosage / Sets & Reps</label>
+                            <input type="text" id="enroll-custom-sets" value="3 sets × 10 reps" placeholder="e.g. 3 sets × 10 reps" class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1.5">Frequency</label>
+                            <input type="text" id="enroll-custom-freq" value="Twice daily" placeholder="e.g. Twice daily, Once daily" class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1.5">Instructions / Key Form Cues</label>
+                        <textarea id="enroll-custom-steps" rows="3" placeholder="Step-by-step guidance, tempo, or precautions..." class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-semibold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1.5">Video / Demo URL (Optional)</label>
+                        <input type="url" id="enroll-custom-video" placeholder="https://..." class="w-full p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="button" onclick="closeEnrollCustomExModal()" class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-black uppercase tracking-wider cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="addEnrollCustomExercise()" class="flex-[2] py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-amber-500/20 active:scale-95 transition-all cursor-pointer">
+                        Add to Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- BILL SELECTION MODAL -->
         <div id="bill-selection-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[250] flex items-center justify-center p-4 sm:p-6">
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 dark:border-slate-800">
@@ -4963,6 +5132,7 @@ setInterval(updateLiveClock, 1000);
     }
     try {
         localStorage.setItem('prism_unlocked', '1');
+        localStorage.setItem('prism_last_activity', Date.now().toString());
     } catch (e) {}
     const todayStr = getLocalISOString();
     const regDateEl = document.getElementById('en-reg-date');
@@ -5042,15 +5212,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     } catch(e) {}
 
-    // Auto-unlock if a valid session already exists (survives refresh)
+    // Auto-unlock if a valid session already exists (survives refresh), with mobile-resilient inactivity expiration
     try {
-        if (localStorage.getItem('prism_unlocked') === '1') {
+        const isUnlocked = localStorage.getItem('prism_unlocked') === '1';
+        const lastActStr = localStorage.getItem('prism_last_activity');
+        const lastAct = lastActStr ? parseInt(lastActStr, 10) : 0;
+        const now = Date.now();
+        const INACTIVITY_MS = 5 * 60 * 1000;
+        if (isUnlocked && lastAct > 0 && (now - lastAct >= INACTIVITY_MS)) {
+            // Session expired while mobile browser/tab was sleeping or closed
+            localStorage.removeItem('prism_unlocked');
+            localStorage.removeItem('prism_last_activity');
+            sessionStorage.removeItem('prism_session_id');
+            sessionStorage.removeItem('prism_session_start');
+            initMPinUI();
+            if (typeof warmUpBackend === 'function') warmUpBackend();
+        } else if (isUnlocked) {
+            localStorage.setItem('prism_last_activity', now.toString());
             unlockApp();
         } else {
             initMPinUI();
             if (typeof warmUpBackend === 'function') warmUpBackend();
         }
-    } catch (e) {}
+    } catch (e) {
+        initMPinUI();
+    }
 });
 
     function toggleLockPasswordVisibility() {
@@ -6036,6 +6222,462 @@ function resetEnrollBodyChart(){
   selectedPain = null;
   renderFindings();
 }
+
+// ============================================================
+// ENROLLMENT HEP (HOME EXERCISE PLAN) CONTROLLER
+// ============================================================
+let enrollHepList = [];
+let enrollHepSelectedRegion = "ALL";
+
+function searchEnrollHepExercises(query) {
+    const dropdown = document.getElementById('enroll-hep-search-dropdown');
+    if (!dropdown) return;
+    const q = (query || '').trim().toLowerCase();
+    if (!q || q.length < 2) {
+        dropdown.classList.add('hidden');
+        dropdown.innerHTML = '';
+        return;
+    }
+
+    if (typeof EXERCISE_LIBRARY === 'undefined' || !EXERCISE_LIBRARY) {
+        dropdown.innerHTML = '<div class="p-3 text-xs text-slate-400 font-bold">Exercise library is loading...</div>';
+        dropdown.classList.remove('hidden');
+        return;
+    }
+
+    const matches = [];
+    Object.keys(EXERCISE_LIBRARY).forEach(region => {
+        const categories = EXERCISE_LIBRARY[region];
+        Object.keys(categories).forEach(cat => {
+            const list = categories[cat];
+            if (Array.isArray(list)) {
+                list.forEach(ex => {
+                    const nameMatch = ex.name && ex.name.toLowerCase().includes(q);
+                    const catMatch = cat.toLowerCase().includes(q);
+                    const regionMatch = region.toLowerCase().includes(q);
+                    if (nameMatch || catMatch || regionMatch) {
+                        matches.push({
+                            name: ex.name,
+                            steps: ex.steps || '',
+                            video: ex.video || '',
+                            region: region,
+                            category: cat
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    if (matches.length === 0) {
+        dropdown.innerHTML = `<div class="p-4 text-center text-xs font-semibold text-slate-400">No exercises matching "${query}"</div>`;
+        dropdown.classList.remove('hidden');
+        return;
+    }
+
+    const topMatches = matches.slice(0, 20);
+    dropdown.innerHTML = topMatches.map(ex => {
+        const isAdded = enrollHepList.some(item => item.name === ex.name);
+        const escapedName = ex.name.replace(/'/g, "\\'");
+        const escapedSteps = (ex.steps || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        const escapedVideo = (ex.video || '').replace(/'/g, "\\'");
+        const escapedRegion = ex.region.replace(/'/g, "\\'");
+        const escapedCat = ex.category.replace(/'/g, "\\'");
+
+        return `
+            <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/70 rounded-xl flex items-center justify-between gap-3 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all cursor-pointer" onclick="toggleEnrollHepItem('${escapedName}', '${escapedSteps}', '${escapedVideo}', '${escapedRegion}', '${escapedCat}')">
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-black text-slate-800 dark:text-slate-100 truncate uppercase">${ex.name}</p>
+                    <p class="text-[9px] font-bold text-slate-400 uppercase truncate mt-0.5">${ex.region} • ${ex.category}</p>
+                </div>
+                <div>
+                    ${isAdded 
+                        ? `<span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">✓ Added</span>`
+                        : `<span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase bg-amber-500 text-white hover:bg-amber-600 shadow-xs">+ Add</span>`
+                    }
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    dropdown.classList.remove('hidden');
+}
+
+function toggleEnrollHepItem(name, steps, video, region, category) {
+    const existingIndex = enrollHepList.findIndex(item => item.name === name);
+    if (existingIndex > -1) {
+        enrollHepList.splice(existingIndex, 1);
+        showToast(`Removed "${name}" from intake routine`, 'info');
+    } else {
+        enrollHepList.push({
+            name: name,
+            setsReps: "3 sets × 10 reps",
+            frequency: "Twice daily",
+            instructions: steps || "",
+            videoLink: video || "",
+            region: region || "",
+            category: category || ""
+        });
+        showToast(`Added "${name}" to intake routine`, 'success');
+    }
+    renderEnrollHepList();
+
+    const modalCards = document.getElementById('enroll-hep-modal-cards');
+    const modalEl = document.getElementById('enroll-hep-modal');
+    if (modalCards && modalEl && !modalEl.classList.contains('hidden')) {
+        renderEnrollHepModalCards();
+    }
+
+    const searchInput = document.getElementById('enroll-hep-search');
+    if (searchInput && searchInput.value) {
+        searchEnrollHepExercises(searchInput.value);
+    }
+}
+
+function removeExerciseFromEnrollHep(index) {
+    if (index >= 0 && index < enrollHepList.length) {
+        const removed = enrollHepList.splice(index, 1);
+        if (removed && removed[0]) {
+            showToast(`Removed "${removed[0].name}"`, 'info');
+        }
+        renderEnrollHepList();
+        const searchInput = document.getElementById('enroll-hep-search');
+        if (searchInput && searchInput.value) {
+            searchEnrollHepExercises(searchInput.value);
+        }
+    }
+}
+
+function updateEnrollHepField(index, field, value) {
+    if (enrollHepList[index]) {
+        enrollHepList[index][field] = value;
+    }
+}
+
+function toggleEnrollHepStepView(index) {
+    const el = document.getElementById(`enroll-hep-steps-${index}`);
+    const chevron = document.getElementById(`enroll-hep-chevron-${index}`);
+    if (!el) return;
+    if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+    } else {
+        el.classList.add('hidden');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+}
+
+function renderEnrollHepList() {
+    const container = document.getElementById('enroll-hep-list');
+    const emptyState = document.getElementById('enroll-hep-empty-state');
+    const badge = document.getElementById('enroll-hep-count-badge');
+    const modalCount = document.getElementById('enroll-modal-selected-count');
+
+    if (badge) {
+        badge.innerText = `${enrollHepList.length} ${enrollHepList.length === 1 ? 'Exercise' : 'Exercises'}`;
+    }
+    if (modalCount) {
+        modalCount.innerText = `${enrollHepList.length} selected`;
+    }
+
+    if (!container) return;
+
+    if (enrollHepList.length === 0) {
+        container.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        return;
+    }
+
+    if (emptyState) emptyState.classList.add('hidden');
+
+    container.innerHTML = enrollHepList.map((ex, idx) => `
+        <div class="p-4 bg-slate-50/80 dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-xs">
+            <div class="flex items-start justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="w-6 h-6 rounded-lg bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 text-[10px] font-black flex items-center justify-center flex-shrink-0">
+                        ${idx + 1}
+                    </span>
+                    <div class="min-w-0">
+                        <p class="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 uppercase truncate">${ex.name}</p>
+                        ${ex.region ? `<p class="text-[9px] font-bold text-slate-400 uppercase truncate">${ex.region} ${ex.category ? '• ' + ex.category : ''}</p>` : ''}
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <button type="button" onclick="toggleEnrollHepStepView(${idx})" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors" title="View Instructions">
+                        <i data-lucide="chevron-down" id="enroll-hep-chevron-${idx}" class="w-4 h-4 transition-transform duration-200"></i>
+                    </button>
+                    <button type="button" onclick="removeExerciseFromEnrollHep(${idx})" class="p-2 rounded-xl text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors" title="Remove Exercise">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Inline dosage controls -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                <div>
+                    <label class="block text-[8px] font-black uppercase text-slate-400 mb-1">Sets & Reps / Hold</label>
+                    <input type="text" value="${ex.setsReps || '3 sets × 10 reps'}" onchange="updateEnrollHepField(${idx}, 'setsReps', this.value)" placeholder="e.g. 3 sets × 10 reps" class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-[8px] font-black uppercase text-slate-400 mb-1">Prescribed Frequency</label>
+                    <input type="text" value="${ex.frequency || 'Twice daily'}" onchange="updateEnrollHepField(${idx}, 'frequency', this.value)" placeholder="e.g. Twice daily" class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <!-- Expandable Technique / Steps details -->
+            <div id="enroll-hep-steps-${idx}" class="hidden pt-2 border-t border-slate-200/60 dark:border-slate-800 space-y-2">
+                <label class="block text-[8px] font-black uppercase text-slate-400">Clinical Instructions & Technique</label>
+                <textarea onchange="updateEnrollHepField(${idx}, 'instructions', this.value)" rows="3" class="w-full p-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-700 dark:text-slate-200 text-xs outline-none focus:border-amber-500">${ex.instructions || ''}</textarea>
+                ${ex.videoLink ? `
+                    <div class="flex items-center gap-2 text-[10px] text-indigo-500 font-bold">
+                        <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                        <a href="${ex.videoLink}" target="_blank" class="hover:underline truncate">${ex.videoLink}</a>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function openEnrollHepLibraryModal() {
+    const modal = document.getElementById('enroll-hep-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    renderEnrollHepModalRegions();
+    renderEnrollHepModalCards();
+    if (window.lucide) lucide.createIcons();
+}
+
+function closeEnrollHepModal() {
+    const modal = document.getElementById('enroll-hep-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function renderEnrollHepModalRegions() {
+    const pillsContainer = document.getElementById('enroll-hep-region-pills');
+    if (!pillsContainer || typeof EXERCISE_LIBRARY === 'undefined') return;
+
+    const regions = ["ALL", ...Object.keys(EXERCISE_LIBRARY)];
+    pillsContainer.innerHTML = regions.map(reg => {
+        const isSelected = enrollHepSelectedRegion === reg;
+        const escaped = reg.replace(/'/g, "\\'");
+        return `
+            <button type="button" onclick="setEnrollHepRegion('${escaped}')" class="px-3.5 py-1.5 rounded-full text-xs font-black uppercase whitespace-nowrap transition-all ${
+                isSelected 
+                ? 'bg-amber-500 text-white shadow-xs' 
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+            }">
+                ${reg === 'ALL' ? '🌟 All Regions' : reg}
+            </button>
+        `;
+    }).join('');
+}
+
+function setEnrollHepRegion(reg) {
+    enrollHepSelectedRegion = reg;
+    renderEnrollHepModalRegions();
+    renderEnrollHepModalCards();
+}
+
+function renderEnrollHepModalCards() {
+    const cardsContainer = document.getElementById('enroll-hep-modal-cards');
+    if (!cardsContainer || typeof EXERCISE_LIBRARY === 'undefined') return;
+
+    const searchInput = document.getElementById('enroll-modal-search');
+    const q = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+    const items = [];
+    Object.keys(EXERCISE_LIBRARY).forEach(region => {
+        if (enrollHepSelectedRegion !== "ALL" && enrollHepSelectedRegion !== region) return;
+        const categories = EXERCISE_LIBRARY[region];
+        Object.keys(categories).forEach(cat => {
+            const list = categories[cat];
+            if (Array.isArray(list)) {
+                list.forEach(ex => {
+                    const matchesSearch = !q || 
+                        (ex.name && ex.name.toLowerCase().includes(q)) ||
+                        cat.toLowerCase().includes(q) ||
+                        region.toLowerCase().includes(q);
+
+                    if (matchesSearch) {
+                        items.push({
+                            name: ex.name,
+                            steps: ex.steps || '',
+                            video: ex.video || '',
+                            region: region,
+                            category: cat
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    if (items.length === 0) {
+        cardsContainer.innerHTML = `
+            <div class="py-12 text-center text-slate-400 space-y-2">
+                <i data-lucide="search-x" class="w-8 h-8 mx-auto opacity-50"></i>
+                <p class="text-xs font-bold uppercase">No exercises found</p>
+                <p class="text-[10px]">Try a different search keyword or region category</p>
+            </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    const displayed = items.slice(0, 60);
+
+    cardsContainer.innerHTML = displayed.map(ex => {
+        const isAdded = enrollHepList.some(item => item.name === ex.name);
+        const escapedName = ex.name.replace(/'/g, "\\'");
+        const escapedSteps = (ex.steps || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        const escapedVideo = (ex.video || '').replace(/'/g, "\\'");
+        const escapedRegion = ex.region.replace(/'/g, "\\'");
+        const escapedCat = ex.category.replace(/'/g, "\\'");
+
+        return `
+            <div class="p-3.5 sm:p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                isAdded 
+                ? 'bg-amber-50/70 dark:bg-amber-950/30 border-amber-300 dark:border-amber-900/60' 
+                : 'bg-white dark:bg-slate-800/80 border-slate-100 dark:border-slate-800 hover:border-slate-200'
+            }">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-xs sm:text-sm font-black text-slate-800 dark:text-slate-100 uppercase">${ex.name}</span>
+                        <span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300">${ex.region}</span>
+                    </div>
+                    <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5">${ex.category}</p>
+                    ${ex.steps ? `<p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">${ex.steps.replace(/\n/g, ' ')}</p>` : ''}
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-center flex-shrink-0">
+                    <button type="button" onclick="toggleEnrollHepItem('${escapedName}', '${escapedSteps}', '${escapedVideo}', '${escapedRegion}', '${escapedCat}')" class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        isAdded 
+                        ? 'bg-emerald-600 hover:bg-rose-600 text-white shadow-sm' 
+                        : 'bg-amber-500 hover:bg-amber-600 text-white shadow-xs active:scale-95'
+                    }">
+                        ${isAdded ? '✓ Added (Click to Remove)' : '+ Add to Plan'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (window.lucide) lucide.createIcons();
+}
+
+function openEnrollCustomExerciseModal() {
+    const modal = document.getElementById('enroll-custom-ex-modal');
+    if (!modal) return;
+    document.getElementById('enroll-custom-name').value = '';
+    document.getElementById('enroll-custom-sets').value = '3 sets × 10 reps';
+    document.getElementById('enroll-custom-freq').value = 'Twice daily';
+    document.getElementById('enroll-custom-steps').value = '';
+    document.getElementById('enroll-custom-video').value = '';
+    modal.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+}
+
+function closeEnrollCustomExModal() {
+    const modal = document.getElementById('enroll-custom-ex-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function addEnrollCustomExercise() {
+    const nameInput = document.getElementById('enroll-custom-name');
+    const name = (nameInput ? nameInput.value : '').trim();
+    if (!name) {
+        showToast('Please enter an exercise name', 'warning');
+        return;
+    }
+
+    const sets = (document.getElementById('enroll-custom-sets')?.value || '3 sets × 10 reps').trim();
+    const freq = (document.getElementById('enroll-custom-freq')?.value || 'Twice daily').trim();
+    const steps = (document.getElementById('enroll-custom-steps')?.value || '').trim();
+    const video = (document.getElementById('enroll-custom-video')?.value || '').trim();
+
+    enrollHepList.push({
+        name: name,
+        setsReps: sets,
+        frequency: freq,
+        instructions: steps,
+        videoLink: video,
+        region: "Custom",
+        category: "Personalized"
+    });
+
+    closeEnrollCustomExModal();
+    renderEnrollHepList();
+    showToast(`Added custom exercise "${name}" to routine`, 'success');
+}
+
+function saveEnrollmentHepExercises(patientName, patientId, dateStr) {
+    if (!enrollHepList || enrollHepList.length === 0) return;
+    const pid = typeof normId === 'function' ? normId(patientId) : patientId;
+    if (typeof exercisePlans !== 'undefined') {
+        if (!exercisePlans[pid]) exercisePlans[pid] = [];
+    }
+
+    const effectiveDate = dateStr || getLocalISOString();
+
+    enrollHepList.forEach(ex => {
+        const setsReps = ex.setsReps || "3 sets × 10 reps";
+        const frequency = ex.frequency || "Twice daily";
+        const instructions = ex.instructions || "";
+        const video = ex.videoLink || "";
+
+        const exerciseData = {
+            name: ex.name,
+            setsReps: setsReps,
+            instructions: instructions,
+            videoLink: video,
+            frequency: frequency,
+            prescribedDate: effectiveDate,
+            reviewDate: "",
+            isGeneral: false
+        };
+        if (typeof exercisePlans !== 'undefined' && exercisePlans[pid]) {
+            exercisePlans[pid].push(exerciseData);
+        }
+
+        syncToBackend({
+            action: "saveExercise",
+            id: pid,
+            name: patientName,
+            patientName: patientName,
+            exerciseName: ex.name,
+            sets: setsReps + " | " + frequency,
+            instructions: instructions,
+            videoLink: video,
+            frequency: frequency,
+            prescribedDate: effectiveDate,
+            date: effectiveDate
+        }).catch(err => console.error("Enroll HEP sync error:", err));
+    });
+}
+
+function resetEnrollHepForm() {
+    enrollHepList = [];
+    const searchInput = document.getElementById('enroll-hep-search');
+    if (searchInput) searchInput.value = '';
+    const dropdown = document.getElementById('enroll-hep-search-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+    renderEnrollHepList();
+}
+
+// Click outside listener for enroll search dropdown
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('enroll-hep-search-dropdown');
+    const searchInput = document.getElementById('enroll-hep-search');
+    if (dropdown && !dropdown.classList.contains('hidden')) {
+        if (!dropdown.contains(e.target) && e.target !== searchInput) {
+            dropdown.classList.add('hidden');
+        }
+    }
+});
+
+
 
         let globalData = [],
             patientLookup = {},
@@ -7384,7 +8026,7 @@ function resetEnrollBodyChart(){
                 const iqTab = document.getElementById('tab-inquiry');
                 if (iqTab && !iqTab.classList.contains('section-hidden')) renderIqTable();
             }
-            if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
+            if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog(true);
             if (typeof updateAuditTelemetryDisplay === 'function') updateAuditTelemetryDisplay();
             if (typeof renderAuditTable === 'function') {
                 const auditTab = document.getElementById('tab-audit');
@@ -7968,6 +8610,7 @@ Object.keys(patientLookup).forEach(name => {
 
 renderTables();
         generateClinicalID();
+        if (typeof renderEnrollHepList === 'function') renderEnrollHepList();
         renderActiveCasesForLog();
 
             let activeCount = 0;
@@ -8001,17 +8644,39 @@ renderTables();
                     const cid = r.id || '', name = r.name || '', diag = r.diag || '', fee = toNum(r.fee);
                     const paymentMode = r.mode || 'Cash';
                     const p = patientLookup[name];
+                    const matchingLog = (p && p.logs) ? p.logs.find(l => normDateYMD(l[8]) === dateVal) : null;
                     const sessionLabel = (paymentMode === 'Advance' && p) ? getAdvanceSessionLabel(
-                        p.logs.find(l => normDateYMD(l[8]) === dateVal) || [], p
+                        matchingLog || [], p
                     ) : '';
-                    const paymentDisplay = sessionLabel ? `Advance (${sessionLabel})` : paymentMode;
+
+                    let paid = 0;
+                    if (r.paid !== undefined && r.paid !== null && r.paid !== '') {
+                        paid = toNum(r.paid);
+                    } else if (matchingLog) {
+                        const paidRaw = (matchingLog[16] !== undefined && matchingLog[16] !== null && matchingLog[16] !== '' && !isNaN(Number(matchingLog[16])))
+                            ? matchingLog[16]
+                            : ((matchingLog[15] !== undefined && matchingLog[15] !== null && matchingLog[15] !== '' && !isNaN(Number(matchingLog[15]))) ? matchingLog[15] : undefined);
+                        paid = (paidRaw !== undefined)
+                            ? toNum(paidRaw)
+                            : (paymentMode === 'Pending' || paymentMode === 'Advance' || paymentMode === 'Complimentary' ? 0 : fee);
+                    } else {
+                        paid = (paymentMode === 'Pending' || paymentMode === 'Advance' || paymentMode === 'Complimentary') ? 0 : fee;
+                    }
+
+                    let paymentDisplay = sessionLabel ? `Advance (${sessionLabel})` : paymentMode;
+                    if (paid > 0 && paymentMode !== 'Advance') {
+                        paymentDisplay = `${paymentMode} / ₹${paid.toLocaleString()}`;
+                    } else if (paymentMode === 'Advance' && paid > 0) {
+                        paymentDisplay = `Advance (${sessionLabel}) / ₹${paid.toLocaleString()}`;
+                    }
+
                     const branch = cid.startsWith('POC') ? 'Orthocare'
                                  : cid.startsWith('PHC') ? 'Homecare'
                                  : cid.startsWith('PRC') ? 'Rehab Clinic' : '-';
                     const modeBadgeColor = paymentMode === 'Pending'
                         ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
                     visitCount++;
-                    html += `<tr class="hover:bg-slate-50 transition-colors" data-search-tag="${name.toUpperCase()} ${cid.toUpperCase()}">
+                    html += `<tr class="hover:bg-slate-50 transition-colors" data-search-tag="${name.toUpperCase()} ${cid.toUpperCase()} ${paymentDisplay.toUpperCase()}">
                         <td class="p-5 font-bold text-slate-400">${idx + 1}</td>
                         <td class="p-5 font-black uppercase text-indigo-700">${name}</td>
                         <td class="p-5 font-bold text-slate-600 hidden lg:table-cell">${cid}</td>
@@ -8046,13 +8711,39 @@ renderTables();
                     if (type === 'case closed' || type === 'case restarted' || type === 'bill issued') return;
                     if (normDateYMD(r[8]) === dateVal) {
                         const fee = toNum(r[9]);
-                        const mode = r[15] || r[13] || 'Cash';
+                        let mode = 'Cash';
+                        let paid = undefined;
+                        const v13 = r[13] !== undefined && r[13] !== null ? String(r[13]).trim() : '';
+                        const v15 = r[15];
+                        const v16 = r[16];
+                        const knownModes = ['CASH', 'UPI', 'CARD', 'ADVANCE', 'PENDING', 'SPLIT', 'COMPLIMENTARY', 'REFUND'];
+                        if (v13 && isNaN(Number(v13)) && knownModes.includes(v13.toUpperCase())) {
+                            mode = v13;
+                        } else if (v15 && typeof v15 === 'string' && isNaN(Number(v15)) && knownModes.includes(v15.trim().toUpperCase())) {
+                            mode = v15.trim();
+                        } else if (v13 && isNaN(Number(v13)) && !v13.includes('/')) {
+                            mode = v13;
+                        } else if (v15 && typeof v15 === 'string' && isNaN(Number(v15))) {
+                            mode = v15.trim();
+                        }
+
+                        if (v16 !== undefined && v16 !== null && v16 !== '' && !isNaN(Number(v16))) {
+                            paid = toNum(v16);
+                        } else if (v15 !== undefined && v15 !== null && v15 !== '' && !isNaN(Number(v15))) {
+                            paid = toNum(v15);
+                        }
+
+                        if (paid === undefined) {
+                            paid = (mode === 'Pending' || mode === 'Advance' || mode === 'Complimentary') ? 0 : fee;
+                        }
+
                         localRows.push({
                             id: String(r[1] || ''),
                             name: String(r[2] || ''),
                             diag: r[6] || (patientLookup[r[2]] ? patientLookup[r[2]].diag : '') || '',
                             fee: fee,
-                            mode: mode
+                            mode: mode,
+                            paid: paid
                         });
                         if (mode !== 'Pending') localTotal += fee;
                     }
@@ -8620,6 +9311,41 @@ function saveEnrollment() {
     if (!patientLookup[name]) patientLookup[name] = { id: enrolledId, name: name, logs: [], enrollTime: Date.now() };
     patientLookup[name].doctor = assignedDoctor;
 
+    // Save clinical instructions if prescribed during enrollment
+    const enrolledInstructions = (document.getElementById('en-instructions')?.value || '').trim();
+    if (enrolledInstructions) {
+        if (!exercisePlans[enrolledId]) exercisePlans[enrolledId] = [];
+        exercisePlans[enrolledId].push({
+            name: "GENERAL INSTRUCTIONS & PRECAUTIONS",
+            setsReps: "As advised",
+            instructions: enrolledInstructions,
+            videoLink: "",
+            frequency: "Daily",
+            prescribedDate: dateStr,
+            reviewDate: "",
+            isGeneral: true
+        });
+
+        syncToBackend({
+            action: "saveExercise",
+            id: enrolledId,
+            name: name,
+            patientName: name,
+            exerciseName: "GENERAL INSTRUCTIONS & PRECAUTIONS",
+            sets: "As advised | Daily",
+            instructions: enrolledInstructions,
+            videoLink: "",
+            frequency: "Daily",
+            prescribedDate: dateStr,
+            date: dateStr
+        }).catch(err => console.error("Enroll instructions sync error:", err));
+    }
+
+    // Save prescribed HEP exercises if any were added during enrollment
+    if (typeof saveEnrollmentHepExercises === 'function') {
+        saveEnrollmentHepExercises(name, enrolledId, dateStr);
+    }
+
     resetEnrollForm();
     showToast(`${name} enrolled successfully`, 'success');
     showEnrollmentSuccessPopup({
@@ -8844,8 +9570,10 @@ function showEnrollmentSuccessPopup(patient) {
             document.getElementById('en-reg-date').value = getLocalISOString();
             document.getElementById('enroll-summary').innerText = "₹0";
             document.getElementById('en-payment-mode').value = "";
+            if (document.getElementById('en-instructions')) document.getElementById('en-instructions').value = "";
             generateClinicalID();
             resetEnrollBodyChart();
+            if (typeof resetEnrollHepForm === 'function') resetEnrollHepForm();
         }
 
         async function openTopupBalance() {
@@ -9109,6 +9837,7 @@ function openMidPackage() {
             document.getElementById('tab-title').innerText = titles[id] || 'PRISM';
 
             if (id === 'log-session') renderActiveCasesForLog();
+            if (id === 'enroll' && typeof renderEnrollHepList === 'function') renderEnrollHepList();
             if (id === 'visit-registry') renderDailyRegistry();
             if (id === 'inquiry' && typeof renderIqTable === 'function') renderIqTable();
             if (id === 'exercises' && typeof initExerciseTab === 'function') initExerciseTab();
@@ -9129,14 +9858,26 @@ function openMidPackage() {
                 const val = document.getElementById('patient-search-input').value.toUpperCase().trim();
                 const res = document.getElementById('search-results');
                 const activeContainer = document.getElementById('active-cases-container');
+                const ws = document.getElementById('patient-workspace');
+                const emptyState = document.getElementById('log-empty-workspace-state');
                 
                 if (!val) {
                     res.classList.add('hidden');
                     if (activeContainer) activeContainer.style.display = 'block';
+                    if (selectedPatientName && patientLookup[selectedPatientName] && ws) {
+                        ws.classList.remove('hidden');
+                        if (emptyState) emptyState.classList.add('hidden');
+                    } else {
+                        if (ws) ws.classList.add('hidden');
+                        if (emptyState) emptyState.classList.remove('hidden');
+                    }
                     return;
                 }
 
+                // Cleanly remove background panels so search results are prominent and unobstructed
                 if (activeContainer) activeContainer.style.display = 'none';
+                if (ws) ws.classList.add('hidden');
+                if (emptyState) emptyState.classList.add('hidden');
 
                 // Normalize search values for robust matching
                 const searchValClean = val.replace(/[^A-Z0-9]/g, ''); // Alphanumeric only
@@ -9203,6 +9944,28 @@ function openMidPackage() {
             }, 150);
         }
 
+        // Close search results and restore background if user clicks outside
+        document.addEventListener('click', function(e) {
+            const searchBar = e.target.closest('#patient-search-input, #search-results, [onclick*="patient-search-input"]');
+            if (!searchBar) {
+                const res = document.getElementById('search-results');
+                if (res && !res.classList.contains('hidden')) {
+                    res.classList.add('hidden');
+                    const activeContainer = document.getElementById('active-cases-container');
+                    const ws = document.getElementById('patient-workspace');
+                    const emptyState = document.getElementById('log-empty-workspace-state');
+                    if (activeContainer) activeContainer.style.display = 'block';
+                    if (selectedPatientName && patientLookup[selectedPatientName] && ws) {
+                        ws.classList.remove('hidden');
+                        if (emptyState) emptyState.classList.add('hidden');
+                    } else {
+                        if (ws) ws.classList.add('hidden');
+                        if (emptyState) emptyState.classList.remove('hidden');
+                    }
+                }
+            }
+        });
+
         // Determine actual due per session, taking into account overall patient dues and advance wallet credit
         function getPatientSessionDueMap(p) {
             const dueMap = {};
@@ -9255,12 +10018,14 @@ function openMidPackage() {
             return dueMap;
         }
 
-        function updatePatientWorkspaceUI(n, p, openDrawer = true) {
+        function updatePatientWorkspaceUI(n, p, openDrawer = true, autoScroll = null) {
             if (!p) return;
 
             // UI Updates
             document.getElementById('patient-search-input').value = n;
             document.getElementById('search-results').classList.add('hidden');
+            const activeContainer = document.getElementById('active-cases-container');
+            if (activeContainer) activeContainer.style.display = 'block';
             document.getElementById('active-patient-name').innerText = n;
             const docEl = document.getElementById('active-patient-doctor-name');
             if (docEl) docEl.innerText = p.doctor || 'Not Assigned';
@@ -9395,9 +10160,46 @@ function openMidPackage() {
             
             // Open the drawer on mobile
             if (openDrawer) toggleSessionDrawer(true);
+
+            // Auto-scroll directly to patient workspace
+            const shouldScroll = (autoScroll !== null) ? autoScroll : (openDrawer === true);
+            if (shouldScroll) {
+                scrollToPatientWorkspace();
+            }
         }
 
-        async function selectPatient(n, openDrawer = true) {
+        function scrollToPatientWorkspace() {
+            const ws = document.getElementById('patient-workspace');
+            if (!ws) return;
+
+            // Ensure tab-log-session is visible if not already
+            const targetSection = document.getElementById('tab-log-session');
+            if (targetSection && targetSection.classList.contains('section-hidden')) {
+                targetSection.classList.remove('section-hidden');
+            }
+
+            setTimeout(() => {
+                if (ws.classList.contains('hidden')) return;
+
+                const mainEl = document.querySelector('main');
+                if (mainEl) {
+                    const mainRect = mainEl.getBoundingClientRect();
+                    const wsRect = ws.getBoundingClientRect();
+                    const targetTop = mainEl.scrollTop + (wsRect.top - mainRect.top) - 24;
+                    mainEl.scrollTo({
+                        top: Math.max(0, targetTop),
+                        behavior: 'smooth'
+                    });
+                }
+
+                try {
+                    ws.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (e) {}
+            }, 60);
+        }
+        window.scrollToPatientWorkspace = scrollToPatientWorkspace;
+
+        async function selectPatient(n, openDrawer = true, autoScroll = true) {
             selectedPatientName = n;
             let p = patientLookup[n];
 
@@ -9413,11 +10215,12 @@ function openMidPackage() {
             if (!p) return;
 
             // 1. Render immediately from local cache so UI is instantaneous
-            updatePatientWorkspaceUI(n, p, openDrawer);
+            updatePatientWorkspaceUI(n, p, openDrawer, autoScroll);
 
             // 2. Fetch fresh data from backend asynchronously to show live data
             fetchAndSyncPatientBackend(n);
         }
+        window.selectPatient = selectPatient;
 
         function deselectPatientWorkspace() {
             selectedPatientName = null;
@@ -9429,6 +10232,20 @@ function openMidPackage() {
             if (searchInput) searchInput.value = '';
             toggleSessionDrawer(false);
             renderActiveCasesForLog();
+
+            const activeContainer = document.getElementById('active-cases-container');
+            if (activeContainer) activeContainer.style.display = 'block';
+            const searchRes = document.getElementById('search-results');
+            if (searchRes) searchRes.classList.add('hidden');
+            if (activeContainer) {
+                const mainEl = document.querySelector('main');
+                if (mainEl) {
+                    const mainRect = mainEl.getBoundingClientRect();
+                    const cRect = activeContainer.getBoundingClientRect();
+                    const targetTop = mainEl.scrollTop + (cRect.top - mainRect.top) - 16;
+                    mainEl.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+                }
+            }
         }
         window.deselectPatientWorkspace = deselectPatientWorkspace;
 
@@ -9594,6 +10411,54 @@ function openMidPackage() {
             }
         }
 
+        function getPatientCardStatus(p) {
+            if (!p) {
+                return {
+                    text: 'REGULAR',
+                    color: 'bg-emerald-500',
+                    badgeClass: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50'
+                };
+            }
+            const rem = typeof getRemainingSessions === 'function' ? getRemainingSessions(p) : 0;
+            const wallet = Number(p.walletBalance) || 0;
+            const due = Number(p.outstandingDue) || 0;
+
+            // 1. Outstanding Due Priority (Red/Rose)
+            if (due > 0) {
+                return {
+                    text: `₹${due.toLocaleString()} DUE`,
+                    color: 'bg-rose-500',
+                    badgeClass: 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/50'
+                };
+            }
+
+            // 2. Package Remaining Sessions (Indigo)
+            if (rem > 0) {
+                const text = wallet > 0 ? `${rem} LEFT | ₹${wallet.toLocaleString()}` : `${rem} LEFT`;
+                return {
+                    text: text,
+                    color: 'bg-indigo-500',
+                    badgeClass: 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/50'
+                };
+            }
+
+            // 3. Wallet Balance (Emerald / Green)
+            if (wallet > 0) {
+                return {
+                    text: `₹${wallet.toLocaleString()} WALLET`,
+                    color: 'bg-emerald-500',
+                    badgeClass: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50'
+                };
+            }
+
+            // 4. Regular Case
+            return {
+                text: 'REGULAR',
+                color: 'bg-emerald-500',
+                badgeClass: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50'
+            };
+        }
+
         function renderActiveCasesForLog(forceFullRebuild = false) {
             const grid = document.getElementById('active-cases-grid');
             const countBadge = document.getElementById('active-cases-count');
@@ -9609,11 +10474,14 @@ function openMidPackage() {
             }
 
             const namesKey = names.join('|');
-            // If cards are already rendered and only active card selection changed, update classes directly
+            // If cards are already rendered and only active card selection changed, update classes & badges directly
             if (!forceFullRebuild && grid.dataset.renderedNames === namesKey) {
                 grid.querySelectorAll('[data-name]').forEach(card => {
                     const n = card.dataset.name;
+                    const p = patientLookup[n];
                     const active = selectedPatientName === n;
+                    const st = getPatientCardStatus(p);
+
                     card.classList.toggle('border-blue-500', active);
                     card.classList.toggle('ring-2', active);
                     card.classList.toggle('ring-blue-500/20', active);
@@ -9626,6 +10494,17 @@ function openMidPackage() {
                     card.classList.toggle('dark:bg-slate-900/90', !active);
                     card.classList.toggle('border-slate-200/70', !active);
                     card.classList.toggle('dark:border-slate-800', !active);
+
+                    const dot = card.querySelector('.status-dot-el');
+                    if (dot) {
+                        dot.className = `status-dot-el absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-blue-600' : st.color}`;
+                    }
+
+                    const badge = card.querySelector('.status-badge-el');
+                    if (badge) {
+                        badge.innerText = st.text;
+                        badge.className = `status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md ${active ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300' : st.badgeClass}`;
+                    }
 
                     const nameText = card.querySelector('.case-name-text');
                     if (nameText) {
@@ -9642,15 +10521,9 @@ function openMidPackage() {
             grid.dataset.renderedNames = namesKey;
             grid.innerHTML = names.map(n => {
                 const p = patientLookup[n];
-                const rem = getRemainingSessions(p);
-                const wallet = p.walletBalance || 0;
-                const hasDue = p.outstandingDue > 0;
                 const active = selectedPatientName === n;
                 const safeName = n.replace(/"/g, '&quot;');
-
-                // Status indicator color
-                const statusColor = hasDue ? 'bg-rose-500' : rem > 0 ? 'bg-indigo-500' : 'bg-emerald-500';
-                const statusText = hasDue ? `₹${p.outstandingDue.toLocaleString()} due` : rem > 0 ? `${rem} left` : 'Regular';
+                const st = getPatientCardStatus(p);
 
                 return `<div data-name="${safeName}" 
                     class="relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none
@@ -9659,17 +10532,17 @@ function openMidPackage() {
                         : 'bg-white dark:bg-slate-900/90 border-slate-200/70 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md'
                     }">
                     <!-- Status dot -->
-                    <span class="absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-blue-600' : statusColor}"></span>
+                    <span class="status-dot-el absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-blue-600' : st.color}"></span>
                     
                     <p class="case-name-text font-black text-[11px] uppercase truncate pr-4 ${active ? 'text-blue-950 dark:text-blue-200' : 'text-slate-800 dark:text-slate-100'} mb-0.5">${n}</p>
                     <p class="text-[9px] font-bold truncate ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} mb-2.5">${p.diag || 'General Consultation'}</p>
                     
                     <div class="flex items-center justify-between gap-1">
-                        <span class="text-[8px] font-black uppercase px-2 py-0.5 rounded-md
+                        <span class="status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md
                             ${active 
                                 ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300' 
-                                : hasDue ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400' : rem > 0 ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400' : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400'
-                            }">${statusText}</span>
+                                : st.badgeClass
+                            }">${st.text}</span>
                         <button type="button" data-name="${safeName}" 
                             class="log-case-btn text-[9px] font-extrabold uppercase px-3 py-1 rounded-md transition-all cursor-pointer bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-sm inline-flex items-center justify-center">
                             Log
@@ -9684,7 +10557,7 @@ function openMidPackage() {
                     const card = e.target.closest('[data-name]');
                     if (!card) return;
                     const name = card.dataset.name;
-                    if (name) selectPatient(name);
+                    if (name) selectPatient(name, true, true);
                 });
             }
         }
@@ -9733,6 +10606,7 @@ function openMidPackage() {
                                 <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] hidden lg:table-cell">${p.diag || '—'}</td>
                                 <td class="p-5 text-center">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-1.5 justify-center items-center flex-wrap">
+                            <button onclick="switchTab('log-session', document.querySelector('[onclick*=\\'log-session\\']')); setTimeout(() => selectPatient('${name.replace(/'/g, "\\'")}'), 250);" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Log Session"><i data-lucide="calendar-plus" class="w-4 h-4"></i></button>
                             <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
                             <button onclick="callPatient('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Call Patient"><i data-lucide="phone" class="w-4 h-4"></i></button>
                             <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Edit Patient Details"><i data-lucide="pencil" class="w-4 h-4"></i></button>
@@ -9876,6 +10750,7 @@ document.getElementById('pd-sessions').innerText = consumed;
     actionButtons = document.createElement('div');
     actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t flex-wrap flex-shrink-0';
     actionButtons.innerHTML = `
+        <button onclick="closePatientDetailModal(); switchTab('log-session', document.querySelector('[onclick*=\\'log-session\\']')); setTimeout(() => selectPatient('${name.replace(/'/g, "\\'")}'), 250);" class="flex-1 min-w-[120px] bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">📅 Log Session</button>
         <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">🏃 Exercise Plan</button>
         <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">✏️ Edit Details</button>
         <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">📄 View Bill</button>
@@ -11444,26 +12319,29 @@ async function confirmMarkPaid() {
         }
 
         function openRegistryDownloadModal() {
-            const from = document.getElementById('registry-range-from').value;
-            const to = document.getElementById('registry-range-to').value;
-            if (!from || !to) {
-                showToast('Select both From and To dates', 'warning');
-                return;
+            const dateInput = document.getElementById('registry-date-input');
+            const currentDate = (dateInput && dateInput.value) ? dateInput.value : new Date().toISOString().split('T')[0];
+            const fromEl = document.getElementById('registry-range-from');
+            const toEl = document.getElementById('registry-range-to');
+            if (fromEl && !fromEl.value) {
+                fromEl.value = currentDate;
             }
-            if (from > to) {
-                showToast('From date must be before To date', 'warning');
-                return;
+            if (toEl && !toEl.value) {
+                toEl.value = currentDate;
             }
-            document.getElementById('registry-download-modal').classList.remove('hidden');
+            const modal = document.getElementById('registry-download-modal');
+            if (modal) modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
         }
 
         function closeRegistryDownloadModal() {
-            document.getElementById('registry-download-modal').classList.add('hidden');
+            const modal = document.getElementById('registry-download-modal');
+            if (modal) modal.classList.add('hidden');
         }
 
         function downloadRegistryRangeCSV(branch) {
-            const from = document.getElementById('registry-range-from').value;
-            const to = document.getElementById('registry-range-to').value;
+            const from = document.getElementById('registry-range-from')?.value;
+            const to = document.getElementById('registry-range-to')?.value;
             if (!from || !to) {
                 showToast('Select both From and To dates', 'warning');
                 return;
@@ -11473,24 +12351,50 @@ async function confirmMarkPaid() {
                 return;
             }
             const rows = [
-                ['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Payment Mode', 'Fee']
+                ['Date', 'Patient Name', 'Clinical ID', 'Branch', 'Diagnosis/Note', 'Payment / Paid', 'Fee']
             ];
             let total = 0;
             globalData.filter(r => {
                 const type = String(r[7] || '').toLowerCase();
-                const rDate = r[8];
+                const rDate = normDateYMD(r[8]);
                 const fee = toNum(r[9]);
                 const cid = String(r[1] || '');
                 const branchMatch = !branch || branch === 'ALL' || cid.startsWith(branch);
-                return rDate >= from && rDate <= to && fee > 0 && branchMatch && type !== "case closed" && type !== "case restarted" && type !== "bill issued" && type !== "package added"
+                return rDate >= from && rDate <= to && fee > 0 && branchMatch && type !== "case closed" && type !== "case restarted" && type !== "bill issued" && type !== "package added";
             }).sort((a, b) => String(a[8]).localeCompare(String(b[8]))).forEach(r => {
                 const cid = r[1],
                     name = r[2],
                     diag = r[6],
                     fee = toNum(r[9]);
-                const paymentMode = r[15] || 'Cash';
+                let mode = 'Cash';
+                let paid = undefined;
+                const v13 = r[13] !== undefined && r[13] !== null ? String(r[13]).trim() : '';
+                const v15 = r[15];
+                const v16 = r[16];
+                const knownModes = ['CASH', 'UPI', 'CARD', 'ADVANCE', 'PENDING', 'SPLIT', 'COMPLIMENTARY', 'REFUND'];
+                if (v13 && isNaN(Number(v13)) && knownModes.includes(v13.toUpperCase())) {
+                    mode = v13;
+                } else if (v15 && typeof v15 === 'string' && isNaN(Number(v15)) && knownModes.includes(v15.trim().toUpperCase())) {
+                    mode = v15.trim();
+                } else if (v13 && isNaN(Number(v13)) && !v13.includes('/')) {
+                    mode = v13;
+                } else if (v15 && typeof v15 === 'string' && isNaN(Number(v15))) {
+                    mode = v15.trim();
+                }
+                if (v16 !== undefined && v16 !== null && v16 !== '' && !isNaN(Number(v16))) {
+                    paid = toNum(v16);
+                } else if (v15 !== undefined && v15 !== null && v15 !== '' && !isNaN(Number(v15))) {
+                    paid = toNum(v15);
+                }
+                if (paid === undefined) {
+                    paid = (mode === 'Pending' || mode === 'Advance' || mode === 'Complimentary') ? 0 : fee;
+                }
+                let paymentDisplay = mode;
+                if (paid > 0 && mode !== 'Advance') {
+                    paymentDisplay = `${mode} / ₹${paid}`;
+                }
                 const branchLabel = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
-                rows.push([formatDateDMY(r[8]), name, cid, branchLabel, diag || '-', paymentMode, fee]);
+                rows.push([formatDateDMY(r[8]), name, cid, branchLabel, diag || '-', paymentDisplay, fee]);
                 total += fee;
             });
             if (rows.length === 1) {
@@ -11521,6 +12425,7 @@ async function confirmMarkPaid() {
 
             try {
                 localStorage.removeItem('prism_unlocked');
+                localStorage.removeItem('prism_last_activity');
                 sessionStorage.removeItem('prism_session_id');
                 sessionStorage.removeItem('prism_session_start');
             } catch (e) {}
@@ -12008,11 +12913,15 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
                 action: "saveExercise",
                 id: selectedPatientId,
                 name: selectedPatientName,
+                patientName: selectedPatientName,
                 exerciseName: item.name,
                 sets: sets + " | " + freq,
                 instructions: item.steps,
                 videoLink: item.video || "",
-                date: prescribedDate
+                frequency: freq,
+                prescribedDate: prescribedDate,
+                date: prescribedDate,
+                reviewDate: reviewDate
             });
         });
     }
@@ -12034,11 +12943,15 @@ document.getElementById('instruction-picker-2').addEventListener('click', functi
             action: "saveExercise",
             id: selectedPatientId,
             name: selectedPatientName,
+            patientName: selectedPatientName,
             exerciseName: "GENERAL INSTRUCTIONS & PRECAUTIONS",
             sets: "As Advised | Daily",
             instructions: instrText,
             videoLink: "",
-            date: prescribedDate
+            frequency: "Daily",
+            prescribedDate: prescribedDate,
+            date: prescribedDate,
+            reviewDate: reviewDate
         });
     }
     else {
@@ -12990,8 +13903,8 @@ window.shareExTabViaWhatsApp = function() {
         }
 
         const originalSelectPatient = window.selectPatient;
-        window.selectPatient = function(name, openDrawer = true) {
-            originalSelectPatient(name, openDrawer);
+        window.selectPatient = function(name, openDrawer = true, autoScroll = true) {
+            originalSelectPatient(name, openDrawer, autoScroll);
             const p = patientLookup[name];
             if (!p) return;
             const container = document.getElementById('recent-logs-cards');
@@ -13575,86 +14488,185 @@ function toggleIqActionsMobile(idVal) {
     }
 }
 
-// ---------- 45-MINUTE AUTO-LOGOUT SYSTEM ----------
-let inactivityTimeout;
-let lastActivityTick = 0;
-const INACTIVITY_LIMIT = 45 * 60 * 1000; // 45 minutes in milliseconds
-const ACTIVITY_THROTTLE_MS = 15 * 1000; // 15 seconds throttle
+// ---------- 5-MINUTE AUTO-LOGOUT SYSTEM (DESKTOP & MOBILE RESILIENT) ----------
+let inactivityTimeout = null;
+let lastActivityTick = Date.now();
+const INACTIVITY_LIMIT = 5 * 60 * 1000; // 5 minutes in milliseconds
+const ACTIVITY_THROTTLE_MS = 3 * 1000;  // 3 seconds throttle for active gestures
+let isAutoLoggingOut = false;
 
-function resetInactivityTimer() {
+function getLastActivityTimestamp() {
     try {
-        // Do not monitor inactivity if the dashboard is locked
+        const val = localStorage.getItem('prism_last_activity');
+        if (val) {
+            const parsed = parseInt(val, 10);
+            if (!isNaN(parsed) && parsed > 0) return parsed;
+        }
+    } catch (e) {}
+    return lastActivityTick || Date.now();
+}
+
+function updateLastActivity(timestamp) {
+    const now = timestamp || Date.now();
+    lastActivityTick = now;
+    try {
+        localStorage.setItem('prism_last_activity', now.toString());
+    } catch (e) {}
+}
+
+function executeAutoLogout() {
+    if (isAutoLoggingOut) return;
+    try {
         if (localStorage.getItem('prism_unlocked') !== '1') return;
-    } catch (e) {
-        return;
+    } catch (e) { return; }
+
+    isAutoLoggingOut = true;
+    if (inactivityTimeout) {
+        clearTimeout(inactivityTimeout);
+        inactivityTimeout = null;
     }
 
-    clearTimeout(inactivityTimeout);
-    inactivityTimeout = setTimeout(async () => {
-        showToast("Logged out due to 45 minutes of inactivity", "warning");
-        try {
-            const user = (typeof getCurrentUser === 'function') ? getCurrentUser() : 'admin';
-            const sessId = (typeof getCurrentSessionId === 'function') ? getCurrentSessionId() : '';
-            const duration = (typeof getSessionDuration === 'function') ? getSessionDuration() : '45m';
-            await syncToBackend({
+    // 1. Immediately lock UI & hide clinical data for patient privacy on mobile & desktop
+    try {
+        const lockEl = document.getElementById('lock-screen');
+        const root = document.getElementById('app-root');
+        if (lockEl) {
+            lockEl.classList.remove('hidden');
+            lockEl.style.removeProperty('display');
+            lockEl.style.display = '';
+        }
+        if (root) {
+            root.classList.add('hidden');
+            root.style.setProperty('display', 'none', 'important');
+        }
+    } catch (e) {}
+
+    // 2. Clear credentials and unlock token immediately
+    try {
+        localStorage.removeItem('prism_unlocked');
+        localStorage.removeItem('prism_last_activity');
+        sessionStorage.removeItem('prism_session_id');
+        sessionStorage.removeItem('prism_session_start');
+    } catch (e) {}
+
+    showToast("Logged out due to 5 minutes of inactivity", "warning");
+
+    // 3. Dispatch audit log asynchronously (fire-and-forget, non-blocking)
+    try {
+        const user = (typeof getCurrentUser === 'function') ? getCurrentUser() : 'admin';
+        const sessId = (typeof getCurrentSessionId === 'function') ? getCurrentSessionId() : '';
+        const duration = (typeof getSessionDuration === 'function') ? getSessionDuration() : '5m';
+        if (typeof syncToBackend === 'function') {
+            syncToBackend({
                 action: "recordAuditLog",
                 auditAction: "Auto Logout",
                 patient: user,
-                detail: `Session timed out due to 45 minutes of inactivity [Session: ${sessId}] [Duration: ${duration}]`,
+                detail: `Session timed out due to 5 minutes of inactivity on mobile/desktop [Session: ${sessId}] [Duration: ${duration}]`,
                 status: "Timeout",
                 username: user,
                 sessionId: sessId
-            });
-        } catch (e) {}
-        try {
-            localStorage.removeItem('prism_unlocked');
-            sessionStorage.removeItem('prism_session_id');
-            sessionStorage.removeItem('prism_session_start');
-        } catch (e) {}
-        setTimeout(() => {
-            location.reload();
-        }, 1200);
-    }, INACTIVITY_LIMIT);
+            }).catch(() => {});
+        }
+    } catch (e) {}
+
+    // 4. Clean reload after notification
+    setTimeout(() => {
+        location.reload();
+    }, 800);
 }
 
-// Throttled handler for high-frequency events (scroll, mousemove, touchmove)
+function checkInactivity() {
+    try {
+        if (localStorage.getItem('prism_unlocked') !== '1') return;
+    } catch (e) { return; }
+
+    const last = getLastActivityTimestamp();
+    const elapsed = Date.now() - last;
+
+    if (elapsed >= INACTIVITY_LIMIT) {
+        executeAutoLogout();
+        return;
+    }
+
+    // Schedule next check precisely for the remaining balance
+    const remaining = Math.max(1000, INACTIVITY_LIMIT - elapsed);
+    if (inactivityTimeout) clearTimeout(inactivityTimeout);
+    inactivityTimeout = setTimeout(checkInactivity, remaining);
+}
+
+function resetInactivityTimer() {
+    try {
+        if (localStorage.getItem('prism_unlocked') !== '1') return;
+    } catch (e) { return; }
+
+    updateLastActivity();
+    if (inactivityTimeout) clearTimeout(inactivityTimeout);
+    inactivityTimeout = setTimeout(checkInactivity, INACTIVITY_LIMIT);
+}
+
+// Throttled handler for user interaction events (taps, keystrokes, scroll)
 function onUserActivityThrottled() {
     const now = Date.now();
     if (now - lastActivityTick < ACTIVITY_THROTTLE_MS) return;
-    lastActivityTick = now;
     resetInactivityTimer();
 }
 
-// High-frequency events throttled with passive listeners for 60/120fps scrolling
-const passiveActivityEvents = ['mousemove', 'scroll', 'touchmove'];
-passiveActivityEvents.forEach(eventName => {
+// Complete event coverage: touch gestures on mobile + keyboard/mouse on desktop
+const allActivityEvents = [
+    'mousemove', 'scroll', 'touchmove', 'mousedown', 'keypress',
+    'keydown', 'touchstart', 'touchend', 'click', 'pointerdown'
+];
+allActivityEvents.forEach(eventName => {
     document.addEventListener(eventName, onUserActivityThrottled, { passive: true, capture: true });
 });
 
-// Discrete user events
-const discreteActivityEvents = ['mousedown', 'keypress', 'touchstart', 'click'];
-discreteActivityEvents.forEach(eventName => {
-    document.addEventListener(eventName, onUserActivityThrottled, { passive: true });
-});
+// CRITICAL FOR MOBILE:
+// When mobile phone wakes, screen unlocks, or tab returns to foreground:
+// Check whether elapsed time exceeded the inactivity limit while suspended.
+function handleMobileResume() {
+    try {
+        if (localStorage.getItem('prism_unlocked') !== '1') return;
+        const last = getLastActivityTimestamp();
+        const elapsed = Date.now() - last;
+        if (elapsed >= INACTIVITY_LIMIT) {
+            executeAutoLogout();
+        } else {
+            checkInactivity();
+        }
+    } catch (e) {}
+}
 
-// Also reset when the tab/app regains focus or visibility after being backgrounded
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-        lastActivityTick = Date.now();
-        resetInactivityTimer();
+        handleMobileResume();
     }
 });
-window.addEventListener('focus', () => {
-    lastActivityTick = Date.now();
-    resetInactivityTimer();
-});
-window.addEventListener('pageshow', () => {
-    lastActivityTick = Date.now();
-    resetInactivityTimer();
+window.addEventListener('focus', handleMobileResume);
+window.addEventListener('pageshow', handleMobileResume);
+
+// Fallback Heartbeat: checks every 5 seconds while active
+setInterval(() => {
+    try {
+        if (localStorage.getItem('prism_unlocked') === '1') {
+            const last = getLastActivityTimestamp();
+            if (Date.now() - last >= INACTIVITY_LIMIT) {
+                executeAutoLogout();
+            }
+        }
+    } catch (e) {}
+}, 5000);
+
+// Multi-tab synchronization: if another tab logs out, lock immediately
+window.addEventListener('storage', (e) => {
+    if (e.key === 'prism_unlocked' && e.newValue !== '1') {
+        executeAutoLogout();
+    }
 });
 
-// Initialize the timer loop (useful if the page is refreshed while already unlocked)
-resetInactivityTimer();
+// Initialize check immediately if already unlocked
+if (localStorage.getItem('prism_unlocked') === '1') {
+    checkInactivity();
+}
 
 // ===== WHATSAPP MESSAGE POPUP =====
 (function() {
