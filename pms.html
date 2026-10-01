@@ -29,6 +29,16 @@
         .hidden { display: none !important; }
         #patient-workspace { scroll-margin-top: 1.5rem; }
 
+        /* Patient Table Responsive Columns: Registration No hidden on mobile, visible on desktop */
+        .col-reg-no { display: none !important; }
+        @media (min-width: 768px) {
+            .col-reg-no { display: table-cell !important; }
+        }
+        .col-desktop-extra { display: none !important; }
+        @media (min-width: 1024px) {
+            .col-desktop-extra { display: table-cell !important; }
+        }
+
         /* Fixed Blue Rectangle with Curved Edges for LOG button */
         .log-case-btn {
             background-color: #2563eb !important;
@@ -2674,10 +2684,16 @@ html.dark .instruction-modal-footer {
         </div>
         <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Patient Accounts Requiring Follow-Up</p>
       </div>
-      <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
-        <i data-lucide="clock" class="w-3 h-3"></i>
-        <span class="hidden sm:inline">Action</span> Required
-      </span>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openBatchReminderModal()" class="text-[8.5px] sm:text-[9px] font-black bg-[#25D366] hover:bg-[#20BA5F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase shadow-xs flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer active:scale-95" title="Send WhatsApp reminders to patients with outstanding dues">
+          <i data-lucide="send" class="w-3 h-3"></i>
+          <span>Batch Remind</span>
+        </button>
+        <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
+          <i data-lucide="clock" class="w-3 h-3"></i>
+          <span class="hidden sm:inline">Action</span> Required
+        </span>
+      </div>
     </div>
     <div id="dues-list" class="max-h-60 sm:max-h-72 overflow-y-auto pr-1 space-y-2 custom-scrollbar"></div>
   </div>
@@ -3486,12 +3502,12 @@ html.dark .instruction-modal-footer {
                         <table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 dark:bg-slate-800/80 text-[10px] uppercase font-black text-slate-500 dark:text-slate-400 border-b border-slate-200/80 dark:border-slate-800">
                                 <tr>
-                                    <th class="p-5 hidden lg:table-cell">ID</th>
+                                    <th class="p-5 col-reg-no whitespace-nowrap">Registration No</th>
                                     <th class="p-5">Patient Name</th>
-                                    <th class="p-5 hidden lg:table-cell">Demographics</th>
-                                    <th class="p-5 hidden lg:table-cell">Contact</th>
-                                    <th class="p-5 hidden lg:table-cell">Condition</th>
-                                    <th class="p-5">Status / Bal.</th>
+                                    <th class="p-5 col-desktop-extra">Demographics</th>
+                                    <th class="p-5 col-desktop-extra">Contact</th>
+                                    <th class="p-5 col-desktop-extra">Condition</th>
+                                    <th class="p-5 text-center">Status / Bal.</th>
                                     <th class="p-5 text-center">Action</th>
                                 </tr>
                             </thead>
@@ -4272,7 +4288,7 @@ html.dark .instruction-modal-footer {
                     <button onclick="closeEditPatientModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
                 </div>
                 <input type="hidden" id="ep-original-name">
-                <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+                <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1 pb-4">
                     <div>
                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Clinical ID</label>
                         <input type="text" id="ep-id" readonly class="w-full p-3.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-black text-indigo-600 dark:text-indigo-400 outline-none text-sm">
@@ -4877,6 +4893,146 @@ html.dark .instruction-modal-footer {
                     <div class="flex gap-3 pt-3">
                         <button onclick="closeMarkPaidModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer">Cancel</button>
                         <button onclick="confirmMarkPaid()" class="flex-[2] py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition-all cursor-pointer">Confirm Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BATCH WHATSAPP REMINDER MODAL -->
+        <div id="batch-reminder-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+            <div class="bg-white dark:bg-slate-900 rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 max-w-xl w-full shadow-2xl border border-slate-100 dark:border-slate-800 my-auto">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-start mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center text-[#25D366] shadow-sm flex-shrink-0">
+                            <i data-lucide="message-square" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white">Batch WhatsApp Reminders</h3>
+                                <span id="batch-remind-badge" class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">Sequential Helper</span>
+                            </div>
+                            <p class="text-[10px] sm:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mt-0.5">Send custom reminders one-by-one with 1 click</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeBatchReminderModal()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+
+                <!-- Tabs: [1. Sender Queue] & [2. Custom Template] -->
+                <div class="flex border-b border-slate-100 dark:border-slate-800 mb-4 gap-4">
+                    <button type="button" id="batch-tab-queue" onclick="switchBatchModalView('queue')" class="pb-2 text-xs font-black uppercase tracking-wider border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 cursor-pointer flex items-center gap-1.5">
+                        <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
+                        <span>Sender Queue (<span id="batch-queue-count">0</span>)</span>
+                    </button>
+                    <button type="button" id="batch-tab-template" onclick="switchBatchModalView('template')" class="pb-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer flex items-center gap-1.5">
+                        <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                        <span>Custom Message Template</span>
+                    </button>
+                </div>
+
+                <!-- VIEW 1: SENDER QUEUE -->
+                <div id="batch-view-queue" class="space-y-4">
+                    <!-- Progress Card -->
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-300 mb-2">
+                            <span class="flex items-center gap-1.5 font-black uppercase text-[10px] tracking-wider text-slate-500 dark:text-slate-400">
+                                <span id="batch-step-indicator">Patient 1 of 5</span>
+                            </span>
+                            <span id="batch-stats-summary" class="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase">0 Sent • 0 Skipped</span>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                            <div id="batch-progress-bar" class="bg-[#25D366] h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Active Patient Card -->
+                    <div id="batch-active-card" class="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 id="batch-patient-name" class="text-base font-black text-slate-900 dark:text-white uppercase">—</h4>
+                                    <span id="batch-patient-id" class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400">#—</span>
+                                </div>
+                                <p id="batch-patient-phone" class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">📞 —</p>
+                            </div>
+                            <div class="text-right">
+                                <span id="batch-patient-due" class="text-xs font-black px-2.5 py-1 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 uppercase">₹0 due</span>
+                                <p id="batch-patient-sessions" class="text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-1">0 sessions pending</p>
+                            </div>
+                        </div>
+
+                        <!-- Live Message Preview (Editable for this patient) -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">Message to Send (Editable for this patient):</label>
+                                <button type="button" onclick="resetBatchCurrentMessage()" class="text-[9px] font-bold text-indigo-500 hover:underline cursor-pointer">Reset to Template</button>
+                            </div>
+                            <textarea id="batch-current-message" rows="5" class="w-full text-xs font-mono p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none custom-scrollbar"></textarea>
+                        </div>
+
+                        <!-- Action Buttons for Current Patient -->
+                        <div class="flex items-center gap-2 pt-1">
+                            <button type="button" onclick="sendCurrentBatchPatient()" class="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20BA5F] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-emerald-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                                <span>Send on WhatsApp & Next ➔</span>
+                            </button>
+                            <button type="button" onclick="skipCurrentBatchPatient()" class="py-3 px-3.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer" title="Skip to next patient">
+                                <span>Skip ⏭</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Completed State (Hidden until queue finished) -->
+                    <div id="batch-completed-card" class="hidden p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mx-auto shadow-md">
+                            <i data-lucide="check-check" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-base font-black text-slate-900 dark:text-white uppercase">All Reminders Processed!</h4>
+                        <p id="batch-completed-summary" class="text-xs text-slate-600 dark:text-slate-300">You've reached the end of the selected patient queue.</p>
+                        <div class="pt-2 flex justify-center gap-2">
+                            <button type="button" onclick="restartBatchQueue()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold uppercase text-slate-700 dark:text-slate-200 hover:bg-slate-200 cursor-pointer">Restart Queue</button>
+                            <button type="button" onclick="closeBatchReminderModal()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-xs font-black uppercase text-white shadow-sm cursor-pointer">Done</button>
+                        </div>
+                    </div>
+
+                    <!-- Queue Navigation & List Strip -->
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center justify-between text-[10px] font-bold text-slate-400 mb-2">
+                            <span>RECIPIENTS QUEUE</span>
+                            <div class="flex gap-1.5">
+                                <button type="button" onclick="prevBatchPatient()" class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 cursor-pointer font-bold">⏮ Prev</button>
+                                <button type="button" onclick="nextBatchPatient()" class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 cursor-pointer font-bold">Next ⏭</button>
+                            </div>
+                        </div>
+                        <div id="batch-patient-queue-list" class="max-h-32 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: TEMPLATE CUSTOMIZER -->
+                <div id="batch-view-template" class="hidden space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider block mb-1.5">Click to Insert Variables into Message:</label>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="insertBatchPlaceholder('{name}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-100 cursor-pointer">+ {name}</button>
+                            <button type="button" onclick="insertBatchPlaceholder('{due}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 cursor-pointer">+ {due}</button>
+                            <button type="button" onclick="insertBatchPlaceholder('{sessions}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 cursor-pointer">+ {sessions}</button>
+                            <button type="button" onclick="insertBatchPlaceholder('{upi}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 cursor-pointer">+ {upi}</button>
+                            <button type="button" onclick="insertBatchPlaceholder('{clinic}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 cursor-pointer">+ {clinic}</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider block mb-1">Custom Message Template:</label>
+                        <textarea id="batch-template-input" rows="8" class="w-full text-xs font-mono p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 custom-scrollbar"></textarea>
+                        <p class="text-[10px] text-slate-400 mt-1">Variables like <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">{name}</code> and <code class="font-mono bg-slate-100 dark:bg-slate-800 px-1 rounded">{due}</code> are automatically replaced with each patient's actual details.</p>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <button type="button" onclick="resetBatchTemplateToDefault()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">↺ Reset to Default</button>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="saveBatchTemplate()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-sm cursor-pointer">Save & Apply to Queue</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -8428,8 +8584,8 @@ function getAdvanceSessionLabel(r, p) {
                 patientLookup[lookupKey] = {
                     id: id,
                     name: lookupKey,
-                    phone: r[3],
-                    diag: r[6],
+                    phone: (r[3] && !String(r[3]).includes('#ERROR')) ? r[3] : '',
+                    diag: r[6] || '',
                     doctor: cleanDoctorName(r[16]) || '',
                     logs: [],
                     baseRate: 0,
@@ -8440,9 +8596,9 @@ function getAdvanceSessionLabel(r, p) {
                     discount: 0,
                     closed: false,
                     closedDate: null,
-                    age: '',
-                    gender: '',
-                    address: '',
+                    age: r[4] ? String(r[4]) : '',
+                    gender: r[5] ? String(r[5]) : '',
+                    address: r[14] ? String(r[14]) : '',
                     enrollTime: new Date(r[0] || 0).getTime(),
                     outstandingDue: 0,
                     activePackageId: null
@@ -8450,6 +8606,11 @@ function getAdvanceSessionLabel(r, p) {
             }
 
             const p = patientLookup[lookupKey];
+            if (r[3] && !p.phone && !String(r[3]).includes('#ERROR')) p.phone = r[3];
+            if (r[4] && (!p.age || p.age === '')) p.age = String(r[4]);
+            if (r[5] && (!p.gender || p.gender === '')) p.gender = String(r[5]);
+            if (r[6] && (!p.diag || p.diag === '' || p.diag === 'General Rehab')) p.diag = String(r[6]);
+            if (r[14] && (!p.address || p.address === '')) p.address = String(r[14]);
             if (r[16] && (!p.doctor || !cleanDoctorName(p.doctor))) {
                 const cDoc = cleanDoctorName(r[16]);
                 if (cDoc) p.doctor = cDoc;
@@ -8474,9 +8635,10 @@ function getAdvanceSessionLabel(r, p) {
                     if (isEnrollRow) p.baseRate = fee;
                     if (r[10] > 0 && fee > 0) p.baseRate = fee;
                     if (isEnrollRow) p.discount = toNum(r[12]);
-                    if (r[4]) p.age = r[4];
-                    if (r[5]) p.gender = r[5];
-                    if (r[14]) p.address = r[14];
+                    if (r[4]) p.age = String(r[4]);
+                    if (r[5]) p.gender = String(r[5]);
+                    if (r[6]) p.diag = String(r[6]);
+                    if (r[14]) p.address = String(r[14]);
                 }
 
     if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
@@ -8494,6 +8656,8 @@ function getAdvanceSessionLabel(r, p) {
     chartData[mKey] = (chartData[mKey] || 0) + fee;
     if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
 
+    p.logs.push(r);
+} else if (type === "case closed" || type === "case restarted") {
     p.logs.push(r);
 }
 if (r[13] && String(r[13]).includes('/')) {
@@ -8604,6 +8768,11 @@ Object.keys(patientLookup).forEach(name => {
         p.expiredSessions = rem;
     }
 });
+
+// Automatically close inactive cases (7+ days without any session or activity)
+if (typeof autoCloseInactiveCases === 'function') {
+    autoCloseInactiveCases();
+}
 
 // Tables render with whatever p.outstandingDue currently holds
 // (stale until loadAdminData()'s balance fetch resolves and re-renders)
@@ -9063,6 +9232,51 @@ renderTables();
     const datesToSubmit = [...selectedDates];
     const sessionNote = document.getElementById('session-note').value || p.diag;
 
+    // ── 0. AUTO-RESTART CASE IF CLOSED ──
+    const wasCaseClosed = Boolean(p.closed);
+    let restartRow = null;
+    if (wasCaseClosed) {
+        p.closed = false;
+        p.closedDate = null;
+        if (p.autoClosed) p.autoClosed = false;
+        if (window._autoClosedSynced && window._autoClosedSynced.has(p.id)) {
+            window._autoClosedSynced.delete(p.id);
+        }
+        const restartDateStr = getLocalISOString();
+        restartRow = [
+            new Date().toISOString(),
+            p.id,
+            selectedPatientName,
+            p.phone || '',
+            p.age || '',
+            p.gender || '',
+            p.diag || '',
+            "Case Restarted",
+            restartDateStr,
+            0, 0, 0, 0, "",
+            p.address || '',
+            "Cash"
+        ];
+        p.logs.push(restartRow);
+        globalData.push(restartRow);
+
+        // Sync Case Restarted to backend in background
+        syncToBackend({
+            action: "logAppointment",
+            id: p.id,
+            name: selectedPatientName,
+            phone: p.phone,
+            condition: p.diag,
+            fee: 0,
+            amountPaid: 0,
+            discount: 0,
+            type: "Case Restarted",
+            paymentMode: "Cash",
+            date: restartDateStr,
+            requestId: "RESTART-AUTO-" + p.id + "-" + Date.now()
+        }).catch(err => console.warn("Case auto-restart sync error:", err));
+    }
+
     // ── 1. INSTANT OPTIMISTIC STATE SNAPSHOT (0ms Latency) ──
     const prevWallet = p.walletBalance;
     const prevDue = p.outstandingDue;
@@ -9096,6 +9310,7 @@ renderTables();
             discPct,
             paymentMode,
             p.address || '',
+            p.doctor || '',
             paidValForLog
         ];
         p.logs.push(row);
@@ -9133,17 +9348,28 @@ renderTables();
     document.getElementById('split-payment-row').classList.add('hidden');
     document.getElementById('session-discount-row').classList.add('hidden');
 
-    // Immediately close drawer and reset date selection
+    // Immediately close drawer and reset date selection and payment form
     selectedDates = [];
     toggleSessionDrawer(false);
+    const modeEl = document.getElementById('session-payment-mode');
+    if (modeEl) {
+        modeEl.value = "";
+        const amountInput = document.getElementById('session-amount-paid');
+        if (amountInput) {
+            amountInput.value = "";
+            amountInput.placeholder = "Select payment mode";
+            amountInput.readOnly = true;
+        }
+    }
 
     // ── 2. INSTANT UI RE-RENDER (< 15ms) ──
     updatePatientWorkspaceUI(selectedPatientName, p, false);
     renderTables();
     renderDuesWidget();
     updateGlobalStats();
+    if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
 
-    showToast(`${datesToSubmit.length} session(s) logged`, 'success');
+    showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) logged` : `${datesToSubmit.length} session(s) logged`, 'success');
     if (btn) {
         btn.innerText = "Saved ✓";
         btn.disabled = false;
@@ -9152,6 +9378,14 @@ renderTables();
 
     if (paymentMode === 'Refund') {
         showToast(`Refund recorded for ${selectedPatientName}`, 'info');
+    }
+
+    // ── Show update message / session receipt popup ──
+    if (typeof sendQuickSessionReceipt === 'function' && addedRows.length > 0) {
+        const totalPaidAmount = (paymentMode === 'Advance' || paymentMode === 'Complimentary' || paymentMode === 'Pending')
+            ? 0
+            : (paymentMode === 'Split' ? (splitCash + splitUpi) : (paidValForLog * datesToSubmit.length));
+        sendQuickSessionReceipt(p, addedRows[0], totalPaidAmount);
     }
 
     // ── 3. NON-BLOCKING BACKGROUND SYNC TO GOOGLE APPS SCRIPT ──
@@ -9204,6 +9438,13 @@ renderTables();
             const idxG = globalData.indexOf(r);
             if (idxG >= 0) globalData.splice(idxG, 1);
         });
+        if (wasCaseClosed && restartRow) {
+            p.closed = true;
+            const idxR = p.logs.indexOf(restartRow);
+            if (idxR >= 0) p.logs.splice(idxR, 1);
+            const idxG = globalData.indexOf(restartRow);
+            if (idxG >= 0) globalData.splice(idxG, 1);
+        }
         p.walletBalance = prevWallet;
         p.outstandingDue = prevDue;
         p.sessionsRemaining = prevSessionsRem;
@@ -9295,9 +9536,11 @@ function saveEnrollment() {
         return;
     }
     const enrolledPhone = document.getElementById('en-phone').value.trim();
-    const enrolledDiag = document.getElementById('en-condition').value.trim();
+    const enrolledDiag = document.getElementById('en-condition').value.replace(/,\s*$/, '').trim();
     const enrolledId = document.getElementById('en-id').value;
     const enrolledSessions = Number(document.getElementById('en-sessions').value) || 0;
+    const enrolledAge = (document.getElementById('en-age')?.value || '').trim();
+    const enrolledGender = (document.getElementById('en-gender')?.value || 'Male').trim();
     const gross = rate * Math.max(1, enrolledSessions);
     const enrolledDiscount = Math.min(Math.max(0, Number(document.getElementById('en-discount').value) || 0), gross);
 
@@ -9308,8 +9551,65 @@ function saveEnrollment() {
     saveEnrollmentBodyChartAsSoap(name, enrolledId);
 
     // ── 1. INSTANT UI FEEDBACK — don't make the clinician wait on the network ──
-    if (!patientLookup[name]) patientLookup[name] = { id: enrolledId, name: name, logs: [], enrollTime: Date.now() };
-    patientLookup[name].doctor = assignedDoctor;
+    if (!patientLookup[name]) {
+        patientLookup[name] = {
+            id: enrolledId,
+            name: name,
+            phone: enrolledPhone,
+            diag: enrolledDiag,
+            doctor: assignedDoctor,
+            logs: [],
+            baseRate: rate,
+            purchased: enrolledSessions,
+            advance: advanceAmount,
+            runningBalance: 0,
+            walletBalance: 0,
+            discount: enrolledDiscount,
+            closed: false,
+            closedDate: null,
+            age: enrolledAge,
+            gender: enrolledGender,
+            address: address,
+            enrollTime: Date.now(),
+            outstandingDue: 0,
+            activePackageId: null
+        };
+    } else {
+        const p = patientLookup[name];
+        p.id = enrolledId;
+        p.phone = enrolledPhone;
+        p.diag = enrolledDiag;
+        p.doctor = assignedDoctor;
+        p.age = enrolledAge;
+        p.gender = enrolledGender;
+        p.address = address;
+        p.baseRate = rate;
+        p.purchased = enrolledSessions;
+        p.advance = advanceAmount;
+        p.discount = enrolledDiscount;
+    }
+
+    const enrollRow = [
+        new Date().toISOString(),
+        enrolledId,
+        name,
+        enrolledPhone,
+        enrolledAge,
+        enrolledGender,
+        enrolledDiag,
+        enrolledSessions > 1 ? "Enrollment (Package)" : "Enrollment + Session 1",
+        dateStr,
+        rate,
+        enrolledSessions,
+        advanceAmount,
+        enrolledDiscount,
+        paymentMode || "Cash",
+        address,
+        advanceAmount,
+        assignedDoctor
+    ];
+    patientLookup[name].logs.push(enrollRow);
+    globalData.push(enrollRow);
 
     // Save clinical instructions if prescribed during enrollment
     const enrolledInstructions = (document.getElementById('en-instructions')?.value || '').trim();
@@ -9347,11 +9647,14 @@ function saveEnrollment() {
     }
 
     resetEnrollForm();
+    renderTables();
+    renderActiveCasesForLog();
+    updateGlobalStats();
     showToast(`${name} enrolled successfully`, 'success');
     showEnrollmentSuccessPopup({
         name: name,
         id: enrolledId,
-        phone: "'" + String(enrolledPhone || '').replace(/\s+/g, ''),
+        phone: enrolledPhone,
         diag: enrolledDiag,
         amount: advanceAmount > 0 ? advanceAmount : (rate * enrolledSessions)
     });
@@ -9362,9 +9665,9 @@ function saveEnrollment() {
         id: enrolledId,
         name: name,
         doctor: assignedDoctor,
-        age: document.getElementById('en-age').value,
-        gender: document.getElementById('en-gender').value,
-        phone: "'" + String(enrolledPhone || '').replace(/\s+/g, ''),
+        age: enrolledAge,
+        gender: enrolledGender,
+        phone: enrolledPhone,
         condition: enrolledDiag,
         grossAmount: gross,
         totalSessions: enrolledSessions,
@@ -10052,15 +10355,21 @@ function openMidPackage() {
 
             // Update Top Right Badge
             if (p.closed) {
-                badge.innerText = "CASE CLOSED";
-                badge.className = "bg-rose-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
-            } else if (rem > 0 && p.purchased > 0) {
-                const pkgTag = p.activePackageId ? ` | Pkg: ${p.activePackageId.replace('PKG-','')}` : '';
-                badge.innerText = `Rem: ${rem} Sessions | Wallet: ₹${wallet.toLocaleString()}${pkgTag}`;
-                badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+                badge.innerHTML = `<span class="flex items-center gap-1.5">🔒 CASE CLOSED <span class="underline font-bold ml-1 text-[9px] opacity-90">(Restart Case)</span></span>`;
+                badge.className = "bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase cursor-pointer transition-colors shadow-sm";
+                badge.title = "Click to restart this case";
+                badge.onclick = (e) => restartPatientCase(n, e);
             } else {
-                badge.innerText = `REGULAR | Wallet: ₹${wallet.toLocaleString()}`;
-                badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+                badge.onclick = null;
+                badge.title = "";
+                if (rem > 0 && p.purchased > 0) {
+                    const pkgTag = p.activePackageId ? ` | Pkg: ${p.activePackageId.replace('PKG-','')}` : '';
+                    badge.innerText = `Rem: ${rem} Sessions | Wallet: ₹${wallet.toLocaleString()}${pkgTag}`;
+                    badge.className = "bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+                } else {
+                    badge.innerText = `REGULAR | Wallet: ₹${wallet.toLocaleString()}`;
+                    badge.className = "bg-slate-200 text-slate-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase";
+                }
             }
 
             // Render Recent Logs with Wallet & Due Awareness
@@ -10143,15 +10452,18 @@ function openMidPackage() {
                 </div>`;
             }).join('');
 
-            // Trigger UI refreshes
-            const modeEl = document.getElementById('session-payment-mode');
-            if (modeEl) {
-                modeEl.value = "";
-                const amountInput = document.getElementById('session-amount-paid');
-                if (amountInput) {
-                    amountInput.value = "";
-                    amountInput.placeholder = "Select payment mode";
-                    amountInput.readOnly = true;
+            // Trigger UI refreshes - ONLY reset payment mode if this is a brand new patient selection!
+            if (window._currentWorkspacePatient !== n) {
+                window._currentWorkspacePatient = n;
+                const modeEl = document.getElementById('session-payment-mode');
+                if (modeEl) {
+                    modeEl.value = "";
+                    const amountInput = document.getElementById('session-amount-paid');
+                    if (amountInput) {
+                        amountInput.value = "";
+                        amountInput.placeholder = "Select payment mode";
+                        amountInput.readOnly = true;
+                    }
                 }
             }
             renderCalendar();
@@ -10224,6 +10536,17 @@ function openMidPackage() {
 
         function deselectPatientWorkspace() {
             selectedPatientName = null;
+            window._currentWorkspacePatient = null;
+            const modeEl = document.getElementById('session-payment-mode');
+            if (modeEl) {
+                modeEl.value = "";
+                const amountInput = document.getElementById('session-amount-paid');
+                if (amountInput) {
+                    amountInput.value = "";
+                    amountInput.placeholder = "Select payment mode";
+                    amountInput.readOnly = true;
+                }
+            }
             const ws = document.getElementById('patient-workspace');
             if (ws) ws.classList.add('hidden');
             const emptyState = document.getElementById('log-empty-workspace-state');
@@ -10599,14 +10922,13 @@ function openMidPackage() {
                     }
 
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${String(name).toUpperCase()} ${String(p.id || '').toUpperCase()} ${String(p.phone || '').toUpperCase()} ${String(p.diag || '').toUpperCase()}">
-                                <td class="p-5 font-black text-indigo-500 text-xs hidden lg:table-cell">${p.id}</td>
+                                <td class="p-5 font-black text-indigo-500 text-xs col-reg-no whitespace-nowrap">${p.id}</td>
                                 <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${name}</td>
-                                <td class="p-5 text-xs font-bold text-slate-600 italic hidden lg:table-cell">${p.age || '—'}Y / ${p.gender || '—'}</td>
-                                <td class="p-5 text-xs font-black text-slate-700 hidden lg:table-cell">${p.phone || '—'}</td>
-                                <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] hidden lg:table-cell">${p.diag || '—'}</td>
-                                <td class="p-5 text-center">${statusBadge}</td>
+                                <td class="p-5 text-xs font-bold text-slate-600 italic col-desktop-extra">${p.age || '—'}Y / ${p.gender || '—'}</td>
+                                <td class="p-5 text-xs font-black text-slate-700 col-desktop-extra">${p.phone || '—'}</td>
+                                <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] col-desktop-extra">${p.diag || '—'}</td>
+                                <td class="p-5 text-center whitespace-nowrap">${statusBadge}</td>
                         <td class="p-5 text-center flex gap-1.5 justify-center items-center flex-wrap">
-                            <button onclick="switchTab('log-session', document.querySelector('[onclick*=\\'log-session\\']')); setTimeout(() => selectPatient('${name.replace(/'/g, "\\'")}'), 250);" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Log Session"><i data-lucide="calendar-plus" class="w-4 h-4"></i></button>
                             <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
                             <button onclick="callPatient('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Call Patient"><i data-lucide="phone" class="w-4 h-4"></i></button>
                             <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Edit Patient Details"><i data-lucide="pencil" class="w-4 h-4"></i></button>
@@ -10750,7 +11072,6 @@ document.getElementById('pd-sessions').innerText = consumed;
     actionButtons = document.createElement('div');
     actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t flex-wrap flex-shrink-0';
     actionButtons.innerHTML = `
-        <button onclick="closePatientDetailModal(); switchTab('log-session', document.querySelector('[onclick*=\\'log-session\\']')); setTimeout(() => selectPatient('${name.replace(/'/g, "\\'")}'), 250);" class="flex-1 min-w-[120px] bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">📅 Log Session</button>
         <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">🏃 Exercise Plan</button>
         <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">✏️ Edit Details</button>
         <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">📄 View Bill</button>
@@ -10834,7 +11155,7 @@ document.getElementById('pd-sessions').innerText = consumed;
             const newPhone = document.getElementById('ep-phone').value.trim();
             const newAge = document.getElementById('ep-age').value.trim();
             const newGender = document.getElementById('ep-gender').value;
-            const newCondition = document.getElementById('ep-condition').value.trim();
+            const newCondition = document.getElementById('ep-condition').value.replace(/,\s*$/, '').trim();
             const newAddress = document.getElementById('ep-address').value.trim();
 
             if (!newName) {
@@ -10867,6 +11188,13 @@ document.getElementById('pd-sessions').innerText = consumed;
 
             processData();
             closeEditPatientModal();
+            updatePatientWorkspaceUI(newName, p, false);
+            renderTables();
+            renderActiveCasesForLog();
+            const detailModal = document.getElementById('patient-detail-modal');
+            if (detailModal && !detailModal.classList.contains('hidden')) {
+                renderPatientDetailModal(newName);
+            }
             showToast('Patient details updated successfully!', 'success');
 
             syncToBackend({
@@ -12088,25 +12416,450 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
             // stat-outstanding is now set by backend fetchPatientBalances in loadAdminData
 
             if (!rows.length) {
-                el.innerHTML = `<p class="text-xs text-slate-600 italic">No outstanding dues right now.</p>`;
+                el.innerHTML = `<p class="text-xs text-slate-600 dark:text-slate-400 italic">No outstanding dues right now.</p>`;
                 return;
             }
 
-            el.innerHTML = rows.map(r => `
-                <div class="due-soon-row">
-                    <div class="cursor-pointer group" onclick="openDueSessionsModal('${r.name.replace(/'/g, "\\'")}')">
-                        <span class="font-black text-xs uppercase text-slate-700 group-hover:text-indigo-600 transition-colors">${r.name}</span>
-                        <span class="text-[9px] font-bold text-indigo-500 ml-2">${r.id}</span>
-                        <span class="text-[8px] font-bold text-slate-400 ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
+            el.innerHTML = `
+                <div class="flex items-center justify-between px-2.5 py-1.5 mb-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 text-[10px] font-bold text-slate-500 dark:text-slate-400">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="due-batch-check-all" onchange="toggleDueBatchSelectAll(this)" class="cursor-pointer accent-emerald-600 rounded" checked>
+                        <span class="uppercase tracking-wider font-black">Select All (<span id="due-batch-selected-count">${rows.length}</span>/${rows.length})</span>
+                    </label>
+                    <button type="button" onclick="openBatchReminderModal()" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 font-black uppercase text-[9.5px] cursor-pointer flex items-center gap-1">
+                        <i data-lucide="send" class="w-3 h-3"></i>
+                        <span>Start Queue</span>
+                    </button>
+                </div>` + rows.map(r => `
+                <div class="due-soon-row flex items-center gap-2">
+                    <input type="checkbox" class="due-batch-chk cursor-pointer accent-emerald-600 rounded flex-shrink-0" data-name="${encodeURIComponent(r.name)}" onchange="updateDueBatchCount()" checked>
+                    <div class="flex-1 min-w-0 cursor-pointer group" onclick="openDueSessionsModal('${r.name.replace(/'/g, "\\'")}')">
+                        <span class="font-black text-xs uppercase text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors truncate block sm:inline">${r.name}</span>
+                        <span class="text-[9px] font-bold text-indigo-500 ml-0 sm:ml-2">${r.id}</span>
+                        <span class="text-[8px] font-bold text-slate-400 ml-1 sm:ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 text-rose-600">₹${r.due.toLocaleString()} due</span>
-                        <button onclick="sendDueReminder('${r.name.replace(/'/g, "\\'")}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
+                    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">₹${r.due.toLocaleString()} due</span>
+                        <button onclick="sendDueReminder('${r.name.replace(/'/g, "\\'")}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg cursor-pointer" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
+                        <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg cursor-pointer" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
                     </div>
                 </div>`).join('');
 
-            lucide.createIcons({ root: el });
+            lucide.createIcons();
+        }
+
+        // ---------- BATCH WHATSAPP REMINDER SEQUENTIAL ENGINE ----------
+        const DEFAULT_BATCH_REMINDER_TEMPLATE = 
+`Hello {name},
+
+This is a gentle reminder from *{clinic}* regarding a pending balance on your account.
+
+*Outstanding Amount:* {due}
+*Pending for:* {sessions} session(s)
+
+You can clear this via UPI:
+*UPI ID:* {upi}
+
+Kindly share the payment screenshot once done, or let us know if you'd like to pay by cash/card at the clinic.
+
+Thank you for your continued trust in us.
+
+Warm regards,
+{clinic}`;
+
+        function getBatchReminderTemplate() {
+            try {
+                const saved = localStorage.getItem('prism_custom_reminder_template');
+                if (saved && saved.trim()) return saved;
+            } catch (e) {
+                console.warn('Could not read custom template from localStorage', e);
+            }
+            return DEFAULT_BATCH_REMINDER_TEMPLATE;
+        }
+
+        function saveBatchReminderTemplate(tmpl) {
+            try {
+                localStorage.setItem('prism_custom_reminder_template', tmpl);
+            } catch (e) {
+                console.warn('Could not save custom template to localStorage', e);
+            }
+        }
+
+        function formatPatientReminderMessage(patientData, template) {
+            if (!template) template = getBatchReminderTemplate();
+            const name = patientData.name || 'Patient';
+            const due = '₹' + (patientData.due || 0).toLocaleString('en-IN');
+            const sessions = patientData.sessions || (patientData.p && patientData.p.dueSessionCount) || 1;
+            const clinic = 'Prism Physiotherapy & Rehabilitation Center';
+            const upi = 'dr.raviphysio01@oksbi';
+            const phone = patientData.phone || '';
+
+            return template
+                .replace(/\{name\}/g, name)
+                .replace(/\{due\}/g, due)
+                .replace(/\{sessions\}/g, sessions)
+                .replace(/\{clinic\}/g, clinic)
+                .replace(/\{upi\}/g, upi)
+                .replace(/\{phone\}/g, phone);
+        }
+
+        let batchQueuePatients = [];
+        let batchCurrentIndex = 0;
+        let batchCustomMessages = {};
+        let batchQueueStatus = {};
+
+        function toggleDueBatchSelectAll(master) {
+            const chks = document.querySelectorAll('.due-batch-chk');
+            chks.forEach(c => c.checked = master.checked);
+            updateDueBatchCount();
+        }
+
+        function updateDueBatchCount() {
+            const allChks = document.querySelectorAll('.due-batch-chk');
+            const checkedChks = document.querySelectorAll('.due-batch-chk:checked');
+            const master = document.getElementById('due-batch-check-all');
+            if (master) {
+                master.checked = (allChks.length > 0 && allChks.length === checkedChks.length);
+                master.indeterminate = (checkedChks.length > 0 && checkedChks.length < allChks.length);
+            }
+            const countEl = document.getElementById('due-batch-selected-count');
+            if (countEl) countEl.innerText = checkedChks.length;
+        }
+
+        function openBatchReminderModal() {
+            const checkedBoxes = Array.from(document.querySelectorAll('.due-batch-chk:checked'));
+            let targetNames = [];
+            if (checkedBoxes.length > 0) {
+                targetNames = checkedBoxes.map(chk => decodeURIComponent(chk.getAttribute('data-name') || ''));
+            } else {
+                Object.keys(patientLookup).forEach(name => {
+                    if (patientLookup[name] && patientLookup[name].outstandingDue > 0) {
+                        targetNames.push(name);
+                    }
+                });
+            }
+
+            const queue = [];
+            targetNames.forEach(name => {
+                const p = patientLookup[name];
+                if (p && p.outstandingDue > 0) {
+                    queue.push({
+                        name,
+                        id: p.id || '',
+                        phone: p.phone || '',
+                        due: p.outstandingDue,
+                        sessions: p.dueSessionCount || 1,
+                        p
+                    });
+                }
+            });
+
+            queue.sort((a, b) => b.due - a.due);
+
+            if (queue.length === 0) {
+                showToast('No patients with outstanding dues found', 'info');
+                return;
+            }
+
+            batchQueuePatients = queue;
+            batchCurrentIndex = 0;
+            batchCustomMessages = {};
+            batchQueueStatus = {};
+
+            const tmplInput = document.getElementById('batch-template-input');
+            if (tmplInput) tmplInput.value = getBatchReminderTemplate();
+
+            switchBatchModalView('queue');
+            renderBatchCurrentPatient();
+            renderBatchQueueList();
+
+            const modal = document.getElementById('batch-reminder-modal');
+            if (modal) modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeBatchReminderModal() {
+            const modal = document.getElementById('batch-reminder-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function switchBatchModalView(view) {
+            const qView = document.getElementById('batch-view-queue');
+            const tView = document.getElementById('batch-view-template');
+            const qTab = document.getElementById('batch-tab-queue');
+            const tTab = document.getElementById('batch-tab-template');
+
+            if (view === 'queue') {
+                if (qView) qView.classList.remove('hidden');
+                if (tView) tView.classList.add('hidden');
+                if (qTab) {
+                    qTab.className = "pb-2 text-xs font-black uppercase tracking-wider border-b-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 cursor-pointer flex items-center gap-1.5";
+                }
+                if (tTab) {
+                    tTab.className = "pb-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer flex items-center gap-1.5";
+                }
+                renderBatchCurrentPatient();
+            } else {
+                if (qView) qView.classList.add('hidden');
+                if (tView) tView.classList.remove('hidden');
+                if (tTab) {
+                    tTab.className = "pb-2 text-xs font-black uppercase tracking-wider border-b-2 border-indigo-500 text-indigo-600 dark:text-indigo-400 cursor-pointer flex items-center gap-1.5";
+                }
+                if (qTab) {
+                    qTab.className = "pb-2 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer flex items-center gap-1.5";
+                }
+                const tmplInput = document.getElementById('batch-template-input');
+                if (tmplInput && !tmplInput.value) {
+                    tmplInput.value = getBatchReminderTemplate();
+                }
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderBatchCurrentPatient() {
+            const countEl = document.getElementById('batch-queue-count');
+            if (countEl) countEl.innerText = batchQueuePatients.length;
+
+            const total = batchQueuePatients.length;
+            const activeCard = document.getElementById('batch-active-card');
+            const completedCard = document.getElementById('batch-completed-card');
+            const progressBar = document.getElementById('batch-progress-bar');
+            const stepIndicator = document.getElementById('batch-step-indicator');
+            const statsSummary = document.getElementById('batch-stats-summary');
+
+            let sentCount = 0;
+            let skippedCount = 0;
+            Object.values(batchQueueStatus).forEach(st => {
+                if (st === 'sent') sentCount++;
+                else if (st === 'skipped') skippedCount++;
+            });
+
+            if (statsSummary) {
+                statsSummary.innerText = `${sentCount} Sent • ${skippedCount} Skipped`;
+            }
+
+            if (total === 0 || batchCurrentIndex >= total) {
+                if (activeCard) activeCard.classList.add('hidden');
+                if (completedCard) completedCard.classList.remove('hidden');
+                if (stepIndicator) stepIndicator.innerText = `Completed (${total}/${total})`;
+                if (progressBar) progressBar.style.width = '100%';
+                const compSummary = document.getElementById('batch-completed-summary');
+                if (compSummary) {
+                    compSummary.innerText = `Finished! ${sentCount} reminders opened on WhatsApp, ${skippedCount} skipped out of ${total} total patients.`;
+                }
+                renderBatchQueueList();
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            if (activeCard) activeCard.classList.remove('hidden');
+            if (completedCard) completedCard.classList.add('hidden');
+
+            const cp = batchQueuePatients[batchCurrentIndex];
+            if (stepIndicator) {
+                stepIndicator.innerText = `Patient ${batchCurrentIndex + 1} of ${total}`;
+            }
+
+            const pct = Math.round((batchCurrentIndex / total) * 100);
+            if (progressBar) progressBar.style.width = `${pct}%`;
+
+            const nameEl = document.getElementById('batch-patient-name');
+            if (nameEl) nameEl.innerText = cp.name;
+
+            const idEl = document.getElementById('batch-patient-id');
+            if (idEl) idEl.innerText = cp.id ? `#${cp.id}` : '';
+
+            const phoneEl = document.getElementById('batch-patient-phone');
+            if (phoneEl) phoneEl.innerText = cp.phone ? `📞 ${cp.phone}` : '📞 No phone';
+
+            const dueEl = document.getElementById('batch-patient-due');
+            if (dueEl) dueEl.innerText = `₹${(cp.due || 0).toLocaleString()} due`;
+
+            const sessEl = document.getElementById('batch-patient-sessions');
+            if (sessEl) sessEl.innerText = `${cp.sessions || 1} session${(cp.sessions || 1) > 1 ? 's' : ''} pending`;
+
+            if (!batchCustomMessages[batchCurrentIndex]) {
+                batchCustomMessages[batchCurrentIndex] = formatPatientReminderMessage(cp, getBatchReminderTemplate());
+            }
+            const msgInput = document.getElementById('batch-current-message');
+            if (msgInput) {
+                msgInput.value = batchCustomMessages[batchCurrentIndex];
+            }
+
+            renderBatchQueueList();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function sendCurrentBatchPatient() {
+            if (batchCurrentIndex >= batchQueuePatients.length) return;
+            const cp = batchQueuePatients[batchCurrentIndex];
+            const msgInput = document.getElementById('batch-current-message');
+            const msg = (msgInput ? msgInput.value : '').trim();
+
+            if (!msg) {
+                showToast('Message cannot be empty', 'warning');
+                return;
+            }
+
+            batchCustomMessages[batchCurrentIndex] = msg;
+
+            const waNumber = typeof getWhatsAppNumber === 'function' 
+                ? getWhatsAppNumber(cp.phone) 
+                : (cp.phone || '').replace(/[^0-9]/g, '');
+
+            if (!waNumber) {
+                showToast(`Patient ${cp.name} has an invalid or missing phone number`, 'warning');
+                batchQueueStatus[batchCurrentIndex] = 'skipped';
+            } else {
+                window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+                batchQueueStatus[batchCurrentIndex] = 'sent';
+                showToast(`WhatsApp opened for ${cp.name}`, 'success');
+            }
+
+            batchCurrentIndex++;
+            renderBatchCurrentPatient();
+        }
+
+        function skipCurrentBatchPatient() {
+            if (batchCurrentIndex >= batchQueuePatients.length) return;
+            batchQueueStatus[batchCurrentIndex] = 'skipped';
+            batchCurrentIndex++;
+            renderBatchCurrentPatient();
+        }
+
+        function prevBatchPatient() {
+            const msgInput = document.getElementById('batch-current-message');
+            if (msgInput && batchCurrentIndex < batchQueuePatients.length) {
+                batchCustomMessages[batchCurrentIndex] = msgInput.value;
+            }
+            if (batchCurrentIndex > 0) {
+                batchCurrentIndex--;
+                renderBatchCurrentPatient();
+            }
+        }
+
+        function nextBatchPatient() {
+            const msgInput = document.getElementById('batch-current-message');
+            if (msgInput && batchCurrentIndex < batchQueuePatients.length) {
+                batchCustomMessages[batchCurrentIndex] = msgInput.value;
+            }
+            if (batchCurrentIndex < batchQueuePatients.length) {
+                batchCurrentIndex++;
+                renderBatchCurrentPatient();
+            }
+        }
+
+        function jumpToBatchPatient(idx) {
+            const msgInput = document.getElementById('batch-current-message');
+            if (msgInput && batchCurrentIndex < batchQueuePatients.length) {
+                batchCustomMessages[batchCurrentIndex] = msgInput.value;
+            }
+            if (idx >= 0 && idx < batchQueuePatients.length) {
+                batchCurrentIndex = idx;
+                renderBatchCurrentPatient();
+            }
+        }
+
+        function restartBatchQueue() {
+            batchCurrentIndex = 0;
+            batchQueueStatus = {};
+            renderBatchCurrentPatient();
+        }
+
+        function resetBatchCurrentMessage() {
+            if (batchCurrentIndex >= batchQueuePatients.length) return;
+            const cp = batchQueuePatients[batchCurrentIndex];
+            const msg = formatPatientReminderMessage(cp, getBatchReminderTemplate());
+            batchCustomMessages[batchCurrentIndex] = msg;
+            const msgInput = document.getElementById('batch-current-message');
+            if (msgInput) msgInput.value = msg;
+            showToast('Message reset to default template', 'info');
+        }
+
+        function renderBatchQueueList() {
+            const listEl = document.getElementById('batch-patient-queue-list');
+            if (!listEl) return;
+
+            if (!batchQueuePatients.length) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400 italic">No patients in queue.</p>`;
+                return;
+            }
+
+            listEl.innerHTML = batchQueuePatients.map((p, idx) => {
+                const isCurrent = (idx === batchCurrentIndex);
+                const status = batchQueueStatus[idx] || 'pending';
+                let statusBadge = '';
+                if (status === 'sent') {
+                    statusBadge = '<span class="text-[9px] font-black text-emerald-600 bg-emerald-100 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded">✓ Sent</span>';
+                } else if (status === 'skipped') {
+                    statusBadge = '<span class="text-[9px] font-bold text-amber-600 bg-amber-100 dark:bg-amber-950/60 px-1.5 py-0.5 rounded">⏭ Skipped</span>';
+                } else if (isCurrent) {
+                    statusBadge = '<span class="text-[9px] font-black text-indigo-600 bg-indigo-100 dark:bg-indigo-950/60 px-1.5 py-0.5 rounded animate-pulse">● Active</span>';
+                } else {
+                    statusBadge = '<span class="text-[9px] font-bold text-slate-400">Waiting</span>';
+                }
+
+                const activeClass = isCurrent
+                    ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-700 shadow-xs'
+                    : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200/60 dark:border-slate-800';
+
+                return `
+                    <div onclick="jumpToBatchPatient(${idx})" class="flex items-center justify-between p-2 rounded-xl border ${activeClass} cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xs">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <span class="w-5 text-[10px] font-black text-slate-400">#${idx + 1}</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-200 uppercase truncate">${p.name}</span>
+                            <span class="text-[10px] text-rose-500 font-black flex-shrink-0">₹${(p.due || 0).toLocaleString()}</span>
+                        </div>
+                        <div class="flex-shrink-0">${statusBadge}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function insertBatchPlaceholder(ph) {
+            const input = document.getElementById('batch-template-input');
+            if (!input) return;
+            const start = input.selectionStart || 0;
+            const end = input.selectionEnd || 0;
+            const text = input.value;
+            input.value = text.substring(0, start) + ph + text.substring(end);
+            input.focus();
+            input.selectionStart = input.selectionEnd = start + ph.length;
+        }
+
+        function saveBatchTemplate() {
+            const input = document.getElementById('batch-template-input');
+            if (!input) return;
+            const newTmpl = input.value.trim();
+            if (!newTmpl) {
+                showToast('Template cannot be empty', 'warning');
+                return;
+            }
+            saveBatchReminderTemplate(newTmpl);
+
+            batchQueuePatients.forEach((p, idx) => {
+                if (batchQueueStatus[idx] !== 'sent') {
+                    batchCustomMessages[idx] = formatPatientReminderMessage(p, newTmpl);
+                }
+            });
+
+            if (batchCurrentIndex < batchQueuePatients.length) {
+                const msgInput = document.getElementById('batch-current-message');
+                if (msgInput) {
+                    msgInput.value = batchCustomMessages[batchCurrentIndex];
+                }
+            }
+
+            showToast('Custom message template saved & applied!', 'success');
+            switchBatchModalView('queue');
+        }
+
+        function resetBatchTemplateToDefault() {
+            const input = document.getElementById('batch-template-input');
+            if (input) {
+                input.value = DEFAULT_BATCH_REMINDER_TEMPLATE;
+            }
+            showToast('Template reset to default. Click "Save & Apply" to keep.', 'info');
         }
 
        let markPaidContext = null;
@@ -12115,11 +12868,15 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
     const p = patientLookup[name];
     if (!p) return;
 
+    if (typeof calculatePatientDueSessions === 'function') {
+        calculatePatientDueSessions(p, null);
+    }
+
     // Open the modal immediately with cached figures, then refine with live data
     markPaidContext = { name, p };
     document.getElementById('mp-patient-name').innerText = name;
     document.getElementById('mp-total-due').innerText = `₹${(p.outstandingDue || 0).toLocaleString()}`;
-    document.getElementById('mp-session-count').innerText = p.dueSessionCount || '…';
+    document.getElementById('mp-session-count').innerText = p.dueSessionCount || '0';
     document.getElementById('mp-amount').value = p.outstandingDue || 0;
     document.getElementById('mp-mode').value = '';
     document.getElementById('markpaid-modal').classList.remove('hidden');
@@ -12136,10 +12893,13 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
             result.walletApplied > 0
                 ? `₹${result.rawDue.toLocaleString()} − ₹${result.walletApplied.toLocaleString()} wallet = ₹${result.totalDue.toLocaleString()}`
                 : `₹${result.totalDue.toLocaleString()}`;
-        document.getElementById('mp-session-count').innerText = result.unpaidLogs.length;
+        const fresh = (typeof calculatePatientDueSessions === 'function') 
+            ? calculatePatientDueSessions(p, result) 
+            : { activeDueSessions: result.unpaidLogs };
+        document.getElementById('mp-session-count').innerText = fresh.activeDueSessions.length;
         document.getElementById('mp-amount').value = result.totalDue;
     }).catch(() => {
-        showToast('Could not refresh due sessions — showing cached amount', 'warning');
+        // Quietly maintain cached amount if offline or timeout
     });
 }
 
@@ -12489,85 +13249,214 @@ async function confirmMarkPaid() {
         });
 
         // ---------- AUTO-CLOSE INACTIVE CASES (7+ DAYS NO SESSION) ----------
-// Stores reactivation timestamps in memory: { patientName: epochMs }
-// ⚠️ Auto-close-inactive-cases and reactivation-grace logic REMOVED from
-// client entirely. This is a business rule that must run server-side
-// (e.g. an Apps Script time-driven trigger calling a dedicated
-// "autoCloseInactiveCases" action against Audit_Log/Database), not as
-// client-side setTimeout()s that vanish on tab close/refresh and that
-// previously fabricated Database rows directly via globalData.push().
-// If this feature is still wanted, implement it as a GAS time trigger
-// (Triggers → Time-driven → Day timer) calling a new backend function,
-// not client JS.
+        window._autoClosedSynced = window._autoClosedSynced || new Set();
 
-async function restartPatientCase(name, event) {
-    const btn = event.currentTarget;
-    armConfirm(btn, 'Confirm Restart?', () => {
-        const p = patientLookup[name];
-        if (!p) return;
-        const dateStr = getLocalISOString();
+        function getPatientLastActivityDate(p) {
+            if (!p) return null;
+            let latestMs = 0;
 
-        // ── INSTANT OPTIMISTIC UI UPDATE ──
-        p.closed = false;
-        p.closedDate = null;
-        const restartRow = [new Date().toISOString(), p.id, name, p.phone || '', p.age || '', p.gender || '', p.diag || '', "Case Restarted", dateStr, 0, 0, 0, 0, "", p.address || '', "Cash"];
-        p.logs.push(restartRow);
-        globalData.push(restartRow);
-
-        if (statEl.activeCount) {
-            statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
-        }
-        renderActiveCasesForLog();
-        renderTables();
-        const modal = document.getElementById('case-modal');
-        if (modal && !modal.classList.contains('hidden')) {
-            openCaseModal();
-        }
-        if (selectedPatientName === name) {
-            updatePatientWorkspaceUI(name, p, false);
-        }
-        showToast(`${name}'s case restarted`, 'success');
-
-        // ── NON-BLOCKING BACKGROUND SYNC ──
-        syncToBackend({
-            action: "logAppointment",
-            id: p.id,
-            name: name,
-            phone: p.phone,
-            condition: p.diag,
-            fee: 0,
-            amountPaid: 0,
-            discount: 0,
-            type: "Case Restarted",
-            paymentMode: "Cash",
-            date: dateStr,
-            requestId: "RESTART-" + Date.now()
-        }).then(() => {
-            scheduleBackgroundReconcile(3000);
-        }).catch(e => {
-            console.error("Case restart sync error:", e);
-            p.closed = true;
-            const idxP = p.logs.indexOf(restartRow);
-            if (idxP >= 0) p.logs.splice(idxP, 1);
-            const idxG = globalData.indexOf(restartRow);
-            if (idxG >= 0) globalData.splice(idxG, 1);
-
-            if (statEl.activeCount) {
-                statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
+            // 1. Scan p.logs for session rows, case restarts, and enrollment
+            if (p.logs && p.logs.length > 0) {
+                p.logs.forEach(l => {
+                    const type = String(l[7] || '').trim().toLowerCase();
+                    if (['package added', 'case closed', 'bill issued'].includes(type)) return;
+                    if (type === 'enrollment' || type === 'enrollment (package)') return;
+                    
+                    const dVal = l[8] || l[0];
+                    const ymd = normDateYMD(dVal);
+                    if (ymd && /^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+                        const parts = ymd.split('-').map(Number);
+                        const ms = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                        if (!isNaN(ms) && ms > latestMs) {
+                            latestMs = ms;
+                        }
+                    }
+                });
             }
-            renderActiveCasesForLog();
-            renderTables();
-            const m = document.getElementById('case-modal');
-            if (m && !m.classList.contains('hidden')) {
-                openCaseModal();
+
+            // 2. Scan window.rawTransactions for Case Restarted or latest sessions
+            if (window.rawTransactions && window.rawTransactions.length > 0) {
+                window.rawTransactions.forEach(tx => {
+                    if (normId(tx[2]) === normId(p.id)) {
+                        const txType = String(tx[3] || '').trim();
+                        if (txType === "Case Restarted" || txType.toLowerCase().includes("session") || txType.toLowerCase().includes("rehab")) {
+                            const ymd = normDateYMD(tx[0]);
+                            if (ymd && /^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+                                const parts = ymd.split('-').map(Number);
+                                const ms = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                                if (!isNaN(ms) && ms > latestMs) latestMs = ms;
+                            }
+                        }
+                    }
+                });
             }
-            if (selectedPatientName === name) {
-                updatePatientWorkspaceUI(name, p, false);
+
+            // 3. Fall back to enrollment date if no sessions yet
+            if (latestMs === 0) {
+                const enrollVal = p.enrollDate || (p.enrollTime ? new Date(p.enrollTime) : null);
+                if (enrollVal) {
+                    const ymd = normDateYMD(enrollVal);
+                    if (ymd && /^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+                        const parts = ymd.split('-').map(Number);
+                        const ms = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                        if (!isNaN(ms)) latestMs = ms;
+                    }
+                }
             }
-            showToast('Restart failed to sync — ' + (e.message || 'please retry'), 'error');
-        });
-    });
-}
+
+            return latestMs > 0 ? new Date(latestMs) : null;
+        }
+
+        function autoCloseInactiveCases() {
+            if (!patientLookup || typeof patientLookup !== 'object') return 0;
+            const now = new Date();
+            const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            let closedCount = 0;
+
+            Object.values(patientLookup).forEach(p => {
+                if (!p || p.closed) return;
+
+                const lastActivity = getPatientLastActivityDate(p);
+                if (!lastActivity) return;
+
+                const actMidnight = new Date(lastActivity.getFullYear(), lastActivity.getMonth(), lastActivity.getDate()).getTime();
+                const diffDays = Math.floor((todayMidnight - actMidnight) / (1000 * 60 * 60 * 24));
+
+                // 7+ days without any session or activity -> automatically close case
+                if (diffDays >= 7) {
+                    p.closed = true;
+                    p.closedDate = now.toISOString();
+                    p.autoClosed = true;
+                    closedCount++;
+
+                    const dateStr = getLocalISOString();
+                    const closeRow = [
+                        now.toISOString(),
+                        p.id,
+                        p.name,
+                        p.phone || '',
+                        p.age || '',
+                        p.gender || '',
+                        p.diag || '',
+                        "Case Closed",
+                        dateStr,
+                        0, 0, 0, 0, "",
+                        p.address || '',
+                        "Cash"
+                    ];
+                    p.logs.push(closeRow);
+                    globalData.push(closeRow);
+
+                    // Sync to backend in background (throttled to once per patient per browser session)
+                    if (!window._autoClosedSynced.has(p.id)) {
+                        window._autoClosedSynced.add(p.id);
+                        syncToBackend({
+                            action: "logAppointment",
+                            id: p.id,
+                            name: p.name,
+                            phone: p.phone,
+                            condition: p.diag,
+                            fee: 0,
+                            purchased: 0,
+                            advance: 0,
+                            discount: 0,
+                            type: "Case Closed",
+                            date: dateStr,
+                            paymentMode: "Cash",
+                            amountPaid: 0,
+                            requestId: "AUTOCLOSE-" + p.id + "-" + Date.now()
+                        }).catch(e => console.warn("Auto-close sync error for " + p.name + ":", e));
+                    }
+                }
+            });
+
+            if (closedCount > 0) {
+                console.log(`Auto-closed ${closedCount} inactive cases (>= 7 days without session).`);
+            }
+            return closedCount;
+        }
+        window.autoCloseInactiveCases = autoCloseInactiveCases;
+        window.getPatientLastActivityDate = getPatientLastActivityDate;
+
+        async function restartPatientCase(name, event) {
+            const btn = event ? (event.currentTarget || event.target) : null;
+            const doRestart = () => {
+                const p = patientLookup[name];
+                if (!p) return;
+                const dateStr = getLocalISOString();
+
+                // ── INSTANT OPTIMISTIC UI UPDATE ──
+                p.closed = false;
+                p.closedDate = null;
+                if (p.autoClosed) p.autoClosed = false;
+                if (window._autoClosedSynced && window._autoClosedSynced.has(p.id)) {
+                    window._autoClosedSynced.delete(p.id);
+                }
+                const restartRow = [new Date().toISOString(), p.id, name, p.phone || '', p.age || '', p.gender || '', p.diag || '', "Case Restarted", dateStr, 0, 0, 0, 0, "", p.address || '', "Cash"];
+                p.logs.push(restartRow);
+                globalData.push(restartRow);
+
+                if (statEl.activeCount) {
+                    statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
+                }
+                renderActiveCasesForLog();
+                renderTables();
+                const modal = document.getElementById('case-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    openCaseModal();
+                }
+                if (selectedPatientName === name) {
+                    updatePatientWorkspaceUI(name, p, false);
+                }
+                showToast(`${name}'s case restarted`, 'success');
+
+                // ── NON-BLOCKING BACKGROUND SYNC ──
+                syncToBackend({
+                    action: "logAppointment",
+                    id: p.id,
+                    name: name,
+                    phone: p.phone,
+                    condition: p.diag,
+                    fee: 0,
+                    amountPaid: 0,
+                    discount: 0,
+                    type: "Case Restarted",
+                    paymentMode: "Cash",
+                    date: dateStr,
+                    requestId: "RESTART-" + Date.now()
+                }).then(() => {
+                    scheduleBackgroundReconcile(3000);
+                }).catch(e => {
+                    console.error("Case restart sync error:", e);
+                    p.closed = true;
+                    const idxP = p.logs.indexOf(restartRow);
+                    if (idxP >= 0) p.logs.splice(idxP, 1);
+                    const idxG = globalData.indexOf(restartRow);
+                    if (idxG >= 0) globalData.splice(idxG, 1);
+
+                    if (statEl.activeCount) {
+                        statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
+                    }
+                    renderActiveCasesForLog();
+                    renderTables();
+                    const m = document.getElementById('case-modal');
+                    if (m && !m.classList.contains('hidden')) {
+                        openCaseModal();
+                    }
+                    if (selectedPatientName === name) {
+                        updatePatientWorkspaceUI(name, p, false);
+                    }
+                    showToast('Restart failed to sync — ' + (e.message || 'please retry'), 'error');
+                });
+            };
+
+            if (btn && typeof armConfirm === 'function') {
+                armConfirm(btn, 'Confirm Restart?', doRestart);
+            } else {
+                doRestart();
+            }
+        }
+        window.restartPatientCase = restartPatientCase;
 
 // ---------- WRAP PROCESS DATA ----------
 const _originalProcessData = processData;
@@ -14054,7 +14943,7 @@ window.shareExTabViaWhatsApp = function() {
         const salutation = salEl ? salEl.value.trim() : '';
         const rawName = document.getElementById('iq-name')?.value.trim() || '';
         const phone = document.getElementById('iq-phone')?.value.trim() || '';
-        const diagnosis = document.getElementById('iq-diagnosis')?.value.trim() || '';
+        const diagnosis = (document.getElementById('iq-diagnosis')?.value || '').replace(/,\s*$/, '').trim();
         const note = document.getElementById('iq-note')?.value.trim() || '';
         const age = document.getElementById('iq-age')?.value || '';
         const gender = document.getElementById('iq-gender')?.value || 'Male';
@@ -14732,36 +15621,73 @@ if (localStorage.getItem('prism_unlocked') === '1') {
     window.sendWaPopupMessage = function() {
         const msg = document.getElementById('wa-popup-textarea').value.trim();
         if (!msg) { showToast('Message is empty', 'warning'); return; }
-        const waNumber = getWhatsAppNumber(_waPhone);
-        if (!waNumber) { showToast('Invalid phone number', 'warning'); return; }
+        let waNumber = getWhatsAppNumber(_waPhone);
+        if (!waNumber) {
+            const inputPhone = prompt("Enter patient's WhatsApp number (10 digits):", _waPhone || "");
+            if (inputPhone && getWhatsAppNumber(inputPhone)) {
+                waNumber = getWhatsAppNumber(inputPhone);
+                _waPhone = inputPhone;
+            } else {
+                showToast('Please enter a valid WhatsApp number', 'warning');
+                return;
+            }
+        }
         window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
         closeWaPopup();
     };
 
     // Override sendQuickSessionReceipt
-    window.sendQuickSessionReceipt = function(p, row) {
-        if (!getWhatsAppNumber(p.phone)) return;
-        const paid = toNum(row[16]);
-        const dateStr = formatDateDMY(row[8]);
-        const mode = row[15] || 'Cash';
+    window.sendQuickSessionReceipt = function(p, row, totalPaidOverride) {
+        if (!p) return;
+        const phone = p.phone || '';
+
+        // Extract payment mode
+        let mode = 'Cash';
+        if (row) {
+            const v13 = row[13];
+            const v15 = row[15];
+            const knownModes = ['CASH', 'UPI', 'CARD', 'ADVANCE', 'PENDING', 'SPLIT', 'COMPLIMENTARY', 'REFUND'];
+            if (v13 && typeof v13 === 'string' && knownModes.includes(v13.trim().toUpperCase())) {
+                mode = v13.trim();
+            } else if (v15 && typeof v15 === 'string' && knownModes.includes(v15.trim().toUpperCase())) {
+                mode = v15.trim();
+            }
+        }
+
+        // Extract amount paid
+        let paid = 0;
+        if (totalPaidOverride !== undefined && totalPaidOverride !== null && !isNaN(totalPaidOverride)) {
+            paid = Number(totalPaidOverride);
+        } else if (row) {
+            if (row[16] !== undefined && row[16] !== null && row[16] !== '' && !isNaN(Number(row[16]))) {
+                paid = toNum(row[16]);
+            } else if (row[15] !== undefined && row[15] !== null && row[15] !== '' && !isNaN(Number(row[15]))) {
+                paid = toNum(row[15]);
+            } else {
+                paid = (mode === 'Pending' || mode === 'Advance' || mode === 'Complimentary') ? 0 : toNum(row[9]);
+            }
+        }
+
+        const dateStr = (row && row[8]) ? formatDateDMY(row[8]) : formatDateDMY(new Date());
         const remaining = getRemainingSessions(p);
         const isPending = mode === 'Pending';
+        const patientName = p.name || selectedPatientName || 'Patient';
 
-        let msg = `Hello ${selectedPatientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: ₹${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
+        let msg = `Hello ${patientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: ₹${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
         if (p.purchased > 0) msg += `Remaining Sessions: *${remaining}*\n`;
         msg += `\nThank you! Wishing you a smooth recovery.\n\nPrism Physiotherapy & Rehabilitation Center`;
 
         openWaPopup(
-            p.phone,
+            phone,
             'Session Logged',
             '#f97316',
-            selectedPatientName,
+            patientName,
             [
                 { label: 'Date', value: dateStr },
                 { label: 'Amount Paid', value: `₹${paid.toLocaleString()}` },
                 ...(p.purchased > 0 ? [{ label: 'Sessions Remaining', value: `${remaining} / ${p.purchased}` }] : [])
             ],
-            isPending ? `Pending (₹${toNum(row[9]).toLocaleString()})` : `Paid ₹${paid.toLocaleString()} via ${mode}`,
+            isPending ? `Pending (₹${toNum(row ? row[9] : 0).toLocaleString()})` : `Paid ₹${paid.toLocaleString()} via ${mode}`,
             isPending ? '#e11d48' : '#059669',
             msg,
             'Send Bill'
@@ -15131,84 +16057,206 @@ function updatePartialHint() {
         hint.classList.add('hidden');
     }
 }
-async function openDueSessionsModal(name) {
-    const p = patientLookup[name];
-    if (!p) return;
+function calculatePatientDueSessions(p, backendResult) {
+    if (!p) return { activeDueSessions: [], totalDue: 0, sumRawDue: 0, walletToOffset: 0 };
 
-    showToast('Loading due sessions…', 'info');
-    let result;
-    try {
-        result = await syncToBackend({ action: "getUnpaidSessions", patientId: p.id });
-    } catch (e) {
-        showToast('Could not load due sessions', 'error');
-        return;
+    const totalDue = (backendResult && backendResult.totalDue !== undefined && !isNaN(backendResult.totalDue)) 
+        ? Number(backendResult.totalDue) 
+        : (typeof p.outstandingDue === 'number' ? p.outstandingDue : 0);
+
+    if (backendResult && backendResult.totalDue !== undefined && !isNaN(backendResult.totalDue)) {
+        p.outstandingDue = totalDue;
     }
 
-    const dueLogs = (result.unpaidLogs || []).slice().sort((a, b) => {
+    let rawLogs = [];
+    if (backendResult && Array.isArray(backendResult.unpaidLogs) && backendResult.unpaidLogs.length) {
+        rawLogs = backendResult.unpaidLogs.slice();
+    } else {
+        const pid = normId(p.id);
+        // 1. Check window.rawTransactions (authoritative transaction ledger in memory)
+        if (window.rawTransactions && window.rawTransactions.length > 0) {
+            const txMatches = window.rawTransactions.filter(r => {
+                if (normId(r[2]) !== pid) return false;
+                const f = toNum(r[7]);
+                const pd = toNum(r[6]);
+                return f > 0 && pd < f;
+            });
+            if (txMatches.length > 0) {
+                rawLogs = txMatches.slice();
+            }
+        }
+        // 2. Check Database session rows in p.logs
+        if (rawLogs.length === 0 && p.logs && p.logs.length > 0) {
+            rawLogs = p.logs.filter(l => {
+                const f = toNum(l[9]);
+                const m = String(l[13] || '').trim();
+                const pd = (l[15] !== undefined && l[15] !== null && l[15] !== '') ? toNum(l[15]) : (m === 'Pending' ? 0 : f);
+                return f > 0 && (m === 'Pending' || pd < f);
+            });
+            // If none marked pending specifically, but patient has outstandingDue, capture session fee rows
+            if (rawLogs.length === 0 && totalDue > 0) {
+                rawLogs = p.logs.filter(l => toNum(l[9]) > 0);
+            }
+        }
+    }
+
+    rawLogs.sort((a, b) => {
         const dateA = new Date(normDateYMD(a[0] || a[8]));
         const dateB = new Date(normDateYMD(b[0] || b[8]));
         return dateA - dateB;
     });
-    const totalDue = result.totalDue || 0; // ← backend-computed, wallet-offset value — not a local sum
+
+    const parsedSessions = rawLogs.map(l => {
+        const isDbRow = l.length > 14 && (typeof l[8] === 'string' && (l[8].includes('-') || l[8].includes('/')));
+        const dateVal = isDbRow ? (l[8] || l[0]) : l[0];
+        const fee = isDbRow ? toNum(l[9]) : toNum(l[7]);
+        const initiallyPaid = isDbRow 
+            ? ((l[16] !== undefined && l[16] !== null && l[16] !== '') ? toNum(l[16]) : (String(l[15] || '').trim() === 'Pending' ? 0 : fee))
+            : toNum(l[6]);
+        const rawDue = Math.max(0, fee - initiallyPaid);
+        return {
+            log: l,
+            dateVal: dateVal,
+            fee: fee,
+            initiallyPaid: initiallyPaid,
+            rawDue: rawDue > 0 ? rawDue : fee
+        };
+    }).filter(s => s.rawDue > 0);
+
+    const sumRawDue = parsedSessions.reduce((sum, s) => sum + s.rawDue, 0);
+
+    let walletToOffset = Math.max(0, sumRawDue - Math.max(0, totalDue));
+    if (backendResult && backendResult.walletApplied !== undefined && Number(backendResult.walletApplied) > walletToOffset) {
+        walletToOffset = Number(backendResult.walletApplied);
+    }
+    if (totalDue <= 0) {
+        walletToOffset = sumRawDue;
+    }
+
+    const activeDueSessions = [];
+    for (const s of parsedSessions) {
+        if (walletToOffset >= s.rawDue) {
+            walletToOffset -= s.rawDue;
+            continue;
+        } else if (walletToOffset > 0) {
+            const remainingDue = s.rawDue - walletToOffset;
+            const effectivePaid = s.initiallyPaid + walletToOffset;
+            walletToOffset = 0;
+            activeDueSessions.push({
+                dateVal: s.dateVal,
+                fee: s.fee,
+                paid: effectivePaid,
+                due: remainingDue,
+                isPartial: true
+            });
+        } else {
+            activeDueSessions.push({
+                dateVal: s.dateVal,
+                fee: s.fee,
+                paid: s.initiallyPaid,
+                due: s.rawDue,
+                isPartial: s.initiallyPaid > 0 && s.initiallyPaid < s.fee
+            });
+        }
+    }
+
+    p.dueSessionCount = activeDueSessions.length;
+    return { activeDueSessions, totalDue, sumRawDue, walletToOffset };
+}
+
+function renderDueSessionsModal(name, activeDueSessions, totalDue, accentColor, buttonColor) {
+    const p = patientLookup[name];
+    if (!p) return;
+    accentColor = accentColor || '#6366f1';
+    buttonColor = buttonColor || '#4f46e5';
 
     const existing = document.getElementById('due-sessions-modal');
     if (existing) existing.remove();
 
     const modal = document.createElement('div');
     modal.id = 'due-sessions-modal';
+    modal.dataset.patientName = name;
     modal.style.cssText = `position:fixed;inset:0;background:rgba(15,23,42,0.55);z-index:9997;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(4px);`;
 
-    const rows = dueLogs.map((l, idx) => {
-        // Distinguish between Transaction_History row and Database row:
-        // Transaction_History: [0: Timestamp, 1: TxID, 2: PID, 3: Action, 4: Mode, 5: Disc, 6: PaidIn, 7: Fee, 8: WalletChange, 9: FinalBal, ...]
-        // Database: [0: Timestamp, 1: ID, 2: Name, ..., 8: Date, 9: Fee, ..., 15: Mode, 16: Paid]
-        const isDbRow = l.length > 14 && (typeof l[8] === 'string' && (l[8].includes('-') || l[8].includes('/')));
-        let dateVal = isDbRow ? (l[8] || l[0]) : l[0];
-        let fee = isDbRow ? toNum(l[9]) : toNum(l[7]);
-        let paid = isDbRow 
-            ? ((l[16] !== undefined && l[16] !== null && l[16] !== '') ? toNum(l[16]) : (String(l[15] || '').trim() === 'Pending' ? 0 : fee))
-            : toNum(l[6]);
-        let due = Math.max(0, fee - paid);
-        if (due === 0 && fee > 0) due = fee;
-        const isPartial = paid > 0 && paid < fee;
-
-        return `
+    const rows = activeDueSessions.length > 0 ? activeDueSessions.map(s => `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid #f1f5f9;">
             <div>
-                <span style="font-size:0.8rem;font-weight:900;color:#0f172a;">${formatDateDMY(dateVal)}</span>
-                ${isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid ₹${paid.toLocaleString()} of ₹${fee.toLocaleString()}</span>` : ''}
+                <span style="font-size:0.8rem;font-weight:900;color:#0f172a;">${formatDateDMY(s.dateVal)}</span>
+                ${s.isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid ₹${s.paid.toLocaleString()} of ₹${s.fee.toLocaleString()}</span>` : ''}
             </div>
-            <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">₹${due.toLocaleString()} due</span>
+            <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">₹${s.due.toLocaleString()} due</span>
+        </div>`
+    ).join('') : `
+        <div style="padding:2rem 1rem;text-align:center;color:#059669;background:#ecfdf5;border-radius:1rem;border:1px dashed #6ee7b7;font-size:0.75rem;font-weight:800;">
+            ✓ All dues have been cleared for this patient!
         </div>`;
-    }).join('');
 
     modal.innerHTML = `
     <div style="background:#fff;border-radius:1.5rem;padding:1.5rem;max-width:360px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 25px 60px rgba(0,0,0,0.2);font-family:'Plus Jakarta Sans',sans-serif;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
             <div>
                 <p style="font-size:0.7rem;font-weight:900;color:#0f172a;text-transform:uppercase;margin:0;">${name}</p>
-                <p style="font-size:0.6rem;font-weight:700;color:#6366f1;margin:2px 0 0;">${p.id} · ${dueLogs.length} session(s)</p>
+                <p id="due-modal-subtitle" style="font-size:0.6rem;font-weight:700;color:${accentColor};margin:2px 0 0;">${p.id} · ${activeDueSessions.length} session(s)</p>
             </div>
             <button onclick="document.getElementById('due-sessions-modal').remove()" style="background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1rem;color:#64748b;">✕</button>
         </div>
 
         <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:0.75rem;padding:0.6rem 1rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#e11d48;">Total Due</span>
-            <span style="font-size:1.1rem;font-weight:900;color:#be123c;">₹${totalDue.toLocaleString()}</span>
+            <span id="due-modal-total" style="font-size:1.1rem;font-weight:900;color:#be123c;">₹${totalDue.toLocaleString()}</span>
         </div>
 
-        <div style="overflow-y:auto;flex:1;margin-bottom:1rem;">
+        <div id="due-modal-rows" style="overflow-y:auto;flex:1;margin-bottom:1rem;">
             ${rows}
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
             <button onclick="document.getElementById('due-sessions-modal').remove();sendDueReminder('${name.replace(/'/g, "\\'")}');" style="padding:0.75rem;border-radius:0.75rem;border:none;background:#25D366;color:white;font-weight:900;font-size:0.65rem;text-transform:uppercase;cursor:pointer;">💬 Remind</button>
-            <button onclick="document.getElementById('due-sessions-modal').remove();openMarkPaidPrompt('${name.replace(/'/g, "\\'")}');" style="padding:0.75rem;border-radius:0.75rem;border:none;background:#4f46e5;color:white;font-weight:900;font-size:0.65rem;text-transform:uppercase;cursor:pointer;">✓ Clear Due</button>
+            <button onclick="document.getElementById('due-sessions-modal').remove();openMarkPaidPrompt('${name.replace(/'/g, "\\'")}');" style="padding:0.75rem;border-radius:0.75rem;border:none;background:${buttonColor};color:white;font-weight:900;font-size:0.65rem;text-transform:uppercase;cursor:pointer;">✓ Clear Due</button>
         </div>
     </div>`;
 
     modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
     document.body.appendChild(modal);
+}
+
+function openDueSessionsModal(name) {
+    const p = patientLookup[name];
+    if (!p) return;
+
+    // 1. FAST ZERO-WAIT: Render modal instantly (<10ms) using in-memory data
+    const initial = calculatePatientDueSessions(p, null);
+    renderDueSessionsModal(name, initial.activeDueSessions, initial.totalDue, '#6366f1', '#4f46e5');
+
+    // 2. BACKGROUND REFRESH: Silently verify with backend without blocking or freezing UI
+    syncToBackend({ action: "getUnpaidSessions", patientId: p.id }).then(result => {
+        if (!result) return;
+        const fresh = calculatePatientDueSessions(p, result);
+        const modal = document.getElementById('due-sessions-modal');
+        if (modal && modal.dataset.patientName === name) {
+            const sub = document.getElementById('due-modal-subtitle');
+            if (sub) sub.innerText = `${p.id} · ${fresh.activeDueSessions.length} session(s)`;
+            const tot = document.getElementById('due-modal-total');
+            if (tot) tot.innerText = `₹${fresh.totalDue.toLocaleString()}`;
+            const rowsEl = document.getElementById('due-modal-rows');
+            if (rowsEl) {
+                rowsEl.innerHTML = fresh.activeDueSessions.length > 0 ? fresh.activeDueSessions.map(s => `
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid #f1f5f9;">
+                        <div>
+                            <span style="font-size:0.8rem;font-weight:900;color:#0f172a;">${formatDateDMY(s.dateVal)}</span>
+                            ${s.isPartial ? `<span style="display:block;font-size:0.65rem;font-weight:700;color:#10b981;">Paid ₹${s.paid.toLocaleString()} of ₹${s.fee.toLocaleString()}</span>` : ''}
+                        </div>
+                        <span style="font-size:0.85rem;font-weight:900;color:#e11d48;">₹${s.due.toLocaleString()} due</span>
+                    </div>`
+                ).join('') : `
+                    <div style="padding:2rem 1rem;text-align:center;color:#059669;background:#ecfdf5;border-radius:1rem;border:1px dashed #6ee7b7;font-size:0.75rem;font-weight:800;">
+                        ✓ All dues have been cleared for this patient!
+                    </div>`;
+            }
+        }
+    }).catch(e => {
+        console.warn("Background due sessions refresh:", e);
+    });
 }
 // autoReconcilePayment DISABLED — wallet ledger engine handles all reconciliation
 // Historical rows are NEVER modified. processData() recalculates from scratch each time.
@@ -15328,6 +16376,7 @@ function closeActiveOverlay() {
         'bill-selection-modal',
         'bill-modal',
         'markpaid-modal',
+        'batch-reminder-modal',
         'advance-modal',
         'pkg-modal',
         'progress-notes-modal',
