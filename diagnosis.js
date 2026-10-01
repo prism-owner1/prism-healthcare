@@ -875,33 +875,31 @@
             }
 
             .clinio-diagnosis-dropdown {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: calc(100% + 6px);
-                z-index: 99999;
+                position: fixed;
+                z-index: 999999;
 
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 16px;
 
                 box-shadow:
-                    0 20px 45px rgba(15, 23, 42, 0.14),
-                    0 4px 12px rgba(15, 23, 42, 0.08);
+                    0 20px 45px rgba(15, 23, 42, 0.20),
+                    0 4px 16px rgba(15, 23, 42, 0.12);
 
                 overflow: hidden;
-
-                max-height: 320px;
                 overflow-y: auto;
 
+                max-height: 280px;
                 padding: 6px;
+                box-sizing: border-box;
             }
 
             .dark .clinio-diagnosis-dropdown {
                 background: #0f172a;
                 border-color: #1e293b;
                 box-shadow:
-                    0 20px 45px rgba(0, 0, 0, 0.40);
+                    0 20px 45px rgba(0, 0, 0, 0.60),
+                    0 4px 16px rgba(0, 0, 0, 0.40);
             }
 
             .clinio-diagnosis-item {
@@ -984,9 +982,28 @@
             }
 
             .clinio-diagnosis-arrow {
-                color: #94a3b8;
-                font-size: 16px;
-                font-weight: 900;
+                color: #6366f1;
+                font-size: 13px;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                border-radius: 8px;
+                background: #f1f5f9;
+                transition: all 0.15s ease;
+            }
+
+            .dark .clinio-diagnosis-arrow {
+                color: #a5b4fc;
+                background: #1e293b;
+            }
+
+            .clinio-diagnosis-item:hover .clinio-diagnosis-arrow,
+            .clinio-diagnosis-item.active .clinio-diagnosis-arrow {
+                background: #6366f1;
+                color: #ffffff;
             }
 
             .clinio-diagnosis-empty {
@@ -1048,8 +1065,32 @@
 
 
     /* =====================================================
-       9. AUTOCOMPLETE CREATION
+       9. AUTOCOMPLETE CREATION (Multi-Select & Fixed Dropdown)
        ===================================================== */
+
+    function getExistingDiagnoses(text) {
+        if (!text) return [];
+        return text
+            .split(",")
+            .map(s => normalize(s))
+            .filter(Boolean);
+    }
+
+    function getFilteredSuggestions(query, fullText) {
+        const existing = getExistingDiagnoses(fullText);
+        let results = [];
+
+        if (!query || !query.trim()) {
+            results = PHYSIO_DIAGNOSES.filter(item => !existing.includes(normalize(item.name))).slice(0, 8);
+        } else {
+            const raw = searchDiagnoses(query);
+            results = raw.filter(item => !existing.includes(normalize(item.name)));
+            if (!results.length && raw.length) {
+                results = raw;
+            }
+        }
+        return results;
+    }
 
     function createAutocomplete(input) {
 
@@ -1059,151 +1100,203 @@
 
         input.dataset.clinioDiagnosisReady = "true";
 
+        /* Clean up any old dropdown attached to body for this input */
+        if (input._clinioDropdown && input._clinioDropdown.parentNode) {
+            input._clinioDropdown.parentNode.removeChild(input._clinioDropdown);
+        }
+
         /* Wrapper */
         const wrapper = document.createElement("div");
-
         wrapper.className = "clinio-diagnosis-wrapper";
-
         input.parentNode.insertBefore(wrapper, input);
-
         wrapper.appendChild(input);
 
-
-        /* Dropdown */
+        /* Dropdown attached to document.body to avoid modal/container clipping */
         const dropdown = document.createElement("div");
-
         dropdown.className = "clinio-diagnosis-dropdown";
-
         dropdown.style.display = "none";
-
-        wrapper.appendChild(dropdown);
-
+        document.body.appendChild(dropdown);
+        input._clinioDropdown = dropdown;
 
         let activeIndex = -1;
         let currentResults = [];
+        let isProgrammatic = false;
+        let searchDebounceTimer = null;
 
+        /* =================================================
+           SMART FIXED POSITIONING (Dropup / Dropdown)
+           ================================================= */
+
+        function positionDropdown() {
+            if (dropdown.style.display === "none") return;
+
+            if (!input.isConnected || input.offsetParent === null) {
+                hideDropdown();
+                return;
+            }
+
+            const rect = input.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0 || rect.bottom < 0 || rect.top > window.innerHeight) {
+                hideDropdown();
+                return;
+            }
+
+            dropdown.style.position = "fixed";
+            const leftPos = Math.max(10, Math.min(rect.left, window.innerWidth - rect.width - 10));
+            dropdown.style.left = leftPos + "px";
+            dropdown.style.width = Math.min(rect.width, window.innerWidth - 20) + "px";
+            dropdown.style.zIndex = "999999";
+
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            // Flip upwards if below space is cramped (< 220px) and above has more room
+            if (spaceBelow < 220 && spaceAbove > spaceBelow) {
+                dropdown.style.top = "auto";
+                dropdown.style.bottom = (window.innerHeight - rect.top + 6) + "px";
+                dropdown.style.maxHeight = Math.min(260, Math.max(140, spaceAbove - 20)) + "px";
+            } else {
+                dropdown.style.top = (rect.bottom + 6) + "px";
+                dropdown.style.bottom = "auto";
+                dropdown.style.maxHeight = Math.min(260, Math.max(140, spaceBelow - 20)) + "px";
+            }
+        }
+
+        window.addEventListener("scroll", positionDropdown, { capture: true, passive: true });
+        window.addEventListener("resize", positionDropdown, { passive: true });
+
+        /* =================================================
+           TOKEN PARSING FOR MULTI-SELECT
+           ================================================= */
+
+        function getTokenAtCursor() {
+            const text = input.value || "";
+            const cursorPos = (input.selectionStart !== null && input.selectionStart !== undefined) ? input.selectionStart : text.length;
+
+            const lastComma = text.lastIndexOf(",", cursorPos - 1);
+            const nextComma = text.indexOf(",", cursorPos);
+
+            const start = lastComma === -1 ? 0 : lastComma + 1;
+            const end = nextComma === -1 ? text.length : nextComma;
+
+            const raw = text.substring(start, end);
+            const query = raw.trim();
+
+            return {
+                start: start,
+                end: end,
+                raw: raw,
+                query: query,
+                cursorPos: cursorPos
+            };
+        }
 
         /* =================================================
            SHOW RESULTS
            ================================================= */
 
         function showResults(results) {
-
             currentResults = results;
             activeIndex = -1;
-
             dropdown.innerHTML = "";
 
             if (!results.length) {
-
                 dropdown.innerHTML = `
                     <div class="clinio-diagnosis-empty">
                         No matching diagnosis found
                     </div>
                 `;
-
                 dropdown.style.display = "block";
-
+                positionDropdown();
                 return;
             }
 
-
             results.forEach((item, index) => {
-
                 const row = document.createElement("div");
-
                 row.className = "clinio-diagnosis-item";
-
                 row.dataset.index = index;
 
                 row.innerHTML = `
                     <div class="clinio-diagnosis-icon">
                         ${categoryIcon(item.category)}
                     </div>
-
                     <div class="clinio-diagnosis-main">
-
                         <div class="clinio-diagnosis-name">
                             ${escapeHTML(item.name)}
                         </div>
-
                         <div class="clinio-diagnosis-category">
                             ${escapeHTML(item.category)}
                         </div>
-
                     </div>
-
                     <div class="clinio-diagnosis-arrow">
-                        ›
+                        +
                     </div>
                 `;
 
-
                 row.addEventListener("mousedown", function (event) {
-
                     event.preventDefault();
-
                     selectDiagnosis(index);
-
                 });
 
-
                 row.addEventListener("touchstart", function (event) {
-
                     event.preventDefault();
-
                     selectDiagnosis(index);
-
                 }, { passive: false });
 
-
                 dropdown.appendChild(row);
-
             });
 
-
             dropdown.style.display = "block";
-
+            positionDropdown();
         }
 
-
         /* =================================================
-           SELECT DIAGNOSIS
+           SELECT DIAGNOSIS (MULTI-SELECT SUPPORT)
            ================================================= */
 
         function selectDiagnosis(index) {
-
             const selected = currentResults[index];
-
             if (!selected) return;
 
-            input.value = selected.name;
+            const text = input.value || "";
+            const token = getTokenAtCursor();
 
-            input.dispatchEvent(new Event("input", {
-                bubbles: true
-            }));
+            const before = text.substring(0, token.start);
+            const after = text.substring(token.end);
 
-            input.dispatchEvent(new Event("change", {
-                bubbles: true
-            }));
+            const combined = before + selected.name + after;
+            const parts = combined.split(",").map(s => s.trim()).filter(Boolean);
+
+            const unique = [];
+            parts.forEach(p => {
+                if (!unique.includes(p)) unique.push(p);
+            });
+
+            const isAtEnd = token.end >= text.trimEnd().length;
+            if (isAtEnd) {
+                input.value = unique.join(", ") + ", ";
+            } else {
+                input.value = unique.join(", ");
+            }
+
+            isProgrammatic = true;
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+            input.dispatchEvent(new Event("change", { bubbles: true }));
+            setTimeout(() => { isProgrammatic = false; }, 150);
 
             hideDropdown();
-
             input.focus();
 
+            const newPos = input.value.length;
+            input.setSelectionRange(newPos, newPos);
         }
-
 
         /* =================================================
            HIGHLIGHT
            ================================================= */
 
         function highlight(index) {
-
-            const rows = dropdown.querySelectorAll(
-                ".clinio-diagnosis-item"
-            );
-
+            const rows = dropdown.querySelectorAll(".clinio-diagnosis-item");
             rows.forEach(row => {
                 row.classList.remove("active");
             });
@@ -1213,155 +1306,149 @@
             }
 
             rows[index].classList.add("active");
-
             rows[index].scrollIntoView({
                 block: "nearest"
             });
-
         }
-
 
         /* =================================================
            HIDE
            ================================================= */
 
         function hideDropdown() {
-
             dropdown.style.display = "none";
-
             activeIndex = -1;
-
         }
 
-
         /* =================================================
-           INPUT EVENT
+           INPUT EVENT (Debounced with multi-select support)
            ================================================= */
 
         input.addEventListener("input", function () {
+            if (isProgrammatic) return;
 
-            const value = input.value.trim();
-
-            if (!value) {
-
-                hideDropdown();
-
-                return;
-
-            }
-
-            const results = searchDiagnoses(value);
-
-            showResults(results);
-
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(function () {
+                if (!input.value.trim()) {
+                    hideDropdown();
+                    return;
+                }
+                const token = getTokenAtCursor();
+                const results = getFilteredSuggestions(token.query, input.value);
+                showResults(results);
+            }, 70);
         });
-
 
         /* =================================================
            FOCUS
            ================================================= */
 
         input.addEventListener("focus", function () {
+            if (isProgrammatic) return;
 
-            const value = input.value.trim();
-
-            if (!value) {
-                hideDropdown();
-                return;
+            if (input.value.trim()) {
+                const token = getTokenAtCursor();
+                const results = getFilteredSuggestions(token.query, input.value);
+                if (results.length) {
+                    showResults(results);
+                }
             }
-
-            const results = searchDiagnoses(value);
-
-            showResults(results);
-
         });
 
+        /* =================================================
+           BLUR (Clean trailing commas on field exit)
+           ================================================= */
+
+        input.addEventListener("blur", function () {
+            setTimeout(function () {
+                hideDropdown();
+                if (input.value) {
+                    const cleaned = input.value
+                        .split(",")
+                        .map(s => s.trim())
+                        .filter(Boolean)
+                        .join(", ");
+                    if (input.value !== cleaned) {
+                        input.value = cleaned;
+                        input.dispatchEvent(new Event("change", { bubbles: true }));
+                    }
+                }
+            }, 220);
+        });
 
         /* =================================================
-           KEYBOARD
+           KEYBOARD NAVIGATION
            ================================================= */
 
         input.addEventListener("keydown", function (event) {
-
-            if (
-                dropdown.style.display === "none" ||
-                !currentResults.length
-            ) {
+            if (dropdown.style.display === "none" || !currentResults.length) {
+                if (event.key === "ArrowDown") {
+                    const token = getTokenAtCursor();
+                    const results = getFilteredSuggestions(token.query, input.value);
+                    if (results.length) {
+                        event.preventDefault();
+                        showResults(results);
+                    }
+                }
                 return;
             }
 
-
             /* DOWN */
             if (event.key === "ArrowDown") {
-
                 event.preventDefault();
-
                 activeIndex++;
-
                 if (activeIndex >= currentResults.length) {
                     activeIndex = 0;
                 }
-
                 highlight(activeIndex);
-
             }
-
 
             /* UP */
             else if (event.key === "ArrowUp") {
-
                 event.preventDefault();
-
                 activeIndex--;
-
                 if (activeIndex < 0) {
                     activeIndex = currentResults.length - 1;
                 }
-
                 highlight(activeIndex);
-
             }
-
 
             /* ENTER */
             else if (event.key === "Enter") {
-
-                if (activeIndex >= 0) {
-
+                if (activeIndex >= 0 && activeIndex < currentResults.length) {
                     event.preventDefault();
-
                     selectDiagnosis(activeIndex);
-
                 }
-
             }
 
+            /* TAB */
+            else if (event.key === "Tab") {
+                if (activeIndex >= 0 && activeIndex < currentResults.length) {
+                    selectDiagnosis(activeIndex);
+                } else {
+                    hideDropdown();
+                }
+            }
 
             /* ESC */
             else if (event.key === "Escape") {
-
                 event.preventDefault();
-
                 hideDropdown();
-
             }
-
         });
-
 
         /* =================================================
-           OUTSIDE CLICK
+           OUTSIDE INTERACTION CLICK
            ================================================= */
 
-        document.addEventListener("mousedown", function (event) {
-
-            if (!wrapper.contains(event.target)) {
-
+        function handleOutsideInteraction(event) {
+            if (!wrapper.contains(event.target) && !dropdown.contains(event.target)) {
                 hideDropdown();
-
             }
+        }
 
-        });
+        document.addEventListener("mousedown", handleOutsideInteraction);
+        document.addEventListener("touchstart", handleOutsideInteraction, { passive: true });
 
     }
 
@@ -1394,21 +1481,29 @@
 
 
     /* =====================================================
-       11. OBSERVE DYNAMIC MODALS
+       11. OBSERVE DYNAMIC MODALS (Throttled & Non-Blocking)
        ===================================================== */
 
     function observeDynamicInputs() {
 
+        let observerDebounce = null;
         const observer = new MutationObserver(function () {
 
-            initDiagnosisAutocomplete();
+            if (observerDebounce) return;
+            observerDebounce = setTimeout(function () {
+                observerDebounce = null;
+                initDiagnosisAutocomplete();
+            }, 300);
 
         });
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
+        // Only observe if document.body exists
+        if (document.body) {
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
 
     }
 
