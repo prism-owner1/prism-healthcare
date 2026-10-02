@@ -29,6 +29,16 @@
         .hidden { display: none !important; }
         #patient-workspace { scroll-margin-top: 1.5rem; }
 
+        /* Exercise Tab Patient Searchable Combobox Core Styling */
+        #ex-patient-combobox-wrap { position: relative !important; width: 100% !important; }
+        .ex-combobox-input-inner { position: relative !important; width: 100% !important; display: flex !important; align-items: center !important; }
+        .ex-combobox-left-icon { position: absolute !important; left: 12px !important; top: 50% !important; transform: translateY(-50%) !important; pointer-events: none !important; display: flex !important; align-items: center !important; justify-content: center !important; z-index: 5 !important; color: #94a3b8 !important; }
+        #ex-patient-search-input { width: 100% !important; padding-left: 38px !important; padding-right: 64px !important; padding-top: 10px !important; padding-bottom: 10px !important; height: 42px !important; box-sizing: border-box !important; }
+        .ex-combobox-right-actions { position: absolute !important; right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; display: flex !important; align-items: center !important; gap: 2px !important; z-index: 5 !important; }
+        #ex-patient-chevron { transition: transform 0.2s ease !important; }
+        .rotate-180 { transform: rotate(180deg) !important; }
+        #ex-patient-dropdown-menu { position: absolute !important; left: 0 !important; right: 0 !important; top: calc(100% + 6px) !important; max-height: 280px !important; overflow-y: auto !important; z-index: 60 !important; }
+
         /* Patient Table Responsive Columns: Registration No hidden on mobile, visible on desktop */
         .col-reg-no { display: none !important; }
         @media (min-width: 768px) {
@@ -709,8 +719,10 @@ height: 28px !important;
                 overflow: visible !important;
                 display: block !important;
             }
+        }
 
-            /* Hide Clinical ID, Branch, and Diagnosis/Note columns in Registry on mobile */
+        /* Hide specific table columns on mobile & tablet for clean fit */
+        @media (max-width: 1024px) {
             #tab-visit-registry th:nth-child(3),
             #tab-visit-registry th:nth-child(4),
             #tab-visit-registry th:nth-child(5),
@@ -720,13 +732,11 @@ height: 28px !important;
                 display: none !important;
             }
 
-            /* Hide Patient ID column in Patient Records on mobile */
             #tab-patients th:nth-child(1),
             #patient-table-body td:nth-child(1) {
                 display: none !important;
             }
 
-            /* Hide Patient ID column in Billing on mobile */
             #tab-billing th:nth-child(2),
             #billing-table-body td:nth-child(2) {
                 display: none !important;
@@ -1494,9 +1504,249 @@ height: 28px !important;
             }
         }
 
+        /* ============================================================
+           UNIVERSAL MOBILE PHONE OPTIMIZATION (ALL RATIOS: 16:9, 18:9, 19.5:9, 20:9)
+           Viewport range: 320px - 640px (360px, 375px, 390px, 412px, 430px)
+           Guarantees 100% flexible buttons, zero horizontal overflow, & perfect fit
+           ============================================================ */
+        @media (max-width: 640px) {
+            /* 1. Global Zero-Overflow Protection */
+            html, body {
+                width: 100% !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                position: relative;
+            }
+
+            #app-root, main, section, .animate-slide {
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+            }
+
+            main {
+                padding: 0.65rem 0.5rem calc(6rem + env(safe-area-inset-bottom, 16px)) 0.5rem !important;
+            }
+
+            /* 2. Glass Card & Container Padding on Mobile */
+            .glass-card {
+                padding: 0.85rem 0.75rem !important;
+                border-radius: 1.25rem !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* 3. Universal Modal Sizing & Padding (Zero-clipping on all ratios) */
+            .fixed.inset-0:not(#mobile-more-backdrop):not(#sidebar-overlay):not(#session-drawer-backdrop) {
+                padding: 0.4rem !important;
+                box-sizing: border-box !important;
+            }
+
+            .fixed.inset-0 > div[class*="rounded-"],
+            .fixed.inset-0 > div[class*="bg-white"],
+            .fixed.inset-0 > div[class*="dark:bg-slate-900"] {
+                padding: 1rem 0.75rem !important;
+                border-radius: 1.25rem !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: 93vh !important;
+                box-sizing: border-box !important;
+            }
+
+            /* 4. Detail Action Buttons (Clean 2x2 Grid) */
+            .detail-action-buttons {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 0.45rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .detail-action-buttons button {
+                min-width: 0 !important;
+                width: 100% !important;
+                padding: 0.65rem 0.35rem !important;
+                font-size: 9.5px !important;
+                text-align: center !important;
+                white-space: normal !important;
+            }
+
+            /* 5. Toolbars, Search Rows & Action Buttons (Stack & Flex) */
+            #tab-visit-registry .grid.md\:grid-cols-2 {
+                grid-template-columns: 1fr !important;
+                gap: 0.75rem !important;
+            }
+
+            #tab-visit-registry .flex.gap-2\.5 {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.45rem !important;
+            }
+
+            #tab-visit-registry .flex.gap-2\.5 button {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 0.75rem 1rem !important;
+            }
+
+            #tab-billing .flex-col.sm\:flex-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.45rem !important;
+            }
+
+            #tab-billing .toolbar-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 0.75rem 1rem !important;
+            }
+
+            #tab-exercises .flex-col.sm\:flex-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.45rem !important;
+            }
+
+            #tab-exercises button {
+                max-width: 100% !important;
+            }
+
+            /* 6. Active Caseload Grid on Small Phones */
+            #active-cases-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 0.45rem !important;
+            }
+
+            #active-cases-grid [data-name] {
+                padding: 0.65rem 0.5rem !important;
+            }
+
+            /* 7. Bill Modal & Print Layout on Mobile */
+            #bill-modal {
+                padding: 0.35rem !important;
+            }
+
+            #bill-content-pages {
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                padding-bottom: 1.5rem !important;
+            }
+
+            .bill-page {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                min-height: auto !important;
+                padding: 8mm 5mm !important;
+                font-size: 9.5px !important;
+                box-sizing: border-box !important;
+                margin-bottom: 12px !important;
+            }
+
+            .doc-header2 {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 6px !important;
+                margin-bottom: 14px !important;
+                padding-bottom: 10px !important;
+            }
+
+            .doc-header2 .doc-meta2 {
+                text-align: left !important;
+                height: auto !important;
+                width: 100% !important;
+            }
+
+            .doc-footer3 {
+                position: static !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                margin-top: 14px !important;
+                padding-top: 10px !important;
+            }
+
+            .doc-footer3 .doc-sign2 {
+                text-align: left !important;
+                min-width: 0 !important;
+            }
+
+            /* 8. Table Zero-Clipping & Touch Scroll */
+            .table-scroll {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            th, td {
+                word-break: break-word !important;
+            }
+
+            /* 9. Anatomy Pain Canvas & Image Scaling */
+            #body-canvas, canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+
+            /* 10. Form Buttons Flexibility */
+            button, select, input {
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* 11. Multi-Select Diagnosis Wrapper & Inputs */
+            .clinio-diagnosis-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .clinio-diag-input-row {
+                width: 100% !important;
+                display: flex !important;
+                align-items: stretch !important;
+                gap: 6px !important;
+            }
+
+            .clinio-diag-input-row input {
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                width: 0 !important;
+            }
+
+            .clinio-diag-pick-btn {
+                flex-shrink: 0 !important;
+                padding: 0 10px !important;
+                font-size: 10px !important;
+            }
+        }
+
+        /* Extra narrow phones (e.g. 320px - 360px 16:9 aspect ratios) */
         @media (max-width: 480px) {
             .grid.md\:grid-cols-5 {
                 grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            }
+
+            #patient-detail-modal .grid.grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                gap: 0.25rem !important;
+            }
+
+            #patient-detail-modal .grid.grid-cols-3 div {
+                padding: 0.5rem 0.2rem !important;
+            }
+
+            #patient-detail-modal .grid.grid-cols-3 span:last-child {
+                font-size: 0.95rem !important;
             }
         }
 
@@ -2068,12 +2318,26 @@ html.dark .instruction-modal-footer {
     color: #fff !important;
     cursor: pointer;
     flex-shrink: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+#iq-table-body .iq-btn:hover {
+    transform: scale(1.06);
+}
+#iq-table-body .iq-btn:active {
+    transform: scale(0.95);
 }
 #iq-table-body .iq-btn svg { width: 18px !important; height: 18px !important; }
 #iq-table-body .iq-btn .lbl-full, #iq-table-body .iq-btn .lbl-short { display: none !important; }
+.iq-btn-confirm { background: #10b981; }
+.iq-btn-confirm:hover { background: #059669; }
+.iq-btn-confirmed { background: #059669; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.45); }
+.iq-btn-confirmed:hover { background: #047857; }
 .iq-btn-enroll { background: #4f46e5; }
+.iq-btn-enroll:hover { background: #4338ca; }
 .iq-btn-wa { background: #25D366; }
+.iq-btn-wa:hover { background: #1ea952; }
 .iq-btn-call { background: #0284c7; }
+.iq-btn-call:hover { background: #0369a1; }
 
 @media (max-width: 1024px) {
     #iq-table-body .iq-btn { width: 32px !important; height: 32px !important; }
@@ -3520,97 +3784,130 @@ html.dark .instruction-modal-footer {
             <!-- EXERCISES (EXERCISES.JS CLINICAL REHABILITATION DATABASE) -->
             <section id="tab-exercises" class="section-hidden animate-slide">
                 <div class="max-w-7xl mx-auto space-y-6">
-                    <!-- Control Bar: Patient Selector & Actions -->
-                    <div class="glass-card p-6 lg:p-7 rounded-[2.5rem] shadow-xl border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-5 mb-5">
-                            <div class="flex items-center gap-3">
-                                <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm">
-                                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <!-- Master Control Center: Patient Selector, Search & Filters -->
+                    <div class="glass-card p-6 lg:p-7 rounded-3xl shadow-xl border border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-slate-900/90 space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800/80 pb-5">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center shadow-lg shadow-indigo-500/25 ring-4 ring-indigo-50 dark:ring-indigo-950/40 shrink-0">
+                                    <i data-lucide="book-open" class="w-6 h-6"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Clinical HEP Library</h4>
-                                    <p class="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5">Home exercise prescription & routine sharing</p>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <h4 class="text-sm font-black uppercase text-slate-800 dark:text-slate-100 tracking-wider">Clinical HEP Library</h4>
+                                        <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/60 shadow-xs">560+ Exercises</span>
+                                    </div>
+                                    <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight mt-0.5">Home exercise prescription &amp; patient routine sharing</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2.5 flex-wrap">
-                                <button onclick="toggleExDrawer(true)" class="px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-lg shadow-indigo-600/25 transition-all flex items-center gap-2 active:scale-95 cursor-pointer" title="View Prescribed Exercises for Selected Patient">
+                                <button onclick="toggleExDrawer(true)" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-indigo-600/20 hover:shadow-indigo-600/30 transition-all flex items-center gap-2 active:scale-95 cursor-pointer" title="View Prescribed Exercises for Selected Patient">
                                     <i data-lucide="clipboard-list" class="w-4 h-4"></i>
                                     <span>Prescriptions (<span id="ex-tab-prescriptions-count">0</span>)</span>
                                 </button>
-                                <button onclick="shareExTabViaWhatsApp()" class="px-4 py-3 bg-[#25D366] hover:bg-[#20BA5F] text-white rounded-2xl text-xs font-black uppercase tracking-wider shadow-lg shadow-emerald-600/25 transition-all flex items-center gap-2 active:scale-95 cursor-pointer" title="Send Prescribed Plan to Patient on WhatsApp">
+                                <button onclick="shareExTabViaWhatsApp()" class="px-4 py-2.5 bg-[#25D366] hover:bg-[#20BA5F] text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md shadow-emerald-600/20 hover:shadow-emerald-600/30 transition-all flex items-center gap-2 active:scale-95 cursor-pointer" title="Send Prescribed Plan to Patient on WhatsApp">
                                     <i data-lucide="message-circle" class="w-4 h-4"></i>
-                                    <span class="hidden sm:inline">WhatsApp Routine</span>
+                                    <span>WhatsApp Routine</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Patient Selection Row -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-center">
-                            <div class="lg:col-span-2 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-                                <div class="flex-1">
-                                    <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 block mb-1.5 ml-1 tracking-wider">Prescribing For (Active Patient):</label>
-                                    <select id="ex-tab-patient-select" onchange="onExTabPatientChange(this.value)" class="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm outline-none focus:border-indigo-500 transition-all cursor-pointer">
-                                        <option value="">-- Select Active Patient --</option>
-                                    </select>
-                                </div>
-                                <div class="sm:w-56">
-                                    <label class="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 block mb-1.5 ml-1 tracking-wider">Filter Patients</label>
-                                    <div class="relative">
-                                        <input type="text" id="ex-tab-search-filter" oninput="filterExTabPatientDropdown(this.value)" placeholder="Name / ID..." class="w-full pl-9 pr-3 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-xs outline-none focus:border-indigo-500 text-slate-800 dark:text-slate-100 transition-all placeholder:text-slate-400">
-                                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-4 pointer-events-none"></i>
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- Patient Selection Bar: Single Clean Row -->
+                        <div class="bg-slate-50/70 dark:bg-slate-950/40 p-3.5 sm:p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 relative z-30">
+                            <label class="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 block mb-1.5 ml-1 tracking-wider">Prescribing For (Active Patient):</label>
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5" style="display: flex; gap: 10px; align-items: center;">
+                                <!-- Searchable Patient Combobox -->
+                                <div class="relative flex-1" id="ex-patient-combobox-wrap" style="position: relative; flex: 1; width: 100%;">
+                                    <div class="relative flex items-center ex-combobox-input-inner" style="position: relative; width: 100%; display: flex; align-items: center;">
+                                        <!-- Left Icon (Patient Avatar) -->
+                                        <div class="ex-combobox-left-icon" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; display: flex; align-items: center; justify-content: center; z-index: 5; color: #94a3b8;">
+                                            <i data-lucide="user" class="w-4 h-4" style="width: 16px; height: 16px;"></i>
+                                        </div>
 
-                            <!-- Patient Info Badge Card -->
-                            <div id="ex-tab-patient-card" class="p-4 bg-gradient-to-br from-indigo-50/70 via-white to-slate-50 dark:from-slate-900 dark:to-indigo-950/30 rounded-2xl border border-indigo-100 dark:border-slate-800 flex items-center justify-between shadow-sm">
-                                <div class="min-w-0 flex-1 mr-2">
-                                    <div class="flex items-center gap-1.5">
-                                        <span id="ex-tab-card-name" class="font-black text-slate-800 dark:text-white text-xs truncate">No Patient Selected</span>
-                                        <span id="ex-tab-card-status" class="hidden text-[8px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">Active</span>
+                                        <!-- Searchable Input -->
+                                        <input 
+                                            type="text" 
+                                            id="ex-patient-search-input" 
+                                            autocomplete="off"
+                                            placeholder="-- Select Patient (Type to search by name, ID or diagnosis) --" 
+                                            onclick="openExPatientDropdown()" 
+                                            onfocus="this.select(); openExPatientDropdown()" 
+                                            oninput="filterExPatientDropdown(this.value)" 
+                                            class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 transition-all cursor-pointer placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                                            style="width: 100% !important; padding-left: 38px !important; padding-right: 64px !important; padding-top: 10px !important; padding-bottom: 10px !important; height: 42px !important; box-sizing: border-box !important;"
+                                        >
+
+                                        <!-- Right Action Buttons (Clear 'X' + Chevron Down) -->
+                                        <div class="ex-combobox-right-actions" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 2px; z-index: 5;">
+                                            <button type="button" id="ex-patient-clear-btn" onclick="clearSelectedPatient()" class="hidden p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors cursor-pointer" style="display: none; align-items: center; justify-content: center; background: transparent; border: none; padding: 4px; cursor: pointer;" title="Clear selection">
+                                                <i data-lucide="x" class="w-3.5 h-3.5" style="width: 14px; height: 14px;"></i>
+                                            </button>
+                                            <button type="button" onclick="toggleExPatientDropdown()" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md transition-colors cursor-pointer" style="display: flex; align-items: center; justify-content: center; background: transparent; border: none; padding: 4px; cursor: pointer;" title="Toggle patient list">
+                                                <i data-lucide="chevron-down" id="ex-patient-chevron" class="w-4 h-4 transition-transform duration-200" style="width: 16px; height: 16px; transition: transform 0.2s ease;"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <p id="ex-tab-card-meta" class="text-[9px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5 truncate">Select an active patient above</p>
+
+                                    <!-- Dropdown Menu / List -->
+                                    <div id="ex-patient-dropdown-menu" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl custom-scroll p-1.5 divide-y divide-slate-100 dark:divide-slate-800/60" style="position: absolute; left: 0; right: 0; top: calc(100% + 6px); max-height: 280px; overflow-y: auto; z-index: 60; display: none;">
+                                        <!-- Injected via JS -->
+                                    </div>
+
+                                    <!-- Hidden native select for 100% backward compatibility with all JS functions -->
+                                    <select id="ex-tab-patient-select" onchange="onExTabPatientChange(this.value)" class="hidden"></select>
                                 </div>
-                                <button onclick="toggleExDrawer(true)" class="px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-indigo-400 text-indigo-700 dark:text-indigo-300 rounded-xl text-[9px] font-black whitespace-nowrap shadow-sm transition-all cursor-pointer">
-                                    <span id="ex-tab-card-count">0 Ex</span>
+
+                                <!-- Prescribed Exercises Status Chip (Shows right in the patient selection row) -->
+                                <button type="button" onclick="toggleExDrawer(true)" class="px-4 py-2.5 bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer shrink-0" style="height: 42px; white-space: nowrap; flex-shrink: 0;" title="Open Prescriptions Drawer">
+                                    <i data-lucide="layers" class="w-4 h-4 text-indigo-600 dark:text-indigo-400" style="width: 16px; height: 16px;"></i>
+                                    <span id="ex-tab-card-count">0 Ex Prescribed</span>
                                 </button>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Library Search & Navigation Filters -->
-                    <div class="glass-card p-6 lg:p-7 rounded-[2.5rem] shadow-xl border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 space-y-4">
+                            <!-- Invisible contract anchors so existing helper scripts don't error -->
+                            <div class="hidden">
+                                <span id="ex-tab-card-name"></span>
+                                <span id="ex-tab-card-status"></span>
+                                <p id="ex-tab-card-meta"></p>
+                                <div id="ex-tab-patient-card"></div>
+                                <input type="text" id="ex-tab-search-filter">
+                            </div>
+                        </div>
+
                         <!-- Search Box & Custom Exercise Trigger -->
-                        <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                             <div class="relative flex-1">
-                                <input type="text" id="ex-lib-search-input" oninput="onExLibSearch(this.value)" placeholder="🔍 Search exercises by name (e.g., Chin Tuck, SLR, Pendulum, Wall Slide, Bridging)..." class="w-full pl-11 pr-10 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 shadow-sm transition-all placeholder:text-slate-400">
-                                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3.5 top-4 pointer-events-none"></i>
-                                <button id="ex-lib-clear-search" onclick="clearExLibSearch()" class="hidden absolute right-3.5 top-3 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1.5 rounded-lg cursor-pointer">
+                                <input type="text" id="ex-lib-search-input" oninput="onExLibSearch(this.value)" placeholder="Search 560+ exercises by name, joint, condition (e.g. Chin Tuck, SLR, Wall Slide)..." class="w-full pl-11 pr-10 py-3 bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 shadow-xs transition-all placeholder:text-slate-400">
+                                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none"></i>
+                                <button id="ex-lib-clear-search" onclick="clearExLibSearch()" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1.5 rounded-lg cursor-pointer transition-colors">
                                     <i data-lucide="x" class="w-4 h-4"></i>
                                 </button>
                             </div>
-                            <button onclick="openCustomExerciseModal()" class="px-5 py-4 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all whitespace-nowrap active:scale-95 cursor-pointer">
+                            <button onclick="openCustomExerciseModal()" class="px-5 py-3 bg-slate-900 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm hover:shadow-indigo-500/20 transition-all whitespace-nowrap active:scale-95 cursor-pointer shrink-0">
                                 <i data-lucide="plus-circle" class="w-4 h-4"></i>
                                 <span>Custom Exercise</span>
                             </button>
                         </div>
 
-                        <!-- Body Region Pills (Horizontal Scroll on Mobile) -->
-                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-[10px] font-black uppercase tracking-wider" id="ex-region-pills">
-                            <!-- Injected dynamically via JS -->
-                        </div>
+                        <!-- Body Region Pills Bar -->
+                        <div class="space-y-2 pt-1">
+                            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-[11px] font-bold scroll-smooth" id="ex-region-pills">
+                                <!-- Injected dynamically via JS -->
+                            </div>
 
-                        <!-- Subcategory Pills -->
-                        <div id="ex-category-pills" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[9px] font-bold uppercase tracking-tight">
-                            <!-- Injected dynamically via JS -->
+                            <!-- Subcategory Pills -->
+                            <div id="ex-category-pills" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[9px] font-bold uppercase tracking-tight">
+                                <!-- Injected dynamically via JS -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- Exercise Cards Grid (Direct exercises.js rendering) -->
                     <div>
                         <div class="flex items-center justify-between px-2 mb-4">
-                            <span id="ex-lib-results-count" class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Loading library...</span>
-                            <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 hidden sm:inline">Tap "+ Assign" to add to active patient's routine</span>
+                            <span id="ex-lib-results-count" class="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Loading library...</span>
+                            <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-100 dark:border-indigo-900/60 hidden sm:inline-flex items-center gap-1.5">
+                                <i data-lucide="plus" class="w-3 h-3"></i> Tap "+ Assign" to prescribe to patient routine
+                            </span>
                         </div>
 
                         <div id="ex-lib-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -4102,9 +4399,6 @@ html.dark .instruction-modal-footer {
                     </button>
                     <button onclick="downloadRegistryRangeCSV('PHC')" class="w-full py-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-black text-xs uppercase tracking-wider hover:bg-emerald-600 hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
                         <span>Homecare (PHC)</span>
-                    </button>
-                    <button onclick="downloadRegistryRangeCSV('PRC')" class="w-full py-3.5 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 font-black text-xs uppercase tracking-wider hover:bg-sky-600 hover:text-white flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer">
-                        <span>Rehab Clinic (PRC)</span>
                     </button>
                 </div>
             </div>
@@ -8456,7 +8750,12 @@ function getRemainingSessions(p) {
         return p.sessionsRemaining;
     }
     const wallet = p.walletBalance || 0;
-    const rate = p.baseRate || (p.logs && p.logs.length ? toNum(p.logs[p.logs.length - 1][9]) : 0);
+    const validRateLogs = (p.logs || []).filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return !['case closed', 'case restarted', 'bill issued'].includes(t) && toNum(l[9]) > 0;
+    });
+    const lastValidFee = validRateLogs.length ? toNum(validRateLogs[validRateLogs.length - 1][9]) : 0;
+    const rate = p.baseRate || lastValidFee;
     if (wallet > 0 && rate > 0) {
         return Math.round(wallet / rate);
     }
@@ -8528,7 +8827,6 @@ function getPackageBreakdown(p) {
         function getSessionTypeLabel(id) {
             const prefix = String(id || '').substring(0, 3).toUpperCase();
             if (prefix === 'PHC') return 'Physiotherapy Home Rehabilitation Session';
-            if (prefix === 'PRC') return 'Physiotherapy Rehab Session';
             if (prefix === 'POC') return 'Physiotherapy Orthocare Session';
             return 'Physiotherapy Session';
         }
@@ -8813,7 +9111,10 @@ renderTables();
                     const cid = r.id || '', name = r.name || '', diag = r.diag || '', fee = toNum(r.fee);
                     const paymentMode = r.mode || 'Cash';
                     const p = patientLookup[name];
-                    const matchingLog = (p && p.logs) ? p.logs.find(l => normDateYMD(l[8]) === dateVal) : null;
+                    const matchingLog = (p && p.logs) ? p.logs.find(l => {
+                        const t = String(l[7] || '').trim().toLowerCase();
+                        return normDateYMD(l[8]) === dateVal && !['case closed', 'case restarted', 'bill issued'].includes(t);
+                    }) : null;
                     const sessionLabel = (paymentMode === 'Advance' && p) ? getAdvanceSessionLabel(
                         matchingLog || [], p
                     ) : '';
@@ -8840,8 +9141,7 @@ renderTables();
                     }
 
                     const branch = cid.startsWith('POC') ? 'Orthocare'
-                                 : cid.startsWith('PHC') ? 'Homecare'
-                                 : cid.startsWith('PRC') ? 'Rehab Clinic' : '-';
+                                 : cid.startsWith('PHC') ? 'Homecare' : '-';
                     const modeBadgeColor = paymentMode === 'Pending'
                         ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
                     visitCount++;
@@ -8963,7 +9263,7 @@ renderTables();
         }
 
         function openBranchDetailModal(branch) {
-            const branchLabels = { POC: 'Prism Orthocare (POC)', PHC: 'Homecare (PHC)', PRC: 'Prism Rehab Clinic (PRC)' };
+            const branchLabels = { POC: 'Prism Orthocare (POC)', PHC: 'Homecare (PHC)' };
             const monthly = {};
             let total = 0;
 
@@ -10372,85 +10672,95 @@ function openMidPackage() {
                 }
             }
 
-            // Render Recent Logs with Wallet & Due Awareness
+            // Render Recent Logs with Wallet & Due Awareness (Exclude administrative non-session rows like Case Closed / Restarted)
             const dueMap = getPatientSessionDueMap(p);
             const totalDue = Number(p.outstandingDue) || 0;
 
-            document.getElementById('recent-logs-cards').innerHTML = p.logs.slice().reverse().slice(0, 10).map((l, rIdx) => {
-                const isEnroll = String(l[7] || '').trim().toLowerCase().includes('enrollment');
-                const isPkg = String(l[7] || '').trim().toLowerCase() === 'package added';
-                const mode = String(l[15] || '').trim();
-                const fee = toNum(l[9]);
-                const paidRaw = l[16];
-                const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
-                    ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+            const sessionLogs = (p.logs || []).filter(l => {
+                const t = String(l[7] || '').trim().toLowerCase();
+                return !['case closed', 'case restarted', 'bill issued'].includes(t);
+            });
 
-                // Check actual due from dueMap (0 if patient's overall outstandingDue is 0)
-                const actualDue = totalDue > 0 ? (dueMap[l[0]] || dueMap[rIdx] || 0) : 0;
-                const isPending = actualDue > 0 && !isEnroll && fee > 0;
+            const recentContainer = document.getElementById('recent-logs-cards');
+            if (!sessionLogs.length) {
+                recentContainer.innerHTML = `<div class="p-6 text-center text-slate-400 dark:text-slate-500 text-xs font-medium">No sessions recorded yet</div>`;
+            } else {
+                recentContainer.innerHTML = sessionLogs.slice().reverse().slice(0, 10).map((l, rIdx) => {
+                    const isEnroll = String(l[7] || '').trim().toLowerCase().includes('enrollment');
+                    const isPkg = String(l[7] || '').trim().toLowerCase() === 'package added';
+                    const mode = String(l[15] || '').trim();
+                    const fee = toNum(l[9]);
+                    const paidRaw = l[16];
+                    const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
+                        ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
 
-                // Badge color per payment mode
-                const modeBadge = (() => {
-                    if (isEnroll) return `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Enrollment</span>`;
-                    if (isPkg)    return `<span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Package</span>`;
-                    if (!mode)    return '';
-                    const cfg = {
-                        'Cash':          'bg-emerald-100 text-emerald-700',
-                        'UPI':           'bg-blue-100 text-blue-700',
-                        'Card':          'bg-sky-100 text-sky-700',
-                        'Advance':       'bg-indigo-100 text-indigo-700',
-                        'Pending':       'bg-rose-100 text-rose-700',
-                        'Complimentary': 'bg-slate-100 text-slate-500',
-                        'Refund':        'bg-orange-100 text-orange-700',
-                        'Split':         'bg-teal-100 text-teal-700',
-                    };
-                    const cls = cfg[mode] || 'bg-slate-100 text-slate-600';
-                    return `<span class="${cls} px-2 py-0.5 rounded-md text-[8px] font-black uppercase">${mode}</span>`;
-                })();
+                    // Check actual due from dueMap (0 if patient's overall outstandingDue is 0)
+                    const actualDue = totalDue > 0 ? (dueMap[l[0]] ?? dueMap[p.logs.indexOf(l)] ?? dueMap['date_' + normDateYMD(l[8])] ?? 0) : 0;
+                    const isPending = actualDue > 0 && !isEnroll && fee > 0;
 
-                // Fee display
-                const feeDisplay = (() => {
-                    if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+₹${toNum(l[11]).toLocaleString()} wallet</span>`;
-                    if (fee <= 0) return `<span class="text-slate-400 font-bold text-[10px]">—</span>`;
+                    // Badge color per payment mode
+                    const modeBadge = (() => {
+                        if (isEnroll) return `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Enrollment</span>`;
+                        if (isPkg)    return `<span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Package</span>`;
+                        if (!mode)    return '';
+                        const cfg = {
+                            'Cash':          'bg-emerald-100 text-emerald-700',
+                            'UPI':           'bg-blue-100 text-blue-700',
+                            'Card':          'bg-sky-100 text-sky-700',
+                            'Advance':       'bg-indigo-100 text-indigo-700',
+                            'Pending':       'bg-rose-100 text-rose-700',
+                            'Complimentary': 'bg-slate-100 text-slate-500',
+                            'Refund':        'bg-orange-100 text-orange-700',
+                            'Split':         'bg-teal-100 text-teal-700',
+                        };
+                        const cls = cfg[mode] || 'bg-slate-100 text-slate-600';
+                        return `<span class="${cls} px-2 py-0.5 rounded-md text-[8px] font-black uppercase">${mode}</span>`;
+                    })();
 
-                    // If there is actual outstanding due on this session
-                    if (isPending && actualDue > 0) {
-                        return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
-                            <span class="block text-[8px] font-black text-rose-500 uppercase">₹${actualDue.toLocaleString()} due</span>
-                        </div>`;
-                    }
+                    // Fee display
+                    const feeDisplay = (() => {
+                        if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+₹${toNum(l[11]).toLocaleString()} wallet</span>`;
+                        if (fee <= 0) return `<span class="text-slate-400 font-bold text-[10px]">—</span>`;
 
-                    // If paid < fee but patient has 0 due (covered by advance wallet credit or package)
-                    if (paid > 0 && paid < fee) {
-                        const walletCovered = fee - paid;
-                        return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
-                            <span class="block text-[8px] font-black text-emerald-600 uppercase">₹${paid.toLocaleString()} + ₹${walletCovered.toLocaleString()} Wallet</span>
-                        </div>`;
-                    }
+                        // If there is actual outstanding due on this session
+                        if (isPending && actualDue > 0) {
+                            return `<div class="text-right">
+                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                                <span class="block text-[8px] font-black text-rose-500 uppercase">₹${actualDue.toLocaleString()} due</span>
+                            </div>`;
+                        }
 
-                    if (paid === 0 && mode !== 'Complimentary' && mode !== 'Refund') {
-                        return `<div class="text-right">
-                            <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
-                            <span class="block text-[8px] font-black text-emerald-600 uppercase">Settled (Wallet)</span>
-                        </div>`;
-                    }
+                        // If paid < fee but patient has 0 due (covered by advance wallet credit or package)
+                        if (paid > 0 && paid < fee) {
+                            const walletCovered = fee - paid;
+                            return `<div class="text-right">
+                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                                <span class="block text-[8px] font-black text-emerald-600 uppercase">₹${paid.toLocaleString()} + ₹${walletCovered.toLocaleString()} Wallet</span>
+                            </div>`;
+                        }
 
-                    return `<span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>`;
-                })();
+                        if (paid === 0 && mode !== 'Complimentary' && mode !== 'Refund') {
+                            return `<div class="text-right">
+                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                                <span class="block text-[8px] font-black text-emerald-600 uppercase">Settled (Wallet)</span>
+                            </div>`;
+                        }
 
-                return `<div class="log-card ${isPending ? 'border-l-2 border-l-rose-400' : isEnroll ? 'border-l-2 border-l-indigo-400' : isPkg ? 'border-l-2 border-l-purple-400' : ''}">
-                    <div class="flex justify-between items-center mb-1.5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
-                            ${modeBadge}
+                        return `<span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>`;
+                    })();
+
+                    return `<div class="log-card ${isPending ? 'border-l-2 border-l-rose-400' : isEnroll ? 'border-l-2 border-l-indigo-400' : isPkg ? 'border-l-2 border-l-purple-400' : ''}">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
+                                ${modeBadge}
+                            </div>
+                            ${feeDisplay}
                         </div>
-                        ${feeDisplay}
-                    </div>
-                    <div class="text-[10px] italic text-slate-400 truncate">"${l[6] || '—'}"</div>
-                </div>`;
-            }).join('');
+                        <div class="text-[10px] italic text-slate-400 truncate">"${l[6] || '—'}"</div>
+                    </div>`;
+                }).join('');
+            }
 
             // Trigger UI refreshes - ONLY reset payment mode if this is a brand new patient selection!
             if (window._currentWorkspacePatient !== n) {
@@ -10469,6 +10779,9 @@ function openMidPackage() {
             renderCalendar();
             renderActiveCasesForLog();
             updateAdvanceHint();
+            if (typeof window.attachRecentSessionActions === 'function') {
+                window.attachRecentSessionActions(n, p);
+            }
             
             // Open the drawer on mobile
             if (openDrawer) toggleSessionDrawer(true);
@@ -11049,7 +11362,11 @@ document.getElementById('pd-sessions').innerText = consumed;
         : 'Active';
 
     const datesList = document.getElementById('pd-dates-list');
-    const sortedLogs = p.logs.slice().sort((a, b) => new Date(b[8]) - new Date(a[8]));
+    const validDetailLogs = (p.logs || []).filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return !['case closed', 'case restarted', 'bill issued'].includes(t);
+    });
+    const sortedLogs = validDetailLogs.slice().sort((a, b) => new Date(b[8] || b[0]) - new Date(a[8] || a[0]));
     datesList.innerHTML = sortedLogs.length
         ? sortedLogs.map(l => {
             const mode = l[13] || (isNaN(Number(l[15])) ? l[15] : '') || 'Cash';
@@ -11070,19 +11387,20 @@ document.getElementById('pd-sessions').innerText = consumed;
     if (actionButtons) actionButtons.remove();
 
     actionButtons = document.createElement('div');
-    actionButtons.className = 'detail-action-buttons flex gap-2 pt-4 mt-4 border-t flex-wrap flex-shrink-0';
+    actionButtons.className = 'detail-action-buttons grid grid-cols-2 sm:flex sm:flex-wrap gap-2 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 w-full';
     actionButtons.innerHTML = `
-        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">🏃 Exercise Plan</button>
-        <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">✏️ Edit Details</button>
-        <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="flex-1 min-w-[120px] bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer">📄 View Bill</button>
+        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">🏃 Exercise Plan</button>
+        <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">✏️ Edit Details</button>
+        <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">📄 View Bill</button>
     `;
     const portalBtn = document.createElement('button');
-    portalBtn.className = 'flex-1 min-w-[120px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2 px-3 rounded-xl text-[9px] font-black uppercase transition-all cursor-pointer';
-    portalBtn.innerHTML = '💬 Send Portal Login';
+    portalBtn.className = 'w-full sm:flex-1 sm:min-w-[110px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95';
+    portalBtn.innerHTML = '💬 Send Portal';
     portalBtn.onclick = () => sendPatientPortalLink(name);
     actionButtons.appendChild(portalBtn);
 
-    modal.querySelector('.bg-white').appendChild(actionButtons);
+    const modalBody = modal.querySelector('.bg-white') || modal.querySelector('div[class*="rounded"]');
+    if (modalBody) modalBody.appendChild(actionButtons);
 
     document.getElementById('patient-detail-modal').classList.remove('hidden');
     if (window.lucide) {
@@ -11457,7 +11775,7 @@ document.getElementById('pd-sessions').innerText = consumed;
             const fromDate = document.getElementById('bill-range-from') ? document.getElementById('bill-range-from').value : '';
             const toDate = document.getElementById('bill-range-to') ? document.getElementById('bill-range-to').value : '';
             
-            let logs = (p.logs || []).filter(l => String(l[7] || '').trim().toLowerCase() !== 'case closed');
+            let logs = (p.logs || []).filter(l => !['case closed', 'case restarted', 'bill issued'].includes(String(l[7] || '').trim().toLowerCase()) && toNum(l[9]) > 0);
             if (fromDate) logs = logs.filter(l => l[8] >= fromDate);
             if (toDate) logs = logs.filter(l => l[8] <= toDate);
             if (fromDate || toDate) {
@@ -13153,7 +13471,7 @@ async function confirmMarkPaid() {
                 if (paid > 0 && mode !== 'Advance') {
                     paymentDisplay = `${mode} / ₹${paid}`;
                 }
-                const branchLabel = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : (cid.startsWith('PRC') ? 'Rehab Clinic' : '-'));
+                const branchLabel = cid.startsWith('POC') ? 'Orthocare' : (cid.startsWith('PHC') ? 'Homecare' : '-');
                 rows.push([formatDateDMY(r[8]), name, cid, branchLabel, diag || '-', paymentDisplay, fee]);
                 total += fee;
             });
@@ -13935,52 +14253,100 @@ function escapeExHtml(str) {
 }
 
 window.initExerciseTab = function() {
+    const activeNames = Object.keys(patientLookup || {})
+        .filter(n => patientLookup[n] && !patientLookup[n].closed)
+        .sort((a, b) => a.localeCompare(b));
+
     const select = document.getElementById('ex-tab-patient-select');
     if (select) {
-        const activeNames = Object.keys(patientLookup || {})
-            .filter(n => patientLookup[n] && !patientLookup[n].closed)
-            .sort((a, b) => a.localeCompare(b));
-
-        if (!activeNames.length) {
-            select.innerHTML = '<option value="">-- No active patients found --</option>';
-            onExTabPatientChange('');
-        } else {
-            let currentVal = select.value;
-            if (!currentVal || !activeNames.includes(currentVal)) {
-                if (window.selectedPatientName && activeNames.includes(window.selectedPatientName)) {
-                    currentVal = window.selectedPatientName;
-                } else {
-                    currentVal = activeNames[0];
-                }
-            }
-
-            select.innerHTML = '<option value="">-- Select Active Patient (' + activeNames.length + ') --</option>' +
-                activeNames.map(n => {
-                    const p = patientLookup[n] || {};
-                    const displayName = p.name || n;
-                    const displayDiag = p.diag || p.condition || '';
-                    const cond = displayDiag ? ` (${displayDiag})` : '';
-                    const idStr = p.id ? ` • ${p.id}` : '';
-                    return `<option value="${n.replace(/"/g, '&quot;')}">${displayName}${idStr}${cond}</option>`;
-                }).join('');
-
-            select.value = currentVal;
-            onExTabPatientChange(currentVal);
-        }
+        select.innerHTML = '<option value="">-- Select Patient (' + activeNames.length + ' Active) --</option>' +
+            activeNames.map(n => {
+                const p = patientLookup[n] || {};
+                const displayName = p.name || n;
+                const displayDiag = p.diag || p.condition || '';
+                const cond = displayDiag ? ` (${displayDiag})` : '';
+                const idStr = p.id ? ` • ${p.id}` : '';
+                return `<option value="${n.replace(/"/g, '&quot;')}">${displayName}${idStr}${cond}</option>`;
+            }).join('');
     }
+
+    // Default to "-- Select Patient --" (empty string), NOT auto-selecting the 1st patient!
+    let currentVal = '';
+    if (window.selectedPatientName && activeNames.includes(window.selectedPatientName)) {
+        currentVal = window.selectedPatientName;
+    }
+
+    setExTabSelectedPatient(currentVal);
 
     // Initialize Exercise Library UI
     renderExRegionPills();
     renderExCategoryPills();
     renderExLibraryGrid();
     updateExPrescriptionCounts();
+    if (window.lucide) lucide.createIcons();
 };
 
-window.filterExTabPatientDropdown = function(query) {
-    const q = (query || '').toLowerCase().trim();
-    const select = document.getElementById('ex-tab-patient-select');
-    if (!select) return;
+// Searchable Patient Dropdown / Combobox Controller
+window.openExPatientDropdown = function() {
+    const menu = document.getElementById('ex-patient-dropdown-menu');
+    const chevron = document.getElementById('ex-patient-chevron');
+    if (!menu) return;
+    const input = document.getElementById('ex-patient-search-input');
+    const q = input ? (input.value.includes(' • ') ? '' : input.value) : '';
+    renderExPatientDropdownList(q);
+    menu.classList.remove('hidden');
+    menu.style.display = 'block';
+    if (chevron) {
+        chevron.classList.add('rotate-180');
+        chevron.style.transform = 'rotate(180deg)';
+    }
+};
 
+window.closeExPatientDropdown = function() {
+    const menu = document.getElementById('ex-patient-dropdown-menu');
+    const chevron = document.getElementById('ex-patient-chevron');
+    if (menu) {
+        menu.classList.add('hidden');
+        menu.style.display = 'none';
+    }
+    if (chevron) {
+        chevron.classList.remove('rotate-180');
+        chevron.style.transform = 'rotate(0deg)';
+    }
+};
+
+window.toggleExPatientDropdown = function() {
+    const menu = document.getElementById('ex-patient-dropdown-menu');
+    if (menu && !menu.classList.contains('hidden') && menu.style.display !== 'none') {
+        closeExPatientDropdown();
+    } else {
+        openExPatientDropdown();
+    }
+};
+
+window.filterExPatientDropdown = function(val) {
+    const clearBtn = document.getElementById('ex-patient-clear-btn');
+    if (clearBtn) {
+        if (val && val.trim().length > 0) {
+            clearBtn.classList.remove('hidden');
+            clearBtn.style.display = 'inline-flex';
+        } else {
+            const select = document.getElementById('ex-tab-patient-select');
+            if (!select || !select.value) {
+                clearBtn.classList.add('hidden');
+                clearBtn.style.display = 'none';
+            }
+        }
+    }
+    openExPatientDropdown();
+    renderExPatientDropdownList(val);
+};
+
+window.renderExPatientDropdownList = function(query) {
+    const menu = document.getElementById('ex-patient-dropdown-menu');
+    if (!menu) return;
+
+    const q = (query || '').toLowerCase().trim();
     const activeNames = Object.keys(patientLookup || {})
         .filter(n => patientLookup[n] && !patientLookup[n].closed)
         .sort((a, b) => a.localeCompare(b));
@@ -13991,30 +14357,115 @@ window.filterExTabPatientDropdown = function(query) {
         const displayName = p.name || n;
         const displayDiag = p.diag || p.condition || '';
         return n.toLowerCase().includes(q) || 
-               displayName.toLowerCase().includes(q) ||
+               displayName.toLowerCase().includes(q) || 
                String(p.id || '').toLowerCase().includes(q) || 
                displayDiag.toLowerCase().includes(q);
     });
 
-    const curr = select.value;
-    select.innerHTML = '<option value="">-- Select Active Patient (' + filtered.length + ') --</option>' +
-        filtered.map(n => {
-            const p = patientLookup[n] || {};
-            const displayName = p.name || n;
-            const displayDiag = p.diag || p.condition || '';
-            const cond = displayDiag ? ` (${displayDiag})` : '';
-            const idStr = p.id ? ` • ${p.id}` : '';
-            return `<option value="${n.replace(/"/g, '&quot;')}">${displayName}${idStr}${cond}</option>`;
-        }).join('');
-
-    if (curr && filtered.includes(curr)) {
-        select.value = curr;
-    } else if (filtered.length > 0) {
-        select.value = filtered[0];
-        onExTabPatientChange(filtered[0]);
-    } else {
-        onExTabPatientChange('');
+    if (!filtered.length) {
+        menu.innerHTML = `<div class="p-4 text-center text-xs font-semibold text-slate-400 dark:text-slate-500">No matching active patients found</div>`;
+        return;
     }
+
+    const select = document.getElementById('ex-tab-patient-select');
+    const selectedVal = select ? select.value : '';
+
+    menu.innerHTML = filtered.map(n => {
+        const p = patientLookup[n] || {};
+        const displayName = p.name || n;
+        const displayDiag = p.diag || p.condition || '';
+        const pid = normId(p.id);
+        const plans = (window.exercisePlans && window.exercisePlans[pid]) ? window.exercisePlans[pid] : ((typeof exercisePlans !== 'undefined' && exercisePlans[pid]) ? exercisePlans[pid] : []);
+        const count = plans.length;
+        const isSelected = selectedVal === n;
+        
+        const countBadge = count > 0 
+            ? `<span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">${count} Ex</span>`
+            : `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500">0 Ex</span>`;
+
+        const rowBg = isSelected 
+            ? 'bg-indigo-50/80 dark:bg-indigo-950/50 text-indigo-900 dark:text-indigo-200' 
+            : 'hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200';
+
+        return `
+            <div onclick="selectExTabPatient('${n.replace(/'/g, "\\'")}')" class="p-2.5 rounded-xl transition-colors cursor-pointer flex items-center justify-between gap-3 ${rowBg}" style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px; cursor: pointer;">
+                <div class="min-w-0 flex-1" style="min-width: 0; flex: 1;">
+                    <div class="flex items-center gap-2" style="display: flex; align-items: center; gap: 8px;">
+                        <span class="font-black text-xs truncate" style="font-weight: 900; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeExHtml(displayName)}</span>
+                        ${p.id ? `<span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 shrink-0" style="font-size: 9px; font-weight: 700; flex-shrink: 0;">• ${escapeExHtml(p.id)}</span>` : ''}
+                    </div>
+                    ${displayDiag ? `<p class="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-0.5" style="font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">${escapeExHtml(displayDiag)}</p>` : ''}
+                </div>
+                <div class="shrink-0 flex items-center gap-1.5" style="flex-shrink: 0; display: flex; align-items: center;">
+                    ${countBadge}
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.selectExTabPatient = function(patientName) {
+    setExTabSelectedPatient(patientName);
+    closeExPatientDropdown();
+};
+
+window.setExTabSelectedPatient = function(patientName) {
+    const select = document.getElementById('ex-tab-patient-select');
+    if (select) select.value = patientName || '';
+
+    const input = document.getElementById('ex-patient-search-input');
+    const clearBtn = document.getElementById('ex-patient-clear-btn');
+    const cardCount = document.getElementById('ex-tab-card-count');
+    const presCount = document.getElementById('ex-tab-prescriptions-count');
+
+    if (!patientName || !patientLookup || !patientLookup[patientName]) {
+        if (input) input.value = '';
+        if (clearBtn) {
+            clearBtn.classList.add('hidden');
+            clearBtn.style.display = 'none';
+        }
+        if (cardCount) cardCount.innerText = '0 Ex Prescribed';
+        if (presCount) presCount.innerText = '0';
+        onExTabPatientChange('');
+        return;
+    }
+
+    const p = patientLookup[patientName];
+    const displayName = p.name || patientName;
+    const displayDiag = p.diag || p.condition || '';
+    const diagPart = displayDiag ? ` (${displayDiag})` : '';
+    const idPart = p.id ? ` • ${p.id}` : '';
+
+    if (input) input.value = `${displayName}${idPart}${diagPart}`;
+    if (clearBtn) {
+        clearBtn.classList.remove('hidden');
+        clearBtn.style.display = 'inline-flex';
+    }
+
+    onExTabPatientChange(patientName);
+};
+
+window.clearSelectedPatient = function() {
+    setExTabSelectedPatient('');
+    const input = document.getElementById('ex-patient-search-input');
+    if (input) {
+        input.value = '';
+        input.focus();
+    }
+    openExPatientDropdown();
+};
+
+// Global click-outside listener for patient combobox
+document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('ex-patient-combobox-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        if (typeof closeExPatientDropdown === 'function') closeExPatientDropdown();
+    }
+});
+
+// Backward compatibility shim
+window.filterExTabPatientDropdown = function(query) {
+    filterExPatientDropdown(query);
 };
 
 window.onExTabPatientChange = function(patientName) {
@@ -14028,7 +14479,7 @@ window.onExTabPatientChange = function(patientName) {
         if (cardName) cardName.innerText = 'No Patient Selected';
         if (cardMeta) cardMeta.innerText = 'Select an active patient to manage their exercises';
         if (cardStatus) cardStatus.classList.add('hidden');
-        if (cardCount) cardCount.innerText = '0 Ex';
+        if (cardCount) cardCount.innerText = '0 Ex Prescribed';
         renderExTabPatientExercises('');
         return;
     }
@@ -14058,7 +14509,9 @@ window.updateExPrescriptionCounts = function(optPatientName) {
     }
 
     const cardCount = document.getElementById('ex-tab-card-count');
-    if (cardCount) cardCount.innerText = `${count} Ex`;
+    if (cardCount) {
+        cardCount.innerText = p ? `${count} Ex Prescribed` : '0 Ex Prescribed';
+    }
 
     const presCount = document.getElementById('ex-tab-prescriptions-count');
     if (presCount) presCount.innerText = count;
@@ -14100,14 +14553,16 @@ window.renderExRegionPills = function() {
         const isActive = currentLibRegion === r;
         const count = regionCounts[r] || 0;
         const activeClass = isActive 
-            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 border-indigo-600 scale-[1.02]' 
-            : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300';
-        const badgeClass = isActive ? 'bg-indigo-700/80 text-white' : 'bg-slate-100 text-slate-500';
+            ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/25 border-indigo-600 scale-[1.02]' 
+            : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-700';
+        const badgeClass = isActive 
+            ? 'bg-white/20 text-white' 
+            : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400';
         
         return `
-            <button data-region="${escapeExHtml(r)}" onclick="setExRegion(this.dataset.region)" class="px-3.5 py-2 rounded-xl font-black border transition-all whitespace-nowrap flex items-center gap-1.5 active:scale-95 ${activeClass}">
+            <button data-region="${escapeExHtml(r)}" onclick="setExRegion(this.dataset.region)" class="px-3.5 py-2 rounded-xl text-xs font-black border transition-all whitespace-nowrap flex items-center gap-1.5 active:scale-95 cursor-pointer ${activeClass}">
                 <span>${r}</span>
-                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold ${badgeClass}">${count}</span>
+                <span class="text-[9px] px-2 py-0.5 rounded-full font-bold tracking-tight ${badgeClass}">${count}</span>
             </button>
         `;
     }).join('');
@@ -14132,8 +14587,15 @@ window.renderExCategoryPills = function() {
 
     if (currentLibRegion === 'All') {
         container.innerHTML = `
-            <span class="text-[9px] font-black uppercase text-slate-400 py-1 mr-1">Regions:</span>
-            <span class="px-3 py-1 bg-slate-900 text-white rounded-lg font-bold">Showing All 10 Body Regions (560+ Exercises)</span>
+            <div class="flex items-center justify-between w-full py-1 text-slate-400 dark:text-slate-500">
+                <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider">
+                    <span class="inline-flex items-center justify-center w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></span>
+                    <span class="text-slate-700 dark:text-slate-200">All 10 Body Regions Active</span>
+                    <span class="text-slate-300 dark:text-slate-700">•</span>
+                    <span class="text-indigo-600 dark:text-indigo-400 font-black">560+ Prescribable Exercises</span>
+                </div>
+                <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 hidden sm:inline">Select a body region above to filter subcategories</span>
+            </div>
         `;
         return;
     }
@@ -14148,13 +14610,13 @@ window.renderExCategoryPills = function() {
             : (regObj[cat] || []).length;
             
         const activeClass = isActive 
-            ? 'bg-slate-900 text-white shadow-sm' 
-            : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200';
+            ? 'bg-indigo-600 text-white shadow-sm border-indigo-600 font-black' 
+            : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700/80 hover:border-slate-300';
 
         return `
-            <button data-cat="${escapeExHtml(cat)}" onclick="setExCategory(this.dataset.cat)" class="px-3 py-1.5 rounded-lg transition-all whitespace-nowrap flex items-center gap-1 active:scale-95 ${activeClass}">
+            <button data-cat="${escapeExHtml(cat)}" onclick="setExCategory(this.dataset.cat)" class="px-3 py-1.5 rounded-xl border transition-all whitespace-nowrap flex items-center gap-1.5 active:scale-95 cursor-pointer text-[10px] font-bold ${activeClass}">
                 <span>${cat}</span>
-                <span class="text-[8px] opacity-75 font-semibold">(${count})</span>
+                <span class="text-[9px] px-1.5 py-0.2 rounded-full opacity-80 font-bold">(${count})</span>
             </button>
         `;
     }).join('');
@@ -14791,22 +15253,26 @@ window.shareExTabViaWhatsApp = function() {
             return Math.floor((todayUTC - sessionUTC) / 86400000);
         }
 
-        const originalSelectPatient = window.selectPatient;
-        window.selectPatient = function(name, openDrawer = true, autoScroll = true) {
-            originalSelectPatient(name, openDrawer, autoScroll);
-            const p = patientLookup[name];
+        function attachRecentSessionActions(name, p) {
             if (!p) return;
             const container = document.getElementById('recent-logs-cards');
+            if (!container) return;
             const cards = container.querySelectorAll('.log-card');
-            const displayedLogs = p.logs.slice().reverse().slice(0, 10);
+            const sessionLogs = (p.logs || []).filter(l => {
+                const t = String(l[7] || '').trim().toLowerCase();
+                return !['case closed', 'case restarted', 'bill issued'].includes(t);
+            });
+            const displayedLogs = sessionLogs.slice().reverse().slice(0, 10);
             cards.forEach((card, idx) => {
                 const logData = displayedLogs[idx];
+                if (!logData) return;
                 const type = String(logData[7] || '').toLowerCase();
-                if (type === 'rehab' || type === 'physiotherapy session') {
+                if (type.includes('rehab') || type.includes('session')) {
+                    if (card.querySelector('.session-action-area') || card.querySelector('.session-locked-note')) return;
 
                     if (daysSinceSession(logData[8]) > 15) {
                         const lockNote = document.createElement('div');
-                        lockNote.className = "mt-3 pt-2 border-t border-slate-100 text-[9px] font-black text-slate-400 uppercase";
+                        lockNote.className = "session-locked-note mt-3 pt-2 border-t border-slate-100 text-[9px] font-black text-slate-400 uppercase";
                         lockNote.innerText = "Locked";
                         card.appendChild(lockNote);
                         return;
@@ -14816,11 +15282,11 @@ window.shareExTabViaWhatsApp = function() {
                     const userIsAdmin = (typeof isAdmin === 'function') ? isAdmin() : false;
                     if (userIsAdmin) {
                         const actionArea = document.createElement('div');
-                        actionArea.className = "flex gap-4 mt-3 pt-2 border-t border-slate-100";
+                        actionArea.className = "session-action-area flex gap-4 mt-3 pt-2 border-t border-slate-100";
 
                         const deleteBtn = document.createElement('button');
                         deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-3 h-3"></i> Delete';
-                        deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase transition-all px-2 py-1 rounded-lg";
+                        deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase transition-all px-2 py-1 rounded-lg cursor-pointer";
                         deleteBtn.onclick = (e) => {
                             armConfirm(e.currentTarget, "Confirm Delete?", () => {
                                 const timestamp = logData[0];
@@ -14859,7 +15325,7 @@ window.shareExTabViaWhatsApp = function() {
 
                         const editBtn = document.createElement('button');
                         editBtn.innerHTML = '<i data-lucide="edit-2" class="w-3 h-3"></i> Edit Fee';
-                        editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase px-2 py-1 rounded-lg";
+                        editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase px-2 py-1 rounded-lg cursor-pointer";
                         editBtn.onclick = () => {
                             const newFee = prompt(`Update fee for ${formatDateDMY(logData[8])}:`, logData[9]);
                             if (newFee === null || newFee === "" || isNaN(Number(newFee))) return;
@@ -14899,6 +15365,14 @@ window.shareExTabViaWhatsApp = function() {
                 }
             });
             if (window.lucide) lucide.createIcons();
+        }
+        window.attachRecentSessionActions = attachRecentSessionActions;
+
+        const originalSelectPatient = window.selectPatient;
+        window.selectPatient = function(name, openDrawer = true, autoScroll = true) {
+            originalSelectPatient(name, openDrawer, autoScroll);
+            const p = patientLookup[name];
+            if (p) attachRecentSessionActions(name, p);
         };
     })();
 (function() {
@@ -15121,16 +15595,19 @@ window.shareExTabViaWhatsApp = function() {
                 </td>
                 <td class="p-2 lg:p-5 text-center whitespace-nowrap">
                     <div class="flex items-center justify-center gap-1.5">
-    <button onclick="convertInquiryToPatient('${idVal}')" class="iq-btn iq-btn-enroll" title="Convert & Enroll Patient">
-    <i data-lucide="user-plus"></i>
-</button>
-<button onclick="sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="iq-btn iq-btn-wa" title="Send WhatsApp Reminder">
-    <i data-lucide="message-circle"></i>
-</button>
-<a href="${callHref}" ${callOnClick} class="iq-btn iq-btn-call" title="Call Patient Directly">
-    <i data-lucide="phone"></i>
-</a>
-</div>
+                        <button onclick="toggleInquiryConfirmed('${idVal}')" class="iq-btn ${i.confirmed ? 'iq-btn-confirmed' : 'iq-btn-confirm'}" title="${i.confirmed ? 'Confirmed (Click to mark Pending)' : 'Confirm Appointment'}">
+                            <i data-lucide="${i.confirmed ? 'check-check' : 'check'}"></i>
+                        </button>
+                        <button onclick="convertInquiryToPatient('${idVal}')" class="iq-btn iq-btn-enroll" title="Convert & Enroll Patient">
+                            <i data-lucide="user-plus"></i>
+                        </button>
+                        <button onclick="sendIqFollowUp('${safeName}', '${safePhone}', '${safeDiag}')" class="iq-btn iq-btn-wa" title="Send WhatsApp Reminder">
+                            <i data-lucide="message-circle"></i>
+                        </button>
+                        <a href="${callHref}" ${callOnClick} class="iq-btn iq-btn-call" title="Call Patient Directly">
+                            <i data-lucide="phone"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
             `;
@@ -15140,10 +15617,16 @@ window.shareExTabViaWhatsApp = function() {
         if (window.lucide) lucide.createIcons({ root: body });
     };
 
-    // 4. Mark Inquiry Confirmed (Local + Cloud)
+    // 4. Mark / Toggle Inquiry Confirmed (Local + Cloud)
     window.markInquiryConfirmed = function(inquiryId) {
         if (!window.iqRegistry) return;
-        const entry = window.iqRegistry.find(i => i.id === inquiryId || i.id == inquiryId);
+        const entry = window.iqRegistry.find((i, idx) => {
+            return i.id === inquiryId || 
+                   i.id == inquiryId || 
+                   ('iq_' + idx) === inquiryId ||
+                   idx === inquiryId ||
+                   idx == inquiryId;
+        });
         if (!entry) {
             showToast('Entry not found', 'error');
             return;
@@ -15153,7 +15636,7 @@ window.shareExTabViaWhatsApp = function() {
         entry.status = 'Confirmed';
         window.saveInquiriesToStorage(window.iqRegistry);
         renderIqTable();
-        showToast('Marked as confirmed', 'success');
+        showToast('Inquiry confirmed successfully ✓', 'success');
 
         const sheetRowIndex = entry.rowIndex;
         if (sheetRowIndex) {
@@ -15165,6 +15648,31 @@ window.shareExTabViaWhatsApp = function() {
             }).catch(e => {
                 showToast('Cloud sync pending: ' + e.message, 'warning');
             });
+        }
+    };
+
+    window.toggleInquiryConfirmed = function(inquiryId) {
+        if (!window.iqRegistry) return;
+        const entry = window.iqRegistry.find((i, idx) => {
+            return i.id === inquiryId || 
+                   i.id == inquiryId || 
+                   ('iq_' + idx) === inquiryId ||
+                   idx === inquiryId ||
+                   idx == inquiryId;
+        });
+        if (!entry) {
+            showToast('Entry not found', 'error');
+            return;
+        }
+
+        if (entry.confirmed) {
+            entry.confirmed = false;
+            entry.status = 'Pending';
+            window.saveInquiriesToStorage(window.iqRegistry);
+            renderIqTable();
+            showToast('Inquiry reverted to Pending', 'info');
+        } else {
+            window.markInquiryConfirmed(inquiryId);
         }
     };
 
