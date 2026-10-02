@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Portal | Prism Clinical Intelligence</title>
     
+    <!-- PWA & Mobile App Support -->
+    <link rel="manifest" href="patient-manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Patient Portal">
+    <link rel="apple-touch-icon" href="prismapplogo.png">
+    <link rel="icon" type="image/png" href="prismapplogo.png">
+    
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -62,18 +72,48 @@
 </head>
 <body class="antialiased selection:bg-indigo-500 selection:text-white">
 
+    <!-- Install App / Add Shortcut Top Banner -->
+    <div id="patient-install-banner" class="hidden no-print bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white px-4 py-2.5 border-b border-indigo-500/30 sticky top-0 z-[110] shadow-md transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+                <img src="prismapplogo.png" alt="App Icon" class="w-9 h-9 rounded-xl shadow border border-white/20 object-contain bg-white/10 p-0.5 shrink-0">
+                <div class="min-w-0">
+                    <p class="text-xs font-black tracking-wide flex items-center gap-1.5 truncate">
+                        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-indigo-400 shrink-0"></i>
+                        <span>Install App & Add Shortcut</span>
+                        <span class="bg-indigo-500/30 text-indigo-300 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0">1-Tap</span>
+                    </p>
+                    <p class="text-[10px] text-slate-300 font-medium truncate">Install to your phone home screen or desktop for instant 1-tap access</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+                <button onclick="promptPatientInstall()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl text-xs font-black tracking-wider uppercase shadow-md transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>Install App / Shortcut</span>
+                </button>
+                <button onclick="dismissPatientInstallBanner()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer" title="Dismiss">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="login-section">
         <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 h-20 flex items-center">
             <div class="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
                 <a href="index.html" class="flex items-center group">
                     <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy Logo" class="h-12 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
                 </a>
-                <div class="hidden lg:flex space-x-8 items-center font-bold text-sm text-slate-600">
+                <div class="hidden lg:flex space-x-6 items-center font-bold text-sm text-slate-600">
                     <a href="index.html" class="hover:text-clinical-blue transition-all">Home</a>
                     <a href="about.html" class="hover:text-clinical-blue transition-all">About</a>
                     <a href="services.html" class="hover:text-clinical-blue transition-all">Services</a>
                     <a href="careers.html" class="hover:text-clinical-blue transition-all">Careers</a>
                     <a href="Patient Login.html" class="text-clinical-blue hover:opacity-80 transition-all border-b-2 border-clinical-blue pb-1">Patient Login</a>
+                    <button type="button" onclick="promptPatientInstall()" class="inline-flex items-center gap-1.5 text-xs font-black text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3.5 py-2.5 rounded-full transition-all cursor-pointer shadow-xs active:scale-95">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>Install App / Shortcut</span>
+                    </button>
                     <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5">Make Appointment</a>
                 </div>
                 <button id="menu-btn" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl" aria-label="Toggle Menu">
@@ -92,12 +132,16 @@
                             <i data-lucide="x" class="w-6 h-6"></i>
                         </button>
                     </div>
-                    <div class="flex flex-col space-y-4 mt-6 text-sm font-bold text-slate-700">
+                    <div class="flex flex-col space-y-3 mt-6 text-sm font-bold text-slate-700">
                         <a href="index.html" class="p-2 rounded-xl hover:bg-slate-50">Home</a>
                         <a href="about.html" class="p-2 rounded-xl hover:bg-slate-50">About</a>
                         <a href="services.html" class="p-2 rounded-xl hover:bg-slate-50">Services</a>
                         <a href="careers.html" class="p-2 rounded-xl hover:bg-slate-50">Careers</a>
                         <a href="Patient Login.html" class="p-2 rounded-xl bg-indigo-50 text-indigo-600">Patient Login</a>
+                        <button type="button" onclick="promptPatientInstall(); document.getElementById('mobile-menu').classList.add('hidden');" class="w-full text-left p-2.5 rounded-xl bg-indigo-100/70 hover:bg-indigo-100 text-indigo-800 font-black flex items-center justify-between transition-colors cursor-pointer">
+                            <span class="flex items-center gap-2"><i data-lucide="smartphone" class="w-4 h-4 text-indigo-600"></i> Install App / Shortcut</span>
+                            <i data-lucide="download" class="w-4 h-4 text-indigo-600"></i>
+                        </button>
                     </div>
                 </div>
                 <a href="appointment.html" class="w-full bg-clinical-blue text-white py-3.5 rounded-2xl font-bold text-center text-sm shadow-lg">Make Appointment</a>
@@ -165,6 +209,24 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Install Patient Portal App Card -->
+                        <div class="mt-4 pt-3 border-t border-slate-100">
+                            <button type="button" onclick="promptPatientInstall()" class="w-full bg-slate-50 hover:bg-indigo-50/80 border border-slate-200/80 hover:border-indigo-200 rounded-2xl p-3 text-slate-700 hover:text-indigo-900 transition-all flex items-center justify-between gap-3 shadow-xs active:scale-98 cursor-pointer group">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                        <i data-lucide="smartphone" class="w-4 h-4"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="text-xs font-black flex items-center gap-1.5">
+                                            <span>Install App & Add Shortcut</span>
+                                            <span class="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full font-bold uppercase">1-Tap</span>
+                                        </div>
+                                        <div class="text-[10px] text-slate-400 font-semibold">Place icon on phone home screen / desktop</div>
+                                    </div>
+                                </div>
+                                <i data-lucide="download" class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -177,7 +239,11 @@
             <div class="flex items-center">
                 <img src="https://prismhealthcare.in/prism1.png" class="h-7 sm:h-8" alt="Prism Healthcare Logo">
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center gap-2">
+                <button id="patient-header-install-btn" onclick="promptPatientInstall()" class="inline-flex items-center gap-1.5 text-xs font-black text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/90 px-3.5 py-1.5 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95 cursor-pointer" title="Install App or Add Shortcut">
+                    <i data-lucide="download" class="w-3.5 h-3.5 text-indigo-600"></i>
+                    <span>Install App / Shortcut</span>
+                </button>
                 <button onclick="logoutPatient()" class="inline-flex items-center gap-1.5 text-xs font-black text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/90 px-3.5 py-1.5 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95">
                     Logout <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-600"></i>
                 </button>
@@ -1215,6 +1281,19 @@ Thank you!`;
                     </a>
                 </div>
             `;
+            // Expose active sheet records on window for Prism AI Assistant
+            window.loggedInPatient = loggedInPatient;
+            window.patientLogs = patientLogs;
+            window.patientBalance = patientBalance;
+            window.globalData = globalData;
+            window.exerciseData = exerciseData;
+            window.billsData = billsData;
+            window.doctorsData = doctorsData;
+            window.currentPatientInstructions = currentPatientInstructions;
+            window.currentPatientExercises = currentPatientExercises;
+            window.currentPatientBills = myBills;
+            window.currentTreatingDoctor = currentTreatingDoctor;
+
             if (window.lucide) lucide.createIcons();
             if (window.PrismAI && typeof window.PrismAI.refreshContext === 'function') {
                 window.PrismAI.refreshContext();
@@ -1335,7 +1414,7 @@ Thank you!`;
 
         function generateOfficialDoc(stmtNo) {
             const p = loggedInPatient;
-            const logs = patientLogs.filter(l => !['case closed', 'bill issued'].includes(String(l[7]).toLowerCase()));
+            const logs = patientLogs.filter(l => !['case closed', 'case restarted', 'bill issued'].includes(String(l[7]).toLowerCase()) && (parseFloat(l[9]) || 0) > 0);
             const billRec = patientLogs.find(r => r[13] === stmtNo);
             const dateStr = billRec ? formatDate(billRec[8]) : formatDate(new Date());
             
@@ -1562,6 +1641,257 @@ Thank you!`;
             }
         }
 
+        // ==============================================================
+        // PATIENT PORTAL PWA & SHORTCUT CONTROLLER (100% SELF-CONTAINED)
+        // ==============================================================
+        let deferredPatientPrompt = null;
+        let currentInstallPlatform = 'android';
+
+        function initPatientPWA() {
+            // 1. Ensure inline manifest is active
+            ensureInlineManifest();
+
+            // 2. Register Service Worker if supported and available
+            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+                navigator.serviceWorker.register('./patient-sw.js').then((reg) => {
+                    console.log('Patient Portal SW active:', reg.scope);
+                }).catch((err) => {
+                    console.log('Patient Portal running in standalone browser mode');
+                });
+            }
+
+            // 3. Detect standalone / installed mode
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+            if (isStandalone) {
+                const banner = document.getElementById('patient-install-banner');
+                if (banner) banner.classList.add('hidden');
+                const headerBtn = document.getElementById('patient-header-install-btn');
+                if (headerBtn) {
+                    headerBtn.innerHTML = '<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i><span>Installed</span>';
+                    headerBtn.classList.replace('text-indigo-700', 'text-emerald-700');
+                    headerBtn.classList.replace('bg-indigo-50', 'bg-emerald-50');
+                    headerBtn.classList.replace('border-indigo-200/90', 'border-emerald-200/90');
+                }
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            // 4. Capture native install prompt (Android Chrome, Edge, PC/Mac)
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPatientPrompt = e;
+                const banner = document.getElementById('patient-install-banner');
+                const isDismissed = localStorage.getItem('prism_patient_install_dismissed') === 'true';
+                if (banner && !isDismissed) {
+                    banner.classList.remove('hidden');
+                    if (window.lucide) lucide.createIcons({ root: banner });
+                }
+                const nativeSec = document.getElementById('patient-native-install-section');
+                if (nativeSec) nativeSec.classList.remove('hidden');
+            });
+
+            // 5. Successful installation callback
+            window.addEventListener('appinstalled', () => {
+                deferredPatientPrompt = null;
+                const banner = document.getElementById('patient-install-banner');
+                if (banner) banner.classList.add('hidden');
+                closePatientInstallModal();
+                alert('🎉 Patient Portal installed successfully! You can now launch it directly from your home screen or desktop shortcut.');
+            });
+
+            // 6. Show top banner after 1.5 seconds if not dismissed
+            setTimeout(() => {
+                const isDismissed = localStorage.getItem('prism_patient_install_dismissed') === 'true';
+                const banner = document.getElementById('patient-install-banner');
+                if (banner && !isDismissed && !isStandalone) {
+                    banner.classList.remove('hidden');
+                    if (window.lucide) lucide.createIcons({ root: banner });
+                }
+            }, 1500);
+        }
+
+        // Dynamically ensure manifest exists even if external file is missing
+        function ensureInlineManifest() {
+            try {
+                let manifestLink = document.querySelector('link[rel="manifest"]');
+                if (!manifestLink) {
+                    manifestLink = document.createElement('link');
+                    manifestLink.rel = 'manifest';
+                    manifestLink.id = 'patient-manifest-link';
+                    document.head.appendChild(manifestLink);
+                }
+                const manifestData = {
+                    name: "Prism Healthcare - Patient Portal",
+                    short_name: "Patient Portal",
+                    description: "Access your clinical records, doctor directives, prescriptions, exercises, and billing receipts",
+                    start_url: window.location.href.split('#')[0],
+                    display: "standalone",
+                    orientation: "portrait-primary",
+                    background_color: "#f8fafc",
+                    theme_color: "#4f46e5",
+                    icons: [
+                        { src: "prismapplogo.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+                        { src: "prismapplogo.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+                        { src: "PrismLogo.png", sizes: "192x192", type: "image/png" }
+                    ]
+                };
+                if (!manifestLink.getAttribute('href') || window.location.protocol === 'file:') {
+                    manifestLink.setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData)));
+                }
+            } catch (err) {
+                console.warn('Manifest initialization note:', err);
+            }
+        }
+
+        function promptPatientInstall() {
+            if (deferredPatientPrompt) {
+                deferredPatientPrompt.prompt();
+                deferredPatientPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        const banner = document.getElementById('patient-install-banner');
+                        if (banner) banner.classList.add('hidden');
+                    }
+                    deferredPatientPrompt = null;
+                });
+            } else {
+                openPatientInstallModal();
+            }
+        }
+
+        function executeNativeInstall() {
+            if (deferredPatientPrompt) {
+                deferredPatientPrompt.prompt();
+                deferredPatientPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        const banner = document.getElementById('patient-install-banner');
+                        if (banner) banner.classList.add('hidden');
+                        closePatientInstallModal();
+                    }
+                    deferredPatientPrompt = null;
+                });
+            } else {
+                alert('Follow the quick step-by-step shortcut instructions shown below for your browser.');
+            }
+        }
+
+        function dismissPatientInstallBanner() {
+            const banner = document.getElementById('patient-install-banner');
+            if (banner) banner.classList.add('hidden');
+            localStorage.setItem('prism_patient_install_dismissed', 'true');
+        }
+
+        function openPatientInstallModal() {
+            const modal = document.getElementById('patient-install-modal');
+            if (!modal) return;
+            
+            // Auto detect platform
+            const ua = navigator.userAgent || '';
+            const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+            const isAndroid = /Android/.test(ua);
+            
+            if (isIOS) {
+                selectInstallTab('ios');
+            } else if (isAndroid) {
+                selectInstallTab('android');
+            } else {
+                selectInstallTab('desktop');
+            }
+
+            const nativeSec = document.getElementById('patient-native-install-section');
+            if (!deferredPatientPrompt && nativeSec) {
+                nativeSec.classList.add('hidden');
+            } else if (nativeSec) {
+                nativeSec.classList.remove('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons({ root: modal });
+        }
+
+        function selectInstallTab(platform) {
+            currentInstallPlatform = platform;
+            const platformBadge = document.getElementById('patient-detected-platform');
+            const stepsContainer = document.getElementById('patient-install-steps');
+            
+            // Update tab button styles
+            const btnAndroid = document.getElementById('p-tab-btn-android');
+            const btnIOS = document.getElementById('p-tab-btn-ios');
+            const btnDesktop = document.getElementById('p-tab-btn-desktop');
+
+            const activeClass = 'bg-white text-indigo-700 shadow-xs';
+            const inactiveClass = 'text-slate-600 hover:text-slate-900';
+
+            [btnAndroid, btnIOS, btnDesktop].forEach(b => {
+                if (b) {
+                    b.className = 'flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer ' + inactiveClass;
+                }
+            });
+
+            if (platform === 'ios') {
+                if (btnIOS) btnIOS.className = 'flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer ' + activeClass;
+                if (platformBadge) platformBadge.innerText = 'Apple iOS (Safari)';
+                if (stepsContainer) {
+                    stepsContainer.innerHTML = `
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">1</span>
+                            <div>Tap the <strong>Share</strong> icon <span class="inline-block px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">📤</span> at the bottom of Safari.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">2</span>
+                            <div>Scroll down and tap <strong>"Add to Home Screen"</strong> <span class="inline-block px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">➕</span>.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">3</span>
+                            <div>Tap <strong>"Add"</strong> in the top-right corner. The Patient Portal app shortcut is now on your home screen!</div>
+                        </div>
+                    `;
+                }
+            } else if (platform === 'android') {
+                if (btnAndroid) btnAndroid.className = 'flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer ' + activeClass;
+                if (platformBadge) platformBadge.innerText = 'Android Phone';
+                if (stepsContainer) {
+                    stepsContainer.innerHTML = `
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">1</span>
+                            <div>Tap the browser menu <span class="inline-block px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">⋮ (3 dots)</span> in Chrome or Samsung Internet.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">2</span>
+                            <div>Tap <strong>"Install app"</strong> or <strong>"Add to Home screen"</strong>.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">3</span>
+                            <div>Tap <strong>"Install / Add"</strong> to get the instant 1-tap app shortcut with the Prism logo.</div>
+                        </div>
+                    `;
+                }
+            } else {
+                if (btnDesktop) btnDesktop.className = 'flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer ' + activeClass;
+                if (platformBadge) platformBadge.innerText = 'Windows PC / Mac';
+                if (stepsContainer) {
+                    stepsContainer.innerHTML = `
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">1</span>
+                            <div>Look at the right side of the Chrome/Edge address bar for the <strong>Install App (⊕)</strong> icon.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">2</span>
+                            <div>Or click browser menu <span class="inline-block px-1.5 py-0.5 rounded bg-slate-200 text-slate-800 text-[10px] font-bold">⋮</span> &rarr; <strong>"Save and share"</strong> &rarr; <strong>"Install page as app"</strong>.</div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center shrink-0">3</span>
+                            <div>The Patient Portal opens in its own window and adds an icon to your Desktop / Start Menu.</div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function closePatientInstallModal() {
+            const modal = document.getElementById('patient-install-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             const menuBtn = document.getElementById('menu-btn');
@@ -1586,8 +1916,101 @@ Thank you!`;
 
             // Automatically restore session on page refresh
             restoreSavedSession();
+
+            // Initialize Patient Portal PWA
+            initPatientPWA();
         });
     </script>
+
+    <!-- ======================================================= -->
+    <!-- INSTALL APP & ADD SHORTCUT MODAL                        -->
+    <!-- ======================================================= -->
+    <div id="patient-install-modal" class="hidden fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl border border-slate-100 relative">
+            <!-- Close Button -->
+            <button type="button" onclick="closePatientInstallModal()" class="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors cursor-pointer" title="Close">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- App Logo & Info -->
+            <div class="flex items-center gap-3.5 mb-4">
+                <img src="prismapplogo.png" alt="Patient Portal Logo" class="w-14 h-14 rounded-2xl shadow-md border border-slate-100 object-contain p-1 bg-slate-50 shrink-0">
+                <div class="min-w-0">
+                    <h3 class="text-base font-black text-slate-900 leading-tight">Patient Portal App</h3>
+                    <p class="text-xs text-indigo-600 font-bold truncate">Prism Clinical Intelligence</p>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full border border-emerald-200">
+                            <i data-lucide="check-circle" class="w-2.5 h-2.5"></i> Verified Web App
+                        </span>
+                        <span class="text-[9px] font-bold text-slate-400">PWA Standalone</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Native 1-Tap Install Button (when supported) -->
+            <div id="patient-native-install-section" class="mb-4">
+                <button type="button" onclick="executeNativeInstall()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-black py-3 px-4 rounded-2xl shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 text-xs uppercase tracking-wider active:scale-98 transition-all cursor-pointer">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>1-Tap Install App on Device</span>
+                </button>
+            </div>
+
+            <!-- Device Switcher Tabs -->
+            <div class="bg-slate-100 p-1 rounded-xl flex items-center gap-1 mb-3">
+                <button id="p-tab-btn-android" type="button" onclick="selectInstallTab('android')" class="flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer bg-white text-indigo-700 shadow-xs">
+                    Android
+                </button>
+                <button id="p-tab-btn-ios" type="button" onclick="selectInstallTab('ios')" class="flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer text-slate-600 hover:text-slate-900">
+                    iPhone / iPad
+                </button>
+                <button id="p-tab-btn-desktop" type="button" onclick="selectInstallTab('desktop')" class="flex-1 py-1.5 rounded-lg text-xs font-black text-center transition-all cursor-pointer text-slate-600 hover:text-slate-900">
+                    PC / Mac
+                </button>
+            </div>
+
+            <!-- Step by Step Shortcut Guide -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3 mb-4">
+                <div class="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                    <p class="text-[11px] font-black uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+                        <i data-lucide="help-circle" class="w-3.5 h-3.5 text-indigo-500"></i>
+                        <span>How to Add Shortcut</span>
+                    </p>
+                    <span id="patient-detected-platform" class="text-[9px] font-black px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 uppercase">Android</span>
+                </div>
+
+                <!-- Step 1, 2, 3 instructions dynamically tailored by JS -->
+                <div id="patient-install-steps" class="space-y-2.5 text-xs text-slate-700 font-semibold leading-relaxed">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <!-- Highlights -->
+            <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-600 font-bold mb-4">
+                <div class="flex items-center gap-1.5 p-2 bg-indigo-50/50 rounded-xl">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
+                    <span>1-Tap Instant Launch</span>
+                </div>
+                <div class="flex items-center gap-1.5 p-2 bg-indigo-50/50 rounded-xl">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                    <span>No App Store Needed</span>
+                </div>
+                <div class="flex items-center gap-1.5 p-2 bg-indigo-50/50 rounded-xl">
+                    <i data-lucide="wifi" class="w-3.5 h-3.5 text-blue-500 shrink-0"></i>
+                    <span>Offline Records Access</span>
+                </div>
+                <div class="flex items-center gap-1.5 p-2 bg-indigo-50/50 rounded-xl">
+                    <i data-lucide="maximize" class="w-3.5 h-3.5 text-indigo-500 shrink-0"></i>
+                    <span>Full Screen App</span>
+                </div>
+            </div>
+
+            <!-- Dismiss Button -->
+            <button type="button" onclick="closePatientInstallModal()" class="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-slate-700 transition-colors cursor-pointer text-center">
+                Close
+            </button>
+        </div>
+    </div>
+
     <!-- Prism Clinical AI Patient Assistant -->
     <script src="ai-patient-assistant.js"></script>
 </body>
