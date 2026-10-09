@@ -1,68 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prism Physiotherapy &amp; Rehabilitation Center</title>
+    <title>404 - Page Not Found | Prism Physiotherapy &amp; Rehabilitation Center</title>
+    <meta name="description" content="The page you are looking for does not exist. Visit Prism Physiotherapy Patna for Neuro, Orthopaedic &amp; Advanced Rehabilitation care.">
+    <link rel="icon" type="image/jpg" href="Logo3.jpg">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .clinical-blue { color: #0056b3; }
+        .bg-clinical-blue { background-color: #0056b3; }
+        .whatsapp-float { animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+        #mobile-menu { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
+        #mobile-menu.open { transform: translateX(0); }
+        .pulse-subtle { animation: pulseGlow 4s ease-in-out infinite alternate; }
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; transform: scale(0.98); }
+            100% { opacity: 0.7; transform: scale(1.02); }
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 440px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08), 0 5px 15px rgba(15, 23, 42, 0.04);
-            padding: 36px 28px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-        .logo-wrap {
-            margin-bottom: 20px;
-        }
-        .clinic-logo {
-            max-height: 52px;
-            max-width: 180px;
-            object-fit: contain;
-        }
-        .brand-title {
-            font-size: 19px;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.01em;
-            margin-bottom: 4px;
-        }
-        .brand-sub {
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 500;
-            margin-bottom: 24px;
-        }
-        .status-box {
-            padding: 20px 16px;
-            border-radius: 14px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-        }
-        .spinner {
-            width: 42px;
-            height: 42px;
+        .bill-spinner {
+            width: 44px;
+            height: 44px;
             border: 3.5px solid #e2e8f0;
-            border-top-color: #0284c7;
+            border-top-color: #0056b3;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 16px auto;
@@ -70,113 +39,445 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .status-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-        .status-desc {
-            font-size: 13px;
-            color: #64748b;
-            line-height: 1.5;
-        }
-        .btn {
-            display: inline-block;
-            width: 100%;
-            padding: 13px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-        }
-        .btn-primary {
-            background: #0284c7;
-            color: #ffffff;
-        }
-        .btn-primary:hover {
-            background: #0369a1;
-        }
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #334155;
-            margin-top: 10px;
-        }
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
-        .icon-wrap {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 14px auto;
-        }
-        .icon-success {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-        .icon-error {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .icon-warning {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .footer-note {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 20px;
-        }
     </style>
 </head>
-<body>
-    <div class="card" id="appCard">
-        <div class="logo-wrap">
-            <img src="https://prismhealthcare.in/prism1.png" alt="Prism Physiotherapy" class="clinic-logo" onerror="this.style.display='none'">
-        </div>
-        <div class="brand-title">Prism Physiotherapy</div>
-        <div class="brand-sub">&amp; Rehabilitation Center</div>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-blue-100 selection:text-blue-900">
 
-        <div id="contentArea">
-            <div class="status-box">
-                <div class="spinner" id="mainSpinner"></div>
-                <div class="status-title" id="statusTitle">Connecting securely...</div>
-                <div class="status-desc" id="statusDesc">Please hold on while we prepare your official document.</div>
+    <!-- ========================================== -->
+    <!-- SECTION 1: GLOBAL WEBSITE 404 PAGE (DEFAULT) -->
+    <!-- ========================================== -->
+    <div id="website404" class="flex flex-col min-h-screen justify-between">
+        
+        <!-- Top Announcement / Helpline Bar -->
+        <div class="bg-slate-900 text-slate-300 text-xs py-2.5 px-4 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+                <div class="flex items-center gap-2 text-center sm:text-left">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="font-medium">Prism Physiotherapy &amp; Rehabilitation Center &bull; Patna &amp; Begusarai Units</span>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-semibold">
+                    <a href="tel:+919708059081" class="hover:text-white flex items-center gap-1.5 transition-colors">
+                        <i data-lucide="phone" class="w-3.5 h-3.5 text-blue-400"></i>
+                        <span>+91 97080 59081</span>
+                    </a>
+                    <span class="text-slate-600 hidden sm:inline">&bull;</span>
+                    <a href="https://wa.me/919708059081" target="_blank" class="hover:text-emerald-400 flex items-center gap-1.5 transition-colors">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        <span>WhatsApp Helpdesk</span>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="footer-note">Official Document Verification &bull; Prism Clinical PMS</div>
+        <!-- Sticky Navigation Header -->
+        <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="prism1.png" alt="Prism Physiotherapy Logo" class="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-7 items-center font-bold text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-clinical-blue transition-colors">Home</a>
+                    <a href="about.html" class="hover:text-clinical-blue transition-colors">About</a>
+                    <a href="services.html" class="hover:text-clinical-blue transition-colors">Services</a>
+                    <a href="careers.html" class="hover:text-clinical-blue transition-colors">Careers</a>
+                    <a href="Patient Login.html" class="clinical-blue hover:text-blue-700 transition-colors flex items-center gap-1">
+                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                        <span>Patient Login</span>
+                    </a>
+                    <a href="appointment.html" class="bg-clinical-blue text-white px-6 py-2.5 rounded-full shadow-md shadow-blue-500/20 hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
+                        <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                        <span>Make Appointment</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="menu-btn" aria-label="Toggle Menu" class="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors focus:outline-none">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Slide-out Drawer -->
+        <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col p-6 sm:p-8 lg:hidden">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                <img src="prism1.png" alt="Prism Physiotherapy" class="h-10 w-auto">
+                <button id="close-menu" aria-label="Close Menu" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition-colors">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
+            </div>
+            <div class="flex flex-col gap-6 mt-8 text-xl font-bold text-slate-800">
+                <a href="index.html" class="hover:text-clinical-blue transition-colors flex items-center justify-between">
+                    <span>Home</span>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </a>
+                <a href="about.html" class="hover:text-clinical-blue transition-colors flex items-center justify-between">
+                    <span>About Us</span>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </a>
+                <a href="services.html" class="hover:text-clinical-blue transition-colors flex items-center justify-between">
+                    <span>Specialized Services</span>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </a>
+                <a href="careers.html" class="hover:text-clinical-blue transition-colors flex items-center justify-between">
+                    <span>Careers</span>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </a>
+                <a href="Patient Login.html" class="clinical-blue flex items-center justify-between">
+                    <span>Patient Portal</span>
+                    <i data-lucide="user-check" class="w-5 h-5"></i>
+                </a>
+                <a href="appointment.html" class="bg-clinical-blue text-white p-4 rounded-2xl text-center text-base font-bold shadow-lg shadow-blue-500/25 mt-2 flex items-center justify-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Make Appointment</span>
+                </a>
+                <a href="https://wa.me/919708059081" target="_blank" class="bg-emerald-50 text-emerald-700 border border-emerald-200 p-3.5 rounded-2xl text-center text-sm font-bold flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    <span>WhatsApp Clinic Desk</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main 404 Error Content -->
+        <main class="flex-grow flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <!-- Decorative Ambient Background Elements -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-blue-300/20 via-cyan-200/20 to-indigo-300/20 rounded-full blur-[110px] pointer-events-none pulse-subtle"></div>
+            <div class="absolute bottom-10 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-[90px] pointer-events-none"></div>
+
+            <div class="max-w-4xl mx-auto text-center relative z-10 w-full">
+                
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white shadow-sm border border-slate-200/80 mb-6">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+                    </span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Error 404 &bull; Page Not Found</span>
+                </div>
+
+                <!-- Big 404 Typography -->
+                <div class="relative mb-4">
+                    <h1 class="text-8xl sm:text-9xl md:text-[11rem] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-500 select-none leading-none drop-shadow-sm">
+                        404
+                    </h1>
+                </div>
+
+                <!-- Headline -->
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+                    Oops! Looks Like You&rsquo;ve Taken a Wrong Turn.
+                </h2>
+
+                <!-- Subtitle / Explanation -->
+                <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-8">
+                    The page you are looking for may have been moved, renamed, or is no longer available. 
+                    Don&rsquo;t worry &mdash; our clinical rehabilitation team is here to help you get right back on track.
+                </p>
+
+                <!-- Primary Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-12">
+                    <a href="index.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-clinical-blue hover:bg-blue-700 text-white font-bold text-sm px-7 py-4 rounded-2xl shadow-lg shadow-blue-600/25 transition-all transform hover:-translate-y-0.5 active:scale-95">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        <span>Return to Homepage</span>
+                    </a>
+                    <a href="appointment.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold text-sm px-7 py-4 rounded-2xl shadow-sm transition-all transform hover:-translate-y-0.5 active:scale-95">
+                        <i data-lucide="calendar" class="w-4 h-4 text-clinical-blue"></i>
+                        <span>Book an Appointment</span>
+                    </a>
+                    <a href="https://wa.me/919708059081?text=Hi%20Prism%20Physiotherapy,%20I%20need%20help%20finding%20information%20on%20your%20website." target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-7 py-4 rounded-2xl shadow-lg shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5 active:scale-95">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Chat on WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Helpful Quick Links Grid -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-lg shadow-slate-100/80 text-left">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Explore Popular Destinations</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Quickly jump to our most visited clinical departments &amp; services:</p>
+                        </div>
+                        <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-clinical-blue bg-blue-50 px-3 py-1 rounded-full">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Prism Quick Access
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Quick Card 1 -->
+                        <a href="services.html" class="group p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-blue-50/50 hover:border-blue-200 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-xl bg-blue-100 text-clinical-blue flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="activity" class="w-5 h-5"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-900 group-hover:text-clinical-blue transition-colors">Neuro Rehabilitation</h4>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">Stroke recovery, Parkinson&rsquo;s, SCI &amp; motor restoration protocols.</p>
+                            </div>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-clinical-blue mt-3">
+                                View Department <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </a>
+
+                        <!-- Quick Card 2 -->
+                        <a href="services.html" class="group p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-blue-50/50 hover:border-blue-200 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-xl bg-blue-100 text-clinical-blue flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="shield" class="w-5 h-5"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-900 group-hover:text-clinical-blue transition-colors">Ortho &amp; Spine Care</h4>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">Sciatica, Slip Disc, Joint Replacement &amp; McKenzie methods.</p>
+                            </div>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-clinical-blue mt-3">
+                                View Department <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </a>
+
+                        <!-- Quick Card 3 -->
+                        <a href="about.html" class="group p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-blue-50/50 hover:border-blue-200 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-xl bg-blue-100 text-clinical-blue flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="users" class="w-5 h-5"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-900 group-hover:text-clinical-blue transition-colors">Our Specialists</h4>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">Led by Dr. Ravi Kumar (MPT Neuro) and senior clinical consultants.</p>
+                            </div>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-clinical-blue mt-3">
+                                Meet Specialists <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </a>
+
+                        <!-- Quick Card 4 -->
+                        <a href="Patient Login.html" class="group p-4 rounded-2xl border border-slate-100 bg-slate-50/60 hover:bg-blue-50/50 hover:border-blue-200 transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-xl bg-blue-100 text-clinical-blue flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                                </div>
+                                <h4 class="font-bold text-sm text-slate-900 group-hover:text-clinical-blue transition-colors">Patient Portal</h4>
+                                <p class="text-xs text-slate-500 mt-1 line-clamp-2">Check session history, prescriptions, exercises and bill receipts.</p>
+                            </div>
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-clinical-blue mt-3">
+                                Access Portal <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-1 transition-transform"></i>
+                            </span>
+                        </a>
+                    </div>
+
+                    <!-- Direct Help Box -->
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-clinical-blue shrink-0"></i>
+                            <span>Clinics in <strong>Patna (Orthocare Hospital, Gola Rd)</strong> &amp; <strong>Begusarai (Main Road)</strong></span>
+                        </div>
+                        <div class="flex items-center gap-1 font-semibold text-slate-700">
+                            <span>Clinical Desk:</span>
+                            <a href="tel:+919708059081" class="text-clinical-blue hover:underline">+91 97080 59081</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Global Footer -->
+        <footer class="bg-slate-900 text-white pt-16 pb-12 mt-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                    
+                    <!-- Clinic Info -->
+                    <div>
+                        <a href="index.html" class="inline-block transition-transform duration-300 hover:scale-105">
+                            <img src="PrismLogo.png" alt="Prism Logo" class="h-12 w-auto rounded-md bg-white p-1">
+                        </a>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 mt-4 italic">
+                            Redefining recovery through specialized clinical care across neurological conditions, orthopaedic injuries, sports rehab, and pediatric care with evidence-based global standards.
+                        </p>
+                        <div class="flex flex-wrap gap-2.5">
+                            <a href="https://www.linkedin.com/company/prismphysiotherapy/?viewAsMember=true" target="_blank"
+                                class="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#1877F2] text-white rounded-xl text-xs font-bold shadow hover:scale-105 transition-transform">
+                                <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> LinkedIn
+                            </a>
+                            <a href="https://instagram.com/prismphysiotherapy" target="_blank"
+                                class="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-xl text-xs font-bold shadow hover:scale-105 transition-transform">
+                                <i data-lucide="instagram" class="w-3.5 h-3.5"></i> Instagram
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Location Units -->
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-bold text-xs uppercase tracking-widest text-sky-400 mb-1">Begusarai Unit (HQ)</h5>
+                            <p class="text-sm text-slate-300">Main Road, Begusarai, Bihar</p>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-xs uppercase tracking-widest text-sky-400 mb-1">Patna Unit 1</h5>
+                            <p class="text-sm text-slate-300">Orthocare Hospital, Gola Road, Patna, Bihar - 801503</p>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-xs uppercase tracking-widest text-sky-400 mb-1">Patna Unit 2</h5>
+                            <p class="text-sm text-slate-300">MG Nagar, Kanti Factory Road, Patna, Bihar</p>
+                        </div>
+                        <div class="pt-2">
+                            <a href="tel:+919708059081" class="inline-flex items-center gap-2 text-white font-bold hover:text-sky-400 transition-colors text-sm">
+                                <i data-lucide="phone-call" class="text-sky-400 w-4 h-4"></i>
+                                <span>Direct Helpline: +91 97080 59081</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Nav & Hours -->
+                    <div class="space-y-3">
+                        <h5 class="font-bold text-xs uppercase tracking-widest text-sky-400 mb-3">Operating Hours</h5>
+                        <p class="text-sm text-slate-300 flex justify-between">
+                            <span>Monday &ndash; Saturday:</span>
+                            <span class="font-semibold text-white">09:00 AM &ndash; 08:00 PM</span>
+                        </p>
+                        <p class="text-sm text-slate-300 flex justify-between">
+                            <span>Sunday:</span>
+                            <span class="font-semibold text-amber-400">By Prior Appointment</span>
+                        </p>
+                        <div class="pt-4 border-t border-slate-800 flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-400">
+                            <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                            <a href="about.html" class="hover:text-white transition-colors">About Us</a>
+                            <a href="services.html" class="hover:text-white transition-colors">Services</a>
+                            <a href="careers.html" class="hover:text-white transition-colors">Careers</a>
+                            <a href="Patient Login.html" class="hover:text-white transition-colors">Patient Login</a>
+                            <a href="appointment.html" class="hover:text-white transition-colors">Book Slot</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Copyright Bar -->
+                <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-xs font-semibold tracking-wider uppercase">
+                    &copy; 2024 Prism Healthcare &bull; Super Speciality Physiotherapy &amp; Rehabilitation
+                </div>
+            </div>
+        </footer>
+
+        <!-- Floating WhatsApp CTA -->
+        <a href="https://wa.me/919708059081?text=Hi%20Prism%20Physiotherapy,%20I%20would%20like%20to%20book%20an%20appointment."
+            class="fixed bottom-6 right-6 z-[100] bg-emerald-500 text-white p-4 rounded-full shadow-2xl whatsapp-float flex items-center justify-center hover:scale-110 transition-transform"
+            aria-label="WhatsApp Support">
+            <i data-lucide="message-circle" class="w-7 h-7"></i>
+        </a>
+
     </div>
 
+    <!-- ============================================================== -->
+    <!-- SECTION 2: SECURE BILL DOWNLOAD RESOLVER (/b/<token> SHORT URLS) -->
+    <!-- Active ONLY when patient visits https://prismhealthcare.in/b/<TOKEN> -->
+    <!-- ============================================================== -->
+    <div id="billResolverSection" class="hidden min-h-screen w-full bg-slate-900 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8 sm:p-10 text-center border border-slate-100 relative overflow-hidden">
+            
+            <!-- Prism Branding -->
+            <div class="mb-5 flex justify-center">
+                <img src="prism1.png" alt="Prism Physiotherapy" class="h-14 w-auto object-contain" onerror="this.src='https://prismhealthcare.in/prism1.png'">
+            </div>
+            
+            <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">Prism Physiotherapy</h2>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-6">&amp; Rehabilitation Center</p>
+
+            <!-- Dynamic Status / Content Container -->
+            <div id="billContentArea">
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 mb-6">
+                    <div class="bill-spinner" id="billSpinner"></div>
+                    <h3 class="text-base font-bold text-slate-800 mb-1.5" id="billStatusTitle">Connecting securely...</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed" id="billStatusDesc">Please hold on while we prepare your official clinical document.</p>
+                </div>
+            </div>
+
+            <!-- Footer Badge -->
+            <div class="text-[11px] font-medium text-slate-400 border-t border-slate-100 pt-4 flex items-center justify-center gap-1.5">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>Official Document Verification &bull; Prism Clinical PMS</span>
+            </div>
+
+            <div class="mt-4">
+                <a href="index.html" class="text-xs font-semibold text-slate-500 hover:text-clinical-blue transition-colors">
+                    &larr; Return to Prism Healthcare Homepage
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ROUTING & CLIENT LOGIC -->
+    <!-- ========================================== -->
     <script>
         (function () {
             const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxkLSLf9qdumnXJEkpgYjJ6sucgp_Rx2NzhkSkINXurrKzknEynBG6nK-caD07OSdm80A/exec';
+            
             const path = window.location.pathname;
-            const contentArea = document.getElementById('contentArea');
+            const searchParams = new URLSearchParams(window.location.search);
+            const queryBillToken = searchParams.get('billToken') || searchParams.get('b');
+            
+            // Check if URL matches secure bill path (/b/<token>) or explicit query parameter (?billToken=...)
+            const isBillPath = path.startsWith('/b/') || Boolean(queryBillToken);
 
-            // Check if URL matches secure bill path: /b/<token>
-            if (path.startsWith('/b/')) {
-                const billToken = path.substring(3).split('/')[0].trim();
+            if (isBillPath) {
+                // Extract bill token
+                let billToken = queryBillToken;
+                if (!billToken && path.startsWith('/b/')) {
+                    billToken = path.substring(3).split('/')[0].trim();
+                }
+
+                // Switch UI to Bill Document Resolver
+                document.title = "Prism Physiotherapy | Bill Document Download";
+                const website404 = document.getElementById('website404');
+                const billResolver = document.getElementById('billResolverSection');
+                
+                if (website404) website404.classList.add('hidden');
+                if (billResolver) billResolver.classList.remove('hidden');
 
                 if (billToken) {
                     resolveAndDownloadBill(billToken);
-                    return;
+                } else {
+                    showBillError('No bill token found in the requested URL.');
+                }
+            } else {
+                // Standard 404 for any other path on the entire website
+                document.title = "404 - Page Not Found | Prism Physiotherapy & Rehabilitation Center";
+                initWebsite404Interactions();
+            }
+
+            // -------------------------------------------------------------
+            // WEBSITE 404 INTERACTIONS
+            // -------------------------------------------------------------
+            function initWebsite404Interactions() {
+                try {
+                    if (window.lucide) {
+                        lucide.createIcons();
+                    }
+                } catch (e) {
+                    console.warn('Lucide icon initialization skipped', e);
+                }
+
+                const menuBtn = document.getElementById('menu-btn');
+                const closeMenu = document.getElementById('close-menu');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                if (menuBtn && mobileMenu) {
+                    menuBtn.onclick = function () {
+                        mobileMenu.classList.add('open');
+                    };
+                }
+                if (closeMenu && mobileMenu) {
+                    closeMenu.onclick = function () {
+                        mobileMenu.classList.remove('open');
+                    };
                 }
             }
 
-            // Normal 404 for any other path
-            showNormal404();
-
-            function updateUI(html) {
-                if (contentArea) contentArea.innerHTML = html;
+            // -------------------------------------------------------------
+            // BILL RESOLVER & DOWNLOAD LOGIC (PRESERVED & ENHANCED)
+            // -------------------------------------------------------------
+            function updateBillUI(html) {
+                const contentArea = document.getElementById('billContentArea');
+                if (contentArea) {
+                    contentArea.innerHTML = html;
+                    try { if (window.lucide) lucide.createIcons(); } catch (e) {}
+                }
             }
 
             function b64toBlob(b64Data, contentType, sliceSize) {
@@ -195,14 +496,30 @@
                 return new Blob(byteArrays, { type: contentType });
             }
 
+            function showBillError(message) {
+                updateBillUI(`
+                    <div class="p-6 rounded-2xl bg-red-50 border border-red-200/80 mb-6">
+                        <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Bill Not Found</h3>
+                        <p class="text-xs text-red-600 leading-relaxed">${message || 'This bill link is invalid or has expired. If you believe this is an error, please contact Prism Physiotherapy.'}</p>
+                    </div>
+                    <div class="space-y-2.5">
+                        <a href="index.html" class="block w-full py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-colors">Visit Prism Physiotherapy</a>
+                        <a href="https://wa.me/919708059081" target="_blank" class="block w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors">Contact Helpline on WhatsApp</a>
+                    </div>
+                `);
+            }
+
             async function resolveAndDownloadBill(token, retryCount = 0) {
                 const maxRetries = 4;
 
-                updateUI(`
-                    <div class="status-box">
-                        <div class="spinner"></div>
-                        <div class="status-title">Preparing Your Bill Download...</div>
-                        <div class="status-desc">Fetching your verified clinical statement, session ledger, and completion certificate.</div>
+                updateBillUI(`
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 mb-6">
+                        <div class="bill-spinner"></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">Preparing Your Bill Download...</h3>
+                        <p class="text-xs text-slate-600 leading-relaxed">Fetching your verified clinical statement, session ledger, and completion certificate.</p>
                     </div>
                 `);
 
@@ -232,11 +549,11 @@
                     // Case 1: Bill document is still preparing in Google Drive
                     if (data.status === 'PREPARING' || (data.valid === false && data.message && data.message.toLowerCase().includes('prepared'))) {
                         if (retryCount < maxRetries) {
-                            updateUI(`
-                                <div class="status-box">
-                                    <div class="spinner"></div>
-                                    <div class="status-title">Finalizing Clinical PDF...</div>
-                                    <div class="status-desc">Your bill has been generated and is finalizing in secure storage. Rechecking in 3 seconds... (Attempt ${retryCount + 1}/${maxRetries})</div>
+                            updateBillUI(`
+                                <div class="p-6 rounded-2xl bg-amber-50 border border-amber-200/80 mb-6">
+                                    <div class="bill-spinner"></div>
+                                    <h3 class="text-base font-bold text-amber-800 mb-1">Finalizing Clinical PDF...</h3>
+                                    <p class="text-xs text-amber-700 leading-relaxed">Your bill has been generated and is finalizing in secure storage. Rechecking in 3 seconds... (Attempt ${retryCount + 1}/${maxRetries})</p>
                                 </div>
                             `);
                             setTimeout(function () {
@@ -248,16 +565,7 @@
 
                     // Case 2: Bill token not found or invalid
                     if (data.valid === false || data.status === 'NOT_FOUND') {
-                        updateUI(`
-                            <div class="status-box">
-                                <div class="icon-wrap icon-error">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                </div>
-                                <div class="status-title" style="color:#b91c1c;">Bill Not Found</div>
-                                <div class="status-desc">${data.message || 'This bill link is invalid or has expired. If you believe this is an error, please contact Prism Physiotherapy.'}</div>
-                            </div>
-                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
-                        `);
+                        showBillError(data.message);
                         return;
                     }
 
@@ -279,16 +587,18 @@
                             try { document.body.removeChild(a); } catch (e) {}
                         }, 500);
 
-                        updateUI(`
-                            <div class="status-box">
-                                <div class="icon-wrap icon-success">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        updateBillUI(`
+                            <div class="p-6 rounded-2xl bg-emerald-50 border border-emerald-200/80 mb-6">
+                                <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+                                    <i data-lucide="check-circle" class="w-6 h-6"></i>
                                 </div>
-                                <div class="status-title" style="color:#15803d;">Download Started!</div>
-                                <div class="status-desc">Your clinical bill PDF (Statement, Narrative Ledger, and Certificate) has been downloaded to your device.</div>
+                                <h3 class="text-base font-bold text-emerald-800 mb-1">Download Started!</h3>
+                                <p class="text-xs text-emerald-700 leading-relaxed">Your clinical bill PDF (Statement, Ledger &amp; Certificate) has been downloaded to your device.</p>
                             </div>
-                            <a href="${blobUrl}" download="${fileName}" class="btn btn-primary" id="btnDownloadAgain">Download Again</a>
-                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                            <div class="space-y-2.5">
+                                <a href="${blobUrl}" download="${fileName}" class="block w-full py-3 px-4 bg-clinical-blue hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-colors">Download PDF Again</a>
+                                <a href="index.html" class="block w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">Visit Prism Physiotherapy</a>
+                            </div>
                         `);
                         return;
                     }
@@ -296,16 +606,18 @@
                     // Case 4: Valid bill with direct Drive download URL fallback
                     if (data.valid && data.downloadUrl) {
                         const fileName = data.fileName || `Prism_Bill_${data.billNo || 'Statement'}.pdf`;
-                        updateUI(`
-                            <div class="status-box">
-                                <div class="icon-wrap icon-success">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        updateBillUI(`
+                            <div class="p-6 rounded-2xl bg-emerald-50 border border-emerald-200/80 mb-6">
+                                <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+                                    <i data-lucide="check-circle" class="w-6 h-6"></i>
                                 </div>
-                                <div class="status-title" style="color:#15803d;">Download Ready</div>
-                                <div class="status-desc">Starting download... If it does not start automatically, please click below.</div>
+                                <h3 class="text-base font-bold text-emerald-800 mb-1">Download Ready</h3>
+                                <p class="text-xs text-emerald-700 leading-relaxed">Starting download... If it does not start automatically, please click below.</p>
                             </div>
-                            <a href="${data.downloadUrl}" target="_blank" class="btn btn-primary">Download PDF Now</a>
-                            <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                            <div class="space-y-2.5">
+                                <a href="${data.downloadUrl}" target="_blank" class="block w-full py-3 px-4 bg-clinical-blue hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-colors">Download PDF Now</a>
+                                <a href="index.html" class="block w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">Visit Prism Physiotherapy</a>
+                            </div>
                         `);
                         window.location.href = data.downloadUrl;
                         return;
@@ -315,28 +627,20 @@
 
                 } catch (err) {
                     console.error('Download resolution error:', err);
-                    updateUI(`
-                        <div class="status-box">
-                            <div class="icon-wrap icon-warning">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    updateBillUI(`
+                        <div class="p-6 rounded-2xl bg-amber-50 border border-amber-200/80 mb-6">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
                             </div>
-                            <div class="status-title">Connection Notice</div>
-                            <div class="status-desc">We had trouble downloading the file directly. Click below to retrieve your bill.</div>
+                            <h3 class="text-base font-bold text-amber-800 mb-1">Connection Notice</h3>
+                            <p class="text-xs text-amber-700 leading-relaxed">We encountered a temporary network delay downloading the file directly. Click below to retrieve your bill.</p>
                         </div>
-                        <button onclick="window.location.replace('${APPS_SCRIPT_URL}?billToken=' + encodeURIComponent('${token}'))" class="btn btn-primary">Download Bill Document</button>
-                        <a href="https://prismhealthcare.in" class="btn btn-secondary">Visit Prism Physiotherapy</a>
+                        <div class="space-y-2.5">
+                            <button onclick="window.location.replace('${APPS_SCRIPT_URL}?billToken=' + encodeURIComponent('${token}'))" class="w-full py-3 px-4 bg-clinical-blue hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow transition-colors">Download Bill Document</button>
+                            <a href="index.html" class="block w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition-colors">Visit Prism Physiotherapy</a>
+                        </div>
                     `);
                 }
-            }
-
-            function showNormal404() {
-                updateUI(`
-                    <div class="status-box">
-                        <div class="status-title" style="font-size:24px;font-weight:700;">404</div>
-                        <div class="status-desc">The requested page does not exist.</div>
-                    </div>
-                    <a href="https://prismhealthcare.in" class="btn btn-primary">Return to Prism Physiotherapy</a>
-                `);
             }
 
         })();
