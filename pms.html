@@ -190,6 +190,7 @@ height: 28px !important;
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid rgba(226, 232, 240, 0.85);
+            border-radius: 1.25rem;
             box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px -1px rgba(15, 23, 42, 0.02), inset 0 1px 0 rgba(255, 255, 255, 0.9);
             transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -2329,7 +2330,7 @@ html.dark .instruction-modal-footer {
             }
             .glass-card {
                 padding: 0.85rem !important;
-                border-radius: 1.15rem !important;
+                border-radius: 0.75rem !important;
             }
         }
         /* Compact square inquiry buttons */
@@ -2781,14 +2782,14 @@ html.dark .instruction-modal-footer {
 <section id="tab-overview" class="animate-slide space-y-4 sm:space-y-6">
 
   <!-- ── 0. PERSONALIZED CLINICAL WELCOME BANNER ── -->
-  <div id="overview-greeting-card" class="flex items-center gap-3.5 px-4 py-3.5 sm:px-5 sm:py-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
-      <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+  <div id="overview-greeting-card" class="flex items-center gap-3.5 px-4 py-3.5 sm:px-5 sm:py-4 rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+      <div class="w-11 h-11 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 shadow-xs">
           <i data-lucide="sun" id="overview-greeting-icon" class="w-5 h-5"></i>
       </div>
       <div class="min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
               <h2 id="overview-greeting-text" class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">Good day, Administrator</h2>
-              <span id="overview-user-badge" class="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 text-[9px] font-black uppercase tracking-wide">Admin</span>
+              <span id="overview-user-badge" class="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-300 text-[9px] font-black uppercase tracking-wide">Admin</span>
           </div>
           <p class="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-0.5">
               Session <span id="overview-session-badge" class="font-mono">SESS-Active</span>
@@ -2796,46 +2797,46 @@ html.dark .instruction-modal-footer {
       </div>
   </div>
 
-  <!-- ── 1. TOP HERO STATS ROW (Exact match to screenshot) ── -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+  <!-- ── 1. TOP HERO STATS ROW (Exact match to screenshot with circular icons & curves) ── -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
     <!-- Total Sessions Card -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-indigo-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
-      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 shadow-lg shadow-indigo-200 dark:shadow-none flex items-center justify-center flex-shrink-0 text-white">
-        <i data-lucide="activity" class="w-6 h-6"></i>
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 border-l-[4px] sm:border-l-[5px] border-l-indigo-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 shadow-md shadow-indigo-500/30 flex items-center justify-center flex-shrink-0 text-white">
+        <i data-lucide="activity" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
-        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5">Total Sessions</p>
-        <h3 id="stat-total" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+      <div class="min-w-0">
+        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5 truncate">Total Sessions</p>
+        <h3 id="stat-total" class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
       </div>
     </div>
 
     <!-- Registered Patients Card -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-emerald-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
-      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-500 shadow-lg shadow-emerald-200 dark:shadow-none flex items-center justify-center flex-shrink-0 text-white">
-        <i data-lucide="users" class="w-6 h-6"></i>
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 border-l-[4px] sm:border-l-[5px] border-l-emerald-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-500 shadow-md shadow-emerald-500/30 flex items-center justify-center flex-shrink-0 text-white">
+        <i data-lucide="users" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
-        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5">Registered Patients</p>
-        <h3 id="stat-registered" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
+      <div class="min-w-0">
+        <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mb-0.5 truncate">Registered Patients</p>
+        <h3 id="stat-registered" class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-none">0</h3>
       </div>
     </div>
 
     <!-- Total Collection Hero Card -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 bg-gradient-to-r from-indigo-600 to-indigo-800 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-950/50 transition-all border-none" style="background: linear-gradient(to right, #4f46e5, #3730a3) !important;">
-      <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center flex-shrink-0 text-white">
-        <i data-lucide="indian-rupee" class="w-6 h-6"></i>
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 text-white shadow-md shadow-indigo-600/30 transition-all border-none" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%) !important;">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center flex-shrink-0 text-white shadow-sm">
+        <i data-lucide="indian-rupee" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
-        <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5">Total Collection</p>
-        <h3 id="stat-revenue" class="text-2xl sm:text-3xl font-black text-white leading-none">₹0</h3>
+      <div class="min-w-0">
+        <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5 truncate">Total Collection</p>
+        <h3 id="stat-revenue" class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
 
-  <!-- ── 2. BRANCH + ACTIVE + DUES ROW (Exact match to screenshot) ── -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+  <!-- ── 2. BRANCH + ACTIVE + DUES ROW ── -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-3.5">
     <!-- Orthocare (POC) -->
-    <button onclick="openBranchDetailModal('POC')" class="glass-card p-5 rounded-[1.75rem] border border-blue-100 dark:border-blue-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+    <button onclick="openBranchDetailModal('POC')" class="glass-card p-3.5 sm:p-4.5 rounded-2xl border border-blue-100 dark:border-blue-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
       <div class="flex items-start justify-between mb-2">
         <div class="text-[9px] sm:text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest leading-tight">
           Prism<br>Orthocare
@@ -2843,7 +2844,7 @@ html.dark .instruction-modal-footer {
         <span class="text-[9px] font-black bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">POC</span>
       </div>
       <div>
-        <h3 id="stat-poc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
+        <h3 id="stat-poc-revenue" class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-1.5">₹0</h3>
         <div class="flex items-center gap-1 text-[9px] font-bold text-blue-500 uppercase tracking-wide">
           <span>View Branch</span>
           <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
@@ -2852,7 +2853,7 @@ html.dark .instruction-modal-footer {
     </button>
 
     <!-- Home Care (PHC) -->
-    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-5 rounded-[1.75rem] border border-emerald-100 dark:border-emerald-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+    <button onclick="openBranchDetailModal('PHC')" class="glass-card p-3.5 sm:p-4.5 rounded-2xl border border-emerald-100 dark:border-emerald-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
       <div class="flex items-start justify-between mb-2">
         <div class="text-[9px] sm:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest leading-tight">
           Home<br>Care
@@ -2860,7 +2861,7 @@ html.dark .instruction-modal-footer {
         <span class="text-[9px] font-black bg-emerald-600 text-white px-2.5 py-0.5 rounded-full shadow-xs">PHC</span>
       </div>
       <div>
-        <h3 id="stat-phc-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">₹0</h3>
+        <h3 id="stat-phc-revenue" class="text-lg sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-1.5">₹0</h3>
         <div class="flex items-center gap-1 text-[9px] font-bold text-emerald-500 uppercase tracking-wide">
           <span>View Branch</span>
           <i data-lucide="chevron-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
@@ -2869,7 +2870,7 @@ html.dark .instruction-modal-footer {
     </button>
 
     <!-- Active Cases -->
-    <button onclick="openCaseModal()" class="glass-card p-5 rounded-[1.75rem] border border-rose-100 dark:border-rose-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+    <button onclick="openCaseModal()" class="glass-card p-3.5 sm:p-4.5 rounded-2xl border border-rose-100 dark:border-rose-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
       <div class="flex items-start justify-between mb-2">
         <div class="text-[9px] sm:text-[10px] font-black text-rose-500 dark:text-rose-400 uppercase tracking-widest leading-tight">
           Active<br>Cases
@@ -2880,79 +2881,81 @@ html.dark .instruction-modal-footer {
         </span>
       </div>
       <div>
-        <h3 id="stat-active-count" class="text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2">0</h3>
+        <h3 id="stat-active-count" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-1.5">0</h3>
         <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wide">Under Treatment</p>
       </div>
     </button>
 
     <!-- Outstanding Dues -->
-    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-5 rounded-[1.75rem] border border-amber-100 dark:border-amber-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
+    <button onclick="document.getElementById('dues-list').scrollIntoView({behavior:'smooth'});" class="glass-card p-3.5 sm:p-4.5 rounded-2xl border border-amber-100 dark:border-amber-900/50 bg-white dark:bg-slate-900 text-left hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between">
       <div class="flex items-start justify-between mb-2">
         <div class="text-[9px] sm:text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase tracking-widest leading-tight">
           Outstanding<br>Dues
         </div>
-        <i data-lucide="alert-circle" class="w-4 h-4 text-amber-500 mt-0.5"></i>
+        <div class="w-7 h-7 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-200/60 dark:border-amber-900/40">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+        </div>
       </div>
       <div>
-        <h3 id="stat-outstanding" class="text-xl sm:text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight mb-2">₹0</h3>
+        <h3 id="stat-outstanding" class="text-lg sm:text-2xl font-black text-amber-950 dark:text-amber-100 leading-tight mb-1.5">₹0</h3>
         <p class="text-[9px] font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wide">Pending Dues</p>
       </div>
     </button>
   </div>
 
-  <!-- ── 3. QUICK FILTER BAR (Exact match to screenshot) ── -->
-  <div class="glass-card p-5 rounded-[1.75rem] border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-    <div class="flex flex-wrap items-center gap-2.5">
+  <!-- ── 3. QUICK FILTER BAR ── -->
+  <div class="glass-card p-3 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
+    <div class="flex flex-wrap items-center gap-2">
       <span class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest mr-1">Quick Filter:</span>
-      <button onclick="filterByBranch('POC')" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100 dark:border-indigo-900/50 active:scale-95 cursor-pointer">Orthocare</button>
-      <button onclick="filterByBranch('PHC')" class="px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/50 active:scale-95 cursor-pointer">Homecare</button>
+      <button onclick="filterByBranch('POC')" class="px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-black text-[10px] uppercase hover:bg-indigo-600 hover:text-white transition-all border border-indigo-100 dark:border-indigo-900/50 active:scale-95 cursor-pointer">Orthocare</button>
+      <button onclick="filterByBranch('PHC')" class="px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-[10px] uppercase hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 dark:border-emerald-900/50 active:scale-95 cursor-pointer">Homecare</button>
       <div class="w-full sm:w-auto mt-1 sm:mt-0">
-        <button onclick="filterByBranch('ALL')" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95 cursor-pointer">All Branches</button>
+        <button onclick="filterByBranch('ALL')" class="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-black text-[10px] uppercase hover:bg-slate-800 hover:text-white dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 active:scale-95 cursor-pointer">All Branches</button>
       </div>
     </div>
   </div>
 
-  <!-- ── 4. COLLECTION SUMMARY TRIO (Wide Tab Cards with Soft Previous Icons) ── -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+  <!-- ── 4. COLLECTION SUMMARY TRIO ── -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
     <!-- Today -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-sky-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
-      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border border-sky-100 dark:border-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0">
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 border-l-[4px] sm:border-l-[5px] border-l-sky-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow transition-all">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-sky-50 dark:bg-sky-950/60 border border-sky-100 dark:border-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 shadow-xs">
         <i data-lucide="calendar" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
+      <div class="min-w-0">
         <div class="flex items-center gap-2 mb-0.5">
           <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">Today</p>
-          <span class="text-[8px] font-black text-sky-600 dark:text-sky-400 uppercase bg-sky-50 dark:bg-sky-950/60 px-2 py-0.5 rounded-md border border-sky-100 dark:border-sky-900/50">Daily</span>
+          <span class="text-[8px] font-black text-sky-600 dark:text-sky-400 uppercase bg-sky-50 dark:bg-sky-950/60 px-2 py-0.5 rounded-full border border-sky-100 dark:border-sky-900/50">Daily</span>
         </div>
-        <h3 id="stat-daily" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
+        <h3 id="stat-daily" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
     <!-- This Month -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-indigo-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
-      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 border-l-[4px] sm:border-l-[5px] border-l-indigo-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow transition-all">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 shadow-xs">
         <i data-lucide="calendar-days" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
+      <div class="min-w-0">
         <div class="flex items-center gap-2 mb-0.5">
           <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">This Month</p>
-          <span class="text-[8px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-100 dark:border-indigo-900/50">MTD</span>
+          <span class="text-[8px] font-black text-indigo-600 dark:text-indigo-400 uppercase bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-100 dark:border-indigo-900/50">MTD</span>
         </div>
-        <h3 id="stat-monthly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
+        <h3 id="stat-monthly" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
 
     <!-- This Year -->
-    <div class="glass-card p-5 rounded-[1.75rem] flex items-center gap-4 border-l-4 border-l-purple-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow transition-all">
-      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-violet-50 dark:bg-violet-950/60 border border-violet-100 dark:border-violet-900/50 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0">
+    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 border-l-[4px] sm:border-l-[5px] border-l-purple-500 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs hover:shadow transition-all">
+      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-violet-50 dark:bg-violet-950/60 border border-violet-100 dark:border-violet-900/50 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 shadow-xs">
         <i data-lucide="bar-chart-3" class="w-5 h-5 sm:w-6 sm:h-6"></i>
       </div>
-      <div>
+      <div class="min-w-0">
         <div class="flex items-center gap-2 mb-0.5">
           <p class="text-[10px] sm:text-xs font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider">This Year</p>
-          <span class="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-md border border-purple-100 dark:border-purple-900/50">YTD</span>
+          <span class="text-[8px] font-black text-purple-600 dark:text-purple-400 uppercase bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded-full border border-purple-100 dark:border-purple-900/50">YTD</span>
         </div>
-        <h3 id="stat-yearly" class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
+        <h3 id="stat-yearly" class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-none">₹0</h3>
       </div>
     </div>
   </div>
@@ -2960,7 +2963,7 @@ html.dark .instruction-modal-footer {
   <!-- ── 5. CHARTS ROW (REVENUE TREND & DAILY VELOCITY) ── -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-3.5 sm:gap-5 lg:gap-6">
     <!-- Revenue Trend Chart Card -->
-    <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+    <div class="glass-card p-4 sm:p-6 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
       <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-indigo-500 via-indigo-600 to-violet-500"></div>
       <div class="flex items-center justify-between mb-3 sm:mb-5">
         <div>
@@ -2970,7 +2973,7 @@ html.dark .instruction-modal-footer {
           </div>
           <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Clinical Inflow</p>
         </div>
-        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
           <i data-lucide="trending-up" class="w-4 h-4"></i>
         </div>
       </div>
@@ -2980,7 +2983,7 @@ html.dark .instruction-modal-footer {
     </div>
 
     <!-- Daily Collection Chart Card -->
-    <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+    <div class="glass-card p-4 sm:p-6 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
       <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-500"></div>
       <div class="flex items-center justify-between mb-3 sm:mb-5">
         <div>
@@ -2990,7 +2993,7 @@ html.dark .instruction-modal-footer {
           </div>
           <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Velocity Trajectory</p>
         </div>
-        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shadow-xs">
           <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
         </div>
       </div>
@@ -3001,7 +3004,7 @@ html.dark .instruction-modal-footer {
   </div>
 
   <!-- ── 6. OUTSTANDING DUES CARD ── -->
-  <div class="glass-card p-4 sm:p-6 rounded-2xl lg:rounded-[2.25rem] shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
+  <div class="glass-card p-4 sm:p-6 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 relative overflow-hidden">
     <div class="h-1 w-full absolute top-0 left-0 bg-gradient-to-r from-rose-500 via-amber-500 to-rose-400"></div>
     <div class="flex items-center justify-between mb-3 sm:mb-5 pb-2.5 sm:pb-3 border-b border-slate-100 dark:border-slate-800">
       <div>
@@ -3012,11 +3015,11 @@ html.dark .instruction-modal-footer {
         <p class="text-[8.5px] sm:text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5 tracking-wider">Patient Accounts Requiring Follow-Up</p>
       </div>
       <div class="flex items-center gap-2">
-        <button type="button" onclick="openBatchReminderModal()" class="text-[8.5px] sm:text-[9px] font-black bg-[#25D366] hover:bg-[#20BA5F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase shadow-xs flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer active:scale-95" title="Send WhatsApp reminders to patients with outstanding dues">
+        <button type="button" onclick="openBatchReminderModal()" class="text-[8.5px] sm:text-[9px] font-black bg-[#25D366] hover:bg-[#20BA5F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg uppercase shadow-xs flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer active:scale-95" title="Send WhatsApp reminders to patients with outstanding dues">
           <i data-lucide="send" class="w-3 h-3"></i>
           <span>Batch Remind</span>
         </button>
-        <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
+        <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
           <i data-lucide="clock" class="w-3 h-3"></i>
           <span class="hidden sm:inline">Action</span> Required
         </span>
@@ -3159,12 +3162,21 @@ html.dark .instruction-modal-footer {
                                     <input type="text" id="en-condition" placeholder="e.g. Cervical Radiculopathy, ACL Rehab" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
                                 </div>
 
-                                <!-- WhatsApp Phone Number -->
-                                <div>
-                                    <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">WhatsApp Number</label>
-                                    <div class="relative">
-                                        <input type="tel" id="en-phone" value="+91" placeholder="WhatsApp Number" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 pl-9 transition-all">
-                                        <i data-lucide="phone" class="w-4 h-4 text-emerald-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                <!-- Mobile Phone Numbers (Primary & Secondary) -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Primary Mobile (WhatsApp)</label>
+                                        <div class="relative">
+                                            <input type="tel" id="en-phone" value="+91" placeholder="Primary Mobile" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 pl-9 transition-all">
+                                            <i data-lucide="phone" class="w-4 h-4 text-emerald-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Secondary Mobile <span class="text-slate-400 lowercase font-normal">(optional)</span></label>
+                                        <div class="relative">
+                                            <input type="tel" id="en-phone2" value="+91" placeholder="Alternate Mobile" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 pl-9 transition-all">
+                                            <i data-lucide="phone-call" class="w-4 h-4 text-indigo-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -4309,14 +4321,14 @@ html.dark .instruction-modal-footer {
                 <!-- HERO TELEMETRY CARDS -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
                     <!-- Card 1: Active Session & User -->
-                    <div class="glass-card p-4 sm:p-5 rounded-[1.75rem] border-l-4 border-l-purple-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    <div class="glass-card p-3.5 sm:p-4 rounded-xl border-l-[3.5px] sm:border-l-4 border-l-purple-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 sm:gap-3.5">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 shadow-xs">
+                            <i data-lucide="shield-check" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Active Session</p>
                             <div class="flex items-center gap-1.5 mt-0.5">
-                                <span id="audit-active-session-badge" class="font-mono text-xs font-black text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded-lg border border-purple-200 dark:border-purple-800 truncate">SESS-...</span>
+                                <span id="audit-active-session-badge" class="font-mono text-xs font-black text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded-md border border-purple-200 dark:border-purple-800 truncate">SESS-...</span>
                             </div>
                             <div class="flex items-center gap-1.5 mt-1 text-[10px] font-bold text-slate-600 dark:text-slate-300 truncate">
                                 <span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse"></span>
@@ -4326,9 +4338,9 @@ html.dark .instruction-modal-footer {
                     </div>
 
                     <!-- Card 2: Total Recorded Events -->
-                    <div class="glass-card p-4 sm:p-5 rounded-[1.75rem] border-l-4 border-l-indigo-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <i data-lucide="list-ordered" class="w-6 h-6"></i>
+                    <div class="glass-card p-3.5 sm:p-4 rounded-xl border-l-[3.5px] sm:border-l-4 border-l-indigo-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 sm:gap-3.5">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 shadow-xs">
+                            <i data-lucide="list-ordered" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Total Audit Logs</p>
@@ -4338,9 +4350,9 @@ html.dark .instruction-modal-footer {
                     </div>
 
                     <!-- Card 3: Today's Actions -->
-                    <div class="glass-card p-4 sm:p-5 rounded-[1.75rem] border-l-4 border-l-emerald-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <i data-lucide="activity" class="w-6 h-6"></i>
+                    <div class="glass-card p-3.5 sm:p-4 rounded-xl border-l-[3.5px] sm:border-l-4 border-l-emerald-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 sm:gap-3.5">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 shadow-xs">
+                            <i data-lucide="activity" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Actions Today</p>
@@ -4350,9 +4362,9 @@ html.dark .instruction-modal-footer {
                     </div>
 
                     <!-- Card 4: Logins Recorded -->
-                    <div class="glass-card p-4 sm:p-5 rounded-[1.75rem] border-l-4 border-l-sky-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                            <i data-lucide="key" class="w-6 h-6"></i>
+                    <div class="glass-card p-3.5 sm:p-4 rounded-xl border-l-[3.5px] sm:border-l-4 border-l-sky-600 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 sm:gap-3.5">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 shadow-xs">
+                            <i data-lucide="key" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Logins Recorded</p>
@@ -4687,52 +4699,123 @@ html.dark .instruction-modal-footer {
             </div>
         </div>
 
-        <!-- EDIT PATIENT MODAL -->
-        <div id="edit-patient-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-6">
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-lg w-full shadow-2xl border border-slate-200/80 dark:border-slate-800">
-                <div class="flex justify-between items-center mb-6 pb-2 border-b border-slate-100 dark:border-slate-800">
-                    <h3 class="text-xl font-black text-slate-900 dark:text-white">Edit Patient Details</h3>
-                    <button onclick="closeEditPatientModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
-                </div>
-                <input type="hidden" id="ep-original-name">
-                <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1 pb-4">
-                    <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Clinical ID</label>
-                        <input type="text" id="ep-id" readonly class="w-full p-3.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-black text-indigo-600 dark:text-indigo-400 outline-none text-sm">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Full Patient Name</label>
-                        <input type="text" id="ep-name" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Age</label>
-                            <input type="number" id="ep-age" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+        <!-- EDIT PATIENT MODAL (ADMIN & CLINICIAN) -->
+        <div id="edit-patient-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 max-w-xl w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 my-auto">
+                <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                            <i data-lucide="user-pen" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Gender</label>
-                            <select id="ep-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm cursor-pointer">
-                                <option>Male</option>
-                                <option>Female</option>
+                            <h3 class="text-xl font-black text-slate-900 dark:text-white">Edit Patient Profile</h3>
+                            <p class="text-[11px] text-slate-400 font-bold">Update clinical branch, base rates, doctor & demographics</p>
+                        </div>
+                    </div>
+                    <button onclick="closeEditPatientModal()" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+                </div>
+                <input type="hidden" id="ep-original-name">
+                <input type="hidden" id="ep-original-id">
+
+                <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-1 pb-2 custom-scrollbar">
+                    <!-- ADMIN-ONLY CONTROLS SECTION -->
+                    <div id="ep-admin-section" class="p-4 rounded-2xl bg-gradient-to-br from-indigo-50/60 to-purple-50/40 dark:from-indigo-950/30 dark:to-purple-950/20 border border-indigo-100/80 dark:border-indigo-900/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-black tracking-wider uppercase text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">
+                                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Admin Clinical Controls
+                            </span>
+                            <span id="ep-admin-badge" class="text-[9px] font-black px-2 py-0.5 rounded-md bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 uppercase">Admin Access</span>
+                        </div>
+
+                        <!-- Branch & Clinical ID -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase ml-1 block mb-1">Branch (POC ⇄ PHC)</label>
+                                <select id="ep-branch" onchange="handleEditPatientBranchChange()" class="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs cursor-pointer shadow-sm">
+                                    <option value="POC">POC — Prism Ortho Care</option>
+                                    <option value="PHC">PHC — Prism Health Care</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between ml-1 mb-1">
+                                    <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase block">Clinical ID</label>
+                                    <button type="button" id="ep-auto-id-btn" onclick="generateEditPatientId()" class="text-[9px] font-black text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-0.5 cursor-pointer">
+                                        <i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Next ID
+                                    </button>
+                                </div>
+                                <input type="text" id="ep-id" class="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Base Fee & Assigned Doctor -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase ml-1 block mb-1">Base Fee / Session Rate (₹)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-3 text-slate-400 font-black text-xs">₹</span>
+                                    <input type="number" id="ep-base-fee" min="0" step="50" placeholder="e.g. 300" class="w-full pl-7 pr-3 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs shadow-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase ml-1 block mb-1">Assigned Doctor</label>
+                                <select id="ep-doctor" class="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs cursor-pointer shadow-sm">
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Case Status -->
+                        <div>
+                            <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase ml-1 block mb-1">Case Status</label>
+                            <select id="ep-case-status" class="w-full p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs cursor-pointer shadow-sm">
+                                <option value="active">Active (Ongoing Treatment)</option>
+                                <option value="closed">Closed (Discharged / Inactive)</option>
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Phone / WhatsApp Number</label>
-                        <input type="tel" id="ep-phone" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Clinical Diagnosis / Condition</label>
-                        <input type="text" id="ep-condition" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Address</label>
-                        <input type="text" id="ep-address" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+
+                    <!-- PATIENT DEMOGRAPHICS SECTION -->
+                    <div class="space-y-3 pt-1">
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Full Patient Name</label>
+                            <input type="text" id="ep-name" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Age</label>
+                                <input type="number" id="ep-age" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Gender</label>
+                                <select id="ep-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm cursor-pointer">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Primary Phone / WhatsApp</label>
+                                <input type="tel" id="ep-phone" placeholder="Primary Mobile" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Secondary Mobile <span class="text-slate-400 lowercase font-normal">(optional)</span></label>
+                                <input type="tel" id="ep-phone2" placeholder="Secondary Mobile" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Clinical Diagnosis / Condition</label>
+                            <input type="text" id="ep-condition" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase ml-1 block mb-1">Address</label>
+                            <input type="text" id="ep-address" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm">
+                        </div>
                     </div>
                 </div>
-                <div class="flex gap-3 pt-6">
-                    <button onclick="closeEditPatientModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">Cancel</button>
-                    <button onclick="saveEditPatient()" class="flex-[2] py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-indigo-600/30 active:scale-95 transition-all cursor-pointer">Save Changes</button>
+
+                <div class="flex gap-3 pt-5 border-t border-slate-100 dark:border-slate-800">
+                    <button onclick="closeEditPatientModal()" class="flex-1 py-3.5 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer text-xs">Cancel</button>
+                    <button onclick="saveEditPatient()" class="flex-[2] py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-indigo-600/30 active:scale-95 transition-all cursor-pointer">Save Changes</button>
                 </div>
             </div>
         </div>
@@ -5769,7 +5852,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup formatting for the main patient registration inputs
     setupPhoneInputFormatting(document.getElementById('en-phone'));
+    setupPhoneInputFormatting(document.getElementById('en-phone2'));
     setupPhoneInputFormatting(document.getElementById('ep-phone'));
+    setupPhoneInputFormatting(document.getElementById('ep-phone2'));
 
     // Pre-load local snapshot into memory so dashboard is primed
     try {
@@ -7509,6 +7594,85 @@ document.addEventListener('click', function(e) {
             });
         }
 
+        function showMultiSessionChoicePopup(options) {
+            return new Promise((resolve) => {
+                const overlay = document.createElement('div');
+                overlay.id = 'multi-session-delete-modal';
+                overlay.className = 'fixed inset-0 z-[99999] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in';
+
+                const patientName = options.patientName || 'this patient';
+                const dateFormatted = options.dateFormatted || '';
+                const sessionCount = options.sessionCount || 2;
+
+                overlay.innerHTML = `
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl animate-scale-up">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center text-rose-500 shrink-0">
+                                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="inline-block px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider border mb-1.5 bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300">
+                                    ${sessionCount} Sessions on this Date
+                                </span>
+                                <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white tracking-tight leading-snug">
+                                    Delete Session for ${dateFormatted}?
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                            <div class="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 rounded-2xl mb-3 text-xs text-rose-900 dark:text-rose-200">
+                                <strong>${patientName}</strong> has <strong>${sessionCount} sessions</strong> enrolled/logged on <strong>${dateFormatted}</strong>.
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">
+                                Do you want to delete only 1 session, or delete all ${sessionCount} sessions for this day?
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-2.5 pt-1">
+                            <button type="button" id="btn-del-one" class="w-full py-3 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all cursor-pointer active:scale-95 text-center flex items-center justify-center gap-2">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i> Delete 1 Session (Only This)
+                            </button>
+                            <button type="button" id="btn-del-all" class="w-full py-3 px-4 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all cursor-pointer active:scale-95 text-center flex items-center justify-center gap-2">
+                                <i data-lucide="trash" class="w-4 h-4"></i> Delete ${sessionCount} Sessions (All for this Day)
+                            </button>
+                            <button type="button" id="btn-del-cancel" class="w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs uppercase text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer text-center">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(overlay);
+                if (window.lucide) lucide.createIcons({ root: overlay });
+
+                const cleanup = () => { overlay.remove(); };
+
+                overlay.querySelector('#btn-del-one').onclick = () => {
+                    cleanup();
+                    resolve('one');
+                };
+
+                overlay.querySelector('#btn-del-all').onclick = () => {
+                    cleanup();
+                    resolve('all');
+                };
+
+                overlay.querySelector('#btn-del-cancel').onclick = () => {
+                    cleanup();
+                    resolve('cancel');
+                };
+
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        cleanup();
+                        resolve('cancel');
+                    }
+                });
+            });
+        }
+        window.showMultiSessionChoicePopup = showMultiSessionChoicePopup;
+
         function showPopupAlert(options) {
             const title = typeof options === 'string' ? 'Notice' : (options.title || 'Notice');
             const message = typeof options === 'string' ? options : (options.message || '');
@@ -8619,13 +8783,13 @@ document.addEventListener('click', function(e) {
         // commit immediately without lock contention, and subsequent reads run once.
         let _reconcileTimer = null;
         let _isReconciling = false;
-        function scheduleBackgroundReconcile(delayMs = 3000) {
+        function scheduleBackgroundReconcile(delayMs = 2500) {
             if (_reconcileTimer) clearTimeout(_reconcileTimer);
             _reconcileTimer = setTimeout(async () => {
                 if (_isReconciling) return;
                 _isReconciling = true;
                 try {
-                    await loadAdminData(false);
+                    await loadAdminData(false, false, true);
                 } catch (e) {
                     console.warn("Background reconcile error:", e);
                 } finally {
@@ -8635,6 +8799,10 @@ document.addEventListener('click', function(e) {
         }
 
         let _recentOptimisticLogs = [];
+        // Auto-clear optimistic memory buffer on window reload / unload
+        window.addEventListener('beforeunload', () => { _recentOptimisticLogs = []; });
+        window.addEventListener('pagehide', () => { _recentOptimisticLogs = []; });
+
         function markRecentOptimisticLog(row) {
             if (!row || !Array.isArray(row)) return;
             row._optTime = Date.now();
@@ -8644,22 +8812,134 @@ document.addEventListener('click', function(e) {
             }
         }
 
+        // Persistent tombstone tracking for deleted sessions (persisted in sessionStorage)
+        if (!window._deletedSessionKeys) {
+            try {
+                const stored = JSON.parse(sessionStorage.getItem('prism_deleted_session_keys') || '[]');
+                window._deletedSessionKeys = new Set(Array.isArray(stored) ? stored : []);
+            } catch (e) {
+                window._deletedSessionKeys = new Set();
+            }
+        }
+        if (!window._deletedSessionTimestamps) {
+            window._deletedSessionTimestamps = new Map();
+        }
+
+        function trackDeletedSessionKey(key) {
+            if (!key) return;
+            if (!window._deletedSessionKeys) window._deletedSessionKeys = new Set();
+            const sKey = String(key).trim();
+            window._deletedSessionKeys.add(sKey);
+            if (!window._deletedSessionTimestamps) window._deletedSessionTimestamps = new Map();
+            window._deletedSessionTimestamps.set(sKey, Date.now());
+            try {
+                sessionStorage.setItem('prism_deleted_session_keys', JSON.stringify(Array.from(window._deletedSessionKeys)));
+            } catch (e) {}
+        }
+        window.trackDeletedSessionKey = trackDeletedSessionKey;
+
+        function clearDeletedSessionKey(key) {
+            if (!key || !window._deletedSessionKeys) return;
+            const sKey = String(key).trim();
+            window._deletedSessionKeys.delete(sKey);
+            if (window._deletedSessionTimestamps) window._deletedSessionTimestamps.delete(sKey);
+            try {
+                sessionStorage.setItem('prism_deleted_session_keys', JSON.stringify(Array.from(window._deletedSessionKeys)));
+            } catch (e) {}
+        }
+        window.clearDeletedSessionKey = clearDeletedSessionKey;
+
         // Helper to map and assign raw Sheet data into frontend arrays
-        function applyFetchedData(result) {
+        function applyFetchedData(result, isFreshSync) {
             if (!result) return;
+            if (isFreshSync) {
+                _recentOptimisticLogs = [];
+            }
             
-            // Assign Main Records (merging recent optimistic logs so read-after-write delays never erase sessions)
+            // Assign Main Records (merging recent optimistic logs so read-after-write delays never erase sessions, and filtering deleted sessions)
             if (result.adminData && Array.isArray(result.adminData)) {
-                if (_recentOptimisticLogs.length > 0) {
-                    const serverKeys = new Set(result.adminData.map(r => `${normId(r[1])}_${r[8]}_${r[9]}_${r[13]}`));
+                // Pre-normalize dates across all server rows so timezone shifts never corrupt dates
+                result.adminData.forEach(r => {
+                    if (r[8]) r[8] = normDateYMD(r[8]);
+                });
+
+                if (window._deletedSessionKeys && window._deletedSessionKeys.size > 0) {
                     const now = Date.now();
-                    const pendingLogs = _recentOptimisticLogs.filter(r => {
-                        const age = now - (r._optTime || 0);
-                        const key = `${normId(r[1])}_${r[8]}_${r[9]}_${r[13]}`;
-                        return age < 180000 && !serverKeys.has(key);
+                    result.adminData = result.adminData.filter(r => {
+                        const type = String(r[7] || '').trim().toLowerCase();
+                        if (!type.includes('rehab') && !type.includes('session')) return true;
+                        const ts = String(r[0] || '').trim();
+                        const pid = normId(r[1]);
+                        const d = normDateYMD(r[8]);
+                        const fee = toNum(r[9]);
+                        const mode = String(r[13] || '').trim().toLowerCase();
+                        
+                        // Exact timestamp match
+                        if (ts && window._deletedSessionKeys.has(ts)) return false;
+                        if (ts && pid && d && window._deletedSessionKeys.has(`${pid}_${d}_${ts}`)) return false;
+                        if (ts && pid && d && window._deletedSessionKeys.has(`${pid}_${d}_${fee}_${ts}`)) return false;
+
+                        // Day-level tombstone check: only filter if deletion happened recently and row was created at or before deletion
+                        const dayKey = `${pid}_${d}`;
+                        if (window._deletedSessionKeys.has(dayKey)) {
+                            const delTime = window._deletedSessionTimestamps ? window._deletedSessionTimestamps.get(dayKey) : 0;
+                            const rowTime = new Date(r[0] || 0).getTime();
+                            // If row was created after deletion, it is a brand new session -> KEEP IT!
+                            if (delTime && !isNaN(rowTime) && rowTime > delTime + 2000) {
+                                return true;
+                            }
+                            // If deletion is older than 2 minutes, auto-expire tombstone
+                            if (delTime && (now - delTime > 120000)) {
+                                window._deletedSessionKeys.delete(dayKey);
+                                return true;
+                            }
+                            return false;
+                        }
+                        return true;
                     });
+                }
+
+                if (!isFreshSync && Array.isArray(_recentOptimisticLogs) && _recentOptimisticLogs.length > 0) {
+                    const now = Date.now();
+                    // Retain recent optimistic logs for up to 30 seconds (ultra-fast auto clear)
+                    _recentOptimisticLogs = _recentOptimisticLogs.filter(r => (now - (r._optTime || 0)) < 30000);
+
+                    // Multiset frequency map of server sessions: key -> count
+                    const serverCounts = new Map();
+                    result.adminData.forEach(r => {
+                        const type = String(r[7] || '').trim().toLowerCase();
+                        if (type.includes('rehab') || type.includes('session')) {
+                            const k = `${normId(r[1])}_${normDateYMD(r[8])}_${toNum(r[9])}_${String(r[13] || '').trim().toLowerCase()}`;
+                            serverCounts.set(k, (serverCounts.get(k) || 0) + 1);
+                        }
+                    });
+
+                    const consumedCounts = new Map();
+                    const pendingLogs = [];
+                    _recentOptimisticLogs.forEach(r => {
+                        const ts = String(r[0] || '').trim();
+                        const pid = normId(r[1]);
+                        const d = normDateYMD(r[8]);
+                        const fee = toNum(r[9]);
+                        const mode = String(r[13] || '').trim().toLowerCase();
+                        if (window._deletedSessionKeys) {
+                            if (ts && window._deletedSessionKeys.has(ts)) return;
+                            if (window._deletedSessionKeys.has(`${pid}_${d}_${ts}`)) return;
+                        }
+                        const k = `${pid}_${d}_${fee}_${mode}`;
+                        const sCount = serverCounts.get(k) || 0;
+                        const cCount = consumedCounts.get(k) || 0;
+                        if (cCount < sCount) {
+                            consumedCounts.set(k, cCount + 1);
+                        } else {
+                            pendingLogs.push(r);
+                        }
+                    });
+                    // Purge confirmed logs from memory; retain only genuinely uncommitted ones
+                    _recentOptimisticLogs = pendingLogs;
                     globalData = result.adminData.concat(pendingLogs);
                 } else {
+                    _recentOptimisticLogs = [];
                     globalData = result.adminData;
                 }
             }
@@ -8778,10 +9058,10 @@ document.addEventListener('click', function(e) {
         }
 
         // Apply full patient dataset, balances, packages, and revenue metrics
-        function applyFullDataPackage(adminResult, balResult, statsResult, pkgResult, isFromCache) {
+        function applyFullDataPackage(adminResult, balResult, statsResult, pkgResult, isFromCache, isFreshSync) {
             if (!adminResult || !adminResult.adminData) return false;
 
-            applyFetchedData(adminResult);
+            applyFetchedData(adminResult, isFreshSync);
             processData();
 
             // Apply package data to patientLookup (O(M+N) fast lookup)
@@ -8820,6 +9100,9 @@ document.addEventListener('click', function(e) {
                     }
                     p.sessionsRemaining = bal.sessionsRemaining || 0;
                     p.activePackageId   = bal.activePackageId   || null;
+                    if (bal.closed !== undefined && !p.lastRestartMs) {
+                        p.closed = !!bal.closed;
+                    }
                 });
                 const totalOut = balResult.totalOutstanding || 0;
                 const outstanding = document.getElementById('stat-outstanding');
@@ -8903,7 +9186,12 @@ document.addEventListener('click', function(e) {
                 if (!raw) return false;
                 const snap = JSON.parse(raw);
                 if (!snap || !snap.adminResult || !snap.adminResult.adminData) return false;
-                applyFullDataPackage(snap.adminResult, snap.balResult, snap.statsResult, snap.pkgResult, true);
+                // Auto-expire offline snapshot if older than 15 minutes to guarantee fresh state
+                if (snap.timestamp && (Date.now() - snap.timestamp > 15 * 60 * 1000)) {
+                    try { localStorage.removeItem('prism_data_snapshot_v1'); } catch (e) {}
+                    return false;
+                }
+                applyFullDataPackage(snap.adminResult, snap.balResult, snap.statsResult, snap.pkgResult, true, false);
                 return true;
             } catch (e) {
                 console.warn('Failed to load local data snapshot:', e);
@@ -9005,15 +9293,20 @@ document.addEventListener('click', function(e) {
         }
         window.performHardReset = performHardReset;
 
-        async function loadAdminData(isManual, isHardReset) {
+        async function loadAdminData(isManual, isHardReset, isSilentFresh) {
             const syncBtn = document.getElementById('sync-indicator');
-            if (syncBtn) syncBtn.classList.add('animate-spin');
+            if (syncBtn && !isSilentFresh) syncBtn.classList.add('animate-spin');
+
+            const isFreshSync = Boolean(isManual || isHardReset);
+            if (isFreshSync) {
+                _recentOptimisticLogs = [];
+            }
 
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 60000);
 
-                const bypass = Boolean(isManual || isHardReset);
+                const bypass = Boolean(isManual || isHardReset || isSilentFresh);
                 const url = SCRIPT_URL + (bypass ? (SCRIPT_URL.includes('?') ? '&' : '?') + '_ts=' + Date.now() : '');
 
                 // Fetch main sheet dataset
@@ -9046,9 +9339,12 @@ document.addEventListener('click', function(e) {
                 }
 
                 if (result && result.adminData) {
-                    if (isHardReset) {
-                        patientLookup = {};
-                        globalData = [];
+                    if (isFreshSync) {
+                        _recentOptimisticLogs = [];
+                        if (isHardReset) {
+                            patientLookup = {};
+                            globalData = [];
+                        }
                     }
 
                     let balResult = null;
@@ -9072,7 +9368,7 @@ document.addEventListener('click', function(e) {
                         pkgResult = pRes;
                     }
 
-                    applyFullDataPackage(result, balResult, statsResult, pkgResult, false);
+                    applyFullDataPackage(result, balResult, statsResult, pkgResult, false, isFreshSync);
                     if (result.bills && Array.isArray(result.bills)) {
                         result.bills.forEach(b => {
                             const bNo = String(b[0] || b.billNo || '').trim();
@@ -9100,7 +9396,7 @@ document.addEventListener('click', function(e) {
                     showToast('Hard Reset error: ' + errMsg, 'error');
                 } else if (isManual) {
                     showToast('Sync error: ' + errMsg, 'error');
-                } else {
+                } else if (!isSilentFresh) {
                     showToast('Using local cache (' + errMsg + ')', 'warning');
                 }
             } finally {
@@ -9391,16 +9687,8 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     dateStr = r[8];
                 if (!name) return;
 
-                            // If same name exists but different branch (e.g. Krishna mohan POC vs PHC),
-            // treat as a separate patient by appending branch to the key
-            let lookupKey = name;
-            if (patientLookup[name] && patientLookup[name].id) {
-                const existingBranch = String(patientLookup[name].id).substring(0, 3);
-                const thisBranch = String(id).substring(0, 3);
-                if (existingBranch !== thisBranch) {
-                    lookupKey = name + ' (' + thisBranch + ')';
-                }
-            }
+            // Unified patient profile: keep single profile per patient across branches
+            const lookupKey = name;
 
             if (!patientLookup[lookupKey]) {
                 const s = prevSettled[normId(id)];
@@ -9431,7 +9719,9 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
             }
 
             const p = patientLookup[lookupKey];
-            if (r[3] && !p.phone && !String(r[3]).includes('#ERROR')) p.phone = r[3];
+            if (r[3] && !String(r[3]).includes('#ERROR')) {
+                if (!p.phone || String(r[3]).length > String(p.phone).length) p.phone = r[3];
+            }
             if (r[4] && (!p.age || p.age === '')) p.age = String(r[4]);
             if (r[5] && (!p.gender || p.gender === '')) p.gender = String(r[5]);
             if (r[6] && (!p.diag || p.diag === '' || p.diag === 'General Rehab')) p.diag = String(r[6]);
@@ -9465,26 +9755,33 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     if (r[6]) p.diag = String(r[6]);
                     if (r[14]) p.address = String(r[14]);
                 }
+                if (p.baseRate === 0 && fee > 0 && type !== "bill issued" && type !== "case closed" && type !== "case restarted") {
+                    p.baseRate = fee;
+                }
 
-    if (type !== "case closed" && type !== "case restarted" && type !== "bill issued" && fee > 0) {
-    totalRawCol += fee;
-    sessionCount++;
+    if (type !== "case closed" && type !== "case restarted" && type !== "bill issued") {
+        if (fee > 0) {
+            totalRawCol += fee;
+            sessionCount++;
 
-    if (id.startsWith('POC')) pocRevenue += fee;
-    else if (id.startsWith('PHC')) phcRevenue += fee;
+            if (id.startsWith('POC')) pocRevenue += fee;
+            else if (id.startsWith('PHC')) phcRevenue += fee;
 
-    if (dateStr === today) dailyCol += fee;
-    if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
-    if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
+            if (dateStr === today) dailyCol += fee;
+            if (dateStr && dateStr.startsWith(currMonth)) monthlyCol += fee;
+            if (dateStr && dateStr.startsWith(currYear)) yearlyCol += fee;
 
-    const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
-    chartData[mKey] = (chartData[mKey] || 0) + fee;
-    if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
+            const mKey = dateStr ? dateStr.substring(0, 7) : 'Unknown';
+            chartData[mKey] = (chartData[mKey] || 0) + fee;
+            if (dateStr) dailyMap[dateStr] = (dailyMap[dateStr] || 0) + fee;
+        } else if (type.includes('session') || type.includes('rehab')) {
+            sessionCount++;
+        }
 
-    p.logs.push(r);
-} else if (type === "case closed" || type === "case restarted") {
-    // Case closed/open tracked strictly from audit logs; not recorded or tracked from database sheet
-}
+        p.logs.push(r);
+    } else if (type === "case closed" || type === "case restarted") {
+        // Case closed/open tracked strictly from audit logs; not recorded or tracked from database sheet
+    }
 if (r[13] && String(r[13]).includes('/')) {
     const m = String(r[13] || '').match(/\/(\d+)$/);
     if (m) {
@@ -9530,15 +9827,29 @@ if (window.rawAuditData) {
         if (patientLookup[pField]) {
             targetPatients.push(patientLookup[pField]);
         } else {
-            const m = pField.match(/\(([^)]+)\)/);
-            const pid = m ? normId(m[1]) : null;
-            const cleanName = pField.split('(')[0].trim();
-            if (pid) {
-                const found = Object.values(patientLookup).find(p => normId(p.id) === pid);
-                if (found) targetPatients.push(found);
-            } else if (patientLookup[cleanName]) {
-                targetPatients.push(patientLookup[cleanName]);
+            const allMatches = pField.match(/\(([^)]+)\)/g) || [];
+            let matchedPatient = null;
+            for (let i = allMatches.length - 1; i >= 0; i--) {
+                const inner = allMatches[i].replace(/[()]/g, '').trim();
+                const nid = normId(inner);
+                const found = Object.values(patientLookup).find(p => normId(p.id) === nid);
+                if (found) {
+                    matchedPatient = found;
+                    break;
+                }
             }
+            if (!matchedPatient) {
+                const cleanName = pField.replace(/\s*\([^)]*\)\s*$/, '').trim();
+                if (patientLookup[cleanName]) {
+                    matchedPatient = patientLookup[cleanName];
+                } else {
+                    const firstName = pField.split('(')[0].trim();
+                    if (patientLookup[firstName]) {
+                        matchedPatient = patientLookup[firstName];
+                    }
+                }
+            }
+            if (matchedPatient) targetPatients.push(matchedPatient);
         }
         
         const isClosed = action === "Case Closed" || detail.includes("Case Closed") || (action === "logAppointment" && detail.includes("Case Closed"));
@@ -9551,6 +9862,17 @@ if (window.rawAuditData) {
             } else if (isRestart) {
                 p.closed = false;
                 p.closedDate = null;
+                const ymd = normDateYMD(timestamp);
+                let restartMs = NaN;
+                if (ymd && /^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+                    const parts = ymd.split('-').map(Number);
+                    restartMs = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                } else {
+                    restartMs = new Date(timestamp).getTime();
+                }
+                if (!isNaN(restartMs) && (!p.lastRestartMs || restartMs > p.lastRestartMs)) {
+                    p.lastRestartMs = restartMs;
+                }
             } else if (action === "Bill Issued" || detail.includes("Bill #")) {
                 const m = detail.match(/#([^\s]+)/) || detail.match(/\/(\d+)/);
                 if (m) {
@@ -9722,7 +10044,11 @@ renderTables();
             
             const finalFee = (feeTotal !== undefined && feeTotal !== null) ? feeTotal : computedFeeTotal;
             const feeStr = "₹" + finalFee.toLocaleString();
-            const finalAll = (collectionTotal !== undefined && collectionTotal !== null) ? collectionTotal : (computedCash + computedUpi + computedAdvance + computedOther);
+            const sumRowPayments = computedCash + computedUpi + computedAdvance + computedOther;
+            let finalAll = sumRowPayments;
+            if ((!dayRows || dayRows.length === 0) && collectionTotal !== undefined && collectionTotal !== null) {
+                finalAll = collectionTotal;
+            }
             const cashInStr = "₹" + (finalAll || 0).toLocaleString();
 
             currentRegistryAmounts = {
@@ -9781,7 +10107,8 @@ renderTables();
                         const a16 = toNum(r[16]);
                         const adv = a11 > 0 ? a11 : (a15 > 0 ? a15 : (a16 > 0 ? a16 : 0));
                         if (adv > 0) {
-                            advancePaidOnDateByPatient[pName] = (advancePaidOnDateByPatient[pName] || 0) + adv;
+                            advancePaidOnDateByPatient[pName.toLowerCase()] = (advancePaidOnDateByPatient[pName.toLowerCase()] || 0) + adv;
+                            if (r[1]) advancePaidOnDateByPatient[String(r[1]).trim().toLowerCase()] = adv;
                         }
                     }
                 });
@@ -9828,9 +10155,8 @@ renderTables();
 
                         let dayCashIn = 0;
                         if (isAdvance) {
-                            if (advPaidToday > 0 && !countedAdvancePatients.has(pName)) {
+                            if (advPaidToday > 0 && !countedAdvancePatients.has(pName.toLowerCase())) {
                                 dayCashIn = advPaidToday;
-                                countedAdvancePatients.add(pName);
                                 paid = advPaidToday;
                             } else {
                                 dayCashIn = 0;
@@ -9845,6 +10171,10 @@ renderTables();
                             dayCashIn = (paid !== undefined && paid > 0) ? paid : fee;
                             if (paid === undefined) paid = fee;
                         }
+
+                        // Mark patient as counted for today so Pass 3 never double-adds their enrollment payment
+                        countedAdvancePatients.add(pName.toLowerCase());
+                        if (r[1]) countedAdvancePatients.add(String(r[1]).trim().toLowerCase());
 
                         localTotalCashIn += dayCashIn;
                         localTotalFee += fee;
@@ -9863,12 +10193,12 @@ renderTables();
                 });
 
                 // Pass 3: Add any advance paid today by patients who did not have a session visit today
-                Object.keys(advancePaidOnDateByPatient).forEach(pName => {
-                    if (!countedAdvancePatients.has(pName)) {
-                        const adv = advancePaidOnDateByPatient[pName] || 0;
+                Object.keys(advancePaidOnDateByPatient).forEach(key => {
+                    if (!countedAdvancePatients.has(key)) {
+                        const adv = advancePaidOnDateByPatient[key] || 0;
                         if (adv > 0) {
                             localTotalCashIn += adv;
-                            countedAdvancePatients.add(pName);
+                            countedAdvancePatients.add(key);
                         }
                     }
                 });
@@ -10287,6 +10617,26 @@ renderTables();
         paidValForLog = (amountPaidVal !== '' && amountPaidVal != null) ? (Number(amountPaidVal) || 0) : feePerSession;
     }
 
+    // Clear any previous deletion tombstones for these dates so newly logged sessions are never blocked
+    datesToSubmit.forEach(d => {
+        const dNorm = normDateYMD(d);
+        const pNorm = normId(p.id);
+        if (typeof window.clearDeletedSessionKey === 'function') {
+            window.clearDeletedSessionKey(`${pNorm}_${dNorm}`);
+        }
+        if (window._deletedSessionKeys) {
+            window._deletedSessionKeys.delete(`${pNorm}_${dNorm}`);
+            Array.from(window._deletedSessionKeys).forEach(k => {
+                if (k.startsWith(`${pNorm}_${dNorm}`)) {
+                    window._deletedSessionKeys.delete(k);
+                }
+            });
+            try {
+                sessionStorage.setItem('prism_deleted_session_keys', JSON.stringify(Array.from(window._deletedSessionKeys)));
+            } catch (e) {}
+        }
+    });
+
     datesToSubmit.forEach(d => {
         const row = [
             new Date().toISOString(),
@@ -10297,15 +10647,15 @@ renderTables();
             p.gender || '',
             sessionNote,
             "Rehab Session",
-            d,
+            normDateYMD(d),
             feePerSession,
             0,
-            0,
+            paidValForLog,
             discPct,
             paymentMode,
             p.address || '',
-            p.doctor || '',
-            paidValForLog
+            paidValForLog,
+            p.doctor || ''
         ];
         p.logs.push(row);
         globalData.push(row);
@@ -10416,17 +10766,18 @@ renderTables();
         }
         if (result && result.balances && result.balances[p.id]) {
             const bal = result.balances[p.id];
-            p.walletBalance     = bal.walletBalance || 0;
-            p.outstandingDue    = bal.outstandingDue || 0;
-            p.dueSessionCount   = bal.dueSessionCount || 0;
-            p.sessionsRemaining = bal.sessionsRemaining || 0;
-            p.activePackageId   = bal.activePackageId || null;
+            if (bal.walletBalance !== undefined) p.walletBalance = bal.walletBalance;
+            if (bal.outstandingDue !== undefined) p.outstandingDue = bal.outstandingDue;
+            if (bal.dueSessionCount !== undefined) p.dueSessionCount = bal.dueSessionCount;
+            if (bal.sessionsRemaining !== undefined) p.sessionsRemaining = bal.sessionsRemaining;
+            if (bal.activePackageId !== undefined) p.activePackageId = bal.activePackageId;
+            if (bal.packageBreakdown) p.packageBreakdown = bal.packageBreakdown;
             if (selectedPatientName === p.name) {
                 updatePatientWorkspaceUI(selectedPatientName, p, false);
             }
         }
         // Quiet debounced background reconcile - runs once writes settle without lock contention
-        scheduleBackgroundReconcile(3000);
+        scheduleBackgroundReconcile(2500);
     }).catch(e => {
         console.warn("Session background sync note (will auto-reconcile with sheet):", e);
         showToast("Session saved locally. Verifying with Google Sheet in background...", "warning");
@@ -10518,7 +10869,14 @@ function saveEnrollment() {
         showToast('Please select payment mode for advance amount', 'warning');
         return;
     }
-    const enrolledPhone = document.getElementById('en-phone').value.trim();
+    const ph1 = (document.getElementById('en-phone')?.value || '').trim();
+    const ph2 = (document.getElementById('en-phone2')?.value || '').trim();
+    let enrolledPhone = ph1;
+    const cleanPh1 = ph1.replace(/\D/g, '');
+    const cleanPh2 = ph2.replace(/\D/g, '');
+    if (cleanPh2.length >= 10 && cleanPh2 !== cleanPh1) {
+        enrolledPhone = (cleanPh1.length >= 10) ? `${ph1}, ${ph2}` : ph2;
+    }
     const enrolledDiag = document.getElementById('en-condition').value.replace(/,\s*$/, '').trim();
     const enrolledId = document.getElementById('en-id').value;
     const enrolledSessions = Number(document.getElementById('en-sessions').value) || 0;
@@ -10679,24 +11037,6 @@ function showEnrollmentSuccessPopup(patient) {
     const last4Digits = String(patient.id).slice(-4);
     const waNumber = getWhatsAppNumber(patient.phone);
 
-    const welcomeMsg = encodeURIComponent(
-        `🌟 *Welcome to Prism Physiotherapy & Rehabilitation Center!* 🌟\n\n` +
-        `Hello ${patient.name},\n\n` +
-        `Your personal care account is now active.\n\n` +
-        `We're delighted to support your recovery journey. At Prism Physiotherapy, your dedicated patient account keeps your treatment details, appointments, and rehabilitation progress organized and accessible, all in one place.\n\n` +
-        `📲 *In your portal, you can:*\n` +
-        `✅ Track all your session logs\n` +
-        `✅ Access your Home Exercise Plan (HEP)\n` +
-        `✅ Download your receipts and bills anytime\n\n` +
-        `🔗 *Access Portal Here:* https://prismhealthcare.in/Patient%20Login.html\n\n` +
-        `🔐 *Your Login Details:*\n` +
-        `👤 *User ID:* ${patient.name}\n` +
-        `🔑 *Verification ID:* ${last4Digits}\n\n` +
-        `Please keep your verification ID confidential and do not share it with others.\n\n` +
-        `Warm regards,\n` +
-        `*Team Prism Physiotherapy*`
-    );
-
     const overlay = document.createElement('div');
     overlay.id = 'enroll-success-popup-overlay';
     overlay.style.cssText = `
@@ -10770,7 +11110,7 @@ function showEnrollmentSuccessPopup(patient) {
             </div>
 
             <!-- Buttons -->
-                        <button
+            <button
                 id="enroll-wa-send-btn"
                 style="
                     width: 100%; padding: 0.95rem; border-radius: 0.95rem; border: none;
@@ -10821,23 +11161,37 @@ function showEnrollmentSuccessPopup(patient) {
             return;
         }
         const last4 = String(patient.id).slice(-4);
+        const cleanName = typeof stripSalutation === 'function' ? stripSalutation(patient.name) : patient.name;
         const message =
-            `🌟 *Welcome to Prism Physiotherapy & Rehabilitation Center!* 🌟\n\n` +
-            `Hello ${patient.name},\n\n` +
+            `*Welcome to Prism Physiotherapy & Rehabilitation Center!*\n\n` +
+            `Hello ${cleanName},\n\n` +
             `Your personal care account is now active.\n\n` +
             `We're delighted to support your recovery journey. At Prism Physiotherapy, your dedicated patient account keeps your treatment details, appointments, and rehabilitation progress organized and accessible, all in one place.\n\n` +
-            `📲 *In your portal, you can:*\n` +
-            `✅ Track all your session logs\n` +
-            `✅ Access your Home Exercise Plan (HEP)\n` +
-            `✅ Download your receipts and bills anytime\n\n` +
-            `🔗 *Access Portal Here:* https://prismhealthcare.in/Patient%20Login.html\n\n` +
-            `🔐 *Your Login Details:*\n` +
-            `👤 *User ID:* ${patient.name}\n` +
-            `🔑 *Verification ID:* ${last4}\n\n` +
+            `*In your portal, you can:*\n` +
+            `• Track all your session logs\n` +
+            `• Access your Home Exercise Plan (HEP)\n` +
+            `• Download your receipts and bills anytime\n\n` +
+            `*Access Portal Here:*\n` +
+            `https://prismhealthcare.in/Patient%20Login.html\n\n` +
+            `*Your Login Details:*\n` +
+            `• User ID: ${cleanName}\n` +
+            `• Verification ID: ${last4}\n\n` +
             `Please keep your verification ID confidential and do not share it with others.\n\n` +
             `Warm regards,\n` +
             `*Team Prism Physiotherapy*`;
-        window.open('https://wa.me/' + resolvedNumber + '?text=' + encodeURIComponent(message), '_blank');
+
+        const encodedMsg = encodeURIComponent(message);
+        const waUrl = `https://api.whatsapp.com/send?phone=${resolvedNumber}&text=${encodedMsg}`;
+        const win = window.open(waUrl, '_blank');
+        if (!win || win.closed || typeof win.closed === 'undefined') {
+            const a = document.createElement('a');
+            a.href = waUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 200);
+        }
     });
 }
         function resetEnrollForm() {
@@ -10846,6 +11200,7 @@ function showEnrollmentSuccessPopup(patient) {
             document.getElementById('en-age').value = "";
             document.getElementById('en-condition').value = "";
             document.getElementById('en-phone').value = "+91";
+            if (document.getElementById('en-phone2')) document.getElementById('en-phone2').value = "+91";
             document.getElementById('en-address').value = "";
             document.getElementById('en-rate').value = "";
             document.getElementById('en-sessions').value = "0";
@@ -11376,11 +11731,12 @@ function openMidPackage() {
                 recentContainer.innerHTML = sessionLogs.slice().reverse().slice(0, 10).map((l, rIdx) => {
                     const isEnroll = String(l[7] || '').trim().toLowerCase().includes('enrollment');
                     const isPkg = String(l[7] || '').trim().toLowerCase() === 'package added';
-                    const mode = String(l[15] || '').trim();
+                    const mode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
                     const fee = toNum(l[9]);
-                    const paidRaw = l[16];
-                    const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
-                        ? toNum(paidRaw) : (mode === 'Pending' ? 0 : fee);
+                    const paidRaw = (l[15] !== undefined && l[15] !== null && l[15] !== '' && !isNaN(Number(l[15])))
+                        ? toNum(l[15])
+                        : ((l[11] !== undefined && l[11] !== null && l[11] !== '' && !isNaN(Number(l[11]))) ? toNum(l[11]) : (mode === 'Pending' ? 0 : fee));
+                    const paid = (paidRaw !== undefined && !isNaN(paidRaw)) ? paidRaw : (mode === 'Pending' ? 0 : fee);
 
                     // Check actual due from dueMap (0 if patient's overall outstandingDue is 0)
                     const actualDue = totalDue > 0 ? (dueMap[l[0]] ?? dueMap[p.logs.indexOf(l)] ?? dueMap['date_' + normDateYMD(l[8])] ?? 0) : 0;
@@ -12162,18 +12518,36 @@ document.getElementById('pd-sessions').innerText = consumed;
                 showToast('Invalid phone number', 'warning');
                 return;
             }
+            const last4 = String(p.id).slice(-4);
+            const cleanName = typeof stripSalutation === 'function' ? stripSalutation(name) : name;
             const message = encodeURIComponent(
-                `Hello ${name},\n\n` +
-                `You can now view your sessions, receipts, and prescribed home exercises anytime through our Patient Portal.\n\n` +
-                `Portal Link: https://prismhealthcare.in/Patient%20Login.html\n\n` +
-                `Login Details\n` +
-                `User Id: ${name}\n` +
-                `Verification ID: ${String(p.id).slice(-4)}\n\n` +
-                `There you can check your sessions logs, prescribed home exercise plan, and download bills.\n\n` +
+                `*Welcome to Prism Physiotherapy & Rehabilitation Center!*\n\n` +
+                `Hello ${cleanName},\n\n` +
+                `You can view your session logs, receipts, and prescribed home exercises anytime through your Patient Portal.\n\n` +
+                `*In your portal, you can:*\n` +
+                `• Track all your session logs\n` +
+                `• Access your Home Exercise Plan (HEP)\n` +
+                `• Download your receipts and bills anytime\n\n` +
+                `*Access Portal Here:*\n` +
+                `https://prismhealthcare.in/Patient%20Login.html\n\n` +
+                `*Your Login Details:*\n` +
+                `• User ID: ${cleanName}\n` +
+                `• Verification ID: ${last4}\n\n` +
+                `Please keep your verification ID confidential.\n\n` +
                 `Warm regards,\n` +
-                `Prism Physiotherapy & Rehabilitation Center`
+                `*Team Prism Physiotherapy*`
             );
-            window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+            const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${message}`;
+            const win = window.open(waUrl, '_blank');
+            if (!win || win.closed || typeof win.closed === 'undefined') {
+                const a = document.createElement('a');
+                a.href = waUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); }, 200);
+            }
         }
 
         // ---------- EDIT PATIENT (ADMIN & CLINICIAN) ----------
@@ -12183,10 +12557,89 @@ document.getElementById('pd-sessions').innerText = consumed;
                 showToast('Patient not found', 'error');
                 return;
             }
+            const userIsAdmin = isAdmin();
             document.getElementById('ep-original-name').value = name;
+            document.getElementById('ep-original-id').value = p.id;
             document.getElementById('ep-id').value = p.id;
+
+            // Detect branch from ID prefix (e.g. PHC26/1055 vs POC26/1049)
+            const currentBranch = String(p.id).substring(0, 3).toUpperCase() === 'PHC' ? 'PHC' : 'POC';
+            const epBranchSelect = document.getElementById('ep-branch');
+            if (epBranchSelect) {
+                epBranchSelect.value = currentBranch;
+                epBranchSelect.disabled = !userIsAdmin;
+            }
+
+            const epIdInput = document.getElementById('ep-id');
+            if (epIdInput) {
+                epIdInput.readOnly = !userIsAdmin;
+                if (userIsAdmin) {
+                    epIdInput.classList.remove('bg-slate-100', 'dark:bg-slate-800');
+                    epIdInput.classList.add('bg-white', 'dark:bg-slate-800');
+                } else {
+                    epIdInput.classList.add('bg-slate-100', 'dark:bg-slate-800');
+                    epIdInput.classList.remove('bg-white');
+                }
+            }
+
+            const autoIdBtn = document.getElementById('ep-auto-id-btn');
+            if (autoIdBtn) autoIdBtn.style.display = userIsAdmin ? 'inline-flex' : 'none';
+
+            // Base Fee
+            const baseFeeInput = document.getElementById('ep-base-fee');
+            if (baseFeeInput) {
+                const bFee = (p.baseRate !== undefined && p.baseRate !== null && p.baseRate > 0) ? p.baseRate : '';
+                baseFeeInput.value = bFee;
+                baseFeeInput.readOnly = !userIsAdmin;
+                if (!userIsAdmin) {
+                    baseFeeInput.classList.add('bg-slate-100', 'dark:bg-slate-800');
+                    baseFeeInput.classList.remove('bg-white');
+                } else {
+                    baseFeeInput.classList.remove('bg-slate-100');
+                    baseFeeInput.classList.add('bg-white', 'dark:bg-slate-800');
+                }
+            }
+
+            // Assigned Doctor
+            const epDocSelect = document.getElementById('ep-doctor');
+            if (epDocSelect) {
+                const availableDoctors = (typeof getAvailableDoctors === 'function') ? getAvailableDoctors() : [];
+                epDocSelect.innerHTML = `<option value="">-- Assigned Doctor --</option>` +
+                    availableDoctors.map(d => `<option value="${escapeExHtml(d.displayName)}">${escapeExHtml(d.displayName)} (${escapeExHtml(d.role)})</option>`).join('');
+                if (p.doctor) epDocSelect.value = p.doctor;
+                epDocSelect.disabled = !userIsAdmin;
+            }
+
+            // Case Status
+            const epCaseStatus = document.getElementById('ep-case-status');
+            if (epCaseStatus) {
+                epCaseStatus.value = p.closed ? 'closed' : 'active';
+                epCaseStatus.disabled = !userIsAdmin;
+            }
+
+            // Admin badge
+            const adminBadge = document.getElementById('ep-admin-badge');
+            if (adminBadge) {
+                if (userIsAdmin) {
+                    adminBadge.innerText = 'Admin Permission Enabled';
+                    adminBadge.className = 'text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 uppercase';
+                } else {
+                    adminBadge.innerText = 'Read-Only (Admin Permission Required)';
+                    adminBadge.className = 'text-[9px] font-black px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 uppercase';
+                }
+            }
+
             document.getElementById('ep-name').value = name;
-            document.getElementById('ep-phone').value = p.phone || '';
+            const phoneParts = String(p.phone || '').split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+            const formatForInput = (num) => {
+                if (!num) return '';
+                const digits = num.replace(/\D/g, '').replace(/^91/, '');
+                return digits.length === 10 ? ('+91' + digits) : num;
+            };
+            document.getElementById('ep-phone').value = phoneParts[0] ? formatForInput(phoneParts[0]) : '';
+            if (document.getElementById('ep-phone2')) {
+                document.getElementById('ep-phone2').value = phoneParts[1] ? formatForInput(phoneParts[1]) : '';
+            }
             document.getElementById('ep-age').value = p.age || '';
             document.getElementById('ep-gender').value = p.gender || 'Male';
             document.getElementById('ep-condition').value = p.diag || '';
@@ -12200,44 +12653,175 @@ document.getElementById('pd-sessions').innerText = consumed;
             document.getElementById('edit-patient-modal').classList.add('hidden');
         }
 
+        function handleEditPatientBranchChange() {
+            if (!isAdmin()) {
+                showToast('Only Administrators can change patient clinical branch', 'warning');
+                return;
+            }
+            const newBranch = document.getElementById('ep-branch').value;
+            const idInput = document.getElementById('ep-id');
+            const currentId = idInput.value.trim();
+            const m = currentId.match(/^([A-Za-z]+)(\d{2}\/\d+)$/);
+            if (m) {
+                idInput.value = `${newBranch}${m[2]}`;
+                showToast(`Branch set to ${newBranch} (ID updated: ${idInput.value})`, 'info');
+            } else {
+                generateEditPatientId();
+            }
+        }
+
+        async function generateEditPatientId() {
+            if (!isAdmin()) return;
+            const branch = document.getElementById('ep-branch').value;
+            try {
+                showToast(`Generating next sequential ID for ${branch}...`, 'info');
+                const result = await syncToBackend({ action: "getNextPatientId", branch: branch, globalCounter: true });
+                if (result && result.newId) {
+                    document.getElementById('ep-id').value = result.newId;
+                    showToast(`Updated Clinical ID to ${result.newId}`, 'success');
+                }
+            } catch (e) {
+                console.error("Auto ID generation failed:", e);
+                showToast("Could not auto-generate ID; you can enter it manually", "warning");
+            }
+        }
+
         async function saveEditPatient() {
             const oldName = document.getElementById('ep-original-name').value;
+            const oldId = document.getElementById('ep-original-id').value;
             const p = patientLookup[oldName];
             if (!p) {
                 showToast('Patient not found', 'error');
                 return;
             }
 
+            const userIsAdmin = isAdmin();
+            const newId = document.getElementById('ep-id').value.trim();
             const newName = document.getElementById('ep-name').value.trim();
-            const newPhone = document.getElementById('ep-phone').value.trim();
+            const epPh1 = (document.getElementById('ep-phone')?.value || '').trim();
+            const epPh2 = (document.getElementById('ep-phone2')?.value || '').trim();
+            let newPhone = epPh1;
+            const epClean1 = epPh1.replace(/\D/g, '');
+            const epClean2 = epPh2.replace(/\D/g, '');
+            if (epClean2.length >= 10 && epClean2 !== epClean1) {
+                newPhone = (epClean1.length >= 10) ? `${epPh1}, ${epPh2}` : epPh2;
+            }
             const newAge = document.getElementById('ep-age').value.trim();
             const newGender = document.getElementById('ep-gender').value;
             const newCondition = document.getElementById('ep-condition').value.replace(/,\s*$/, '').trim();
             const newAddress = document.getElementById('ep-address').value.trim();
+            const newBaseFeeRaw = document.getElementById('ep-base-fee').value;
+            const newBaseFee = newBaseFeeRaw !== '' ? toNum(newBaseFeeRaw) : p.baseRate;
+            const newDoctor = document.getElementById('ep-doctor').value.trim();
+            const newCaseStatus = document.getElementById('ep-case-status').value;
 
             if (!newName) {
                 showToast('Patient name cannot be empty', 'warning');
                 return;
             }
+            if (!newId) {
+                showToast('Clinical ID cannot be empty', 'warning');
+                return;
+            }
 
-            globalData.forEach(r => {
-                if (String(r[1]) === p.id) {
-                    r[2] = newName;
-                    r[3] = newPhone;
-                    r[4] = newAge;
-                    r[5] = newGender;
-                    r[6] = newCondition;
-                    r[14] = newAddress;
+            // Check if changing ID to an existing ID of another patient
+            if (newId !== oldId) {
+                const duplicatePatient = Object.values(patientLookup).find(pt => normId(pt.id) === normId(newId) && pt !== p);
+                if (duplicatePatient) {
+                    showToast(`Clinical ID ${newId} is already assigned to ${duplicatePatient.name}!`, 'error');
+                    return;
                 }
-            });
+            }
 
+            // ── 1. UPDATE IN-MEMORY PATIENT OBJECT ──
+            const idChanged = (newId !== oldId);
+            p.id = newId;
             p.name = newName;
             p.phone = newPhone;
             p.age = newAge;
             p.gender = newGender;
             p.diag = newCondition;
             p.address = newAddress;
+            if (newDoctor) p.doctor = newDoctor;
+            if (userIsAdmin && newBaseFee !== undefined) p.baseRate = newBaseFee;
 
+            // Handle Case Status change
+            if (userIsAdmin) {
+                if (newCaseStatus === 'closed' && !p.closed) {
+                    p.closed = true;
+                    p.closedDate = new Date().toISOString();
+                    recordAuditLog("Case Closed", `${newName} (${newId})`, "Manual discharge via patient profile edit", "Success")
+                        .catch(() => {});
+                } else if (newCaseStatus === 'active' && p.closed) {
+                    p.closed = false;
+                    p.closedDate = null;
+                    p.lastRestartMs = Date.now();
+                    const synced = window._autoClosedSynced || (typeof getAutoClosedSyncedSet === 'function' ? getAutoClosedSyncedSet() : null);
+                    if (synced && synced.has(newId)) {
+                        synced.delete(newId);
+                        if (typeof saveAutoClosedSyncedSet === 'function') saveAutoClosedSyncedSet(synced);
+                    }
+                    recordAuditLog("Case Restarted", `${newName} (${newId})`, "Manual restart via patient profile edit", "Success")
+                        .catch(() => {});
+                }
+            }
+
+            // ── 2. UPDATE GLOBAL DATABASE & SESSION ROWS ──
+            globalData.forEach(r => {
+                if (String(r[1]) === oldId || (oldName && String(r[2] || '').toLowerCase() === oldName.toLowerCase())) {
+                    r[1] = newId;
+                    r[2] = newName;
+                    r[3] = newPhone;
+                    r[4] = newAge;
+                    r[5] = newGender;
+                    r[6] = newCondition;
+                    r[14] = newAddress;
+                    if (newDoctor) r[16] = newDoctor;
+
+                    // Update Fee for enrollment rows & heal zero-fee sessions
+                    const type = String(r[7] || '').trim().toLowerCase();
+                    if (userIsAdmin && (type.includes('enroll') || r[10] > 0)) {
+                        r[9] = newBaseFee;
+                    } else if (userIsAdmin && (!r[9] || r[9] === 0 || r[9] === '—' || r[9] === '-') && (type.includes('session') || type.includes('rehab'))) {
+                        r[9] = newBaseFee;
+                    }
+                }
+            });
+
+            // Update patient's session logs
+            if (p.logs && p.logs.length > 0) {
+                p.logs.forEach(l => {
+                    l[1] = newId;
+                    l[2] = newName;
+                });
+            }
+
+            // Update rawTransactions, rawPackages, rawExercises if ID or Name changed
+            if (idChanged || oldName !== newName) {
+                if (window.rawTransactions && Array.isArray(window.rawTransactions)) {
+                    window.rawTransactions.forEach(tx => {
+                        if (normId(tx[2]) === normId(oldId)) tx[2] = newId;
+                    });
+                }
+                if (window.rawPackages && Array.isArray(window.rawPackages)) {
+                    window.rawPackages.forEach(pkg => {
+                        if (normId(pkg[1]) === normId(oldId)) {
+                            pkg[1] = newId;
+                            pkg[2] = newName;
+                        }
+                    });
+                }
+                if (window.rawExercises && Array.isArray(window.rawExercises)) {
+                    window.rawExercises.forEach(ex => {
+                        if (normId(ex[0]) === normId(oldId)) {
+                            ex[0] = newId;
+                            ex[1] = newName;
+                        }
+                    });
+                }
+            }
+
+            // Handle rename in patientLookup
             if (oldName !== newName) {
                 patientLookup[newName] = p;
                 delete patientLookup[oldName];
@@ -12252,18 +12836,23 @@ document.getElementById('pd-sessions').innerText = consumed;
             if (detailModal && !detailModal.classList.contains('hidden')) {
                 renderPatientDetailModal(newName);
             }
-            showToast('Patient details updated successfully!', 'success');
+            showToast(`Patient details for ${newName} updated successfully!`, 'success');
 
+            // ── 3. SYNC AUTHORITATIVELY TO BACKEND GOOGLE APPS SCRIPT ──
             syncToBackend({
                 action: "updatePatient",
-                id: p.id,
+                id: oldId,
+                newId: newId,
                 oldName: oldName,
                 name: newName,
                 phone: newPhone,
                 age: newAge,
                 gender: newGender,
                 condition: newCondition,
-                address: newAddress
+                address: newAddress,
+                baseFee: userIsAdmin ? newBaseFee : undefined,
+                doctor: newDoctor,
+                caseStatus: userIsAdmin ? newCaseStatus : undefined
             }).catch(err => {
                 console.warn('updatePatient sync note:', err);
             });
@@ -12863,22 +13452,8 @@ document.getElementById('pd-sessions').innerText = consumed;
                 adjustBillScale();
             }, 300);
             
-            syncToBackend({
-                action: "logAppointment",
-                id: p.id,
-                name: name,
-                doctor: docName,
-                phone: p.phone,
-                condition: `Bill Issued: ${stmtNo}`,
-                fee: 0,
-                amountPaid: 0,
-                discount: 0,
-                paymentMode: "Cash",
-                billNo: stmtNo,
-                type: "Bill Issued",
-                date: getLocalISOString(),
-                requestId: "BILL-" + Date.now()
-            }).catch(() => {});
+            // Bill recording is handled authoritatively by saveBill below.
+            // Obsolete redundant logAppointment zero-fee sync removed to prevent ghost rows and audit spam.
 
             if (!currentBillContext.billToken) {
                 currentBillContext.billToken = 'B' + Date.now().toString(16).toUpperCase() + Math.random().toString(16).substring(2, 8).toUpperCase();
@@ -14419,11 +14994,60 @@ async function confirmMarkPaid() {
         });
 
         // ---------- AUTO-CLOSE INACTIVE CASES (7+ DAYS NO SESSION) ----------
-        window._autoClosedSynced = window._autoClosedSynced || new Set();
+        function getAutoClosedSyncedSet() {
+            try {
+                const raw = localStorage.getItem("prism_auto_closed_synced");
+                return new Set(raw ? JSON.parse(raw) : []);
+            } catch (e) {
+                return new Set();
+            }
+        }
+        function saveAutoClosedSyncedSet(s) {
+            try {
+                localStorage.setItem("prism_auto_closed_synced", JSON.stringify([...s].slice(-500)));
+            } catch (e) {}
+        }
+        window._autoClosedSynced = window._autoClosedSynced || getAutoClosedSyncedSet();
 
         function getPatientLastActivityDate(p) {
             if (!p) return null;
             let latestMs = 0;
+
+            // 0. Check in-memory or audit-log case restart timestamp
+            if (p.lastRestartMs && p.lastRestartMs > latestMs) {
+                latestMs = p.lastRestartMs;
+            }
+            if (window.rawAuditData && window.rawAuditData.length > 0) {
+                const pNormId = normId(p.id);
+                window.rawAuditData.forEach(row => {
+                    const act = String(row[2] || '');
+                    const dtl = String(row[4] || '');
+                    if (act === "Case Restarted" || act === "Case Reopened" || act === "Case Open" || dtl.includes("Case Restarted") || dtl.includes("Case Reopened") || dtl.includes("Case Open")) {
+                        const patField = String(row[3] || '');
+                        const allP = patField.match(/\(([^)]+)\)/g) || [];
+                        let isMatch = false;
+                        for (let i = allP.length - 1; i >= 0; i--) {
+                            if (normId(allP[i].replace(/[()]/g, '')) === pNormId) { isMatch = true; break; }
+                        }
+                        if (!isMatch && (patField.includes(p.name) || patField.startsWith(p.name.split('(')[0].trim()))) {
+                            isMatch = true;
+                        }
+                        if (isMatch) {
+                            const ymd = normDateYMD(row[0]);
+                            let aMs = NaN;
+                            if (ymd && /^\d{4}-\d{2}-\d{2}$/.test(ymd)) {
+                                const parts = ymd.split('-').map(Number);
+                                aMs = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+                            } else {
+                                aMs = new Date(row[0]).getTime();
+                            }
+                            if (!isNaN(aMs) && aMs > latestMs) {
+                                latestMs = aMs;
+                            }
+                        }
+                    }
+                });
+            }
 
             // 1. Scan p.logs for session rows, case restarts, and enrollment
             if (p.logs && p.logs.length > 0) {
@@ -14482,6 +15106,7 @@ async function confirmMarkPaid() {
             const now = new Date();
             const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
             let closedCount = 0;
+            const synced = window._autoClosedSynced || getAutoClosedSyncedSet();
 
             Object.values(patientLookup).forEach(p => {
                 if (!p || p.closed) return;
@@ -14500,8 +15125,10 @@ async function confirmMarkPaid() {
                     closedCount++;
 
                     // Sync to backend via Audit Log (tracked from audit logs only)
-                    if (!window._autoClosedSynced.has(p.id)) {
-                        window._autoClosedSynced.add(p.id);
+                    if (!synced.has(p.id)) {
+                        synced.add(p.id);
+                        window._autoClosedSynced = synced;
+                        saveAutoClosedSyncedSet(synced);
                         recordAuditLog("Case Closed", `${p.name} (${p.id})`, "Auto-closed inactive case (>= 7 days without session)", "Success")
                             .catch(e => console.warn("Auto-close sync error for " + p.name + ":", e));
                     }
@@ -14526,9 +15153,13 @@ async function confirmMarkPaid() {
                 // ── INSTANT OPTIMISTIC UI UPDATE ──
                 p.closed = false;
                 p.closedDate = null;
+                p.lastRestartMs = Date.now();
                 if (p.autoClosed) p.autoClosed = false;
-                if (window._autoClosedSynced && window._autoClosedSynced.has(p.id)) {
-                    window._autoClosedSynced.delete(p.id);
+                const synced = window._autoClosedSynced || getAutoClosedSyncedSet();
+                if (synced && synced.has(p.id)) {
+                    synced.delete(p.id);
+                    window._autoClosedSynced = synced;
+                    saveAutoClosedSyncedSet(synced);
                 }
 
                 if (statEl.activeCount) {
@@ -16116,16 +16747,104 @@ window.shareExTabViaWhatsApp = function() {
 
                         const deleteBtn = document.createElement('button');
                         deleteBtn.innerHTML = '<i data-lucide="trash-2" class="w-3 h-3"></i> Delete';
-                        deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 uppercase transition-all px-2 py-1 rounded-lg cursor-pointer";
-                        deleteBtn.onclick = (e) => {
-                            armConfirm(e.currentTarget, "Confirm Delete?", () => {
-                                const timestamp = logData[0];
-                                // ── OPTIMISTIC REMOVAL ──
-                                const idxP = p.logs.indexOf(logData);
-                                if (idxP >= 0) p.logs.splice(idxP, 1);
-                                const idxG = globalData.findIndex(r => r[0] === timestamp);
-                                let removedGlobal = null;
-                                if (idxG >= 0) removedGlobal = globalData.splice(idxG, 1)[0];
+                        deleteBtn.className = "flex items-center gap-1 text-[9px] font-black text-rose-500 hover:text-rose-700 hover:bg-rose-50 uppercase transition-all px-2.5 py-1.5 rounded-lg cursor-pointer";
+                        deleteBtn.onclick = async () => {
+                            const sessionDate = logData[8];
+                            const dateNorm = normDateYMD(sessionDate);
+                            const pidNorm = normId(p.id);
+                            const dateLabel = formatDateDMY(sessionDate) || 'this';
+                            const patientLabel = stripSalutation(name);
+
+                            // Find all valid session logs for this patient on this exact date
+                            const sameDaySessions = (p.logs || []).filter(l => {
+                                const t = String(l[7] || '').trim().toLowerCase();
+                                if (['case closed', 'case restarted', 'bill issued'].includes(t)) return false;
+                                if (t.includes('enrollment') && !t.includes('session')) return false;
+                                return normDateYMD(l[8]) === dateNorm;
+                            });
+
+                            let deleteMode = 'one';
+
+                            if (sameDaySessions.length >= 2) {
+                                const choice = await showMultiSessionChoicePopup({
+                                    patientName: patientLabel,
+                                    dateFormatted: dateLabel,
+                                    sessionCount: sameDaySessions.length
+                                });
+                                if (choice === 'cancel') return;
+                                deleteMode = choice;
+                            } else {
+                                const feeLabel = logData[9] ? ` (₹${toNum(logData[9]).toLocaleString()})` : '';
+                                const confirmed = await showPopupConfirm({
+                                    badge: 'Delete Session',
+                                    type: 'danger',
+                                    title: 'Delete Logged Session?',
+                                    message: `Are you sure you want to delete the session for ${patientLabel} on ${dateLabel}${feeLabel}? Once deleted, it will be permanently removed from records and database.`,
+                                    confirmText: 'Yes, Delete',
+                                    cancelText: 'Cancel'
+                                });
+                                if (!confirmed) return;
+                            }
+
+                            if (deleteMode === 'all') {
+                                // ── DELETE ALL SESSIONS ON THIS DATE (e.g. BOTH SESSIONS) ──
+                                const targetsToDelete = [...sameDaySessions];
+
+                                // 1. Record tombstones for all sessions on this day
+                                if (typeof trackDeletedSessionKey === 'function') {
+                                    targetsToDelete.forEach(t => {
+                                        if (t[0]) trackDeletedSessionKey(t[0]);
+                                    });
+                                    if (pidNorm && dateNorm) {
+                                        trackDeletedSessionKey(`${pidNorm}_${dateNorm}`);
+                                    }
+                                }
+
+                                // 2. Purge from optimistic memory buffer
+                                if (Array.isArray(_recentOptimisticLogs)) {
+                                    _recentOptimisticLogs = _recentOptimisticLogs.filter(r => {
+                                        const rPid = normId(r[1]);
+                                        const rDate = normDateYMD(r[8]);
+                                        return !(rPid === pidNorm && rDate === dateNorm);
+                                    });
+                                }
+
+                                // 3. Optimistic removal from p.logs & globalData
+                                targetsToDelete.forEach(t => {
+                                    const idxP = p.logs.indexOf(t);
+                                    if (idxP >= 0) p.logs.splice(idxP, 1);
+
+                                    const idxG = globalData.findIndex(r => {
+                                        if (t[0] && r[0] === t[0]) return true;
+                                        return normId(r[1]) === pidNorm && normDateYMD(r[8]) === dateNorm && toNum(r[9]) === toNum(t[9]);
+                                    });
+                                    if (idxG >= 0) globalData.splice(idxG, 1);
+                                });
+
+                                // Purge corresponding transactions
+                                if (window.rawTransactions && Array.isArray(window.rawTransactions)) {
+                                    window.rawTransactions = window.rawTransactions.filter(tx => {
+                                        const txPid = normId(tx[2]);
+                                        const txType = String(tx[3] || '').trim().toLowerCase();
+                                        if (txPid !== pidNorm) return true;
+                                        if (!txType.includes('rehab') && !txType.includes('session')) return true;
+                                        const isMatch = targetsToDelete.some(t => String(tx[0]).trim() === String(t[0]).trim() || toNum(tx[7]) === toNum(t[9]));
+                                        return !isMatch;
+                                    });
+                                }
+
+                                // 4. Balance & remaining adjustments for all deleted sessions
+                                targetsToDelete.forEach(t => {
+                                    const sFee = toNum(t[9]);
+                                    const sMode = String(t[13] || '').trim();
+                                    if (sMode === 'Advance' || sMode === 'Package') {
+                                        p.sessionsRemaining = (p.sessionsRemaining || 0) + 1;
+                                        p.walletBalance = (p.walletBalance || 0) + sFee;
+                                    } else if (sMode === 'Pending') {
+                                        p.outstandingDue = Math.max(0, (p.outstandingDue || 0) - sFee);
+                                        p.dueSessionCount = Math.max(0, (p.dueSessionCount || 1) - 1);
+                                    }
+                                });
 
                                 renderCalendar();
                                 updatePatientWorkspaceUI(name, p, false);
@@ -16133,29 +16852,110 @@ window.shareExTabViaWhatsApp = function() {
                                 renderTables();
                                 renderDuesWidget();
                                 updateGlobalStats();
-                                showToast("Session record removed", "info");
+                                showToast(`All ${targetsToDelete.length} sessions deleted for ${dateLabel}`, "info");
 
+                                // 5. Sync to backend spreadsheet
                                 syncToBackend({
                                     action: "deleteSession",
                                     id: p.id,
-                                    timestamp: timestamp
+                                    date: dateNorm,
+                                    rawDate: sessionDate,
+                                    deleteAllDay: true,
+                                    deleteCount: targetsToDelete.length,
+                                    timestamps: targetsToDelete.map(t => t[0]).filter(Boolean)
                                 }).then(() => {
                                     scheduleBackgroundReconcile(3000);
                                 }).catch(err => {
-                                    if (idxP >= 0) p.logs.splice(idxP, 0, logData);
-                                    if (removedGlobal && idxG >= 0) globalData.splice(idxG, 0, removedGlobal);
-                                    renderCalendar();
-                                    updatePatientWorkspaceUI(name, p, false);
-                                    renderActiveCasesForLog();
-                                    renderTables();
-                                    showToast("Delete failed to sync — " + err.message, "warning");
+                                    console.warn("Background sync warning on deleteSession:", err);
+                                    showToast("Notice: " + (err.message || 'Sync queued'), "info");
                                 });
-                            });
+
+                            } else {
+                                // ── DELETE ONLY 1 SESSION (THIS SPECIFIC RECORD) ──
+                                const timestamp = logData[0];
+                                const sessionFee = toNum(logData[9]);
+                                const sessionMode = String(logData[13] || '').trim();
+
+                                // 1. Record tombstones for this specific session only
+                                if (typeof trackDeletedSessionKey === 'function') {
+                                    if (timestamp) trackDeletedSessionKey(timestamp);
+                                    if (pidNorm && dateNorm && timestamp) {
+                                        trackDeletedSessionKey(`${pidNorm}_${dateNorm}_${timestamp}`);
+                                        trackDeletedSessionKey(`${pidNorm}_${dateNorm}_${sessionFee}_${timestamp}`);
+                                    }
+                                }
+
+                                // 2. Purge from optimistic memory buffer (only this specific timestamp)
+                                if (Array.isArray(_recentOptimisticLogs)) {
+                                    _recentOptimisticLogs = _recentOptimisticLogs.filter(r => {
+                                        const rPid = normId(r[1]);
+                                        const rTs = String(r[0] || '').trim();
+                                        return !(rPid === pidNorm && rTs === String(timestamp).trim());
+                                    });
+                                }
+
+                                // 3. Optimistic removal from in-memory datasets
+                                const idxP = p.logs.indexOf(logData);
+                                if (idxP >= 0) p.logs.splice(idxP, 1);
+
+                                const idxG = globalData.findIndex(r => {
+                                    if (timestamp && r[0] === timestamp) return true;
+                                    return normId(r[1]) === pidNorm && normDateYMD(r[8]) === dateNorm && toNum(r[9]) === sessionFee;
+                                });
+                                if (idxG >= 0) globalData.splice(idxG, 1);
+
+                                // Purge corresponding transaction if present
+                                if (window.rawTransactions && Array.isArray(window.rawTransactions)) {
+                                    const txIdx = window.rawTransactions.findIndex(tx => {
+                                        const txPid = normId(tx[2]);
+                                        const txType = String(tx[3] || '').trim().toLowerCase();
+                                        return (txPid === pidNorm) &&
+                                               (txType.includes('rehab') || txType.includes('session')) &&
+                                               (String(tx[0]).trim() === String(timestamp).trim() || toNum(tx[7]) === sessionFee);
+                                    });
+                                    if (txIdx >= 0) window.rawTransactions.splice(txIdx, 1);
+                                }
+
+                                // 4. Balance & remaining adjustments for 1 session
+                                if (sessionMode === 'Advance' || sessionMode === 'Package') {
+                                    p.sessionsRemaining = (p.sessionsRemaining || 0) + 1;
+                                    p.walletBalance = (p.walletBalance || 0) + sessionFee;
+                                } else if (sessionMode === 'Pending') {
+                                    p.outstandingDue = Math.max(0, (p.outstandingDue || 0) - sessionFee);
+                                    p.dueSessionCount = Math.max(0, (p.dueSessionCount || 1) - 1);
+                                }
+
+                                renderCalendar();
+                                updatePatientWorkspaceUI(name, p, false);
+                                renderActiveCasesForLog();
+                                renderTables();
+                                renderDuesWidget();
+                                updateGlobalStats();
+                                showToast(`1 session deleted for ${dateLabel}`, "info");
+
+                                // 5. Sync to backend spreadsheet
+                                syncToBackend({
+                                    action: "deleteSession",
+                                    id: p.id,
+                                    timestamp: timestamp,
+                                    date: dateNorm,
+                                    rawDate: sessionDate,
+                                    fee: sessionFee,
+                                    type: logData[7],
+                                    paymentMode: sessionMode,
+                                    deleteAllDay: false
+                                }).then(() => {
+                                    scheduleBackgroundReconcile(3000);
+                                }).catch(err => {
+                                    console.warn("Background sync warning on deleteSession:", err);
+                                    showToast("Notice: " + (err.message || 'Sync queued'), "info");
+                                });
+                            }
                         };
 
                         const editBtn = document.createElement('button');
                         editBtn.innerHTML = '<i data-lucide="edit-2" class="w-3 h-3"></i> Edit Fee';
-                        editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 uppercase px-2 py-1 rounded-lg cursor-pointer";
+                        editBtn.className = "flex items-center gap-1 text-[9px] font-black text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 uppercase px-2.5 py-1.5 rounded-lg cursor-pointer";
                         editBtn.onclick = () => {
                             const newFee = prompt(`Update fee for ${formatDateDMY(logData[8])}:`, logData[9]);
                             if (newFee === null || newFee === "" || isNaN(Number(newFee))) return;
@@ -16175,6 +16975,8 @@ window.shareExTabViaWhatsApp = function() {
                                 action: "updateFee",
                                 id: p.id,
                                 timestamp: timestamp,
+                                date: normDateYMD(logData[8]),
+                                rawDate: logData[8],
                                 newFee: Number(newFee)
                             }).then(() => {
                                 scheduleBackgroundReconcile(3000);
