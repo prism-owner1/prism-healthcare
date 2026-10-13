@@ -197,9 +197,6 @@
                                     </button>
                                 </div>
                                 <div class="flex items-center gap-1.5 flex-wrap pt-1 border-t border-indigo-100/60 text-[10px]">
-                                    <button type="button" onclick="if(window.PrismAI) PrismAI.openDoctorModal()" class="text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg font-bold transition-all flex items-center gap-1">
-                                        <i data-lucide="stethoscope" class="w-3 h-3 text-amber-600"></i> Know Your Doctor
-                                    </button>
                                     <button type="button" onclick="if(window.PrismAI) PrismAI.ask('How do I log in to the patient portal or find my Patient ID?')" class="text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-lg font-bold transition-all flex items-center gap-1">
                                         <i data-lucide="help-circle" class="w-3 h-3 text-indigo-500"></i> Login / ID Help
                                     </button>
@@ -404,11 +401,23 @@
 
             <!-- TAB 3: Prescribed Exercises Section (Numbered) -->
             <div id="view-exercises" class="hidden space-y-6 pt-2">
-                <div class="flex items-center justify-between px-1 sm:px-2 flex-wrap gap-1.5 mb-2">
-                    <h3 class="text-[10px] sm:text-[11px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
-                        <i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600"></i> Prescribed Home Exercises
-                    </h3>
-                    <span class="text-[10px] sm:text-xs text-slate-400 font-bold">Follow sequential order</span>
+                <div class="flex items-center justify-between px-1 sm:px-2 flex-wrap gap-2 mb-2">
+                    <div>
+                        <h3 id="ex-header-title" class="text-[10px] sm:text-[11px] font-black uppercase text-slate-400 tracking-widest flex items-center gap-1.5">
+                            <i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600"></i> Prescribed Home Exercises
+                        </h3>
+                        <p id="ex-header-subtitle" class="text-[10px] sm:text-xs text-slate-400 font-bold mt-0.5">Follow sequential order</p>
+                    </div>
+
+                    <!-- Bilingual Language Toggle Switch -->
+                    <div class="flex items-center p-1 bg-slate-100 rounded-2xl border border-slate-200/80 shadow-xs">
+                        <button type="button" onclick="setExerciseLanguage('en')" id="ex-lang-btn-en" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm cursor-pointer">
+                            🇬🇧 EN
+                        </button>
+                        <button type="button" onclick="setExerciseLanguage('hi')" id="ex-lang-btn-hi" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900 cursor-pointer">
+                            🇮🇳 हिन्दी
+                        </button>
+                    </div>
                 </div>
 
                 <div id="p-exercise-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -710,6 +719,8 @@
 
         function getDeviceLanguage() {
             try {
+                const savedLang = sessionStorage.getItem('prism_preferred_lang');
+                if (savedLang === 'hi' || savedLang === 'en') return savedLang;
                 const navLang = (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase();
                 return navLang.startsWith('hi') ? 'hi' : 'en';
             } catch (e) {
@@ -718,6 +729,7 @@
         }
 
         let currentInstructionLang = getDeviceLanguage();
+        let currentExerciseLang = getDeviceLanguage();
 
         function isMostlyHindi(str) {
             if (!str) return false;
@@ -752,7 +764,7 @@
                 [/firm mattress/gi, "सख्त गद्दे पर सोएं"],
                 [/cervical pillow/gi, "ग्रीवा तकिया (Cervical Pillow) का उपयोग करें"],
                 [/lumbar support|lumbar roll/gi, "कमर के पीछे सहारा (Lumbar Support) रखें"],
-                [/morning and evening/gi, "सुबह और शाम"],
+                [/morning and evening|morning & evening/gi, "सुबह और शाम"],
                 [/repeat 10 times/gi, "10 बार दोहराएं"],
                 [/hold for 5-10 seconds|hold for 5 to 10 seconds/gi, "5 से 10 सेकंड रोककर रखें"],
                 [/hold for 5 seconds/gi, "5 सेकंड रोककर रखें"],
@@ -767,36 +779,241 @@
             return t;
         }
 
-        function setInstructionLanguage(lang) {
-            currentInstructionLang = (lang === 'hi') ? 'hi' : 'en';
+        function translateExerciseText(text, lang) {
+            if (!text) return '';
+            if (lang !== 'hi') return text;
+            if (isMostlyHindi(text)) return text;
 
-            const btnEn = document.getElementById('inst-lang-btn-en');
-            const btnHi = document.getElementById('inst-lang-btn-hi');
-            const activeBtnClass = "px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm";
-            const inactiveBtnClass = "px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900";
+            let t = String(text);
 
-            if (btnEn && btnHi) {
-                if (currentInstructionLang === 'hi') {
-                    btnHi.className = activeBtnClass;
-                    btnEn.className = inactiveBtnClass;
+            const exerciseGlossary = [
+                // Repetition and Set patterns
+                [/\b(\d+)\s*(?:reps|repetitions|rep)\b/gi, "$1 बार"],
+                [/\b(\d+)\s*sets\b/gi, "$1 सेट"],
+                [/\b(\d+)\s*(?:sec|secs|seconds)\s*hold\b/gi, "$1 सेकंड रोककर रखें"],
+                [/\bhold\s*(?:for\s*)?(\d+)\s*(?:sec|secs|seconds)\b/gi, "$1 सेकंड रोककर रखें"],
+                [/\brepeat\s*(\d+)\s*(?:times|reps|repetitions)\b/gi, "$1 बार दोहराएं"],
+                [/\b(\d+)\s*(?:times daily|times a day)\b/gi, "दिन में $1 बार"],
+                [/\b(\d+)\s*(?:to|-)\s*(\d+)\s*(?:reps|repetitions|times)\b/gi, "$1 से $2 बार"],
+                [/\b(\d+)\s*(?:to|-)\s*(\d+)\s*(?:sec|secs|seconds)\b/gi, "$1 से $2 सेकंड"],
+
+                // Common Physiotherapy Exercises
+                [/straight leg raise|straight leg raises|\(slr\)|slr/gi, "सीधा पैर उठाना (SLR)"],
+                [/quadriceps sets|quad sets|quad set/gi, "क्वाड्रिसेप्स संकुचन (Quad Sets)"],
+                [/hamstring curls|hamstring curl/gi, "हैमस्ट्रिंग कर्ल (Hamstring Curl)"],
+                [/ankle pumps|ankle pump/gi, "टखने/पंजे का व्यायाम (Ankle Pump)"],
+                [/heel slides|heel slide/gi, "एड़ी स्लाइड व्यायाम (Heel Slide)"],
+                [/bridging|pelvic bridge|pelvic bridging/gi, "पेल्विक ब्रिज (कमर उठाना)"],
+                [/cat and camel|cat & camel|cat-camel/gi, "कैट एंड कैमल स्ट्रेच"],
+                [/knee extension|knee extensions/gi, "घुटना सीधा करना (Knee Extension)"],
+                [/knee flexion|knee flexions/gi, "घुटना मोड़ना (Knee Flexion)"],
+                [/cervical isometric|neck isometrics|neck isometric/gi, "गर्दन का आइसोमेट्रिक व्यायाम"],
+                [/chin tucks|chin tuck/gi, "चिन टक (गर्दन सीधी करना)"],
+                [/pendulum exercise|pendulum exercises/gi, "पेंडुलम व्यायाम (Pendulum)"],
+                [/wall squat|wall squats/gi, "दीवार के सहारे स्क्वाट (Wall Squat)"],
+                [/calf stretch|calf stretching/gi, "पिंडली का खिंचाव (Calf Stretch)"],
+                [/scapular squeeze|scapular squeezes|scapular retraction/gi, "कंधे के ब्लेड का संकुचन"],
+                [/prone cobra/gi, "प्रोन कोबरा व्यायाम"],
+                [/wall angels|wall angel/gi, "वॉल एंजल्स व्यायाम"],
+                [/clam shell|clamshell/gi, "क्लैमशेल व्यायाम (Clamshell)"],
+                [/lumbar extension|mckenzie extension|prone press up/gi, "कमर का मैकेन्ज़ी स्ट्रेच"],
+                [/knee to chest|single knee to chest|double knee to chest/gi, "घुटने को सीने से लगाना"],
+                [/pelvic tilt|pelvic tilts/gi, "पेल्विक टिल्ट व्यायाम"],
+                [/piriformis stretch/gi, "पिरिफोर्मिस खिंचाव व्यायाम"],
+                [/core strengthening|core stability|core exercise/gi, "कोर मजबूती व्यायाम"],
+                [/isometric exercises|isometric exercise|isometric/gi, "आइसोमेट्रिक व्यायाम"],
+                [/strengthening routine|strengthening exercises|strengthening/gi, "मांसपेशियों की मजबूती का व्यायाम"],
+                [/stretching exercises|stretching exercise|stretching|stretch/gi, "खिंचाव व्यायाम (Stretching)"],
+                [/mobility exercises|mobility exercise|mobility routine|mobility/gi, "जोड़ों की गतिशीलता व्यायाम"],
+                [/rehabilitation|rehab/gi, "पुनर्वास"],
+                [/physiotherapy routine/gi, "फिजियोथेरेपी व्यायाम"],
+                [/prescribed routine/gi, "डॉक्टर द्वारा निर्धारित व्यायाम"],
+                [/home exercise program|home exercises|home exercise/gi, "घरेलू व्यायाम कार्यक्रम"],
+                [/follow prescribed movements with smooth rhythm and controlled breathing as instructed by your physiotherapist\./gi, "फिजियोथेरेपिस्ट के निर्देशानुसार नियंत्रित सांस और सहज गति के साथ व्यायाम करें।"],
+                [/keep your knee straight|keep knee straight/gi, "घुटना बिल्कुल सीधा रखें"],
+                [/bend your knee|bend knee/gi, "घुटना मोड़ें"],
+                [/slowly lower down|slowly lower/gi, "धीरे-धीरे नीचे लाएं"],
+                [/slowly raise|raise slowly/gi, "धीरे-धीरे ऊपर उठाएं"],
+                [/breathe normally|do not hold breath/gi, "सांस सामान्य रखें"],
+                [/sit tall|stand tall/gi, "सीधे तनकर बैठें/खड़े हों"],
+                [/lie on back|lie on your back|lie on the floor/gi, "पीठ के बल सीधे लेटें"],
+                [/lie on stomach|lie face down/gi, "पेट के बल सीधे लेटें"],
+                [/lie on your side|lie on side/gi, "करवट लेकर लेटें"],
+                [/slowly and gently|slowly & gently/gi, "धीरे-धीरे और सावधानी से"],
+                [/do not pinch/gi, "दबाव न दें"],
+                [/do not lift/gi, "न उठाएं"],
+                [/take 3 deep breaths/gi, "3 गहरी सांसें लें"],
+                [/hands and knees|on hands and knees/gi, "घुटनों और हाथों के बल आएं"],
+                [/both sides|each side/gi, "दोनों तरफ"],
+                [/both legs|each leg/gi, "दोनों पैर"],
+                [/both arms|each arm/gi, "दोनों हाथ"],
+                [/relax completely|relax/gi, "आराम दें"]
+            ];
+
+            exerciseGlossary.forEach(([rgx, val]) => {
+                t = t.replace(rgx, val);
+            });
+
+            return translateClinicalText(t, 'hi');
+        }
+
+        function setExerciseLanguage(lang) {
+            currentExerciseLang = (lang === 'hi') ? 'hi' : 'en';
+            currentInstructionLang = currentExerciseLang;
+
+            try {
+                sessionStorage.setItem('prism_preferred_lang', currentExerciseLang);
+            } catch (e) {}
+
+            const activeBtnClass = "px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm cursor-pointer";
+            const inactiveBtnClass = "px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900 cursor-pointer";
+
+            // Update Exercise toggle buttons
+            const exBtnEn = document.getElementById('ex-lang-btn-en');
+            const exBtnHi = document.getElementById('ex-lang-btn-hi');
+            if (exBtnEn && exBtnHi) {
+                if (currentExerciseLang === 'hi') {
+                    exBtnHi.className = activeBtnClass;
+                    exBtnEn.className = inactiveBtnClass;
                 } else {
-                    btnEn.className = activeBtnClass;
-                    btnHi.className = inactiveBtnClass;
+                    exBtnEn.className = activeBtnClass;
+                    exBtnHi.className = inactiveBtnClass;
                 }
             }
 
-            const titleEl = document.getElementById('inst-header-title');
-            const subEl = document.getElementById('inst-header-subtitle');
-
-            if (currentInstructionLang === 'hi') {
-                if (titleEl) titleEl.innerText = "चिकित्सकीय निर्देश एवं सावधानियां";
-                if (subEl) subEl.innerText = "डॉ. रवि कुमार द्वारा निर्देशित व्यक्तिगत सावधानियां";
-            } else {
-                if (titleEl) titleEl.innerText = "Clinical Instructions & Directives";
-                if (subEl) subEl.innerText = "Prescribed by treating physiotherapist";
+            // Update Instruction toggle buttons
+            const instBtnEn = document.getElementById('inst-lang-btn-en');
+            const instBtnHi = document.getElementById('inst-lang-btn-hi');
+            if (instBtnEn && instBtnHi) {
+                if (currentInstructionLang === 'hi') {
+                    instBtnHi.className = activeBtnClass;
+                    instBtnEn.className = inactiveBtnClass;
+                } else {
+                    instBtnEn.className = activeBtnClass;
+                    instBtnHi.className = inactiveBtnClass;
+                }
             }
 
-            renderHomeScreenInstructions();
+            // Update Exercise header titles
+            const exTitle = document.getElementById('ex-header-title');
+            const exSub = document.getElementById('ex-header-subtitle');
+            if (exTitle && exSub) {
+                if (currentExerciseLang === 'hi') {
+                    exTitle.innerHTML = `<i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600"></i> निर्धारित घरेलू व्यायाम`;
+                    exSub.innerText = "क्रमानुसार नियमित रूप से करें";
+                } else {
+                    exTitle.innerHTML = `<i data-lucide="dumbbell" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600"></i> Prescribed Home Exercises`;
+                    exSub.innerText = "Follow sequential order";
+                }
+            }
+
+            // Update Instruction header titles
+            const instTitle = document.getElementById('inst-header-title');
+            const instSub = document.getElementById('inst-header-subtitle');
+            if (instTitle && instSub) {
+                if (currentInstructionLang === 'hi') {
+                    instTitle.innerText = "चिकित्सकीय निर्देश एवं सावधानियां";
+                    instSub.innerText = "डॉ. रवि कुमार द्वारा निर्देशित व्यक्तिगत सावधानियां";
+                } else {
+                    instTitle.innerText = "Clinical Instructions & Directives";
+                    instSub.innerText = "Prescribed by treating physiotherapist";
+                }
+            }
+
+            if (typeof renderExerciseList === 'function') renderExerciseList();
+            if (typeof renderHomeScreenInstructions === 'function') renderHomeScreenInstructions();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function setInstructionLanguage(lang) {
+            setExerciseLanguage(lang);
+        }
+
+        function renderExerciseList() {
+            const listEl = document.getElementById('p-exercise-list');
+            if (!listEl) return;
+
+            const exercises = currentPatientExercises || [];
+            const badgeCountEl = document.getElementById('ex-badge-count');
+            if (badgeCountEl) badgeCountEl.innerText = exercises.length;
+
+            const isHi = currentExerciseLang === 'hi';
+
+            if (exercises.length > 0) {
+                listEl.innerHTML = exercises.map((ex, idx) => {
+                    const rawName = ex[2] || 'Physiotherapy Routine';
+                    const rawCat = ex[3] || 'Prescribed Routine';
+                    const rawFreq = ex[6] || '';
+                    const rawInstr = ex[4] || 'Follow prescribed movements with smooth rhythm and controlled breathing as instructed by your physiotherapist.';
+
+                    const displayName = isHi ? translateExerciseText(rawName, 'hi') : rawName;
+                    const displayCat = isHi ? translateExerciseText(rawCat, 'hi') : rawCat;
+                    const displayFreq = rawFreq ? (isHi ? translateExerciseText(rawFreq, 'hi') : rawFreq) : '';
+
+                    const steps = splitInstructionItems(rawInstr);
+
+                    return `
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:border-indigo-200 transition-all">
+                        <div class="absolute top-0 left-0 w-2.5 h-full bg-indigo-500"></div>
+                        <div>
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <span class="bg-indigo-50 text-indigo-700 text-xs font-black px-3.5 py-1.5 rounded-xl uppercase tracking-wider">
+                                    ${isHi ? 'व्यायाम #' : 'Exercise #'}${String(idx + 1).padStart(2, '0')}
+                                </span>
+                                ${displayFreq ? `<span class="bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase px-3 py-1 rounded-xl border border-emerald-100">${displayFreq}</span>` : ''}
+                            </div>
+                            <h4 class="font-black text-slate-900 text-base mb-1">${displayName}</h4>
+                            ${isHi && rawName && !isMostlyHindi(rawName) && displayName !== rawName ? `
+                                <p class="text-[11px] font-bold text-slate-400 mb-1 italic">${rawName}</p>
+                            ` : ''}
+                            <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">${displayCat}</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                    <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-500"></i> ${isHi ? 'निर्देश एवं व्यायाम विधि:' : 'Prescribed Instructions & Technique:'}
+                                </p>
+                                ${(() => {
+                                    if (steps.length > 1) {
+                                        return `<div class="space-y-1.5 mt-1.5">
+                                            ${steps.map((st, sIdx) => {
+                                                const transStep = isHi ? translateExerciseText(st, 'hi') : st;
+                                                return `
+                                                <div class="flex items-start gap-2 text-xs text-slate-700 font-semibold leading-relaxed">
+                                                    <span class="w-4 h-4 rounded-md bg-indigo-50 text-indigo-600 text-[9px] font-black flex items-center justify-center shrink-0 mt-0.5 border border-indigo-100/60">${sIdx + 1}</span>
+                                                    <span>${transStep}</span>
+                                                </div>`;
+                                            }).join('')}
+                                        </div>`;
+                                    }
+                                    const transSingle = isHi ? translateExerciseText(rawInstr, 'hi') : rawInstr;
+                                    return `<p class="text-xs text-slate-700 leading-relaxed font-semibold">${transSingle}</p>`;
+                                })()}
+                            </div>
+                            
+                            <div class="flex gap-2 flex-wrap mb-4 text-[10px] font-black text-slate-500 uppercase">
+                                ${ex[7] ? `<span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200/60">${isHi ? 'निर्धारित' : 'Prescribed'}: ${formatDate(ex[7])}</span>` : ''}
+                                ${ex[8] ? `<span class="bg-amber-50 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200">${isHi ? 'समीक्षा' : 'Review'}: ${formatDate(ex[8])}</span>` : ''}
+                            </div>
+                        </div>
+                        ${ex[5] ? `<a href="${ex[5]}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 text-xs font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 py-3 rounded-2xl transition-colors shadow-sm"><i data-lucide="play-circle" class="w-4 h-4"></i> ${isHi ? 'वीडियो गाइड देखें' : 'Watch Video Guide'}</a>` : ''}
+                    </div>
+                    `;
+                }).join('');
+            } else {
+                listEl.innerHTML = `
+                    <div class="col-span-1 md:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 text-center shadow-sm">
+                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-black text-slate-800 text-base mb-1">${isHi ? 'क्लिनिक पुनर्वास कार्यक्रम सक्रिय' : 'In-Clinic Rehabilitation Program Active'}</h4>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto mb-4 leading-relaxed">${isHi ? 'आपके रिकॉर्ड में कोई अलग घरेलू व्यायाम दर्ज नहीं है। कृपया डॉ. रवि कुमार, PT द्वारा निर्देशित क्लिनिकल रिहैब योजना का पालन जारी रखें।' : 'No home-specific exercise routine assigned in your record. Please continue following the customized in-clinic rehabilitation plan directed by Dr. Ravi Kumar, PT.'}</p>
+                        <div class="inline-flex items-center gap-2 text-[10px] font-black text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full uppercase border border-emerald-100">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> ${isHi ? 'निर्देशित क्लिनिकल रिहैब का पालन करें' : 'Follow Guided In-Clinic Routine'}
+                        </div>
+                    </div>
+                `;
+            }
+            if (window.lucide) lucide.createIcons();
         }
 
         function switchDashboardTab(tab) {
@@ -842,6 +1059,52 @@
             if (window.lucide) lucide.createIcons();
         }
 
+        function splitInstructionItems(text) {
+            if (!text) return [];
+            const str = String(text).trim();
+            if (!str) return [];
+
+            let parts = [];
+            if (str.includes('\n')) {
+                parts = str.split(/\r?\n+/).map(s => s.trim()).filter(Boolean);
+            } else if (/^\d+[\.\)]\s+/.test(str) || /\s+\d+[\.\)]\s+/.test(str)) {
+                parts = str.split(/(?:^|\s+)(?=\d+[\.\)]\s+)/).map(s => s.trim()).filter(Boolean);
+            } else if (/[•\*\-]\s+/.test(str)) {
+                parts = str.split(/(?:^|\s+)[•\*\-]\s+/).map(s => s.trim()).filter(Boolean);
+            } else if (str.includes(';') && str.split(';').length > 1) {
+                parts = str.split(/;+/).map(s => s.trim()).filter(Boolean);
+            } else {
+                const splitSentences = str.split(/(?<=[.!?।])\s+(?=[A-Za-z0-9\u0900-\u097F])/);
+                if (splitSentences.length > 1) {
+                    parts = splitSentences.map(s => s.trim()).filter(Boolean);
+                } else {
+                    parts = [str];
+                }
+            }
+
+            return parts.map(p => p.replace(/^[\d]+[\.\)]\s*/, '').replace(/^[•\-\*]\s*/, '').trim()).filter(Boolean);
+        }
+
+        window.collapsedInstructionCards = window.collapsedInstructionCards || new Set();
+
+        function toggleInstructionCard(idx) {
+            const body = document.getElementById(`inst-card-body-${idx}`);
+            const chevron = document.getElementById(`inst-card-chevron-${idx}`);
+            if (!body) return;
+
+            if (window.collapsedInstructionCards.has(idx)) {
+                window.collapsedInstructionCards.delete(idx);
+                body.classList.remove('hidden');
+                if (chevron) chevron.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                window.collapsedInstructionCards.add(idx);
+                body.classList.add('hidden');
+                if (chevron) chevron.setAttribute('data-lucide', 'chevron-down');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+        window.toggleInstructionCard = toggleInstructionCard;
+
         function renderHomeScreenInstructions() {
             const section = document.getElementById('home-instructions-section');
             const container = document.getElementById('home-instructions-container');
@@ -860,40 +1123,80 @@
 
             container.innerHTML = currentPatientInstructions.map((inst, idx) => {
                 const rawNote = inst[4] || '';
-                const translatedNote = translateClinicalText(rawNote, isHi ? 'hi' : 'en');
                 const prescribedDate = inst[7] || inst[0];
                 const freq = inst[6] || '';
                 const title = inst[2] || (isHi ? 'पुनर्वास निर्देश' : 'Clinical Directives & Precautions');
+                const rawItems = splitInstructionItems(rawNote);
+                const isCollapsed = window.collapsedInstructionCards.has(idx);
 
                 return `
                     <div class="bg-white p-4 sm:p-5 rounded-2xl md:rounded-[1.75rem] border border-indigo-100 shadow-sm relative overflow-hidden group hover:border-indigo-300 transition-all">
                         <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-500 to-purple-600"></div>
+                        
+                        <!-- Top Metadata Row -->
                         <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="bg-indigo-50 text-indigo-700 text-[10px] sm:text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider flex items-center gap-1.5">
+                            <span class="bg-indigo-50 text-indigo-700 text-[10px] sm:text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider flex items-center gap-1.5 border border-indigo-100/60">
                                 <i data-lucide="stethoscope" class="w-3.5 h-3.5"></i> ${doctorName}
                             </span>
                             ${prescribedDate ? `<span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-lg">${formatDate(prescribedDate)}</span>` : ''}
                         </div>
-                        <h4 class="font-black text-slate-900 text-xs sm:text-sm mb-2 flex items-center gap-1.5">
-                            <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-indigo-600 flex-shrink-0"></i>
-                            ${isHi ? translateClinicalText(title, 'hi') : title}
-                        </h4>
-                        <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
-                            <p class="text-xs text-slate-800 leading-relaxed font-semibold">
-                                ${translatedNote}
-                            </p>
-                            ${isHi && rawNote && !isMostlyHindi(rawNote) ? `
-                                <div class="mt-2 pt-2 border-t border-slate-200/70 text-[10px] sm:text-[11px] text-slate-500 font-medium">
-                                    <span class="font-bold text-slate-600">मूल अंग्रेज़ी (Original):</span> ${rawNote}
+
+                        <!-- Clickable Header: Title + Points Count Badge + Collapse Chevron (Default: Showing) -->
+                        <div class="flex items-center justify-between gap-2 py-1 cursor-pointer select-none group/title" onclick="toggleInstructionCard(${idx})">
+                            <h4 class="font-black text-slate-900 text-xs sm:text-sm flex items-center gap-1.5 min-w-0">
+                                <i data-lucide="alert-circle" class="w-4 h-4 text-indigo-600 flex-shrink-0"></i>
+                                <span class="truncate group-hover/title:text-indigo-600 transition-colors">
+                                    ${isHi ? translateClinicalText(title, 'hi') : title}
+                                </span>
+                            </h4>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <span class="bg-indigo-50 text-indigo-600 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full border border-indigo-100/70 uppercase">
+                                    ${rawItems.length} ${isHi ? 'निर्देश' : (rawItems.length === 1 ? 'Point' : 'Points')}
+                                </span>
+                                <button type="button" class="w-6 h-6 rounded-lg bg-slate-100 group-hover/title:bg-indigo-100 group-hover/title:text-indigo-600 text-slate-500 flex items-center justify-center transition-all cursor-pointer" aria-label="Toggle collapse">
+                                    <i data-lucide="${isCollapsed ? 'chevron-down' : 'chevron-up'}" id="inst-card-chevron-${idx}" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Body (Default: Visible/Expanded) -->
+                        <div id="inst-card-body-${idx}" class="${isCollapsed ? 'hidden' : ''} mt-2.5 space-y-3 transition-all duration-300">
+                            <!-- Items stacked one by one below -->
+                            <div class="space-y-2">
+                                ${rawItems.map((item, itemIdx) => {
+                                    const translatedItem = translateClinicalText(item, isHi ? 'hi' : 'en');
+                                    const isAvoid = /avoid|do not|don't|stop|prohibit|never|बचें|रोकें|न करें|दर्द/i.test(item);
+                                    const badgeBg = isAvoid ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-indigo-100 text-indigo-800 border-indigo-200';
+                                    const cardBorder = isAvoid ? 'border-amber-200/80 bg-gradient-to-r from-amber-50/40 to-white' : 'border-slate-200/80 bg-gradient-to-r from-slate-50/50 to-white';
+
+                                    return `
+                                        <div class="flex items-start gap-3 p-3 rounded-xl sm:rounded-2xl border ${cardBorder} shadow-xs hover:border-indigo-300 transition-all">
+                                            <span class="w-6 h-6 rounded-lg ${badgeBg} border flex items-center justify-center text-[10px] sm:text-xs font-black shrink-0 mt-0.5">
+                                                ${itemIdx + 1}
+                                            </span>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="text-xs sm:text-[13px] text-slate-800 font-semibold leading-relaxed">
+                                                    ${translatedItem}
+                                                </p>
+                                                ${isHi && item && !isMostlyHindi(item) ? `
+                                                    <p class="text-[10px] text-slate-400 font-normal mt-1 italic">
+                                                        ${item}
+                                                    </p>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+
+                            <!-- Frequency Badge -->
+                            ${freq ? `
+                                <div class="inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100/60 shadow-xs">
+                                    <i data-lucide="clock" class="w-3 h-3"></i>
+                                    <span>${isHi ? 'आवृत्ति:' : 'Frequency:'} ${translateClinicalText(freq, isHi ? 'hi' : 'en')}</span>
                                 </div>
                             ` : ''}
                         </div>
-                        ${freq ? `
-                            <div class="mt-2.5 inline-flex items-center gap-1.5 text-[9px] sm:text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-100/60">
-                                <i data-lucide="clock" class="w-3 h-3"></i>
-                                <span>${isHi ? 'आवृत्ति:' : 'Frequency:'} ${translateClinicalText(freq, isHi ? 'hi' : 'en')}</span>
-                            </div>
-                        ` : ''}
                     </div>
                 `;
             }).join('');
@@ -1078,53 +1381,8 @@
             currentPatientInstructions = myInstructions;
             currentPatientExercises = myExercises;
 
-            const badgeCountEl = document.getElementById('ex-badge-count');
-            if (badgeCountEl) badgeCountEl.innerText = myExercises.length;
-
-            if (myExercises.length > 0) {
-                document.getElementById('p-exercise-list').innerHTML = myExercises.map((ex, idx) => `
-                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:border-indigo-200 transition-all">
-                        <div class="absolute top-0 left-0 w-2.5 h-full bg-indigo-500"></div>
-                        <div>
-                            <div class="flex items-center justify-between gap-3 mb-3">
-                                <span class="bg-indigo-50 text-indigo-700 text-xs font-black px-3.5 py-1.5 rounded-xl uppercase tracking-wider">Exercise #${String(idx + 1).padStart(2, '0')}</span>
-                                ${ex[6] ? `<span class="bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase px-3 py-1 rounded-xl border border-emerald-100">${ex[6]}</span>` : ''}
-                            </div>
-                            <h4 class="font-black text-slate-900 text-base mb-1">${ex[2] || 'Physiotherapy Routine'}</h4>
-                            <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">${ex[3] || 'Prescribed Routine'}</p>
-                            
-                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-4">
-                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
-                                    <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-500"></i> Prescribed Instructions & Technique:
-                                </p>
-                                <p class="text-xs text-slate-700 leading-relaxed font-semibold">${ex[4] || 'Follow prescribed movements with smooth rhythm and controlled breathing as instructed by your physiotherapist.'}</p>
-                            </div>
-                            
-                            <div class="flex gap-2 flex-wrap mb-4 text-[10px] font-black text-slate-500 uppercase">
-                                ${ex[7] ? `<span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200/60">Prescribed: ${formatDate(ex[7])}</span>` : ''}
-                                ${ex[8] ? `<span class="bg-amber-50 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200">Review: ${formatDate(ex[8])}</span>` : ''}
-                            </div>
-                        </div>
-                        ${ex[5] ? `<a href="${ex[5]}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 text-xs font-black text-indigo-600 bg-indigo-50 hover:bg-indigo-100 py-3 rounded-2xl transition-colors shadow-sm"><i data-lucide="play-circle" class="w-4 h-4"></i> Watch Video Guide</a>` : ''}
-                    </div>
-                `).join('');
-            } else {
-                document.getElementById('p-exercise-list').innerHTML = `
-                    <div class="col-span-1 md:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 text-center shadow-sm">
-                        <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-                        </div>
-                        <h4 class="font-black text-slate-800 text-base mb-1">In-Clinic Rehabilitation Program Active</h4>
-                        <p class="text-xs text-slate-500 max-w-md mx-auto mb-4 leading-relaxed">No home-specific exercise routine assigned in your record. Please continue following the customized in-clinic rehabilitation plan directed by Dr. Ravi Kumar, PT.</p>
-                        <div class="inline-flex items-center gap-2 text-[10px] font-black text-emerald-700 bg-emerald-50 px-4 py-2 rounded-full uppercase border border-emerald-100">
-                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Follow Guided In-Clinic Routine
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Render Dedicated Instructions Tab with Phone-detected Language
-            setInstructionLanguage(currentInstructionLang);
+            // Render Both Prescribed Exercises and Clinical Directives with Phone-detected / Saved Language
+            setExerciseLanguage(currentExerciseLang);
 
             // Short & Formal Clinical Support WhatsApp Message
             const clinicalSupportMsg = 
@@ -1311,7 +1569,7 @@ Thank you!`;
         }
 
         function renderPassbook(selectedMonth = currentPassbookFilter) {
-            const sessions = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted'].includes(String(r[7]).toLowerCase()));
+            const sessions = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted', 'enrollment', 'enrollment (package)', 'due payment', 'wallet topup', 'topup'].includes(String(r[7]).toLowerCase().trim()));
             const sortedSessions = [...sessions].sort((a, b) => new Date(b[8] || b[0]) - new Date(a[8] || a[0]));
             
             const monthGroups = {};
@@ -1380,26 +1638,44 @@ Thank you!`;
                         ${mSessions.map(s => {
                             const fee = Math.round(toNum(s[9]));
                             const doc = String(s[16] || currentTreatingDoctor || '').trim();
-                            const payMode = String(s[15] || '').trim();
+                            let payMode = String(s[13] || '').trim();
+                            if (!payMode || payMode.includes('/')) {
+                                const val15 = String(s[15] || '').trim();
+                                if (val15 && isNaN(Number(val15))) payMode = val15;
+                            }
+                            if (payMode === '0' || !isNaN(Number(payMode))) payMode = '';
+
+                            const getModeClass = (m) => {
+                                const lm = String(m || '').toLowerCase();
+                                if (lm === 'cash') return 'bg-emerald-50 text-emerald-700 border-emerald-200/80';
+                                if (lm === 'upi') return 'bg-blue-50 text-blue-700 border-blue-200/80';
+                                if (lm === 'advance') return 'bg-indigo-50 text-indigo-700 border-indigo-200/80';
+                                if (lm === 'package') return 'bg-purple-50 text-purple-700 border-purple-200/80';
+                                if (lm === 'card') return 'bg-sky-50 text-sky-700 border-sky-200/80';
+                                if (lm === 'pending') return 'bg-rose-50 text-rose-700 border-rose-200/80';
+                                if (lm === 'complimentary') return 'bg-slate-100 text-slate-600 border-slate-200';
+                                return 'bg-indigo-50 text-indigo-700 border-indigo-200/70';
+                            };
+
                             return `
-                            <div class="bg-white p-3.5 md:p-4 rounded-2xl border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-xs hover:border-indigo-100 transition-all">
-                                <div class="flex items-start sm:items-center gap-3">
+                            <div class="bg-white p-3.5 md:p-4 rounded-2xl border border-slate-100 flex items-center justify-between gap-2.5 shadow-xs hover:border-indigo-100 transition-all">
+                                <div class="flex items-start sm:items-center gap-3 min-w-0">
                                     <div class="bg-indigo-50 text-indigo-600 p-2 md:p-2.5 rounded-xl flex-shrink-0 mt-0.5 sm:mt-0">
                                         <i data-lucide="check-circle" class="w-4 h-4"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0">
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <p class="text-xs md:text-sm font-black text-slate-800">${formatDate(s[8])}</p>
-                                            <span class="text-[9px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">${s[6] || 'Rehab Visit'}</span>
+                                            <span class="text-[9px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md truncate max-w-[200px]">${s[6] || 'Rehab Visit'}</span>
                                         </div>
                                         <div class="flex items-center gap-2 flex-wrap mt-1 text-[10px]">
                                             ${doc && doc.toLowerCase() !== 'undefined' ? `<span class="inline-flex items-center gap-1 font-bold text-slate-600"><i data-lucide="stethoscope" class="w-3 h-3 text-indigo-500"></i> ${doc}</span>` : ''}
-                                            ${payMode && payMode !== '0' ? `<span class="inline-flex items-center gap-1 font-bold text-indigo-600 bg-indigo-50 border border-indigo-100/70 px-1.5 py-0.5 rounded">${payMode}</span>` : ''}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between sm:justify-end gap-2 pl-11 sm:pl-0">
-                                    <span class="text-xs font-black text-indigo-600 border border-indigo-100/80 bg-indigo-50/60 px-2.5 py-1 rounded-xl flex-shrink-0">₹${fee.toLocaleString('en-IN')}</span>
+                                <div class="flex flex-col items-end justify-center gap-1 flex-shrink-0">
+                                    <span class="text-xs md:text-sm font-black text-indigo-600 border border-indigo-100/80 bg-indigo-50/60 px-2.5 py-1 rounded-xl flex-shrink-0 shadow-2xs">₹${fee.toLocaleString('en-IN')}</span>
+                                    ${payMode ? `<span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${getModeClass(payMode)}">${payMode}</span>` : ''}
                                 </div>
                             </div>
                             `;
