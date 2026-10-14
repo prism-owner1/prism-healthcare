@@ -32,6 +32,7 @@
     <script src="qrcode.js"></script>
     <script src="exercises.js"></script>
     <script src="diagnosis.js"></script>
+    <script src="exercise-recommender.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
@@ -3128,10 +3129,16 @@ html.dark .instruction-modal-footer {
                                 <div>
                                     <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Patient Full Name</label>
                                     <div class="flex items-center bg-slate-50 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden shadow-xs">
-                                        <select id="en-salutation" class="hidden">
-                                            <option value="">Title</option>
+                                        <select id="en-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.'){const g=document.getElementById('en-gender');if(g)g.value='Male';}else if(this.value==='Mrs.'||this.value==='Ms.'||this.value==='Miss'){const g=document.getElementById('en-gender');if(g)g.value='Female';}" class="p-3.5 pr-2 bg-transparent font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs border-r border-slate-200 dark:border-slate-800 cursor-pointer">
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mast.">Mast.</option>
+                                            <option value="Baby">Baby</option>
                                         </select>
-                                        <input type="text" id="en-name" placeholder="Enter Full Patient Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
+                                        <input type="text" id="en-name" onblur="const m=detectSalutation(this.value);if(m){const s=document.getElementById('en-salutation');if(s){s.value=m;s.dispatchEvent(new Event('change'));}this.value=stripSalutation(this.value);}" placeholder="Enter Full Patient Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
                                     </div>
                                 </div>
 
@@ -3139,11 +3146,11 @@ html.dark .instruction-modal-footer {
                                 <div class="grid grid-cols-2 gap-3 sm:gap-4">
                                     <div>
                                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Age</label>
-                                        <input type="number" id="en-age" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
+                                        <input type="number" id="en-age" oninput="const s=document.getElementById('en-salutation');const g=document.getElementById('en-gender')?.value;const a=Number(this.value);if(a&&s){if(g==='Female'&&s.value==='Mrs.'&&a<18){s.value='Miss';}else if(g==='Female'&&s.value==='Miss'&&a>=18){s.value='Mrs.';}else if(g==='Male'&&s.value==='Mr.'&&a<12){s.value='Mast.';}else if(g==='Male'&&s.value==='Mast.'&&a>=12){s.value='Mr.';}}" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all">
                                     </div>
                                     <div>
                                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1">Gender</label>
-                                        <select id="en-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all">
+                                        <select id="en-gender" onchange="const s=document.getElementById('en-salutation');const a=Number(document.getElementById('en-age')?.value);if(s){if(this.value==='Female'&&(s.value==='Mr.'||s.value==='Mast.')){s.value=(a&&a<18)?'Miss':'Mrs.';}else if(this.value==='Male'&&(s.value==='Mrs.'||s.value==='Ms.'||s.value==='Miss')){s.value=(a&&a<12)?'Mast.':'Mr.';}}" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all">
                                             <option>Male</option>
                                             <option>Female</option>
                                         </select>
@@ -3444,6 +3451,9 @@ html.dark .instruction-modal-footer {
 
                     <!-- Controls Row: Fast Search & Browse Library Button -->
                     <div class="space-y-4">
+                        <!-- AUTO-SUGGEST CLINICAL EXERCISES CONTAINER -->
+                        <div id="enroll-hep-suggestions-container" class="transition-all"></div>
+
                         <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
                             <div class="relative flex-1">
                                 <input type="text" id="enroll-hep-search" oninput="searchEnrollHepExercises(this.value)" placeholder="🔍 Search exercise to add (e.g. Chin Tuck, SLR, Wall Slide, Bridging)..." class="w-full p-3.5 pl-10 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs sm:text-sm focus:border-amber-500 transition-all placeholder:text-slate-400">
@@ -4001,6 +4011,9 @@ html.dark .instruction-modal-footer {
                             </div>
                         </div>
 
+                        <!-- Dynamic Clinical Recommendations Bar for Active Patient -->
+                        <div id="ex-tab-recommendations-bar" class="transition-all hidden"></div>
+
                         <!-- Search Box & Custom Exercise Trigger -->
                         <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                             <div class="relative flex-1">
@@ -4210,10 +4223,16 @@ html.dark .instruction-modal-footer {
                                 <div>
                                     <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Patient Full Name</label>
                                     <div class="flex items-center bg-slate-50 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-indigo-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-all overflow-hidden shadow-sm">
-                                        <select id="iq-salutation" class="hidden">
-                                            <option value="">Title</option>
+                                        <select id="iq-salutation" onchange="if(this.value==='Mr.'||this.value==='Mast.'){const g=document.getElementById('iq-gender');if(g)g.value='Male';}else if(this.value==='Mrs.'||this.value==='Ms.'||this.value==='Miss'){const g=document.getElementById('iq-gender');if(g)g.value='Female';}" class="p-3.5 pr-2 bg-transparent font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs border-r border-slate-200 dark:border-slate-800 cursor-pointer">
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Mast.">Mast.</option>
+                                            <option value="Baby">Baby</option>
                                         </select>
-                                        <input type="text" id="iq-name" placeholder="Enter Patient Full Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
+                                        <input type="text" id="iq-name" onblur="const m=detectSalutation(this.value);if(m){const s=document.getElementById('iq-salutation');if(s){s.value=m;s.dispatchEvent(new Event('change'));}this.value=stripSalutation(this.value);}" placeholder="Enter Patient Full Name" class="flex-1 p-3.5 bg-transparent font-bold text-slate-800 dark:text-slate-100 outline-none text-sm placeholder:text-slate-400">
                                     </div>
                                 </div>
 
@@ -4221,11 +4240,11 @@ html.dark .instruction-modal-footer {
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Age</label>
-                                        <input type="number" id="iq-age" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all shadow-sm">
+                                        <input type="number" id="iq-age" oninput="const s=document.getElementById('iq-salutation');const g=document.getElementById('iq-gender')?.value;const a=Number(this.value);if(a&&s){if(g==='Female'&&s.value==='Mrs.'&&a<18){s.value='Miss';}else if(g==='Female'&&s.value==='Miss'&&a>=18){s.value='Mrs.';}else if(g==='Male'&&s.value==='Mr.'&&a<12){s.value='Mast.';}else if(g==='Male'&&s.value==='Mast.'&&a>=12){s.value='Mr.';}}" placeholder="e.g. 35" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 transition-all shadow-sm">
                                     </div>
                                     <div>
                                         <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Gender</label>
-                                        <select id="iq-gender" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all shadow-sm">
+                                        <select id="iq-gender" onchange="const s=document.getElementById('iq-salutation');const a=Number(document.getElementById('iq-age')?.value);if(s){if(this.value==='Female'&&(s.value==='Mr.'||s.value==='Mast.')){s.value=(a&&a<18)?'Miss':'Mrs.';}else if(this.value==='Male'&&(s.value==='Mrs.'||s.value==='Ms.'||s.value==='Miss')){s.value=(a&&a<12)?'Mast.':'Mr.';}}" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer transition-all shadow-sm">
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                             <option value="Other">Other</option>
@@ -5047,6 +5066,9 @@ html.dark .instruction-modal-footer {
                                 <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Browse Clinical Library
                             </button>
                         </div>
+
+                        <!-- MODAL AUTO-SUGGESTED EXERCISES CONTAINER -->
+                        <div id="modal-plan-suggestions-container" class="transition-all hidden"></div>
 
                         <div class="space-y-2">
                             <div class="flex justify-between items-center px-1">
@@ -7167,6 +7189,15 @@ function openEnrollHepLibraryModal() {
     const modal = document.getElementById('enroll-hep-modal');
     if (!modal) return;
     modal.classList.remove('hidden');
+
+    const diagInput = document.getElementById('en-condition');
+    const diag = (diagInput ? diagInput.value : '').replace(/,\s*$/, '').trim();
+    if (diag && typeof ClinicalExerciseRecommender !== 'undefined' && ClinicalExerciseRecommender.getSuggestedExercises(diag).length > 0) {
+        enrollHepSelectedRegion = "SUGGESTED";
+    } else {
+        enrollHepSelectedRegion = "ALL";
+    }
+
     renderEnrollHepModalRegions();
     renderEnrollHepModalCards();
     if (window.lucide) lucide.createIcons();
@@ -7181,17 +7212,28 @@ function renderEnrollHepModalRegions() {
     const pillsContainer = document.getElementById('enroll-hep-region-pills');
     if (!pillsContainer || typeof EXERCISE_LIBRARY === 'undefined') return;
 
-    const regions = ["ALL", ...Object.keys(EXERCISE_LIBRARY)];
+    const diagInput = document.getElementById('en-condition');
+    const diag = (diagInput ? diagInput.value : '').replace(/,\s*$/, '').trim();
+    const hasDiag = diag && typeof ClinicalExerciseRecommender !== 'undefined' && ClinicalExerciseRecommender.getSuggestedExercises(diag).length > 0;
+
+    const regions = hasDiag ? ["SUGGESTED", "ALL", ...Object.keys(EXERCISE_LIBRARY)] : ["ALL", ...Object.keys(EXERCISE_LIBRARY)];
     pillsContainer.innerHTML = regions.map(reg => {
         const isSelected = enrollHepSelectedRegion === reg;
         const escaped = reg.replace(/'/g, "\\'");
+        let label = reg === 'ALL' ? '🌟 All Regions' : reg;
+        if (reg === 'SUGGESTED') {
+            const count = ClinicalExerciseRecommender.getSuggestedExercises(diag).length;
+            label = `✨ Suggested (${count})`;
+        }
+
+        const isSuggested = reg === 'SUGGESTED';
+        const activeStyle = isSelected
+            ? (isSuggested ? 'bg-gradient-to-r from-amber-500 to-indigo-600 text-white shadow-md' : 'bg-amber-500 text-white shadow-xs')
+            : (isSuggested ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200');
+
         return `
-            <button type="button" onclick="setEnrollHepRegion('${escaped}')" class="px-3.5 py-1.5 rounded-full text-xs font-black uppercase whitespace-nowrap transition-all ${
-                isSelected 
-                ? 'bg-amber-500 text-white shadow-xs' 
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
-            }">
-                ${reg === 'ALL' ? '🌟 All Regions' : reg}
+            <button type="button" onclick="setEnrollHepRegion('${escaped}')" class="px-3.5 py-1.5 rounded-full text-xs font-black uppercase whitespace-nowrap transition-all ${activeStyle}">
+                ${label}
             </button>
         `;
     }).join('');
@@ -7211,31 +7253,54 @@ function renderEnrollHepModalCards() {
     const q = (searchInput ? searchInput.value : '').trim().toLowerCase();
 
     const items = [];
-    Object.keys(EXERCISE_LIBRARY).forEach(region => {
-        if (enrollHepSelectedRegion !== "ALL" && enrollHepSelectedRegion !== region) return;
-        const categories = EXERCISE_LIBRARY[region];
-        Object.keys(categories).forEach(cat => {
-            const list = categories[cat];
-            if (Array.isArray(list)) {
-                list.forEach(ex => {
-                    const matchesSearch = !q || 
-                        (ex.name && ex.name.toLowerCase().includes(q)) ||
-                        cat.toLowerCase().includes(q) ||
-                        region.toLowerCase().includes(q);
 
-                    if (matchesSearch) {
-                        items.push({
-                            name: ex.name,
-                            steps: ex.steps || '',
-                            video: ex.video || '',
-                            region: region,
-                            category: cat
-                        });
-                    }
+    if (enrollHepSelectedRegion === "SUGGESTED") {
+        const diagInput = document.getElementById('en-condition');
+        const diag = (diagInput ? diagInput.value : '').replace(/,\s*$/, '').trim();
+        const suggested = (typeof ClinicalExerciseRecommender !== 'undefined') ? ClinicalExerciseRecommender.getSuggestedExercises(diag) : [];
+        suggested.forEach(ex => {
+            const matchesSearch = !q || 
+                (ex.name && ex.name.toLowerCase().includes(q)) ||
+                (ex.category && ex.category.toLowerCase().includes(q)) ||
+                (ex.region && ex.region.toLowerCase().includes(q));
+
+            if (matchesSearch) {
+                items.push({
+                    name: ex.name,
+                    steps: ex.steps || '',
+                    video: ex.video || '',
+                    region: ex.region,
+                    category: ex.category
                 });
             }
         });
-    });
+    } else {
+        Object.keys(EXERCISE_LIBRARY).forEach(region => {
+            if (enrollHepSelectedRegion !== "ALL" && enrollHepSelectedRegion !== region) return;
+            const categories = EXERCISE_LIBRARY[region];
+            Object.keys(categories).forEach(cat => {
+                const list = categories[cat];
+                if (Array.isArray(list)) {
+                    list.forEach(ex => {
+                        const matchesSearch = !q || 
+                            (ex.name && ex.name.toLowerCase().includes(q)) ||
+                            cat.toLowerCase().includes(q) ||
+                            region.toLowerCase().includes(q);
+
+                        if (matchesSearch) {
+                            items.push({
+                                name: ex.name,
+                                steps: ex.steps || '',
+                                video: ex.video || '',
+                                region: region,
+                                category: cat
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    }
 
     if (items.length === 0) {
         cardsContainer.innerHTML = `
@@ -9518,6 +9583,44 @@ function getPackageBreakdown(p) {
             return String(name).replace(/^(mr|mrs|ms|miss|mast|baby|dr|smt|shri)\b[\.\s]*/i, '').trim();
         }
 
+        function detectSalutation(name) {
+            if (!name) return '';
+            const m = String(name).trim().match(/^(mr|mrs|ms|miss|mast|baby|dr|smt|shri)\b[\.\s]*/i);
+            if (!m) return '';
+            const raw = m[1].toLowerCase();
+            switch (raw) {
+                case 'mr': return 'Mr.';
+                case 'mrs': return 'Mrs.';
+                case 'ms': return 'Ms.';
+                case 'miss': return 'Miss';
+                case 'dr': return 'Dr.';
+                case 'mast': return 'Mast.';
+                case 'baby': return 'Baby';
+                case 'smt': return 'Smt.';
+                case 'shri': return 'Shri';
+                default: return m[0].trim();
+            }
+        }
+
+        function getFormalPatientNameWithTitle(p, fallbackName) {
+            let name = (p && p.name) ? p.name : (fallbackName || '');
+            if (!name) return '';
+            name = String(name).trim();
+            const existing = detectSalutation(name);
+            if (existing) {
+                return name;
+            }
+            const gender = (p && p.gender) ? String(p.gender).trim().toLowerCase() : '';
+            const age = (p && p.age) ? Number(p.age) : null;
+            let title = '';
+            if (gender === 'female') {
+                title = (age && age < 18) ? 'Miss' : 'Mrs.';
+            } else if (gender === 'male') {
+                title = (age && age < 12) ? 'Mast.' : 'Mr.';
+            }
+            return title ? `${title} ${stripSalutation(name)}` : name;
+        }
+
         function findPatient(query) {
             if (!query) return null;
             if (typeof patientLookup !== 'object' || !patientLookup) return null;
@@ -9723,14 +9826,25 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                 if (!name) return;
 
             // Unified patient profile: keep single profile per patient across branches
-            const lookupKey = name;
+            const rawLookupKey = String(name).trim();
+            const cleanLookupKey = stripSalutation(rawLookupKey);
+            const canonicalKey = cleanLookupKey || rawLookupKey;
 
-            if (!patientLookup[lookupKey]) {
+            let p = patientLookup[canonicalKey];
+            if (!p && rawLookupKey !== canonicalKey && patientLookup[rawLookupKey]) {
+                p = patientLookup[rawLookupKey];
+            }
+            if (!p && id) {
+                const nid = normId(id);
+                p = Object.values(patientLookup).find(item => item && normId(item.id) === nid);
+            }
+
+            if (!p) {
                 const s = prevSettled[normId(id)];
                 const c = prevClosed[normId(id)];
-                patientLookup[lookupKey] = {
+                p = {
                     id: id,
-                    name: lookupKey,
+                    name: rawLookupKey,
                     phone: (r[3] && !String(r[3]).includes('#ERROR')) ? r[3] : '',
                     diag: r[6] || '',
                     doctor: cleanDoctorName(r[16]) || '',
@@ -9753,9 +9867,35 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     _recentSettlementTime: s ? s._recentSettlementTime : null,
                     activePackageId: null
                 };
-            }
+                // Store canonically under canonicalKey
+                patientLookup[canonicalKey] = p;
 
-            const p = patientLookup[lookupKey];
+                // If rawLookupKey has salutation, add non-enumerable alias so direct patientLookup[rawLookupKey] works without duplicate in Object.keys()
+                if (rawLookupKey !== canonicalKey) {
+                    try {
+                        Object.defineProperty(patientLookup, rawLookupKey, {
+                            value: p,
+                            enumerable: false,
+                            writable: true,
+                            configurable: true
+                        });
+                    } catch (e) {}
+                }
+            } else {
+                if (detectSalutation(rawLookupKey) && !detectSalutation(p.name)) {
+                    p.name = rawLookupKey;
+                }
+                if (rawLookupKey !== canonicalKey && !patientLookup.hasOwnProperty(rawLookupKey)) {
+                    try {
+                        Object.defineProperty(patientLookup, rawLookupKey, {
+                            value: p,
+                            enumerable: false,
+                            writable: true,
+                            configurable: true
+                        });
+                    } catch (e) {}
+                }
+            }
             if (r[3] && !String(r[3]).includes('#ERROR')) {
                 if (!p.phone || String(r[3]).length > String(p.phone).length) p.phone = r[3];
             }
@@ -10896,7 +11036,23 @@ function saveEnrollment() {
         showToast("Enter the patient's name first", 'warning');
         return;
     }
-    let name = stripSalutation(rawName);
+    const salutation = document.getElementById('en-salutation') ? document.getElementById('en-salutation').value.trim() : '';
+    const cleanName = stripSalutation(rawName);
+    const gen = (document.getElementById('en-gender')?.value || 'Male').trim().toLowerCase();
+    const ag = document.getElementById('en-age') ? Number(document.getElementById('en-age').value) : null;
+    let finalSalutation = salutation || detectSalutation(rawName);
+    if (!finalSalutation) {
+        if (gen === 'female') finalSalutation = (ag && ag < 18) ? 'Miss' : 'Mrs.';
+        else if (gen === 'male') finalSalutation = (ag && ag < 12) ? 'Mast.' : 'Mr.';
+    } else if (gen === 'female' && (finalSalutation === 'Mr.' || finalSalutation === 'Mast.')) {
+        finalSalutation = (ag && ag < 18) ? 'Miss' : 'Mrs.';
+        if (document.getElementById('en-salutation')) document.getElementById('en-salutation').value = finalSalutation;
+    } else if (gen === 'male' && ['Mrs.', 'Ms.', 'Miss'].includes(finalSalutation)) {
+        finalSalutation = (ag && ag < 12) ? 'Mast.' : 'Mr.';
+        if (document.getElementById('en-salutation')) document.getElementById('en-salutation').value = finalSalutation;
+    }
+    const fullName = finalSalutation ? `${finalSalutation} ${cleanName}` : cleanName;
+    let name = fullName;
     const rate = Number(document.getElementById('en-rate').value) || 0;
     if (!rate) {
         showToast("Enter cost per session", 'warning');
@@ -10935,7 +11091,7 @@ function saveEnrollment() {
     saveEnrollmentBodyChartAsSoap(name, enrolledId);
 
     // ── 1. INSTANT UI FEEDBACK — don't make the clinician wait on the network ──
-    if (!patientLookup[name]) {
+    if (!patientLookup[name] && (!cleanName || !patientLookup[cleanName])) {
         patientLookup[name] = {
             id: enrolledId,
             name: name,
@@ -10960,8 +11116,16 @@ function saveEnrollment() {
             outstandingDue: 0,
             activePackageId: null
         };
+        if (cleanName && cleanName !== name) {
+            patientLookup[cleanName] = patientLookup[name];
+        }
     } else {
-        const p = patientLookup[name];
+        const p = patientLookup[name] || patientLookup[cleanName];
+        patientLookup[name] = p;
+        p.name = name;
+        if (cleanName && cleanName !== name) {
+            patientLookup[cleanName] = p;
+        }
         p.id = enrolledId;
         p.phone = enrolledPhone;
         p.secondaryPhone = ph2;
@@ -11245,7 +11409,7 @@ function showEnrollmentSuccessPopup(patient) {
     });
 }
         function resetEnrollForm() {
-            if (document.getElementById('en-salutation')) document.getElementById('en-salutation').value = "";
+            if (document.getElementById('en-salutation')) document.getElementById('en-salutation').value = "Mr.";
             document.getElementById('en-name').value = "";
             document.getElementById('en-age').value = "";
             document.getElementById('en-condition').value = "";
@@ -11720,12 +11884,13 @@ function openMidPackage() {
             if (!p) return;
 
             // UI Updates
+            const formalName = getFormalPatientNameWithTitle(p, n);
             const cleanName = stripSalutation(n);
-            document.getElementById('patient-search-input').value = cleanName;
+            document.getElementById('patient-search-input').value = formalName || cleanName;
             document.getElementById('search-results').classList.add('hidden');
             const activeContainer = document.getElementById('active-cases-container');
             if (activeContainer) activeContainer.style.display = 'block';
-            document.getElementById('active-patient-name').innerText = cleanName;
+            document.getElementById('active-patient-name').innerText = formalName || cleanName;
             const docEl = document.getElementById('active-patient-doctor-name');
             if (docEl) docEl.innerText = p.doctor || 'Not Assigned';
             const reassignBtn = document.getElementById('active-patient-reassign-btn');
@@ -11742,7 +11907,7 @@ function openMidPackage() {
             if (emptyState) emptyState.classList.add('hidden');
             
             const mobNameEl = document.getElementById('mobile-drawer-patient-name');
-            if (mobNameEl) mobNameEl.innerText = cleanName;
+            if (mobNameEl) mobNameEl.innerText = formalName || cleanName;
 
             // Wallet and Session Calculations
             const rem = getRemainingSessions(p);
@@ -12238,8 +12403,16 @@ function openMidPackage() {
         function renderActiveCasesForLog(forceFullRebuild = false) {
             const grid = document.getElementById('active-cases-grid');
             const countBadge = document.getElementById('active-cases-count');
-            if (!grid) return;
-            const names = Object.keys(patientLookup).filter(n => !patientLookup[n].closed).sort();
+            const seenActive = new Set();
+            const names = [];
+            Object.keys(patientLookup).sort().forEach(n => {
+                const p = patientLookup[n];
+                if (!p || p.closed) return;
+                const pKey = normId(p.id) || stripSalutation(p.name || n);
+                if (seenActive.has(pKey)) return;
+                seenActive.add(pKey);
+                names.push(n);
+            });
             
             if (countBadge) countBadge.innerText = `${names.length} Active`;
             
@@ -12343,7 +12516,16 @@ function openMidPackage() {
             let pHtml = "",
                 bHtml = "";
 
-            let names = Object.keys(patientLookup);
+            const seenTables = new Set();
+            let names = [];
+            Object.keys(patientLookup).forEach(name => {
+                const p = patientLookup[name];
+                if (!p) return;
+                const pKey = normId(p.id) || stripSalutation(p.name || name);
+                if (seenTables.has(pKey)) return;
+                seenTables.add(pKey);
+                names.push(name);
+            });
 
             names.sort((a, b) => {
                 return recordSortLatest ?
@@ -13142,6 +13324,7 @@ document.getElementById('pd-sessions').innerText = consumed;
 
             const prefix = '';
             const cleanPatientName = stripSalutation(name);
+            const billPatientName = getFormalPatientNameWithTitle(p, name);
             const docReg = getDoctorRegistrationNo(docName);
             const docPhone = "+91 97080 59081";
             const docWeb = "Prismhealthcare.in";
@@ -13353,7 +13536,7 @@ document.getElementById('pd-sessions').innerText = consumed;
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:26px">
                         <div>
                             <p class="section-label2">Patient Information</p>
-                            <strong class="editable" style="font-size:20px; color:#0f172a; display:block; margin-bottom:4px">${cleanPatientName}</strong>
+                            <strong class="editable" style="font-size:20px; color:#0f172a; display:block; margin-bottom:4px">${billPatientName}</strong>
                             <p style="margin:2px 0; font-size:12px; color:#475569">ID: <span class="editable" style="font-weight:800; color:#0f172a">${p.id}</span></p>
                             <p class="editable" style="margin:2px 0; font-size:12px; color:#475569">${ageGenderLine}</p>
                             ${patientAddrHtml}
@@ -13433,7 +13616,7 @@ document.getElementById('pd-sessions').innerText = consumed;
                         ${buildDocHeader(stmtNo)}
                         <h2 style="font-size:22px; font-weight:900; letter-spacing:0.5px; color:#0f172a; text-align:center; margin:0 0 30px;">CERTIFICATE OF TREATMENT</h2>
                         <p class="editable" style="font-size:15px; line-height:2.0; color:#334155; text-align:justify; text-justify:inter-word; margin-bottom:40px; word-spacing:normal;">
-                            This is to certify that <strong>${cleanPatientName}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} has been under the professional care of <strong>Prism Physiotherapy & Rehabilitation Center</strong> for the clinical diagnosis of <strong>${p.diag}</strong>.
+                            This is to certify that <strong>${billPatientName}</strong> (Age: ${p.age || '-'} Y, Gender: ${p.gender || '-'})${certAddrClause} has been under the professional care of <strong>Prism Physiotherapy & Rehabilitation Center</strong> for the clinical diagnosis of <strong>${p.diag}</strong>.
                             <br><br>
                             The patient has successfully completed <strong>${logs.length}</strong> session(s) of <strong>${getSessionTypeLabel(p.id)}</strong> under the professional supervision of <strong>${docName}</strong>. The treatment program was planned and delivered following a comprehensive clinical assessment, incorporating evidence-based physiotherapy practice and an individualized rehabilitation plan.
                             <br><br>
@@ -14086,17 +14269,20 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
             const el = document.getElementById('dues-list');
             if (!el) return;
 
+            const seenDues = new Set();
             const rows = [];
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
-                if (p.outstandingDue > 0) {
-                    rows.push({
-                        name,
-                        id: p.id,
-                        phone: p.phone,
-                        due: p.outstandingDue
-                    });
-                }
+                if (!p || p.outstandingDue <= 0) return;
+                const pKey = normId(p.id) || stripSalutation(p.name || name);
+                if (seenDues.has(pKey)) return;
+                seenDues.add(pKey);
+                rows.push({
+                    name: p.name || name,
+                    id: p.id,
+                    phone: p.phone,
+                    due: p.outstandingDue
+                });
             });
             rows.sort((a, b) => b.due - a.due);
             // stat-outstanding is now set by backend fetchPatientBalances in loadAdminData
@@ -14226,11 +14412,15 @@ Warm regards,
             }
 
             const queue = [];
+            const seenQueue = new Set();
             targetNames.forEach(name => {
                 const p = patientLookup[name];
                 if (p && p.outstandingDue > 0) {
+                    const pKey = normId(p.id) || stripSalutation(p.name || name);
+                    if (seenQueue.has(pKey)) return;
+                    seenQueue.add(pKey);
                     queue.push({
-                        name,
+                        name: p.name || name,
                         id: p.id || '',
                         phone: p.phone || '',
                         due: p.outstandingDue,
@@ -15937,6 +16127,7 @@ window.setExTabSelectedPatient = function(patientName) {
         if (cardCount) cardCount.innerText = '0 Ex Prescribed';
         if (presCount) presCount.innerText = '0';
         onExTabPatientChange('');
+        if (typeof renderExRegionPills === 'function') renderExRegionPills();
         return;
     }
 
@@ -15953,6 +16144,7 @@ window.setExTabSelectedPatient = function(patientName) {
     }
 
     onExTabPatientChange(patientName);
+    if (typeof renderExRegionPills === 'function') renderExRegionPills();
 };
 
 window.clearSelectedPatient = function() {
@@ -16044,7 +16236,13 @@ window.renderExRegionPills = function() {
         return;
     }
 
-    const regions = ['All', ...Object.keys(lib)];
+    const select = document.getElementById('ex-tab-patient-select');
+    const patientName = select ? select.value : '';
+    const p = (patientLookup && patientName) ? patientLookup[patientName] : null;
+    const diag = p ? (p.diag || p.condition || '').replace(/,\s*$/, '').trim() : '';
+    const suggestedList = (diag && typeof ClinicalExerciseRecommender !== 'undefined') ? ClinicalExerciseRecommender.getSuggestedExercises(diag) : [];
+
+    const regions = (suggestedList.length > 0) ? ['All', 'Suggested', ...Object.keys(lib)] : ['All', ...Object.keys(lib)];
     
     // Count total exercises
     let totalCount = 0;
@@ -16058,20 +16256,35 @@ window.renderExRegionPills = function() {
         totalCount += rCount;
     }
     regionCounts['All'] = totalCount;
+    if (suggestedList.length > 0) {
+        regionCounts['Suggested'] = suggestedList.length;
+    }
 
     container.innerHTML = regions.map(r => {
         const isActive = currentLibRegion === r;
         const count = regionCounts[r] || 0;
-        const activeClass = isActive 
-            ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/25 border-indigo-600 scale-[1.02]' 
-            : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-700';
-        const badgeClass = isActive 
-            ? 'bg-white/20 text-white' 
-            : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400';
+        let activeClass = '';
+        let badgeClass = '';
+        let label = r;
+
+        if (r === 'Suggested') {
+            label = `✨ Suggested (${suggestedList.length})`;
+            activeClass = isActive 
+                ? 'bg-gradient-to-r from-amber-500 via-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/25 border-amber-400 scale-[1.02]' 
+                : 'bg-amber-50 dark:bg-amber-950/70 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-200 border-amber-300 dark:border-amber-700/80';
+            badgeClass = isActive ? 'bg-white/20 text-white' : 'bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-100';
+        } else {
+            activeClass = isActive 
+                ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md shadow-indigo-600/25 border-indigo-600 scale-[1.02]' 
+                : 'bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200/90 dark:border-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-700';
+            badgeClass = isActive 
+                ? 'bg-white/20 text-white' 
+                : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400';
+        }
         
         return `
             <button data-region="${escapeExHtml(r)}" onclick="setExRegion(this.dataset.region)" class="px-3.5 py-2 rounded-xl text-xs font-black border transition-all whitespace-nowrap flex items-center gap-1.5 active:scale-95 cursor-pointer ${activeClass}">
-                <span>${r}</span>
+                <span>${label}</span>
                 <span class="text-[9px] px-2 py-0.5 rounded-full font-bold tracking-tight ${badgeClass}">${count}</span>
             </button>
         `;
@@ -16094,6 +16307,23 @@ window.renderExCategoryPills = function() {
 
     const lib = getExerciseLibrary();
     if (!lib) return;
+
+    if (currentLibRegion === 'Suggested') {
+        const select = document.getElementById('ex-tab-patient-select');
+        const patientName = select ? select.value : '';
+        const p = (patientLookup && patientName) ? patientLookup[patientName] : null;
+        const diag = p ? (p.diag || p.condition || '').replace(/,\s*$/, '').trim() : '';
+        container.innerHTML = `
+            <div class="flex items-center justify-between w-full py-1 text-slate-400 dark:text-slate-500">
+                <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                    <span class="inline-flex items-center justify-center w-2 h-2 rounded-full bg-amber-500 ring-4 ring-amber-500/20"></span>
+                    <span>✨ Evidence-Based Protocols Auto-Suggested for: <strong>${escapeExHtml(diag || 'Selected Patient')}</strong></span>
+                </div>
+                <button type="button" onclick="setExRegion('All')" class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">View All Regions</button>
+            </div>
+        `;
+        return;
+    }
 
     if (currentLibRegion === 'All') {
         container.innerHTML = `
@@ -16192,32 +16422,54 @@ window.renderExLibraryGrid = function() {
 
     // Filter exercises
     const matched = [];
-    for (const region of Object.keys(lib)) {
-        if (!currentLibSearch && currentLibRegion !== 'All' && currentLibRegion !== region) continue;
-        const regObj = lib[region] || {};
-        for (const cat of Object.keys(regObj)) {
-            if (!currentLibSearch && currentLibCategory !== 'All' && currentLibCategory !== 'All Categories' && currentLibCategory !== cat) continue;
-            const exList = regObj[cat] || [];
-            for (const ex of exList) {
-                if (currentLibSearch) {
-                    // Search strictly by exercise name
-                    if (!ex.name.toLowerCase().includes(currentLibSearch)) continue;
-                }
+
+    if (currentLibRegion === 'Suggested') {
+        const diag = p ? (p.diag || p.condition || '').replace(/,\s*$/, '').trim() : '';
+        const suggestedList = (diag && typeof ClinicalExerciseRecommender !== 'undefined') ? ClinicalExerciseRecommender.getSuggestedExercises(diag) : [];
+        suggestedList.forEach(ex => {
+            if (!currentLibSearch || ex.name.toLowerCase().includes(currentLibSearch)) {
                 matched.push({
                     name: ex.name,
                     steps: ex.steps || '',
                     video: ex.video || '',
-                    region: region,
-                    category: cat
+                    region: ex.region,
+                    category: ex.category
                 });
+            }
+        });
+    } else {
+        for (const region of Object.keys(lib)) {
+            if (!currentLibSearch && currentLibRegion !== 'All' && currentLibRegion !== region) continue;
+            const regObj = lib[region] || {};
+            for (const cat of Object.keys(regObj)) {
+                if (!currentLibSearch && currentLibCategory !== 'All' && currentLibCategory !== 'All Categories' && currentLibCategory !== cat) continue;
+                const exList = regObj[cat] || [];
+                for (const ex of exList) {
+                    if (currentLibSearch) {
+                        // Search strictly by exercise name
+                        if (!ex.name.toLowerCase().includes(currentLibSearch)) continue;
+                    }
+                    matched.push({
+                        name: ex.name,
+                        steps: ex.steps || '',
+                        video: ex.video || '',
+                        region: region,
+                        category: cat
+                    });
+                }
             }
         }
     }
 
     if (countLabel) {
         let label = `Showing ${Math.min(matched.length, currentLibDisplayLimit)} of ${matched.length} Exercises`;
-        if (currentLibRegion !== 'All') label += ` • ${currentLibRegion}`;
-        if (currentLibCategory !== 'All' && currentLibCategory !== 'All Categories') label += ` (${currentLibCategory})`;
+        if (currentLibRegion === 'Suggested') {
+            const diag = p ? (p.diag || p.condition || '').replace(/,\s*$/, '').trim() : '';
+            label += ` • Auto-Suggested for ${diag}`;
+        } else {
+            if (currentLibRegion !== 'All') label += ` • ${currentLibRegion}`;
+            if (currentLibCategory !== 'All' && currentLibCategory !== 'All Categories') label += ` (${currentLibCategory})`;
+        }
         if (currentLibSearch) label += ` • Search: "${currentLibSearch}"`;
         countLabel.innerText = label;
     }
@@ -17123,7 +17375,17 @@ window.shareExTabViaWhatsApp = function() {
             return; 
         }
 
-        let fullName = stripSalutation(rawName);
+        let cleanName = stripSalutation(rawName);
+        let finalSalutation = salutation || detectSalutation(rawName);
+        const ageNum = age ? Number(age) : null;
+        if (gender === 'Female' && (finalSalutation === 'Mr.' || finalSalutation === 'Mast.')) {
+            finalSalutation = (ageNum && ageNum < 18) ? 'Miss' : 'Mrs.';
+            if (salEl) salEl.value = finalSalutation;
+        } else if (gender === 'Male' && ['Mrs.', 'Ms.', 'Miss'].includes(finalSalutation)) {
+            finalSalutation = (ageNum && ageNum < 12) ? 'Mast.' : 'Mr.';
+            if (salEl) salEl.value = finalSalutation;
+        }
+        let fullName = finalSalutation ? `${finalSalutation} ${cleanName}` : cleanName;
 
         const now = new Date();
         const newInquiry = {
@@ -17153,6 +17415,8 @@ window.shareExTabViaWhatsApp = function() {
         if (document.getElementById('iq-note')) document.getElementById('iq-note').value = '';
         if (document.getElementById('iq-age')) document.getElementById('iq-age').value = '';
         if (document.getElementById('iq-phone')) document.getElementById('iq-phone').value = '+91';
+        if (document.getElementById('iq-salutation')) document.getElementById('iq-salutation').value = 'Mr.';
+        if (document.getElementById('iq-gender')) document.getElementById('iq-gender').value = 'Male';
 
         showToast("Inquiry recorded", "success");
         if (btn) {
@@ -17401,9 +17665,22 @@ window.shareExTabViaWhatsApp = function() {
         switchTab('enroll', enrollBtn);
 
         setTimeout(() => {
-            let rawName = stripSalutation(inq.name || '');
+            let inqFullName = inq.name || '';
+            let rawName = stripSalutation(inqFullName);
+            let inqAge = inq.age ? Number(inq.age) : null;
+            let inqGender = inq.gender ? String(inq.gender).trim().toLowerCase() : '';
+            let detectedSalutation = detectSalutation(inqFullName);
+            if (!detectedSalutation) {
+                if (inqGender === 'female') {
+                    detectedSalutation = (inqAge && inqAge < 18) ? 'Miss' : 'Mrs.';
+                } else if (inqGender === 'male') {
+                    detectedSalutation = (inqAge && inqAge < 12) ? 'Mast.' : 'Mr.';
+                } else {
+                    detectedSalutation = 'Mr.';
+                }
+            }
             const salEl = document.getElementById('en-salutation');
-            if (salEl) salEl.value = "";
+            if (salEl) salEl.value = detectedSalutation;
 
             const nameEl = document.getElementById('en-name');
             if (nameEl) nameEl.value = rawName;
@@ -17413,9 +17690,13 @@ window.shareExTabViaWhatsApp = function() {
 
             const genderEl = document.getElementById('en-gender');
             if (genderEl) {
-                if (inq.gender) genderEl.value = inq.gender;
-                else if (detectedSalutation === 'Mrs.' || detectedSalutation === 'Ms.') genderEl.value = 'Female';
-                else if (detectedSalutation === 'Mr.' || detectedSalutation === 'Mast.') genderEl.value = 'Male';
+                if (inq.gender) {
+                    genderEl.value = inq.gender;
+                } else if (['Mrs.', 'Ms.', 'Miss', 'Smt.'].includes(detectedSalutation)) {
+                    genderEl.value = 'Female';
+                } else if (['Mr.', 'Mast.', 'Shri'].includes(detectedSalutation)) {
+                    genderEl.value = 'Male';
+                }
             }
 
             const condEl = document.getElementById('en-condition');
