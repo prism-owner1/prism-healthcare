@@ -2404,40 +2404,40 @@ html.dark .instruction-modal-footer {
             transform: translateX(100%);
             opacity: 0;
             transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+            height: 100vh !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
         .notif-panel-slide.open {
             transform: translateX(0);
             opacity: 1;
         }
-        .notif-filter-tab {
-            background: transparent;
-            color: #64748b;
-            border: 1px solid transparent;
-            cursor: pointer;
+        #notif-list {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            height: 100% !important;
+            overflow-y: scroll !important;
+            overflow-x: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding-right: 4px;
         }
-        .notif-filter-tab:hover {
-            color: #334155;
-            background: rgba(241, 245, 249, 0.9);
+        #notif-list::-webkit-scrollbar {
+            width: 7px !important;
+            display: block !important;
         }
-        .notif-filter-tab.active-notif-tab {
-            background: #4f46e5 !important;
-            color: #ffffff !important;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+        #notif-list::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.6);
+            border-radius: 9999px;
         }
-        html.dark .notif-filter-tab,
-        body.dark-mode .notif-filter-tab {
-            color: #94a3b8;
+        #notif-list::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.7);
+            border-radius: 9999px;
         }
-        html.dark .notif-filter-tab:hover,
-        body.dark-mode .notif-filter-tab:hover {
-            color: #f1f5f9;
-            background: rgba(30, 41, 59, 0.9);
-        }
-        .notif-item-card {
-            transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-        }
-        .notif-item-card:hover {
-            transform: translateX(-2px);
+        #notif-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(71, 85, 105, 0.9);
         }
 
         /* Float toast notifications safely on screen below mobile notch / status bar */
@@ -3107,6 +3107,10 @@ html.dark .instruction-modal-footer {
           <i data-lucide="send" class="w-3 h-3"></i>
           <span>Batch Remind</span>
         </button>
+        <button type="button" id="show-snoozed-btn" onclick="toggleShowSnoozed()" class="text-[8.5px] sm:text-[9px] font-black bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg uppercase flex items-center gap-1 sm:gap-1.5 transition-all cursor-pointer active:scale-95" title="Show/hide snoozed patients">
+          <i data-lucide="eye-off" class="w-3 h-3"></i>
+          <span id="snoozed-btn-label">Snoozed</span>
+        </button>
         <span class="text-[8.5px] sm:text-[9px] font-black bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg uppercase border border-rose-200/80 dark:border-rose-900 shadow-xs flex items-center gap-1 sm:gap-1.5">
           <i data-lucide="clock" class="w-3 h-3"></i>
           <span class="hidden sm:inline">Action</span> Required
@@ -3695,7 +3699,7 @@ html.dark .instruction-modal-footer {
                                         </div>
                                         <div>
                                             <h5 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider">Recent Sessions</h5>
-                                            <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Last 10 logged entries</span>
+                                            <span class="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Clinical session history</span>
                                         </div>
                                     </div>
                                 </div>
@@ -3997,7 +4001,7 @@ html.dark .instruction-modal-footer {
                                     <th class="p-5 col-desktop-extra">Contact</th>
                                     <th class="p-5 col-desktop-extra">Condition</th>
                                     <th class="p-5 text-center">Status / Bal.</th>
-                                    <th class="p-5 text-center">Action</th>
+                                    <th class="p-5 text-center whitespace-nowrap min-w-[170px]">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="patient-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium"></tbody>
@@ -4856,9 +4860,9 @@ html.dark .instruction-modal-footer {
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase ml-1 block mb-1">Base Fee / Session Rate (₹)</label>
-                                <div class="relative">
-                                    <span class="absolute left-3 top-3 text-slate-400 font-black text-xs">₹</span>
-                                    <input type="number" id="ep-base-fee" min="0" step="50" placeholder="e.g. 300" class="w-full pl-7 pr-3 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs shadow-sm">
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-black text-xs pointer-events-none select-none">₹</span>
+                                    <input type="number" id="ep-base-fee" min="0" step="50" placeholder="e.g. 300" style="padding-left: 2rem !important;" class="w-full pl-8 pr-3 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-xs shadow-sm">
                                 </div>
                             </div>
                             <div>
@@ -5650,51 +5654,41 @@ html.dark .instruction-modal-footer {
         <div id="notif-panel-backdrop" onclick="closeNotifPanel()" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-[9990] transition-opacity duration-200"></div>
 
         <!-- Panel -->
-        <div id="notif-panel" class="hidden fixed top-0 right-0 h-full w-[88vw] max-w-sm bg-white dark:bg-slate-900 z-[9991] shadow-2xl flex flex-col notif-panel-slide"
-             style="border-left: 1px solid rgba(226,232,240,0.8);">
+        <div id="notif-panel" class="hidden fixed top-0 right-0 w-[90vw] max-w-sm bg-white dark:bg-slate-900 z-[9991] shadow-2xl flex flex-col notif-panel-slide"
+             style="border-left: 1px solid rgba(226,232,240,0.8); height: 100vh; height: 100dvh; max-height: 100dvh;">
 
             <!-- Header -->
-            <div class="flex items-center justify-between px-4 pt-5 pb-3 border-b border-slate-100 dark:border-slate-800 flex-shrink-0"
+            <div class="flex items-center justify-between px-4 pt-4 pb-3 border-b border-slate-100 dark:border-slate-800 flex-shrink-0"
                  style="padding-top: max(1.25rem, env(safe-area-inset-top, 1.25rem));">
                 <div class="flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
                         <i data-lucide="bell" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-black text-slate-900 dark:text-white">Notifications</h3>
-                        <p class="text-[10px] text-slate-400 font-bold">Last 24 hours</p>
+                        <h3 class="text-sm font-black text-slate-900 dark:text-white">Activity Log</h3>
+                        <p class="text-[10px] text-slate-400 font-bold">Recent Activity History</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="clearAllNotifications()" title="Clear all"
-                        class="text-[10px] font-black text-rose-400 hover:text-rose-600 dark:text-rose-400 px-2 py-1 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all">
-                        Clear All
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="clearAllNotifications(event)" title="Clear all recorded events"
+                        class="text-[10.5px] font-black text-rose-500 hover:text-rose-700 dark:text-rose-400 px-2.5 py-1.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all cursor-pointer flex items-center gap-1 active:scale-95">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>Clear All</span>
                     </button>
-                    <button onclick="closeNotifPanel()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-all">
+                    <button type="button" onclick="closeNotifPanel()" title="Close panel" aria-label="Close notification panel" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-all cursor-pointer flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-90">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Filter tabs -->
-            <div class="flex gap-1 px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
-                <button onclick="filterNotifs('all')" id="nf-tab-all"
-                    class="notif-filter-tab active-notif-tab text-[10px] font-black px-2.5 py-1 rounded-lg transition-all">All</button>
-                <button onclick="filterNotifs('success')" id="nf-tab-success"
-                    class="notif-filter-tab text-[10px] font-black px-2.5 py-1 rounded-lg transition-all">✅ Success</button>
-                <button onclick="filterNotifs('error')" id="nf-tab-error"
-                    class="notif-filter-tab text-[10px] font-black px-2.5 py-1 rounded-lg transition-all">❌ Error</button>
-                <button onclick="filterNotifs('warning')" id="nf-tab-warning"
-                    class="notif-filter-tab text-[10px] font-black px-2.5 py-1 rounded-lg transition-all">⚠️ Warn</button>
-            </div>
-
-            <!-- Notification list -->
-            <div id="notif-list" class="flex-1 overflow-y-auto px-3 py-2" style="overscroll-behavior: contain;"></div>
+            <!-- Scrollable Notification list (No category clutter, smooth infinite scroll) -->
+            <div id="notif-list" class="flex-1 overflow-y-auto px-3 py-2 space-y-2"></div>
 
             <!-- Footer -->
-            <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 text-center"
+            <div class="px-4 py-2.5 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50"
                  style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));">
                 <p id="notif-footer-count" class="text-[10px] font-bold text-slate-400"></p>
+                <button type="button" id="notif-footer-clear-btn" onclick="clearAllNotifications(event)" class="text-[10px] font-black text-rose-500 hover:underline cursor-pointer">Clear All</button>
             </div>
         </div>
 
@@ -7662,12 +7656,82 @@ document.addEventListener('click', function(e) {
         };
 
         // ============================================================
-        // 🔔 24-HOUR NOTIFICATION SYSTEM & HISTORY ENGINE
-        // Records all toasts & system notifications with date & time
-        // Auto-prunes entries older than 24 hours
+        // 🔔 24-HOUR NOTIFICATION SYSTEM & CLINICAL ACTIVITY ENGINE
+        // Records only meaningful clinical & financial milestones:
+        // - Sessions Logged / Receipts
+        // - Payments Received / Dues Cleared / Wallets
+        // - Patient Registrations / Case Changes
+        // Strictly filters out exercise additions & UI noise.
         // ============================================================
         const NOTIF_STORAGE_KEY = 'prism_notifications_24h';
-        const NOTIF_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
+        const NOTIF_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days history so older notifications are preserved
+
+        function shouldRecordNotification(message, type = 'info', title = '') {
+            if (!message) return false;
+            const text = (String(title || '') + ' ' + String(message || '')).toLowerCase();
+
+            // 1. HARD EXCLUSION: Never record exercise / HEP additions
+            if (text.includes('exercise') || text.includes('routine') || text.includes('prescribed') || 
+                text.includes('added to cart') || text.includes('cart') || text.includes('protocol') ||
+                text.includes('hep') || text.includes('library')) {
+                return false;
+            }
+
+            // 2. EXCLUDE UI noise & navigation & clipboard & routine background cache
+            if (text.includes('clipboard') || text.includes('copied') || text.includes('switched') || 
+                text.includes('loaded') || text.includes('dark mode') || text.includes('filter') ||
+                text.includes('using local cache') || text.includes('deferred to local cache') ||
+                text.includes('hard reset:') || text.includes('export')) {
+                return false;
+            }
+
+            // 3. ALLOW Important Clinical & Financial Events:
+            // - Session logged or deleted
+            if (text.includes('session') && (text.includes('log') || text.includes('receipt') || text.includes('added') || text.includes('delete') || text.includes('fee'))) return true;
+            
+            // - Payment received / collected
+            if (text.includes('payment') || text.includes('paid') || text.includes('received') || text.includes('cash in') || text.includes('refund') || text.includes('wallet')) return true;
+
+            // - Dues cleared / marked paid / settlements
+            if (text.includes('due') || text.includes('cleared') || text.includes('marked paid') || text.includes('outstanding') || text.includes('settled')) return true;
+
+            // - Patient enrolled / registered
+            if (text.includes('enroll') || text.includes('registered') || text.includes('patient created') || text.includes('patient added') || text.includes('new patient')) return true;
+
+            // - Case closed / reopened
+            if (text.includes('case closed') || text.includes('case restart') || text.includes('case reopen') || text.includes('discharged')) return true;
+
+            // - Package purchased / balance added
+            if (text.includes('package') || text.includes('advance')) return true;
+
+            // - Bill issued / generated
+            if (text.includes('bill') && (text.includes('issue') || text.includes('generat') || text.includes('saved') || text.includes('sent'))) return true;
+
+            // - Genuine User Error / Warning (not background sync)
+            if ((type === 'error' || type === 'danger') && !text.includes('sync') && !text.includes('fetch')) return true;
+
+            // If explicit clinical title provided (e.g. from showPopupNotification)
+            if (title && (title.includes('Patient') || title.includes('Payment') || title.includes('Session') || title.includes('Billing') || title.includes('Due'))) return true;
+
+            return false;
+        }
+
+        function categorizeNotification(message, type = 'info', title = '') {
+            const text = (String(title || '') + ' ' + String(message || '')).toLowerCase();
+            if (text.includes('payment') || text.includes('paid') || text.includes('due') || text.includes('bill') || text.includes('wallet') || text.includes('refund')) {
+                return 'payment';
+            }
+            if (text.includes('session')) {
+                return 'session';
+            }
+            if (text.includes('enroll') || text.includes('case') || text.includes('patient') || text.includes('registered')) {
+                return 'patient';
+            }
+            if (type === 'error' || type === 'warning' || type === 'danger') {
+                return 'alert';
+            }
+            return 'patient';
+        }
 
         function getNotifications24h() {
             try {
@@ -7676,9 +7740,19 @@ document.addEventListener('click', function(e) {
                 const parsed = JSON.parse(raw);
                 if (!Array.isArray(parsed)) return [];
                 const now = Date.now();
-                // Filter out entries older than 24 hours
-                const valid = parsed.filter(item => item && item.timestamp && (now - item.timestamp <= NOTIF_MAX_AGE_MS));
-                if (valid.length !== parsed.length) {
+                let needSave = false;
+                // Filter out entries older than 24 hours AND any legacy exercise entries
+                const valid = parsed.filter((item, idx) => {
+                    if (!item || !item.timestamp || (now - item.timestamp > NOTIF_MAX_AGE_MS)) return false;
+                    const msg = ((item.title || '') + ' ' + (item.message || '')).toLowerCase();
+                    if (msg.includes('exercise') || msg.includes('routine') || msg.includes('prescribed') || msg.includes('cart') || msg.includes('protocol') || msg.includes('using local cache')) return false;
+                    if (!item.id) {
+                        item.id = 'ntf_' + item.timestamp + '_' + idx;
+                        needSave = true;
+                    }
+                    return true;
+                });
+                if (needSave || valid.length !== parsed.length) {
                     localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(valid));
                 }
                 return valid;
@@ -7695,9 +7769,13 @@ document.addEventListener('click', function(e) {
 
         function recordNotification(message, type = 'info', title = '') {
             if (!message) return;
+            // Strict filter: only record clinical & financial milestones
+            if (!shouldRecordNotification(message, type, title)) return;
+
             try {
                 const notifs = getNotifications24h();
                 const cleanType = (type === 'danger') ? 'error' : (type || 'info');
+                const category = categorizeNotification(message, cleanType, title);
 
                 // Avoid logging duplicate notifications within 2 seconds
                 if (notifs.length > 0 && notifs[0].message === String(message) && (Date.now() - notifs[0].timestamp < 2000)) {
@@ -7709,6 +7787,7 @@ document.addEventListener('click', function(e) {
                     title: title || '',
                     message: String(message),
                     type: cleanType,
+                    category: category,
                     timestamp: Date.now(),
                     read: false
                 };
@@ -7781,88 +7860,63 @@ document.addEventListener('click', function(e) {
         function renderNotifList() {
             const listEl = document.getElementById('notif-list');
             const footerCountEl = document.getElementById('notif-footer-count');
+            const footerClearBtn = document.getElementById('notif-footer-clear-btn');
             if (!listEl) return;
 
             const notifs = getNotifications24h();
-            const filtered = (currentNotifFilter === 'all')
-                ? notifs
-                : notifs.filter(n => n.type === currentNotifFilter);
 
             if (footerCountEl) {
                 footerCountEl.innerText = notifs.length === 0
-                    ? 'No notifications in last 24h'
-                    : `${notifs.length} total recorded in last 24h`;
+                    ? 'No recent activity'
+                    : `Showing ${notifs.length} event(s)`;
+            }
+            if (footerClearBtn) {
+                footerClearBtn.style.display = notifs.length > 0 ? 'inline-block' : 'none';
             }
 
-            if (filtered.length === 0) {
+            if (notifs.length === 0) {
                 listEl.innerHTML = `
                     <div class="h-64 flex flex-col items-center justify-center text-center p-6 text-slate-400 dark:text-slate-500">
-                        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3 shadow-inner">
                             <i data-lucide="bell-off" class="w-6 h-6"></i>
                         </div>
-                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300">No notifications found</p>
-                        <p class="text-[10px] mt-1 text-slate-400">Actions and notifications from the last 24 hours appear here.</p>
+                        <p class="text-xs font-bold text-slate-700 dark:text-slate-200">No events found</p>
+                        <p class="text-[10px] mt-1 text-slate-400 max-w-[200px]">Logged sessions, payments, and dues cleared will appear here.</p>
                     </div>
                 `;
                 if (window.lucide) lucide.createIcons({ root: listEl });
                 return;
             }
 
-            const typeIcons = {
-                success: 'check-circle-2',
-                error: 'alert-circle',
-                warning: 'alert-triangle',
-                info: 'info'
-            };
-
-            const typeStyles = {
-                success: {
-                    bg: 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-200/80 dark:border-emerald-900/40',
-                    iconColor: 'text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/60',
-                    badge: 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300'
-                },
-                error: {
-                    bg: 'bg-rose-50/80 dark:bg-rose-950/30 border-rose-200/80 dark:border-rose-900/40',
-                    iconColor: 'text-rose-600 dark:text-rose-400 bg-rose-100 dark:bg-rose-900/60',
-                    badge: 'bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300'
-                },
-                warning: {
-                    bg: 'bg-amber-50/80 dark:bg-amber-950/30 border-amber-200/80 dark:border-amber-900/40',
-                    iconColor: 'text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/60',
-                    badge: 'bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300'
-                },
-                info: {
-                    bg: 'bg-slate-50/80 dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700/60',
-                    iconColor: 'text-indigo-600 dark:text-indigo-400 bg-indigo-100 dark:bg-indigo-900/60',
-                    badge: 'bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300'
-                }
-            };
-
-            let html = '<div class="space-y-2 py-1">';
-            filtered.forEach(item => {
-                const style = typeStyles[item.type] || typeStyles.info;
-                const icon = typeIcons[item.type] || 'info';
+            let html = '<div class="space-y-2.5 pb-8">';
+            notifs.forEach((item, idx) => {
                 const timeFormatted = formatNotifTime(item.timestamp);
+                const isAlert = item.type === 'error' || item.type === 'warning' || (item.message && item.message.toLowerCase().includes('inactivity'));
+                const iconName = isAlert ? 'clock' : (item.type === 'success' ? 'check-circle' : 'bell');
+                const cardBg = isAlert 
+                    ? 'bg-amber-50/70 dark:bg-amber-950/25 border-amber-200/70 dark:border-amber-900/40' 
+                    : 'bg-white dark:bg-slate-800/80 border-slate-200/80 dark:border-slate-700/80';
+                const iconColor = isAlert 
+                    ? 'text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/60' 
+                    : 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60';
+                const safeId = (item.id || ('ntf_' + (item.timestamp || idx))).replace(/'/g, "\\'");
 
                 html += `
-                    <div class="notif-item-card p-3 rounded-2xl border ${style.bg} relative flex items-start gap-2.5 shadow-xs">
-                        <div class="w-7 h-7 rounded-xl ${style.iconColor} flex items-center justify-center flex-shrink-0 mt-0.5 shadow-2xs">
-                            <i data-lucide="${icon}" class="w-3.5 h-3.5"></i>
+                    <div id="notif-card-${idx}" class="notif-item-card p-3 rounded-2xl border ${cardBg} flex items-start gap-2.5 shadow-xs transition-all hover:shadow-sm">
+                        <div class="w-7 h-7 rounded-xl ${iconColor} flex items-center justify-center flex-shrink-0 mt-0.5 shadow-2xs">
+                            <i data-lucide="${iconName}" class="w-3.5 h-3.5"></i>
                         </div>
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center justify-between gap-1 mb-0.5">
-                                <span class="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded ${style.badge}">
-                                    ${item.type}
-                                </span>
-                                <span class="text-[9.5px] font-bold text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                                <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 whitespace-nowrap">
                                     ${timeFormatted}
                                 </span>
                             </div>
                             ${item.title ? `<p class="text-xs font-black text-slate-800 dark:text-slate-100 mb-0.5">${item.title}</p>` : ''}
-                            <p class="text-xs font-medium text-slate-700 dark:text-slate-200 break-words leading-relaxed">${item.message}</p>
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 break-words leading-relaxed">${item.message}</p>
                         </div>
-                        <button onclick="deleteNotification('${item.id}')" title="Dismiss" class="p-1 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-white/60 dark:hover:bg-slate-800 transition-all flex-shrink-0 cursor-pointer">
-                            <i data-lucide="x" class="w-3 h-3"></i>
+                        <button type="button" onclick="deleteNotification('${safeId}', event, ${idx})" title="Dismiss this notification" class="p-2 -mr-1 -mt-1 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all flex-shrink-0 cursor-pointer flex items-center justify-center min-w-[32px] min-h-[32px] active:scale-90">
+                            <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
                 `;
@@ -7873,21 +7927,65 @@ document.addEventListener('click', function(e) {
             if (window.lucide) lucide.createIcons({ root: listEl });
         }
 
-        function deleteNotification(id) {
+        // Mouse wheel scroll bridge: ensures wheeling anywhere over notif-panel scrolls notif-list
+        (function initNotifWheelScroll() {
+            const panel = document.getElementById('notif-panel');
+            if (panel && !panel._wheelAttached) {
+                panel._wheelAttached = true;
+                panel.addEventListener('wheel', function(e) {
+                    const list = document.getElementById('notif-list');
+                    if (list) {
+                        list.scrollTop += e.deltaY;
+                    }
+                }, { passive: true });
+            }
+        })();
+
+        function deleteNotification(id, e, index) {
+            if (e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            }
             try {
-                const notifs = getNotifications24h().filter(n => n.id !== id);
+                let notifs = getNotifications24h();
+                const beforeLen = notifs.length;
+                if (id) {
+                    notifs = notifs.filter((n, idx) => {
+                        if (n.id && n.id === id) return false;
+                        if (n.timestamp && String(n.timestamp) === String(id)) return false;
+                        if (index !== undefined && idx === index) return false;
+                        return true;
+                    });
+                }
+                if (notifs.length === beforeLen && typeof index === 'number' && index >= 0 && index < notifs.length) {
+                    notifs.splice(index, 1);
+                }
                 saveNotifications(notifs);
                 renderNotifList();
                 updateNotifBadge();
-            } catch (e) {}
+            } catch (err) {
+                console.error('deleteNotification error:', err);
+            }
         }
 
-        function clearAllNotifications() {
+        function clearAllNotifications(e) {
+            if (e) {
+                if (e.preventDefault) e.preventDefault();
+                if (e.stopPropagation) e.stopPropagation();
+                if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            }
             try {
+                localStorage.removeItem(NOTIF_STORAGE_KEY);
                 saveNotifications([]);
                 renderNotifList();
                 updateNotifBadge();
-            } catch (e) {}
+                setTimeout(() => {
+                    closeNotifPanel();
+                }, 180);
+            } catch (err) {
+                console.error('clearAllNotifications error:', err);
+            }
         }
 
         function toggleNotifPanel(e) {
@@ -8282,7 +8380,7 @@ document.addEventListener('click', function(e) {
                     return res;
                 } catch (err) {
                     lastErr = err;
-                    if (i < retries) await new Promise(r => setTimeout(r, 100));
+                    if (i < retries) await new Promise(r => setTimeout(r, 600));
                 }
             }
             throw lastErr;
@@ -9473,6 +9571,7 @@ document.addEventListener('click', function(e) {
                     globalData = result.adminData;
                 }
             }
+            window.rawPatientDatabase = result.patientDatabase || result.patientMaster || [];
             window.rawTransactions = result.transactions || [];
             if (result.auditLog && Array.isArray(result.auditLog) && result.auditLog.length > 0) {
                 const localLogs = Array.isArray(window.rawAuditData) ? window.rawAuditData : [];
@@ -9587,6 +9686,66 @@ document.addEventListener('click', function(e) {
             }
         }
 
+        // ── PERSISTENT MANUAL CASE STATUS STORAGE (SURVIVES REFRESH) ──
+        function getManualCaseStatusMap() {
+            try {
+                const raw = localStorage.getItem('prism_case_status_overrides');
+                return raw ? JSON.parse(raw) : {};
+            } catch(e) {
+                return {};
+            }
+        }
+
+        function saveManualCaseStatus(pid, status, dateStr) {
+            if (!pid) return;
+            try {
+                const map = getManualCaseStatusMap();
+                const nid = (typeof normId === 'function') ? normId(pid) : String(pid).toLowerCase();
+                map[nid] = {
+                    status: status, // 'Closed' or 'Active'
+                    date: dateStr || new Date().toISOString(),
+                    ts: Date.now()
+                };
+                localStorage.setItem('prism_case_status_overrides', JSON.stringify(map));
+            } catch(e) {
+                console.warn('saveManualCaseStatus error:', e);
+            }
+        }
+
+        function getManualCaseStatus(pid) {
+            if (!pid) return null;
+            try {
+                const map = getManualCaseStatusMap();
+                const nid = (typeof normId === 'function') ? normId(pid) : String(pid).toLowerCase();
+                const entry = map[nid];
+                return entry ? entry.status : null;
+            } catch(e) {
+                return null;
+            }
+        }
+
+        function updateLocalSnapshotCaseStatus(pid, status, dateStr) {
+            try {
+                const raw = localStorage.getItem('prism_data_snapshot_v1');
+                if (!raw) return;
+                const snap = JSON.parse(raw);
+                if (!snap) return;
+                const isClosed = (status === 'Closed');
+                const normPid = (typeof normId === 'function') ? normId(pid) : String(pid).toLowerCase();
+                if (snap.balResult && snap.balResult.balances) {
+                    if (snap.balResult.balances[pid]) {
+                        snap.balResult.balances[pid].closed = isClosed;
+                        snap.balResult.balances[pid].caseStatus = status;
+                    }
+                    if (snap.balResult.balances[normPid]) {
+                        snap.balResult.balances[normPid].closed = isClosed;
+                        snap.balResult.balances[normPid].caseStatus = status;
+                    }
+                }
+                localStorage.setItem('prism_data_snapshot_v1', JSON.stringify(snap));
+            } catch(e) {}
+        }
+
         // Apply full patient dataset, balances, packages, and revenue metrics
         function applyFullDataPackage(adminResult, balResult, statsResult, pkgResult, isFromCache, isFreshSync) {
             if (!adminResult || !adminResult.adminData) return false;
@@ -9619,9 +9778,11 @@ document.addEventListener('click', function(e) {
 
             // Apply wallet balances to patientLookup
             if (balResult && balResult.balances) {
+                const manualStatusMap = getManualCaseStatusMap();
                 Object.keys(patientLookup).forEach(name => {
                     const p = patientLookup[name];
-                    const bal = balResult.balances[p.id] || {};
+                    const nid = (typeof normId === 'function') ? normId(p.id) : String(p.id).toLowerCase();
+                    const bal = balResult.balances[p.id] || balResult.balances[nid] || balResult.balances[(p.id || '').toUpperCase()] || {};
                     const isRecentlySettled = p._recentSettlementTime && (Date.now() - p._recentSettlementTime < 180000);
                     if (!isRecentlySettled) {
                         p.walletBalance     = bal.walletBalance     || 0;
@@ -9630,7 +9791,14 @@ document.addEventListener('click', function(e) {
                     }
                     p.sessionsRemaining = bal.sessionsRemaining || 0;
                     p.activePackageId   = bal.activePackageId   || null;
-                    if (bal.closed !== undefined && !p.lastRestartMs) {
+
+                    // Manual local override takes top priority to survive refresh
+                    const cleanPName = stripSalutation(p.name || name);
+                    const manualEntry = manualStatusMap[nid] || manualStatusMap[p.id] || manualStatusMap[(p.id || '').toUpperCase()] || manualStatusMap[cleanPName] || manualStatusMap[p.name] || manualStatusMap[normId(cleanPName)];
+                    if (manualEntry) {
+                        p.closed = (manualEntry.status === 'Closed');
+                        if (p.closed && manualEntry.date) p.closedDate = manualEntry.date;
+                    } else if (bal.closed !== undefined && !p.lastRestartMs) {
                         p.closed = !!bal.closed;
                     }
                     p.caseStatus = bal.caseStatus || (p.closed ? 'Closed' : 'Active');
@@ -9841,14 +10009,14 @@ document.addEventListener('click', function(e) {
 
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 20000);
+                const timeoutId = setTimeout(() => controller.abort(), 50000);
 
                 const bypass = Boolean(isManual || isHardReset || isSilentFresh);
                 const url = SCRIPT_URL + (bypass ? (SCRIPT_URL.includes('?') ? '&' : '?') + '_ts=' + Date.now() : '');
 
-                // Fetch main sheet dataset
+                // Fetch main sheet dataset with 1-time auto-retry on transient network flukes
                 const activeUser = (typeof getCurrentUser === 'function' ? getCurrentUser() : 'admin');
-                const adminResponse = await fetch(url, {
+                const reqOptions = {
                     method: 'POST',
                     body: JSON.stringify({
                         action: isHardReset ? "hardReset" : "fetchAdminData",
@@ -9860,7 +10028,20 @@ document.addEventListener('click', function(e) {
                     }),
                     signal: controller.signal,
                     priority: 'high'
-                });
+                };
+
+                let adminResponse = null;
+                try {
+                    adminResponse = await fetch(url, reqOptions);
+                } catch (firstErr) {
+                    if (firstErr.name !== 'AbortError' && navigator.onLine) {
+                        // Quick 1s backoff retry for momentary network glitch / socket reset
+                        await new Promise(r => setTimeout(r, 1200));
+                        adminResponse = await fetch(url, reqOptions);
+                    } else {
+                        throw firstErr;
+                    }
+                }
                 clearTimeout(timeoutId);
 
                 const rawText = await adminResponse.text();
@@ -9928,13 +10109,14 @@ document.addEventListener('click', function(e) {
                 }
             } catch (e) {
                 console.error("Background sync error:", e);
-                const errMsg = e.name === 'AbortError' ? 'Sync timed out (took > 60s)' : (e.message || 'Connection failed');
+                const errMsg = e.name === 'AbortError' ? 'Sync timed out' : (e.message || 'Connection failed');
                 if (isHardReset) {
                     showToast('Hard Reset error: ' + errMsg, 'error');
                 } else if (isManual) {
                     showToast('Sync error: ' + errMsg, 'error');
-                } else if (!isSilentFresh) {
-                    showToast('Using local cache (' + errMsg + ')', 'warning');
+                } else {
+                    // Silent background fallback: UI remains instantaneous on cached data without spamming notification panel
+                    console.warn('Background sync deferred to local cache (' + errMsg + ')');
                 }
             } finally {
                 if (syncBtn) syncBtn.classList.remove('animate-spin');
@@ -10047,7 +10229,10 @@ function getPackageBreakdown(p) {
 
         function stripSalutation(name) {
             if (!name) return '';
-            return String(name).replace(/^(mr|mrs|ms|miss|mast|baby|dr|smt|shri)\b[\.\s]*/i, '').trim();
+            return String(name)
+                .replace(/^(mr|mrs|ms|miss|mast|baby|dr|smt|shri)\b[\.\s]*/i, '')
+                .replace(/\s*\([^\)]*\d[^\)]*\)\s*$/, '')
+                .trim();
         }
 
         function detectSalutation(name) {
@@ -10070,23 +10255,39 @@ function getPackageBreakdown(p) {
         }
 
         function getFormalPatientNameWithTitle(p, fallbackName) {
-            let name = (p && p.name) ? p.name : (fallbackName || '');
-            if (!name) return '';
+            let patientObj = p;
+            let name = (patientObj && patientObj.name) ? patientObj.name : (fallbackName || '');
+            if (!patientObj && typeof patientLookup === 'object' && patientLookup && fallbackName) {
+                patientObj = patientLookup[fallbackName] || (typeof findPatient === 'function' ? findPatient(fallbackName) : null);
+            }
+            if (!name && patientObj) name = patientObj.name || '';
+            if (!name) return 'Patient';
             name = String(name).trim();
+
             const existing = detectSalutation(name);
             if (existing) {
-                return name;
+                const clean = stripSalutation(name);
+                return `${existing} ${clean}`;
             }
-            const gender = (p && p.gender) ? String(p.gender).trim().toLowerCase() : '';
-            const age = (p && p.age) ? Number(p.age) : null;
+
+            if (!patientObj && typeof findPatient === 'function') {
+                patientObj = findPatient(name);
+            }
+
+            // Derive from patient profile gender & age if title not in name string
+            const gender = (patientObj && patientObj.gender) ? String(patientObj.gender).trim().toLowerCase() : '';
+            const age = (patientObj && patientObj.age) ? Number(patientObj.age) : null;
             let title = '';
             if (gender === 'female') {
                 title = (age && age < 18) ? 'Miss' : 'Mrs.';
             } else if (gender === 'male') {
                 title = (age && age < 12) ? 'Mast.' : 'Mr.';
+            } else if (gender) {
+                title = 'Mr./Ms.';
             }
             return title ? `${title} ${stripSalutation(name)}` : name;
         }
+        window.getFormalPatientNameWithTitle = getFormalPatientNameWithTitle;
 
         function findPatient(query) {
             if (!query) return null;
@@ -10292,23 +10493,31 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     dateStr = r[8];
                 if (!name) return;
 
-            // Unified patient profile: keep single profile per patient across branches
+            // Unified patient profile: prioritize Clinical ID first to prevent collisions between patients with identical/changed names
             const rawLookupKey = String(name).trim();
             const cleanLookupKey = stripSalutation(rawLookupKey);
             const canonicalKey = cleanLookupKey || rawLookupKey;
 
-            let p = patientLookup[canonicalKey];
-            if (!p && rawLookupKey !== canonicalKey && patientLookup[rawLookupKey]) {
-                p = patientLookup[rawLookupKey];
-            }
-            if (!p && id) {
-                const nid = normId(id);
+            let p = null;
+            const nid = id ? normId(id) : null;
+            if (nid) {
                 p = Object.values(patientLookup).find(item => item && normId(item.id) === nid);
+            }
+            if (!p) {
+                const candidate = patientLookup[canonicalKey] || (rawLookupKey !== canonicalKey ? patientLookup[rawLookupKey] : null);
+                if (candidate) {
+                    if (!nid || !candidate.id || normId(candidate.id) === nid) {
+                        p = candidate;
+                    }
+                }
             }
 
             if (!p) {
                 const s = prevSettled[normId(id)];
                 const c = prevClosed[normId(id)];
+                const manualStatus = (typeof getManualCaseStatus === 'function') ? (getManualCaseStatus(id) || getManualCaseStatus(rawLookupKey)) : null;
+                const isManuallyClosed = manualStatus === 'Closed';
+                const isManuallyActive = manualStatus === 'Active';
                 p = {
                     id: id,
                     name: rawLookupKey,
@@ -10322,9 +10531,9 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     runningBalance: 0,
                     walletBalance: s ? s.walletBalance : 0,
                     discount: 0,
-                    closed: c ? !!c.closed : false,
-                    closedDate: c ? c.closedDate : null,
-                    lastRestartMs: c ? c.lastRestartMs : null,
+                    closed: isManuallyClosed ? true : (isManuallyActive ? false : (c ? !!c.closed : false)),
+                    closedDate: isManuallyClosed ? (c ? c.closedDate : new Date().toISOString()) : (c ? c.closedDate : null),
+                    lastRestartMs: isManuallyClosed ? null : (c ? c.lastRestartMs : null),
                     age: r[4] ? String(r[4]) : '',
                     gender: r[5] ? String(r[5]) : '',
                     address: r[14] ? String(r[14]) : '',
@@ -10334,11 +10543,15 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     _recentSettlementTime: s ? s._recentSettlementTime : null,
                     activePackageId: null
                 };
-                // Store canonically under canonicalKey
-                patientLookup[canonicalKey] = p;
+                
+                // Store under canonical key or distinct key if name collides with another ID
+                const storeKey = (patientLookup[canonicalKey] && normId(patientLookup[canonicalKey].id) !== nid)
+                    ? (canonicalKey + (id ? (' (' + id + ')') : ''))
+                    : canonicalKey;
+                patientLookup[storeKey] = p;
 
-                // If rawLookupKey has salutation, add non-enumerable alias so direct patientLookup[rawLookupKey] works without duplicate in Object.keys()
-                if (rawLookupKey !== canonicalKey) {
+                // Add non-enumerable aliases
+                if (rawLookupKey !== storeKey) {
                     try {
                         Object.defineProperty(patientLookup, rawLookupKey, {
                             value: p,
@@ -10348,7 +10561,18 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                         });
                     } catch (e) {}
                 }
+                if (id && !patientLookup[id]) {
+                    try {
+                        Object.defineProperty(patientLookup, id, {
+                            value: p,
+                            enumerable: false,
+                            writable: true,
+                            configurable: true
+                        });
+                    } catch (e) {}
+                }
             } else {
+                if (id && !p.id) p.id = id;
                 if (detectSalutation(rawLookupKey) && !detectSalutation(p.name)) {
                     p.name = rawLookupKey;
                 }
@@ -10385,6 +10609,8 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
                     if (isEnrollRow) {
                         p.id = id;
                         p.enrollDate = normDateYMD(dateStr);
+                        const enrollMs = new Date(r[0] || dateStr || 0).getTime();
+                        if (!isNaN(enrollMs) && enrollMs > 0) p.enrollTime = enrollMs;
                     }
 
                     // ⚠️ walletBalance intentionally NOT computed here anymore.
@@ -10535,6 +10761,115 @@ if (window.rawAuditData) {
             }
         });
     });
+}
+
+// ── Guarantee all patients from Patient_Database master sheet are present in patientLookup ──
+if (window.rawPatientDatabase && Array.isArray(window.rawPatientDatabase) && window.rawPatientDatabase.length > 0) {
+    const startIdx = (window.rawPatientDatabase[0] && String(window.rawPatientDatabase[0][0] || '').toLowerCase().includes('id')) ? 1 : 0;
+    for (let i = startIdx; i < window.rawPatientDatabase.length; i++) {
+        const pmRow = window.rawPatientDatabase[i];
+        if (!pmRow || (!pmRow[0] && !pmRow[1])) continue;
+        const pmId = String(pmRow[0] || '').trim();
+        const pmRawName = String(pmRow[1] || '').trim();
+        if (!pmRawName && !pmId) continue;
+        const pmCleanName = stripSalutation(pmRawName || pmId);
+        const pmCanonKey = pmCleanName || pmRawName || pmId;
+
+        let existing = null;
+        const pmNid = pmId ? normId(pmId) : null;
+        if (pmNid) {
+            existing = Object.values(patientLookup).find(item => item && normId(item.id) === pmNid);
+        }
+        if (!existing) {
+            const cand = patientLookup[pmCanonKey] || (pmRawName && patientLookup[pmRawName]);
+            if (cand && (!pmNid || !cand.id || normId(cand.id) === pmNid)) {
+                existing = cand;
+            }
+        }
+
+        const rawStatus = String(pmRow[25] || '').trim().toLowerCase();
+        const isMasterClosed = rawStatus === 'closed';
+        const manualStatus = (typeof getManualCaseStatus === 'function') ? (getManualCaseStatus(pmId) || getManualCaseStatus(pmCleanName) || getManualCaseStatus(pmRawName)) : null;
+
+        if (existing) {
+            // Update master demographics if existing entry is missing them
+            if (pmId && !existing.id) existing.id = pmId;
+            if (pmRow[2] && (!existing.phone || String(existing.phone).length < 5)) existing.phone = String(pmRow[2]).replace(/^'/, '').trim();
+            if (pmRow[4] && !existing.age) existing.age = String(pmRow[4]);
+            if (pmRow[5] && !existing.gender) existing.gender = String(pmRow[5]);
+            if (pmRow[6] && !existing.address) existing.address = String(pmRow[6]);
+            if (pmRow[7] && (!existing.diag || existing.diag === 'General Rehab')) existing.diag = String(pmRow[7]);
+            if (pmRow[9] && !existing.doctor) existing.doctor = cleanDoctorName(pmRow[9]) || '';
+            if (pmRow[11]) {
+                const pet = new Date(pmRow[11]).getTime();
+                if (!isNaN(pet) && pet > 0) {
+                    if (!existing.enrollTime || pet > existing.enrollTime) existing.enrollTime = pet;
+                }
+            }
+            if (manualStatus === 'Closed') {
+                existing.closed = true;
+            } else if (manualStatus === 'Active') {
+                existing.closed = false;
+            } else if (isMasterClosed && !existing.lastRestartMs) {
+                existing.closed = true;
+                if (pmRow[26]) existing.closedDate = String(pmRow[26]);
+            }
+        } else {
+            // Patient only exists in Patient_Database (e.g. no session rows in Database yet)
+            const s = prevSettled[normId(pmId)];
+            const c = prevClosed[normId(pmId)];
+            const isClosed = manualStatus === 'Closed' ? true : (manualStatus === 'Active' ? false : (isMasterClosed || (c ? !!c.closed : false)));
+            const newPat = {
+                id: pmId,
+                name: pmRawName || pmCleanName || pmId,
+                phone: pmRow[2] ? String(pmRow[2]).replace(/^'/, '').trim() : '',
+                diag: pmRow[7] || '',
+                doctor: cleanDoctorName(pmRow[9]) || '',
+                logs: [],
+                baseRate: toNum(pmRow[17]) || 0,
+                purchased: toNum(pmRow[14]) || 0,
+                advance: 0,
+                runningBalance: 0,
+                walletBalance: s ? s.walletBalance : (toNum(pmRow[20]) || 0),
+                discount: 0,
+                closed: isClosed,
+                closedDate: isClosed ? (pmRow[26] || (c ? c.closedDate : null)) : null,
+                lastRestartMs: isClosed ? null : (c ? c.lastRestartMs : null),
+                age: pmRow[4] ? String(pmRow[4]) : '',
+                gender: pmRow[5] ? String(pmRow[5]) : '',
+                address: pmRow[6] ? String(pmRow[6]) : '',
+                enrollTime: pmRow[11] ? new Date(pmRow[11]).getTime() : Date.now(),
+                outstandingDue: s ? s.outstandingDue : (toNum(pmRow[21]) || 0),
+                dueSessionCount: s ? s.dueSessionCount : 0,
+                _recentSettlementTime: s ? s._recentSettlementTime : null,
+                activePackageId: pmRow[13] || null
+            };
+            const targetKey = (patientLookup[pmCanonKey] && normId(patientLookup[pmCanonKey].id) !== pmNid)
+                ? (pmCanonKey + (pmId ? (' (' + pmId + ')') : ''))
+                : pmCanonKey;
+            patientLookup[targetKey] = newPat;
+            if (pmRawName && pmRawName !== targetKey) {
+                try {
+                    Object.defineProperty(patientLookup, pmRawName, {
+                        value: newPat,
+                        enumerable: false,
+                        writable: true,
+                        configurable: true
+                    });
+                } catch(e) {}
+            }
+            if (pmId && !patientLookup[pmId]) {
+                try {
+                    Object.defineProperty(patientLookup, pmId, {
+                        value: newPat,
+                        enumerable: false,
+                        writable: true,
+                        configurable: true
+                    });
+                } catch(e) {}
+            }
+        }
+    }
 }
 
 // ⚠️ p.outstandingDue / p.walletBalance / p.dueSessionCount are NEVER computed
@@ -10839,13 +11174,23 @@ renderTables();
                     }
                 });
 
-                // Pass 3: Add any advance paid today by patients who did not have a session visit today
+                // Pass 3: Add any advance / due payments paid today by patients who did not have a session visit today
                 Object.keys(advancePaidOnDateByPatient).forEach(key => {
                     if (!countedAdvancePatients.has(key)) {
                         const adv = advancePaidOnDateByPatient[key] || 0;
                         if (adv > 0) {
                             localTotalCashIn += adv;
                             countedAdvancePatients.add(key);
+                            const p = patientLookup[key] || (patientLookup ? Object.values(patientLookup).find(x => (x.name || '').toLowerCase() === key || (x.id || '').toLowerCase() === key) : null);
+                            localRows.push({
+                                id: p ? p.id : '',
+                                name: p ? p.name : key.toUpperCase(),
+                                diag: p ? p.diag : 'Advance / Due Payment',
+                                fee: 0,
+                                mode: 'Advance',
+                                paid: adv,
+                                date: dateVal
+                            });
                         }
                     }
                 });
@@ -10866,7 +11211,58 @@ renderTables();
                 if (document.getElementById('registry-date-input')?.value !== dateVal) return;
 
                 if (regResult && Array.isArray(regResult.rows)) {
-                    renderRegistryUI(regResult.rows, regResult.collectionTotal || 0, dateVal, regResult.feeTotal);
+                    // Smart merge: never drop local visits/payments that exist in localRows
+                    const mergedRows = [];
+                    const seenKeys = new Set();
+
+                    // First map all server rows
+                    regResult.rows.forEach(sr => {
+                        const key = (sr.id || '').trim().toLowerCase() + '___' + (sr.name || '').trim().toLowerCase();
+                        seenKeys.add(key);
+                        mergedRows.push(sr);
+                    });
+
+                    // Preserve any local row that server missed (e.g. due payments, fee=0 visits, recently logged sessions)
+                    localRows.forEach(lr => {
+                        const key = (lr.id || '').trim().toLowerCase() + '___' + (lr.name || '').trim().toLowerCase();
+                        if (!seenKeys.has(key)) {
+                            seenKeys.add(key);
+                            mergedRows.push(lr);
+                        } else {
+                            // If server row has 0 paid but local row has recorded paid, preserve local payment info
+                            const existing = mergedRows.find(m => ((m.id || '').trim().toLowerCase() + '___' + (m.name || '').trim().toLowerCase()) === key);
+                            if (existing) {
+                                if (toNum(existing.paid) === 0 && toNum(lr.paid) > 0) {
+                                    existing.paid = lr.paid;
+                                }
+                                if ((!existing.mode || existing.mode === 'Cash') && lr.mode && lr.mode !== 'Cash') {
+                                    existing.mode = lr.mode;
+                                }
+                                if (toNum(existing.fee) === 0 && toNum(lr.fee) > 0) {
+                                    existing.fee = lr.fee;
+                                }
+                            }
+                        }
+                    });
+
+                    let finalCollection = regResult.collectionTotal || 0;
+                    let finalFeeTotal = regResult.feeTotal || 0;
+
+                    let sumMergedPaid = 0;
+                    let sumMergedFee = 0;
+                    mergedRows.forEach(r => {
+                        sumMergedPaid += toNum(r.paid);
+                        sumMergedFee += toNum(r.fee);
+                    });
+
+                    if (sumMergedPaid > finalCollection) {
+                        finalCollection = sumMergedPaid;
+                    }
+                    if (sumMergedFee > finalFeeTotal) {
+                        finalFeeTotal = sumMergedFee;
+                    }
+
+                    renderRegistryUI(mergedRows, finalCollection, dateVal, finalFeeTotal);
                 } else if (localRows.length === 0) {
                     renderRegistryUI([], 0, dateVal, 0);
                 }
@@ -11074,6 +11470,13 @@ renderTables();
             // ── INSTANT OPTIMISTIC UI UPDATE ──
             p.closed = true;
             p.closedDate = new Date().toISOString();
+            p.lastRestartMs = null;
+            saveManualCaseStatus(p.id, 'Closed', p.closedDate);
+            if (actualName) saveManualCaseStatus(actualName, 'Closed', p.closedDate);
+            updateLocalSnapshotCaseStatus(p.id, 'Closed', p.closedDate);
+            if (Array.isArray(globalData)) {
+                globalData.push([new Date().toISOString(), p.id, actualName, p.phone||"", p.age||"", p.gender||"", p.diag||"", "Case Closed", dateStr, 0,0,0,0,"","",0,""]);
+            }
 
             if (statEl.activeCount) {
                 statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
@@ -11103,6 +11506,9 @@ renderTables();
                 console.error("Case close sync error:", e);
                 p.closed = false;
                 p.closedDate = null;
+                saveManualCaseStatus(p.id, 'Active', null);
+                if (actualName) saveManualCaseStatus(actualName, 'Active', null);
+                updateLocalSnapshotCaseStatus(p.id, 'Active', null);
 
                 if (statEl.activeCount) {
                     statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
@@ -11369,7 +11775,7 @@ renderTables();
     updateGlobalStats();
     if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
 
-    showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) logged` : `${datesToSubmit.length} session(s) logged`, 'success');
+    showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) logged for ${p.name || selectedPatientName}` : `${datesToSubmit.length} session(s) logged for ${p.name || selectedPatientName} (${paymentMode})`, 'success');
     if (btn) {
         btn.innerText = "Saved ✓";
         btn.disabled = false;
@@ -11842,10 +12248,11 @@ function showEnrollmentSuccessPopup(patient) {
             return;
         }
         const last4 = String(patient.id).slice(-4);
+        const formalName = getFormalPatientNameWithTitle(patient, patient.name);
         const cleanName = typeof stripSalutation === 'function' ? stripSalutation(patient.name) : patient.name;
         const message =
             `*Welcome to Prism Physiotherapy & Rehabilitation Center!*\n\n` +
-            `Hello ${cleanName},\n\n` +
+            `Hello ${formalName},\n\n` +
             `Your personal care account is now active.\n\n` +
             `We're delighted to support your recovery journey. At Prism Physiotherapy, your dedicated patient account keeps your treatment details, appointments, and rehabilitation progress organized and accessible, all in one place.\n\n` +
             `*In your portal, you can:*\n` +
@@ -11855,7 +12262,7 @@ function showEnrollmentSuccessPopup(patient) {
             `*Access Portal Here:*\n` +
             `https://prismhealthcare.in/Patient%20Login.html\n\n` +
             `*Your Login Details:*\n` +
-            `• User ID: ${cleanName}\n` +
+            `• User ID: ${formalName}\n` +
             `• Verification ID: ${last4}\n\n` +
             `Please keep your verification ID confidential and do not share it with others.\n\n` +
             `Warm regards,\n` +
@@ -11916,7 +12323,7 @@ function showEnrollmentSuccessPopup(patient) {
     updatePatientWorkspaceUI(selectedPatientName, p, false);
     renderTables();
     renderDuesWidget();
-    showToast(`Topup of ₹${topup} added to wallet`, "success");
+    showToast(`Topup of ₹${topup.toLocaleString()} added to wallet for ${selectedPatientName}`, "success");
 
     syncToBackend({
         action: "markAsPaid",
@@ -12182,12 +12589,16 @@ function openMidPackage() {
         function searchPatient() {
             clearTimeout(searchDebounce);
             searchDebounce = setTimeout(() => {
-                const val = document.getElementById('patient-search-input').value.toUpperCase().trim();
+                const inputEl = document.getElementById('patient-search-input');
+                const rawVal = inputEl ? inputEl.value : '';
+                const val = rawVal.trim().toUpperCase();
                 const res = document.getElementById('search-results');
                 const activeContainer = document.getElementById('active-cases-container');
                 const ws = document.getElementById('patient-workspace');
                 const emptyState = document.getElementById('log-empty-workspace-state');
                 
+                if (!res) return;
+
                 if (!val) {
                     res.classList.add('hidden');
                     if (activeContainer) activeContainer.style.display = 'block';
@@ -12206,56 +12617,110 @@ function openMidPackage() {
                 if (ws) ws.classList.add('hidden');
                 if (emptyState) emptyState.classList.add('hidden');
 
-                // Normalize search values for robust matching
-                const searchValClean = val.replace(/[^A-Z0-9]/g, ''); // Alphanumeric only
-                const searchValDigits = val.replace(/\D/g, '');      // Digits only
+                // Normalize search values
+                const cleanQuery = val.replace(/[^A-Z0-9]/g, '');
+                const queryDigits = val.replace(/\D/g, '');
+                const queryTokens = val.split(/[\s,.-]+/).filter(Boolean);
 
-                const matches = Object.keys(patientLookup)
-                    .filter(name => {
-                        const p = patientLookup[name];
-                        if (!p) return false;
+                // Collect all unique patient profiles across patientLookup
+                const uniquePatientsMap = new Map();
+                if (typeof patientLookup === 'object' && patientLookup) {
+                    Object.keys(patientLookup).forEach(key => {
+                        const p = patientLookup[key];
+                        if (!p) return;
+                        const pKey = (p.id ? String(p.id).trim().toUpperCase() : '') || String(p.name || key).trim().toUpperCase();
+                        if (!uniquePatientsMap.has(pKey)) {
+                            uniquePatientsMap.set(pKey, p);
+                        }
+                    });
+                }
 
-                        const pName = name.toUpperCase();
-                        const pNameClean = stripSalutation(name).toUpperCase();
-                        const pId = String(p.id || '').toUpperCase();
-                        const pIdClean = pId.replace(/[^A-Z0-9]/g, '');
-                        const pPhoneClean = String(p.phone || '').replace(/\D/g, '');
+                const allPatients = Array.from(uniquePatientsMap.values());
 
-                        // Match Name, clean name, strict ID, normalized ID, or Phone digits
-                        return pName.includes(val) || 
-                               pNameClean.includes(val) ||
-                               pId.includes(val) || 
-                               (searchValClean !== '' && pIdClean.includes(searchValClean)) ||
-                               (searchValDigits !== '' && pPhoneClean.includes(searchValDigits));
-                    })
-                    .slice(0, 15);
+                // Comprehensive multi-factor matching
+                const matches = allPatients.filter(p => {
+                    const rawName = String(p.name || '').toUpperCase();
+                    const cleanName = stripSalutation(rawName);
+                    const nameAlphanumeric = rawName.replace(/[^A-Z0-9]/g, '');
+                    const cleanNameAlphanumeric = cleanName.replace(/[^A-Z0-9]/g, '');
 
-                if (matches.length > 0) {
-                    res.innerHTML = matches.map(name => {
-                        const p = patientLookup[name];
+                    const pId = String(p.id || '').toUpperCase();
+                    const pIdClean = pId.replace(/[^A-Z0-9]/g, '');
+
+                    const pPhone = String(p.phone || '').replace(/\D/g, '');
+                    const pDiag = String(p.diag || '').toUpperCase();
+                    const pDoc = String(p.doctor || '').toUpperCase();
+
+                    // 1. Direct substring match on raw name, clean name, or ID
+                    if (rawName.includes(val) || cleanName.includes(val) || pId.includes(val)) return true;
+
+                    // 2. Alphanumeric match (handles "SB TIWARI" matching "S B TIWARI", "POC001" matching "POC-001", etc.)
+                    if (cleanQuery && (nameAlphanumeric.includes(cleanQuery) || cleanNameAlphanumeric.includes(cleanQuery) || pIdClean.includes(cleanQuery))) {
+                        return true;
+                    }
+
+                    // 3. Phone digits match
+                    if (queryDigits && queryDigits.length >= 3 && pPhone.includes(queryDigits)) {
+                        return true;
+                    }
+
+                    // 4. Token-based multi-word match (all typed words must match somewhere in name, ID, diag, or phone)
+                    if (queryTokens.length > 1) {
+                        const searchableBlob = `${rawName} ${cleanName} ${pId} ${pDiag} ${pPhone} ${pDoc}`.toUpperCase();
+                        const allTokensMatch = queryTokens.every(tok => searchableBlob.includes(tok));
+                        if (allTokensMatch) return true;
+                    }
+
+                    // 5. Diagnosis / Condition match
+                    if (val.length >= 3 && (pDiag.includes(val) || pDoc.includes(val))) {
+                        return true;
+                    }
+
+                    return false;
+                });
+
+                // Display up to 60 matches so no patients are cut off
+                const displayMatches = matches.slice(0, 60);
+
+                if (displayMatches.length > 0) {
+                    res.innerHTML = `
+                        <div class="px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
+                            <span>Found ${matches.length} Patient${matches.length > 1 ? 's' : ''}</span>
+                            <span>Tap patient to open session workspace</span>
+                        </div>
+                    ` + displayMatches.map(p => {
+                        const name = p.name || '';
                         const isClosed = p.closed;
-                        
+                        const statusBadge = isClosed 
+                            ? '<div class="flex flex-col items-end gap-0.5"><span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-0.5 rounded-md uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>'
+                            : (p.outstandingDue > 0
+                                ? `<span class="bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">₹${p.outstandingDue.toLocaleString()} Due</span>`
+                                : '<span class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">Active Case</span>');
+
+                        const branchBadge = (p.id && p.id.startsWith('POC')) 
+                            ? '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">POC</span>'
+                            : ((p.id && p.id.startsWith('PHC')) ? '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">PHC</span>' : '');
+
                         return `
                         <div onclick="selectPatient('${name.replace(/'/g, "\\'")}')" class="group flex items-center justify-between p-3.5 lg:p-4 hover:bg-indigo-50/80 dark:hover:bg-slate-800 rounded-2xl cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-none transition-all">
                             <div class="flex items-center gap-3">
                                 <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs flex-shrink-0">
                                     <i data-lucide="user" class="w-4 h-4"></i>
                                 </div>
-                                <div class="flex flex-col">
-                                    <span class="font-black text-slate-800 dark:text-slate-100 uppercase text-xs lg:text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">${stripSalutation(name)}</span>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">${p.id}</span>
-                                        <span class="text-slate-400 dark:text-slate-500 text-[10px] truncate max-w-[160px]">• ${p.diag || 'Consultation'}</span>
+                                <div class="flex flex-col min-w-0">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-black text-slate-800 dark:text-slate-100 uppercase text-xs lg:text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">${stripSalutation(name)}</span>
+                                        ${branchBadge}
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-0.5 text-[10px]">
+                                        <span class="text-indigo-600 dark:text-indigo-400 font-bold">${p.id || '-'}</span>
+                                        ${p.phone ? `<span class="text-slate-400">• ${p.phone}</span>` : ''}
+                                        <span class="text-slate-400 dark:text-slate-500 truncate max-w-[140px] sm:max-w-[200px]">• ${p.diag || 'General Session'}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                ${isClosed ? 
-                                    '<div class="flex flex-col items-end gap-0.5"><span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-0.5 rounded-md uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>' : 
-                                    (p.outstandingDue > 0 ? 
-                                        `<span class="bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">₹${p.outstandingDue.toLocaleString()} Due</span>` : 
-                                        '<span class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">Active Case</span>')
-                                }
+                            <div class="flex items-center gap-3 flex-shrink-0">
+                                ${statusBadge}
                                 <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all"></i>
                             </div>
                         </div>`;
@@ -12264,13 +12729,13 @@ function openMidPackage() {
                     res.innerHTML = `
                         <div class="p-8 text-center">
                             <p class="text-slate-400 dark:text-slate-500 text-xs font-bold italic">No patient records found matching "${val}"</p>
-                            <p class="text-[9px] text-slate-400 dark:text-slate-600 uppercase mt-1.5">Check spelling or search with 10-digit Phone Number</p>
+                            <p class="text-[9px] text-slate-400 dark:text-slate-600 uppercase mt-1.5">Try searching by Patient Name, Clinical ID (e.g. POC-001), or 10-digit Phone Number</p>
                         </div>`;
                 }
                 
                 res.classList.remove('hidden');
                 if (window.lucide) lucide.createIcons({ root: res });
-            }, 150);
+            }, 100);
         }
 
         // Close search results and restore background if user clicks outside
@@ -12296,54 +12761,221 @@ function openMidPackage() {
         });
 
         // Determine actual due per session, taking into account overall patient dues and advance wallet credit
-        function getPatientSessionDueMap(p) {
-            const dueMap = {};
-            if (!p || !p.logs || !p.logs.length) return dueMap;
+        function computeSessionPaymentStatus(p) {
+            const result = {
+                sessionStatus: {}, // key by log index, timestamp, and 'date_'+date
+                duePayments: [],   // list of due payment items for passbook
+                totalDue: Number(p?.outstandingDue) || 0
+            };
+            if (!p || !p.logs || !p.logs.length) return result;
 
             const totalDue = Number(p.outstandingDue) || 0;
-            // If patient has ZERO overall due, NO session carries any due!
-            if (totalDue <= 0) {
-                return dueMap;
-            }
 
-            // If patient owes totalDue > 0, allocate only up to totalDue to the unpaid sessions (newest sessions first)
-            let remainingDue = totalDue;
-            const candidateLogs = [];
+            // 1. Collect all due payments & topups chronologically
+            const paymentCredits = [];
             p.logs.forEach((l, idx) => {
-                const type = String(l[7] || '').trim().toLowerCase();
-                if (['package added', 'case closed', 'case restarted', 'bill issued'].includes(type)) return;
-                if (type === 'enrollment' || type === 'enrollment (package)') return;
-
-                const fee = toNum(l[9]);
-                const mode = String(l[15] || '').trim();
-                const paidRaw = l[16];
-                const paid = (paidRaw !== undefined && paidRaw !== null && paidRaw !== '')
-                    ? toNum(paidRaw)
-                    : (mode === 'Pending' ? 0 : fee);
-
-                if (fee > 0 && paid < fee) {
-                    candidateLogs.push({
-                        idx: idx,
-                        timestamp: l[0],
-                        date: normDateYMD(l[8]),
-                        fee: fee,
-                        paid: paid,
-                        gap: fee - paid
-                    });
+                const t = String(l[7] || '').trim().toLowerCase();
+                if (t === 'due payment' || t.includes('due payment') || t === 'wallet topup' || t === 'topup') {
+                    const amt = toNum(l[11]) || toNum(l[16]) || toNum(l[9]) || 0;
+                    const mode = String(l[13] || 'Cash').trim();
+                    const date = normDateYMD(l[8]) || (l[0] ? normDateYMD(l[0]) : getLocalISOString());
+                    if (amt > 0) {
+                        const item = {
+                            idx: idx,
+                            timestamp: l[0],
+                            date: date,
+                            amount: amt,
+                            remaining: amt,
+                            mode: mode,
+                            remarks: l[6] || 'Due Cleared / Received',
+                            clearedSessions: []
+                        };
+                        paymentCredits.push(item);
+                        result.duePayments.push(item);
+                    }
                 }
             });
 
-            // Allocate from newest to oldest
-            for (let i = candidateLogs.length - 1; i >= 0; i--) {
-                if (remainingDue <= 0) break;
-                const item = candidateLogs[i];
-                const allocated = Math.min(item.gap, remainingDue);
-                dueMap[item.idx] = allocated;
-                dueMap[item.timestamp] = allocated;
-                if (item.date) dueMap['date_' + item.date] = allocated;
-                remainingDue -= allocated;
+            // 2. Identify candidate sessions (include any clinical treatment/session row)
+            const sessions = [];
+            p.logs.forEach((l, idx) => {
+                const t = String(l[7] || '').trim().toLowerCase();
+                if (['case closed', 'case restarted', 'bill issued', 'package added', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(t)) return;
+                if (t === 'enrollment' || t === 'enrollment (package)') return;
+
+                const fee = toNum(l[9]);
+                const mode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
+                const paidRaw = (l[15] !== undefined && l[15] !== null && l[15] !== '' && !isNaN(Number(l[15])))
+                    ? toNum(l[15])
+                    : ((l[11] !== undefined && l[11] !== null && l[11] !== '' && !isNaN(Number(l[11]))) ? toNum(l[11]) : (mode === 'Pending' ? 0 : fee));
+                const initialPaid = (paidRaw !== undefined && !isNaN(paidRaw)) ? paidRaw : (mode === 'Pending' ? 0 : fee);
+                const gap = Math.max(0, fee - initialPaid);
+
+                sessions.push({
+                    idx: idx,
+                    log: l,
+                    timestamp: l[0],
+                    date: normDateYMD(l[8]) || (l[0] ? normDateYMD(l[0]) : ''),
+                    fee: fee,
+                    initialMode: mode,
+                    initialPaid: initialPaid,
+                    gap: gap,
+                    actualDue: gap,
+                    isCleared: gap === 0,
+                    clearanceDate: null,
+                    clearanceMode: null,
+                    clearedAmount: 0
+                });
+            });
+
+            // 3. FIFO allocation of payment credits to sessions with gap > 0
+            sessions.forEach(sess => {
+                if (sess.gap > 0) {
+                    let need = sess.gap;
+                    for (const pc of paymentCredits) {
+                        if (pc.remaining > 0) {
+                            const pay = Math.min(need, pc.remaining);
+                            need -= pay;
+                            pc.remaining -= pay;
+                            sess.clearedAmount += pay;
+                            sess.clearanceDate = pc.date;
+                            sess.clearanceMode = pc.mode;
+                            const sDateFormatted = formatDateDMY(sess.date);
+                            if (sDateFormatted && !pc.clearedSessions.includes(sDateFormatted)) {
+                                pc.clearedSessions.push(sDateFormatted);
+                            }
+                            if (need <= 0) break;
+                        }
+                    }
+                    sess.actualDue = need;
+                    if (need <= 0) {
+                        sess.isCleared = true;
+                    }
+                }
+            });
+
+            // 4. Reconcile with total outstandingDue
+            if (totalDue <= 0) {
+                // Patient has NO overall dues - ALL sessions with prior gaps are considered cleared!
+
+                // Find the settlement source: either a due-payment credit, or an overpaying session row
+                // An overpaying session is one where initialPaid > fee (they paid more than one session's fee in one go)
+                let settlementDate = null;
+                let settlementMode = null;
+
+                if (paymentCredits.length > 0) {
+                    // Use the last due-payment credit's date & mode
+                    const lastPc = paymentCredits[paymentCredits.length - 1];
+                    settlementDate = lastPc.date;
+                    settlementMode = lastPc.mode;
+                } else {
+                    // Look for an overpaying session (initialPaid > fee, meaning they bulk-paid during that session)
+                    // Find the EARLIEST session where paid > fee — that's when dues from older sessions got cleared
+                    let overPaySession = null;
+                    for (const s of sessions) {
+                        if (s.initialPaid > s.fee) {
+                            // This session had bulk payment — use its date as the clearance date
+                            if (!overPaySession || s.date < overPaySession.date) {
+                                overPaySession = s;
+                            }
+                        }
+                    }
+                    if (overPaySession) {
+                        settlementDate = overPaySession.date;
+                        settlementMode = overPaySession.initialMode || 'Cash';
+                    } else if (p._recentSettlementTime) {
+                        settlementDate = new Date(p._recentSettlementTime).toISOString().split('T')[0];
+                        settlementMode = 'Settled';
+                    }
+                }
+
+                sessions.forEach(sess => {
+                    if (sess.gap > 0) {
+                        sess.actualDue = 0;
+                        sess.isCleared = true;
+                        if (!sess.clearanceDate) {
+                            if (settlementDate && settlementDate !== sess.date) {
+                                // Only set if it's a different date (not the session's own date)
+                                sess.clearanceDate = settlementDate;
+                                sess.clearanceMode = settlementMode;
+                            } else if (settlementDate) {
+                                sess.clearanceDate = settlementDate;
+                                sess.clearanceMode = settlementMode;
+                            } else {
+                                // No payment source found at all — mark as Settled without date
+                                sess.clearanceDate = null;
+                                sess.clearanceMode = 'Settled';
+                            }
+                            if (paymentCredits.length > 0) {
+                                const lastPc = paymentCredits[paymentCredits.length - 1];
+                                const sDateFormatted = formatDateDMY(sess.date);
+                                if (sDateFormatted && !lastPc.clearedSessions.includes(sDateFormatted)) {
+                                    lastPc.clearedSessions.push(sDateFormatted);
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // If totalDue > 0, allocate strictly up to totalDue from newest to oldest
+                let unallocatedDue = totalDue;
+                for (let i = sessions.length - 1; i >= 0; i--) {
+                    const sess = sessions[i];
+                    if (sess.gap > 0) {
+                        const alloc = Math.min(sess.gap, unallocatedDue);
+                        sess.actualDue = alloc;
+                        sess.isCleared = alloc === 0;
+                        unallocatedDue -= alloc;
+                        if (sess.isCleared && !sess.clearanceDate) {
+                            if (paymentCredits.length > 0) {
+                                sess.clearanceDate = paymentCredits[paymentCredits.length - 1].date;
+                                sess.clearanceMode = paymentCredits[paymentCredits.length - 1].mode;
+                            } else {
+                                // No separate due payment: find overpaying session
+                                let overPayDate = null, overPayMode = null;
+                                for (const s of sessions) {
+                                    if (s.initialPaid > s.fee && s.date > sess.date) {
+                                        if (!overPayDate || s.date < overPayDate) {
+                                            overPayDate = s.date;
+                                            overPayMode = s.initialMode || 'Cash';
+                                        }
+                                    }
+                                }
+                                if (overPayDate) {
+                                    sess.clearanceDate = overPayDate;
+                                    sess.clearanceMode = overPayMode;
+                                } else {
+                                    sess.clearanceDate = null;
+                                    sess.clearanceMode = 'Settled';
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
+            // 5. Index session statuses
+            sessions.forEach(sess => {
+                result.sessionStatus[sess.idx] = sess;
+                if (sess.timestamp) result.sessionStatus[sess.timestamp] = sess;
+                if (sess.date) {
+                    const dateKey = 'date_' + normDateYMD(sess.date);
+                    if (!result.sessionStatus[dateKey]) {
+                        result.sessionStatus[dateKey] = sess;
+                    }
+                }
+            });
+
+            return result;
+        }
+
+        function getPatientSessionDueMap(p) {
+            const dueMap = {};
+            if (!p || !p.logs || !p.logs.length) return dueMap;
+            const computed = computeSessionPaymentStatus(p);
+            Object.keys(computed.sessionStatus).forEach(k => {
+                dueMap[k] = computed.sessionStatus[k].actualDue;
+            });
             return dueMap;
         }
 
@@ -12402,98 +13034,153 @@ function openMidPackage() {
                 }
             }
 
-            // Render Recent Logs with Wallet & Due Awareness (Exclude administrative non-session rows like Case Closed / Restarted)
-            const dueMap = getPatientSessionDueMap(p);
-            const totalDue = Number(p.outstandingDue) || 0;
+            // Render Recent Logs / Passbook with Session & Payment Ledger Awareness
+            const computedStatus = computeSessionPaymentStatus(p);
+            const sessionStatus = computedStatus.sessionStatus;
 
-            const sessionLogs = (p.logs || []).filter(l => {
+            const sessionLogs = [];
+
+            // Add sessions: include any clinical visit row
+            (p.logs || []).forEach((l, idx) => {
                 const t = String(l[7] || '').trim().toLowerCase();
-                if (['case closed', 'case restarted', 'bill issued', 'package added', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(t)) return false;
-                return t.includes('session') || t.includes('rehab') || t === 'enrollment + session 1';
+                // Exclude administrative non-session entries
+                if (['case closed', 'case restarted', 'bill issued', 'package added', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(t)) return;
+                if (t.includes('due payment')) return;
+                if (t === 'enrollment' || t === 'enrollment (package)') return;
+
+                const ds = normDateYMD(l[8]) || (l[0] ? normDateYMD(l[0]) : '');
+                sessionLogs.push({
+                    type: 'session',
+                    log: l,
+                    idx: idx,
+                    timestamp: l[0],
+                    date: ds
+                });
+            });
+
+            // Sort chronologically descending (newest on top)
+            sessionLogs.sort((a, b) => {
+                const dateA = a.date || '';
+                const dateB = b.date || '';
+                if (dateA !== dateB) return dateB.localeCompare(dateA);
+                const tsA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+                const tsB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+                if (!isNaN(tsA) && !isNaN(tsB) && tsA !== tsB) return tsB - tsA;
+                return b.idx - a.idx;
             });
 
             const recentContainer = document.getElementById('recent-logs-cards');
             if (!sessionLogs.length) {
                 recentContainer.innerHTML = `<div class="p-6 text-center text-slate-400 dark:text-slate-500 text-xs font-medium">No sessions recorded yet</div>`;
             } else {
-                recentContainer.innerHTML = sessionLogs.slice().reverse().slice(0, 10).map((l, rIdx) => {
+                recentContainer.innerHTML = sessionLogs.slice(0, 15).map(item => {
+                    // Session card
+                    const l = item.log;
+                    const sess = sessionStatus[item.idx] || sessionStatus[l[0]] || sessionStatus['date_' + normDateYMD(l[8])] || {};
                     const isEnroll = String(l[7] || '').trim().toLowerCase().includes('enrollment');
                     const isPkg = String(l[7] || '').trim().toLowerCase() === 'package added';
-                    const mode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
+                    const origMode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
                     const fee = toNum(l[9]);
-                    const paidRaw = (l[15] !== undefined && l[15] !== null && l[15] !== '' && !isNaN(Number(l[15])))
-                        ? toNum(l[15])
-                        : ((l[11] !== undefined && l[11] !== null && l[11] !== '' && !isNaN(Number(l[11]))) ? toNum(l[11]) : (mode === 'Pending' ? 0 : fee));
-                    const paid = (paidRaw !== undefined && !isNaN(paidRaw)) ? paidRaw : (mode === 'Pending' ? 0 : fee);
-
-                    // Check actual due from dueMap (0 if patient's overall outstandingDue is 0)
-                    const actualDue = totalDue > 0 ? (dueMap[l[0]] ?? dueMap[p.logs.indexOf(l)] ?? dueMap['date_' + normDateYMD(l[8])] ?? 0) : 0;
+                    const actualDue = sess.actualDue !== undefined ? sess.actualDue : 0;
+                    const isCleared = !!sess.isCleared || (actualDue === 0 && (origMode === 'Pending' || sess.clearedAmount > 0));
                     const isPending = actualDue > 0 && !isEnroll && fee > 0;
 
-                    // Badge color per payment mode
+                    // Badge color per payment mode / clearance
                     const modeBadge = (() => {
                         if (isEnroll) return `<span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Enrollment</span>`;
                         if (isPkg)    return `<span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Package</span>`;
-                        if (!mode)    return '';
+                        if (origMode === 'Pending') {
+                            if (isCleared) {
+                                return `<span class="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-md text-[8px] font-black uppercase flex items-center gap-1"><i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i> Cleared</span>`;
+                            }
+                            return `<span class="bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 px-2 py-0.5 rounded-md text-[8px] font-black uppercase">Pending Due</span>`;
+                        }
+                        if (!origMode) return '';
                         const cfg = {
                             'Cash':          'bg-emerald-100 text-emerald-700',
                             'UPI':           'bg-blue-100 text-blue-700',
                             'Card':          'bg-sky-100 text-sky-700',
                             'Advance':       'bg-indigo-100 text-indigo-700',
                             'Package':       'bg-indigo-100 text-indigo-700',
-                            'Pending':       'bg-rose-100 text-rose-700',
                             'Complimentary': 'bg-slate-100 text-slate-500',
                             'Refund':        'bg-orange-100 text-orange-700',
                             'Split':         'bg-teal-100 text-teal-700',
                         };
-                        const cls = cfg[mode] || 'bg-slate-100 text-slate-600';
-                        const labelText = (mode === 'Advance' || mode === 'Package') ? (getAdvanceSessionLabel(l, p, mode) || mode) : mode;
+                        const cls = cfg[origMode] || 'bg-slate-100 text-slate-600';
+                        const labelText = (origMode === 'Advance' || origMode === 'Package') ? (getAdvanceSessionLabel(l, p, origMode) || origMode) : origMode;
                         return `<span class="${cls} px-2 py-0.5 rounded-md text-[8px] font-black uppercase">${labelText}</span>`;
                     })();
 
-                    // Fee display
+                    // Fee display with clean inline clearance info (no giant box!)
                     const feeDisplay = (() => {
                         if (isPkg) return `<span class="text-purple-600 font-black text-[10px]">+₹${toNum(l[11]).toLocaleString()} wallet</span>`;
                         if (fee <= 0) return `<span class="text-slate-400 font-bold text-[10px]">—</span>`;
 
-                        // If there is actual outstanding due on this session
-                        if (isPending && actualDue > 0) {
+                        if (isPending) {
                             return `<div class="text-right">
-                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
-                                <span class="block text-[8px] font-black text-rose-500 uppercase">₹${actualDue.toLocaleString()} due</span>
+                                <span class="font-black text-[11px] text-slate-800 dark:text-slate-200">₹${fee.toLocaleString()}</span>
+                                <span class="block text-[8px] font-black text-rose-500 uppercase tracking-tight">₹${actualDue.toLocaleString()} Due</span>
                             </div>`;
                         }
 
-                        // If paid < fee but patient has 0 due (covered by advance wallet credit or package)
+                        if (origMode === 'Pending' || sess.clearedAmount > 0) {
+                            const cDate = sess.clearanceDate ? formatDateDMY(sess.clearanceDate) : '';
+                            const cMode = sess.clearanceMode ? ` (${sess.clearanceMode})` : '';
+                            return `<div class="text-right">
+                                <span class="font-black text-[11px] text-slate-800 dark:text-slate-200">₹${fee.toLocaleString()}</span>
+                                <span class="block text-[8px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">Paid in full</span>
+                                <span class="block text-[8px] font-medium text-emerald-600 dark:text-emerald-400">Due cleared${cDate ? ` on ${cDate}` : ''}${cMode}</span>
+                            </div>`;
+                        }
+
+                        const paidRaw = (l[15] !== undefined && l[15] !== null && l[15] !== '' && !isNaN(Number(l[15])))
+                            ? toNum(l[15])
+                            : ((l[11] !== undefined && l[11] !== null && l[11] !== '' && !isNaN(Number(l[11]))) ? toNum(l[11]) : fee);
+                        const paid = (paidRaw !== undefined && !isNaN(paidRaw)) ? paidRaw : fee;
                         if (paid > 0 && paid < fee) {
                             const walletCovered = fee - paid;
                             return `<div class="text-right">
-                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
+                                <span class="font-black text-[11px] text-slate-800 dark:text-slate-200">₹${fee.toLocaleString()}</span>
                                 <span class="block text-[8px] font-black text-emerald-600 uppercase">₹${paid.toLocaleString()} + ₹${walletCovered.toLocaleString()} Wallet</span>
                             </div>`;
                         }
 
-                        if (paid === 0 && mode !== 'Complimentary' && mode !== 'Refund') {
-                            return `<div class="text-right">
-                                <span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>
-                                <span class="block text-[8px] font-black text-emerald-600 uppercase">Settled (Wallet)</span>
-                            </div>`;
-                        }
-
-                        return `<span class="font-black text-[10px] text-slate-700">₹${fee.toLocaleString()}</span>`;
+                        return `<span class="font-black text-[11px] text-slate-800 dark:text-slate-200">₹${fee.toLocaleString()}</span>`;
                     })();
 
-                    return `<div class="log-card ${isPending ? 'border-l-2 border-l-rose-400' : isEnroll ? 'border-l-2 border-l-indigo-400' : isPkg ? 'border-l-2 border-l-purple-400' : ''}">
-                        <div class="flex justify-between items-center mb-1.5">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-black text-indigo-600">${formatDateDMY(l[8])}</span>
+                    // Subtle note for remaining dues if any
+                    let pendingNote = '';
+                    if (isPending) {
+                        pendingNote = `<div class="text-[9px] font-semibold text-rose-600 dark:text-rose-400 flex items-center gap-1 mt-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3 text-rose-500 flex-shrink-0"></i>
+                            <span>Unpaid Balance: ₹${actualDue.toLocaleString()}${sess.clearedAmount > 0 ? ` (Partially paid: ₹${sess.clearedAmount.toLocaleString()})` : ''}</span>
+                        </div>`;
+                    }
+
+                    const borderCls = isPending
+                        ? 'border-l-4 border-l-rose-500 bg-rose-50/20 dark:bg-rose-950/10'
+                        : (origMode === 'Pending' && isCleared)
+                            ? 'border-l-4 border-l-emerald-500 bg-emerald-50/15 dark:bg-emerald-950/10'
+                            : isEnroll
+                                ? 'border-l-2 border-l-indigo-400'
+                                : isPkg
+                                    ? 'border-l-2 border-l-purple-400'
+                                    : 'border-l-2 border-l-slate-200 dark:border-l-slate-700';
+
+                    return `<div class="log-card session-log-card ${borderCls} p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all mb-2.5" data-log-timestamp="${l[0] || ''}" data-log-idx="${item.idx}">
+                        <div class="flex justify-between items-center mb-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] font-black text-indigo-600 dark:text-indigo-400">${formatDateDMY(l[8])}</span>
+                                <span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-tight">Session Attended</span>
                                 ${modeBadge}
                             </div>
                             ${feeDisplay}
                         </div>
-                        <div class="text-[10px] italic text-slate-400 truncate">"${l[6] || '—'}"</div>
+                        <div class="text-[10px] italic text-slate-400 dark:text-slate-500 truncate">"${l[6] || 'Treatment Session'}"</div>
+                        ${pendingNote}
                     </div>`;
                 }).join('');
+                if (window.lucide) lucide.createIcons();
             }
 
             // Trigger UI refreshes - ONLY reset payment mode if this is a brand new patient selection!
@@ -12574,6 +13261,14 @@ function openMidPackage() {
                 }
             }
             if (!p) return;
+
+            // Cleanly close search dropdown and restore background
+            const res = document.getElementById('search-results');
+            if (res) res.classList.add('hidden');
+            const searchInput = document.getElementById('patient-search-input');
+            if (searchInput) searchInput.value = '';
+            const activeContainer = document.getElementById('active-cases-container');
+            if (activeContainer) activeContainer.style.display = 'block';
 
             // 1. Render immediately from local cache so UI is instantaneous
             updatePatientWorkspaceUI(selectedPatientName, p, openDrawer, autoScroll);
@@ -12716,7 +13411,8 @@ function openMidPackage() {
 
             (p.logs || []).forEach(l => {
                 const type = String(l[7] || '').trim().toLowerCase();
-                if (['package added', 'case closed', 'case restarted', 'bill issued'].includes(type)) return;
+                if (['package added', 'case closed', 'case restarted', 'bill issued', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(type)) return;
+                if (type.includes('due payment')) return;
                 // Pure enrollment row without session is skipped from session count
                 if (type === 'enrollment' || type === 'enrollment (package)') return;
 
@@ -12988,16 +13684,32 @@ function openMidPackage() {
             Object.keys(patientLookup).forEach(name => {
                 const p = patientLookup[name];
                 if (!p) return;
-                const pKey = normId(p.id) || stripSalutation(p.name || name);
+                const pKey = (p.id ? (normId(p.id) + '_') : '') + stripSalutation(p.name || name).toLowerCase();
                 if (seenTables.has(pKey)) return;
                 seenTables.add(pKey);
                 names.push(name);
             });
 
+            function getPatientSortOrder(p) {
+                if (!p) return { idNum: 0, time: 0 };
+                let idNum = 0;
+                if (p.id) {
+                    const m = String(p.id).match(/\/(\d+)\b/);
+                    if (m) idNum = parseInt(m[1], 10);
+                }
+                const time = Number(p.enrollTime) || 0;
+                return { idNum, time };
+            }
+
             names.sort((a, b) => {
-                return recordSortLatest ?
-                    (patientLookup[b].enrollTime - patientLookup[a].enrollTime) :
-                    (patientLookup[a].enrollTime - patientLookup[b].enrollTime);
+                const pa = patientLookup[a];
+                const pb = patientLookup[b];
+                const sa = getPatientSortOrder(pa);
+                const sb = getPatientSortOrder(pb);
+                if (sa.idNum && sb.idNum && sa.idNum !== sb.idNum) {
+                    return recordSortLatest ? (sb.idNum - sa.idNum) : (sa.idNum - sb.idNum);
+                }
+                return recordSortLatest ? (sb.time - sa.time) : (sa.time - sb.time);
             });
 
             names.forEach(name => {
@@ -13006,7 +13718,9 @@ function openMidPackage() {
                 const rem = getRemainingSessions(p);
                 const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
 
-                if (currentBranchFilter === 'ALL' || p.id.startsWith(currentBranchFilter)) {
+                const pidUpper = String(p.id || '').toUpperCase();
+                const matchesBranch = (currentBranchFilter === 'ALL' || pidUpper.startsWith(currentBranchFilter) || (!pidUpper && currentBranchFilter === 'ALL'));
+                if (matchesBranch) {
                     let statusBadge;
                     const wallet = p.walletBalance || 0;
                     const commonCls = "inline-flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tight transition-all border shadow-sm w-fit min-w-[80px]";
@@ -13023,22 +13737,24 @@ function openMidPackage() {
                         statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">OPEN</span>`;
                     }
 
-                    const cleanName = stripSalutation(name);
-                    pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${String(cleanName).toUpperCase()} ${String(name).toUpperCase()} ${String(p.id || '').toUpperCase()} ${String(p.phone || '').toUpperCase()} ${String(p.diag || '').toUpperCase()}">
+                    const cleanName = stripSalutation(p.name || name);
+                    pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${String(cleanName).toUpperCase()} ${String(p.name || name).toUpperCase()} ${String(p.id || '').toUpperCase()} ${String(p.phone || '').toUpperCase()} ${String(p.diag || '').toUpperCase()}">
                                 <td class="p-5 font-black text-indigo-500 text-xs col-reg-no whitespace-nowrap">${p.id}</td>
                                 <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${cleanName}</td>
                                 <td class="p-5 text-xs font-bold text-slate-600 italic col-desktop-extra">${p.age || '—'}Y / ${p.gender || '—'}</td>
                                 <td class="p-5 text-xs font-black text-slate-700 dark:text-slate-300 col-desktop-extra">${p.phone ? `<a href="tel:${p.phone}" class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors" title="Call patient">${p.phone}</a>` : '—'}</td>
                                 <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] col-desktop-extra">${p.diag || '—'}</td>
                                 <td class="p-5 text-center whitespace-nowrap">${statusBadge}</td>
-                        <td class="p-5 text-center flex gap-1.5 justify-center items-center flex-wrap">
-                            <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
-                            <button onclick="callPatient('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Call Patient"><i data-lucide="phone" class="w-4 h-4"></i></button>
-                            <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Edit Patient Details"><i data-lucide="pencil" class="w-4 h-4"></i></button>
-                            ${p.closed 
-                                ? `<button onclick="restartPatientCase('${(p.id || name).replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
-                                : `<button onclick="closePatientCase('${(p.id || name).replace(/'/g, "\\'")}', event)" class="bg-slate-500 hover:bg-slate-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
-                            }
+                        <td class="p-5 text-center whitespace-nowrap">
+                            <div class="inline-flex items-center justify-center gap-1.5 flex-nowrap">
+                                <button onclick="sendWhatsApp('${p.phone}', '${name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer shrink-0" title="Send WhatsApp"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+                                <button onclick="callPatient('${name.replace(/'/g, "\\'")}')" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer shrink-0" title="Call Patient"><i data-lucide="phone" class="w-4 h-4"></i></button>
+                                <button onclick="openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer shrink-0" title="Edit Patient Details"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+                                ${p.closed 
+                                    ? `<button onclick="restartPatientCase('${(p.id || name).replace(/'/g, "\\'")}', event)" class="bg-amber-500 hover:bg-amber-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer shrink-0" title="Restart Case"><i data-lucide="play" class="w-4 h-4"></i></button>`
+                                    : `<button onclick="closePatientCase('${(p.id || name).replace(/'/g, "\\'")}', event)" class="bg-slate-500 hover:bg-slate-600 text-white p-2 rounded-lg shadow-md transition-all cursor-pointer shrink-0" title="Close Case"><i data-lucide="check-circle" class="w-4 h-4"></i></button>`
+                                }
+                            </div>
                         </td>
                     </tr>`;
 
@@ -13115,7 +13831,7 @@ function renderPatientDetailModal(name) {
 
     const remaining = getRemainingSessions(p);
 
-    document.getElementById('pd-name').innerText = stripSalutation(name);
+    document.getElementById('pd-name').innerText = stripSalutation(p.name || name);
     document.getElementById('pd-name').dataset.fullName = name;
     document.getElementById('pd-id-badge').innerText = p.id;
     const consumed = p.logs.filter(l => {
@@ -13226,10 +13942,10 @@ document.getElementById('pd-sessions').innerText = consumed;
                 return;
             }
             const last4 = String(p.id).slice(-4);
-            const cleanName = typeof stripSalutation === 'function' ? stripSalutation(name) : name;
+            const formalName = getFormalPatientNameWithTitle(p, name);
             const message = encodeURIComponent(
                 `*Welcome to Prism Physiotherapy & Rehabilitation Center!*\n\n` +
-                `Hello ${cleanName},\n\n` +
+                `Hello ${formalName},\n\n` +
                 `You can view your session logs, receipts, and prescribed home exercises anytime through your Patient Portal.\n\n` +
                 `*In your portal, you can:*\n` +
                 `• Track all your session logs\n` +
@@ -13238,7 +13954,7 @@ document.getElementById('pd-sessions').innerText = consumed;
                 `*Access Portal Here:*\n` +
                 `https://prismhealthcare.in/Patient%20Login.html\n\n` +
                 `*Your Login Details:*\n` +
-                `• User ID: ${cleanName}\n` +
+                `• User ID: ${formalName}\n` +
                 `• Verification ID: ${last4}\n\n` +
                 `Please keep your verification ID confidential.\n\n` +
                 `Warm regards,\n` +
@@ -13336,7 +14052,7 @@ document.getElementById('pd-sessions').innerText = consumed;
                 }
             }
 
-            document.getElementById('ep-name').value = stripSalutation(name);
+            document.getElementById('ep-name').value = stripSalutation(p.name || name);
             const phoneParts = String(p.phone || '').split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
             const formatForInput = (num) => {
                 if (!num) return '';
@@ -13453,19 +14169,23 @@ document.getElementById('pd-sessions').innerText = consumed;
             if (userIsAdmin && newBaseFee !== undefined) p.baseRate = newBaseFee;
 
             // Handle Case Status change
-            if (userIsAdmin) {
-                if (newCaseStatus === 'closed' && !p.closed) {
-                    p.closed = true;
-                    p.closedDate = new Date().toISOString();
-                } else if (newCaseStatus === 'active' && p.closed) {
-                    p.closed = false;
-                    p.closedDate = null;
-                    p.lastRestartMs = Date.now();
-                    const synced = window._autoClosedSynced || (typeof getAutoClosedSyncedSet === 'function' ? getAutoClosedSyncedSet() : null);
-                    if (synced && synced.has(newId)) {
-                        synced.delete(newId);
-                        if (typeof saveAutoClosedSyncedSet === 'function') saveAutoClosedSyncedSet(synced);
-                    }
+            if (newCaseStatus === 'closed' && !p.closed) {
+                p.closed = true;
+                p.closedDate = new Date().toISOString();
+                saveManualCaseStatus(newId, 'Closed', p.closedDate);
+                if (newName) saveManualCaseStatus(newName, 'Closed', p.closedDate);
+                updateLocalSnapshotCaseStatus(newId, 'Closed', p.closedDate);
+            } else if (newCaseStatus === 'active' && p.closed) {
+                p.closed = false;
+                p.closedDate = null;
+                p.lastRestartMs = Date.now();
+                saveManualCaseStatus(newId, 'Active', null);
+                if (newName) saveManualCaseStatus(newName, 'Active', null);
+                updateLocalSnapshotCaseStatus(newId, 'Active', null);
+                const synced = window._autoClosedSynced || (typeof getAutoClosedSyncedSet === 'function' ? getAutoClosedSyncedSet() : null);
+                if (synced && synced.has(newId)) {
+                    synced.delete(newId);
+                    if (typeof saveAutoClosedSyncedSet === 'function') saveAutoClosedSyncedSet(synced);
                 }
             }
 
@@ -13555,7 +14275,7 @@ document.getElementById('pd-sessions').innerText = consumed;
                 address: newAddress,
                 baseFee: userIsAdmin ? newBaseFee : undefined,
                 doctor: newDoctor,
-                caseStatus: userIsAdmin ? newCaseStatus : undefined
+                caseStatus: newCaseStatus
             }).catch(err => {
                 console.warn('updatePatient sync note:', err);
             });
@@ -13591,7 +14311,8 @@ document.getElementById('pd-sessions').innerText = consumed;
                 showToast('Invalid phone number', 'warning');
                 return;
             }
-            const msg = encodeURIComponent(`Hello ${name},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
+            const formalName = getFormalPatientNameWithTitle(null, name);
+            const msg = encodeURIComponent(`Hello ${formalName},\n\nWe hope you are following your prescribed exercises and feeling stronger each day. Regular practice is vital for your complete recovery.\n\nIf you have a moment, we would very much appreciate your feedback on our services here: https://g.page/r/CbjaRxUysOqhEBM/review\n\nWarm regards,\nPrism Physiotherapy`);
             window.open(`https://wa.me/${waNumber}?text=${msg}`, '_blank');
         }
 
@@ -13611,7 +14332,7 @@ document.getElementById('pd-sessions').innerText = consumed;
         function sendTomorrowReminder() {
             if (!selectedPatientName) return;
             const p = patientLookup[selectedPatientName];
-            const waNumber = getWhatsAppNumber(p.phone);
+            const waNumber = getWhatsAppNumber(p ? p.phone : '');
             if (!waNumber) {
                 showToast('Invalid phone number', 'warning');
                 return;
@@ -13619,9 +14340,10 @@ document.getElementById('pd-sessions').innerText = consumed;
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             const tomorrowLabel = tomorrow.toLocaleDateString('en-GB', { weekday: 'long', day: '2-digit', month: 'short' });
+            const formalName = getFormalPatientNameWithTitle(p, selectedPatientName);
 
             const msg = encodeURIComponent(
-                `Hello ${selectedPatientName},\n\n` +
+                `Hello ${formalName},\n\n` +
                 `This is a friendly reminder about your physiotherapy session scheduled for *tomorrow, ${tomorrowLabel}* at Prism Physiotherapy & Rehabilitation Center.\n\n` +
                 `Please arrive a few minutes early. See you then!\n\n` +
                 `Warm regards,\nPrism Physiotherapy`
@@ -13642,9 +14364,10 @@ document.getElementById('pd-sessions').innerText = consumed;
             const due = p.outstandingDue;
             const sessionCount = p.dueSessionCount || 0;
             const UPI_ID = "dr.raviphysio01@oksbi";
+            const formalName = getFormalPatientNameWithTitle(p, name);
 
             const msg = encodeURIComponent(
-                `Hello ${name},\n\n` +
+                `Hello ${formalName},\n\n` +
                 `This is a gentle reminder from *Prism Physiotherapy & Rehabilitation Center* regarding a pending balance on your account.\n\n` +
                 `*Outstanding Amount:* ₹${due.toLocaleString()}\n` +
                 `*Pending for:* ${sessionCount} session(s)\n\n` +
@@ -14558,9 +15281,10 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
                 }
 
                 const cleanVerifyUrl = (verifyUrl || `https://prismhealthcare.in/verify.html?billNo=${stmtNo}`).replace(/%2F/gi, '/');
+                const formalName = getFormalPatientNameWithTitle(null, name);
 
                 const msg = encodeURIComponent(
-                    `Hello ${name},\n\n` +
+                    `Hello ${formalName},\n\n` +
                     `Please find your official physiotherapy bill, session narrative ledger, and treatment completion certificate (Statement No: ${stmtNo}) for ₹${totalStr}.\n\n` +
                     `\uD83D\uDCC4 *Download Clinical Documents (PDF):*\n` +
                     `${billDownloadUrl}\n\n` +
@@ -14733,9 +15457,58 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
         });
 
         // ---------- OUTSTANDING DUES WIDGET ----------
+        // ── SNOOZE HELPERS (frontend-only, localStorage) ──
+        function getSnoozedDues() {
+            try { return new Set(JSON.parse(localStorage.getItem('prism_snoozed_dues') || '[]')); }
+            catch (e) { return new Set(); }
+        }
+        function saveSnoozedDues(set) {
+            try { localStorage.setItem('prism_snoozed_dues', JSON.stringify([...set])); } catch (e) {}
+        }
+        function snoozeDue(patientId) {
+            const s = getSnoozedDues();
+            s.add(patientId);
+            saveSnoozedDues(s);
+            renderDuesWidget();
+        }
+        function unsnoozeDue(patientId) {
+            const s = getSnoozedDues();
+            s.delete(patientId);
+            saveSnoozedDues(s);
+            renderDuesWidget();
+        }
+        window._showSnoozedDues = false;
+        function toggleShowSnoozed() {
+            window._showSnoozedDues = !window._showSnoozedDues;
+            renderDuesWidget();
+        }
+        window.snoozeDue = snoozeDue;
+        window.unsnoozeDue = unsnoozeDue;
+        window.toggleShowSnoozed = toggleShowSnoozed;
+
         function renderDuesWidget() {
             const el = document.getElementById('dues-list');
             if (!el) return;
+
+            const snoozed = getSnoozedDues();
+            const showSnoozed = window._showSnoozedDues || false;
+
+            // Update the toggle button label
+            const snoozedBtn = document.getElementById('show-snoozed-btn');
+            const snoozedLabel = document.getElementById('snoozed-btn-label');
+            if (snoozedLabel) {
+                snoozedLabel.textContent = snoozed.size > 0 ? `Snoozed (${snoozed.size})` : 'Snoozed';
+            }
+            if (snoozedBtn) {
+                if (showSnoozed) {
+                    snoozedBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+                    snoozedBtn.classList.add('bg-amber-100', 'dark:bg-amber-900/40', 'text-amber-700', 'dark:text-amber-300');
+                } else {
+                    snoozedBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+                    snoozedBtn.classList.remove('bg-amber-100', 'dark:bg-amber-900/40', 'text-amber-700', 'dark:text-amber-300');
+                }
+                if (window.lucide) lucide.createIcons({ nodes: [snoozedBtn] });
+            }
 
             const seenDues = new Set();
             const rows = [];
@@ -14749,14 +15522,26 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
                     name: p.name || name,
                     id: p.id,
                     phone: p.phone,
-                    due: p.outstandingDue
+                    due: p.outstandingDue,
+                    isSnoozed: snoozed.has(p.id)
                 });
             });
             rows.sort((a, b) => b.due - a.due);
-            // stat-outstanding is now set by backend fetchPatientBalances in loadAdminData
+
+            const activeRows = rows.filter(r => !r.isSnoozed);
+            const snoozedRows = rows.filter(r => r.isSnoozed);
+            const visibleRows = showSnoozed ? rows : activeRows;
 
             if (!rows.length) {
                 el.innerHTML = `<p class="text-xs text-slate-600 dark:text-slate-400 italic">No outstanding dues right now.</p>`;
+                return;
+            }
+
+            if (!activeRows.length && !showSnoozed) {
+                el.innerHTML = `<div class="text-center py-4">
+                    <p class="text-xs text-slate-400 dark:text-slate-500 italic mb-2">All dues are snoozed.</p>
+                    <button onclick="toggleShowSnoozed()" class="text-[9px] font-black uppercase text-amber-600 dark:text-amber-400 hover:underline cursor-pointer">Show ${snoozedRows.length} snoozed patient${snoozedRows.length > 1 ? 's' : ''}</button>
+                </div>`;
                 return;
             }
 
@@ -14764,31 +15549,56 @@ html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jaka
                 <div class="flex items-center justify-between px-2.5 py-1.5 mb-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 text-[10px] font-bold text-slate-500 dark:text-slate-400">
                     <label class="flex items-center gap-2 cursor-pointer select-none">
                         <input type="checkbox" id="due-batch-check-all" onchange="toggleDueBatchSelectAll(this)" class="cursor-pointer accent-emerald-600 rounded" checked>
-                        <span class="uppercase tracking-wider font-black">Select All (<span id="due-batch-selected-count">${rows.length}</span>/${rows.length})</span>
+                        <span class="uppercase tracking-wider font-black">Select All (<span id="due-batch-selected-count">${activeRows.length}</span>/${activeRows.length})</span>
                     </label>
                     <button type="button" onclick="openBatchReminderModal()" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 font-black uppercase text-[9.5px] cursor-pointer flex items-center gap-1">
                         <i data-lucide="send" class="w-3 h-3"></i>
                         <span>Start Queue</span>
                     </button>
-                </div>` + rows.map(r => `
-                <div class="due-soon-row flex items-center gap-2">
-                    <input type="checkbox" class="due-batch-chk cursor-pointer accent-emerald-600 rounded flex-shrink-0" data-name="${encodeURIComponent(r.name)}" onchange="updateDueBatchCount()" checked>
-                    <div class="flex-1 min-w-0 cursor-pointer group" onclick="openDueSessionsModal('${r.name.replace(/'/g, "\\'")}')">
-                        <span class="font-black text-xs uppercase text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors truncate block sm:inline">${stripSalutation(r.name)}</span>
-                        <span class="text-[9px] font-bold text-indigo-500 ml-0 sm:ml-2">${r.id}</span>
-                        <span class="text-[8px] font-bold text-slate-400 ml-1 sm:ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                        <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">₹${r.due.toLocaleString()} due</span>
-                        <button onclick="sendDueReminder('${r.name.replace(/'/g, "\\'")}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg cursor-pointer" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
-                        <button onclick="openMarkPaidPrompt('${r.name.replace(/'/g, "\\'")}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg cursor-pointer" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
-                    </div>
-                </div>`).join('');
+                </div>` + visibleRows.map(r => {
+                    const safeName = r.name.replace(/'/g, "\\'");
+                    const encodedName = encodeURIComponent(r.name);
 
-            lucide.createIcons();
+                    if (r.isSnoozed) {
+                        // Snoozed card — muted style with Unhide button
+                        return `<div class="due-soon-row flex items-center gap-2 opacity-50">
+                            <div class="flex-1 min-w-0">
+                                <span class="font-black text-xs uppercase text-slate-400 dark:text-slate-500 truncate block sm:inline">${stripSalutation(r.name)}</span>
+                                <span class="text-[9px] font-bold text-slate-400 ml-0 sm:ml-2">${r.id}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 flex-shrink-0">
+                                <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 line-through">₹${r.due.toLocaleString()}</span>
+                                <span class="text-[8px] font-black uppercase px-1.5 py-1 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 border border-amber-200/60 dark:border-amber-900/40">Snoozed</span>
+                                <button onclick="unsnoozeDue('${r.id}')" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 p-1.5 rounded-lg cursor-pointer transition-all" title="Unsnooze — restore to dues list">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                    }
+
+                    // Normal (active) due card — with Snooze button
+                    return `<div class="due-soon-row flex items-center gap-2">
+                        <input type="checkbox" class="due-batch-chk cursor-pointer accent-emerald-600 rounded flex-shrink-0" data-name="${encodedName}" onchange="updateDueBatchCount()" checked>
+                        <div class="flex-1 min-w-0 cursor-pointer group" onclick="openDueSessionsModal('${safeName}')">
+                            <span class="font-black text-xs uppercase text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors truncate block sm:inline">${stripSalutation(r.name)}</span>
+                            <span class="text-[9px] font-bold text-indigo-500 ml-0 sm:ml-2">${r.id}</span>
+                            <span class="text-[8px] font-bold text-slate-400 ml-1 sm:ml-2 uppercase group-hover:text-indigo-400">↗ View Sessions</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                            <span class="text-[9px] font-black uppercase px-2 py-1 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">₹${r.due.toLocaleString()} due</span>
+                            <button onclick="sendDueReminder('${safeName}')" class="bg-[#25D366] hover:bg-[#20BA5F] text-white p-1.5 rounded-lg cursor-pointer" title="Send WhatsApp Reminder"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i></button>
+                            <button onclick="openMarkPaidPrompt('${safeName}')" class="bg-emerald-500 hover:bg-emerald-600 text-white p-1.5 rounded-lg cursor-pointer" title="Mark as Paid"><i data-lucide="check" class="w-3.5 h-3.5"></i></button>
+                            <button onclick="snoozeDue('${r.id}')" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 p-1.5 rounded-lg cursor-pointer transition-all" title="Snooze — hide from dues list (won't clear the due)"><i data-lucide="eye-off" class="w-3.5 h-3.5"></i></button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+            if (window.lucide) lucide.createIcons();
         }
 
+
         // ---------- BATCH WHATSAPP REMINDER SEQUENTIAL ENGINE ----------
+
         const DEFAULT_BATCH_REMINDER_TEMPLATE = 
 `Hello {name},
 
@@ -14827,7 +15637,7 @@ Warm regards,
 
         function formatPatientReminderMessage(patientData, template) {
             if (!template) template = getBatchReminderTemplate();
-            const name = patientData.name || 'Patient';
+            const formalName = getFormalPatientNameWithTitle(patientData.p || patientData, patientData.name);
             const due = '₹' + (patientData.due || 0).toLocaleString('en-IN');
             const sessions = patientData.sessions || (patientData.p && patientData.p.dueSessionCount) || 1;
             const clinic = 'Prism Physiotherapy & Rehabilitation Center';
@@ -14835,7 +15645,7 @@ Warm regards,
             const phone = patientData.phone || '';
 
             return template
-                .replace(/\{name\}/g, name)
+                .replace(/\{name\}/g, formalName)
                 .replace(/\{due\}/g, due)
                 .replace(/\{sessions\}/g, sessions)
                 .replace(/\{clinic\}/g, clinic)
@@ -15366,11 +16176,11 @@ async function confirmMarkPaid() {
     }
 
     if (optDue === 0 && optWallet > 0) {
-        showToast(`₹${amount.toLocaleString()} received — all dues cleared, ₹${optWallet.toLocaleString()} credited to wallet`, 'success');
+        showToast(`Payment of ₹${amount.toLocaleString()} received from ${name} (${mode}) — all dues cleared, ₹${optWallet.toLocaleString()} credited to wallet`, 'success');
     } else if (optDue === 0) {
-        showToast(`₹${amount.toLocaleString()} received — all dues cleared`, 'success');
+        showToast(`Payment of ₹${amount.toLocaleString()} received from ${name} (${mode}) — all dues cleared`, 'success');
     } else {
-        showToast(`₹${amount.toLocaleString()} received — ₹${optDue.toLocaleString()} still outstanding`, 'warning');
+        showToast(`Payment of ₹${amount.toLocaleString()} received from ${name} (${mode}) — ₹${optDue.toLocaleString()} still outstanding`, 'warning');
     }
 
     // ── 2. NON-BLOCKING BACKGROUND SYNC TO GOOGLE APPS SCRIPT ──
@@ -15876,6 +16686,12 @@ async function confirmMarkPaid() {
             p.closedDate = null;
             p.lastRestartMs = Date.now();
             if (p.autoClosed) p.autoClosed = false;
+            saveManualCaseStatus(p.id, 'Active', null);
+            if (actualName) saveManualCaseStatus(actualName, 'Active', null);
+            updateLocalSnapshotCaseStatus(p.id, 'Active', null);
+            if (Array.isArray(globalData)) {
+                globalData.push([new Date().toISOString(), p.id, actualName, p.phone||"", p.age||"", p.gender||"", p.diag||"", "Case Restarted", dateStr, 0,0,0,0,"","",0,""]);
+            }
             const synced = window._autoClosedSynced || getAutoClosedSyncedSet();
             if (synced && synced.has(p.id)) {
                 synced.delete(p.id);
@@ -15910,6 +16726,10 @@ async function confirmMarkPaid() {
             }).catch(e => {
                 console.error("Case restart sync error:", e);
                 p.closed = true;
+                p.closedDate = new Date().toISOString();
+                saveManualCaseStatus(p.id, 'Closed', p.closedDate);
+                if (actualName) saveManualCaseStatus(actualName, 'Closed', p.closedDate);
+                updateLocalSnapshotCaseStatus(p.id, 'Closed', p.closedDate);
 
                 if (statEl.activeCount) {
                     statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
@@ -17440,7 +18260,7 @@ window.shareExTabViaWhatsApp = function() {
     }
 
     const p = patientLookup[patientName];
-    const displayName = stripSalutation(p.name || patientName);
+    const displayName = getFormalPatientNameWithTitle(p, patientName);
     const displayDiag = p.diag || p.condition || 'General Rehab';
     const pid = normId(p.id);
     const exercises = (window.exercisePlans && window.exercisePlans[pid]) ? window.exercisePlans[pid] : ((typeof exercisePlans !== 'undefined' && exercisePlans[pid]) ? exercisePlans[pid] : []);
@@ -17500,15 +18320,20 @@ window.shareExTabViaWhatsApp = function() {
             if (!p) return;
             const container = document.getElementById('recent-logs-cards');
             if (!container) return;
-            const cards = container.querySelectorAll('.log-card');
+            const cards = container.querySelectorAll('.session-log-card');
             const sessionLogs = (p.logs || []).filter(l => {
                 const t = String(l[7] || '').trim().toLowerCase();
                 if (['case closed', 'case restarted', 'bill issued', 'package added', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(t)) return false;
                 return t.includes('session') || t.includes('rehab') || t === 'enrollment + session 1';
             });
-            const displayedLogs = sessionLogs.slice().reverse().slice(0, 10);
+            const displayedLogs = sessionLogs.slice().reverse().slice(0, 15);
             cards.forEach((card, idx) => {
-                const logData = displayedLogs[idx];
+                let logData = null;
+                const ts = card.dataset.logTimestamp;
+                const logIdx = card.dataset.logIdx;
+                if (ts) logData = (p.logs || []).find(l => String(l[0]) === ts);
+                if (!logData && logIdx !== undefined && logIdx !== '') logData = (p.logs || [])[Number(logIdx)];
+                if (!logData) logData = displayedLogs[idx];
                 if (!logData) return;
                 const type = String(logData[7] || '').toLowerCase();
                 if (type.includes('rehab') || type.includes('session')) {
@@ -18192,8 +19017,9 @@ window.shareExTabViaWhatsApp = function() {
             showToast("Invalid phone number", "warning");
             return;
         }
+        const formalName = typeof getFormalPatientNameWithTitle === 'function' ? getFormalPatientNameWithTitle(null, name) : name;
         const msg = encodeURIComponent(
-            `*Hello ${name},*\n\n` +
+            `*Hello ${formalName},*\n\n` +
             `This is a follow-up from *Prism Physiotherapy & Rehabilitation Center* regarding your inquiry for _${diag || 'clinical treatment'}._\n\n` +
             `We would be pleased to schedule a comprehensive assessment to discuss your personalized recovery program. Would you like to confirm a consultation this week?\n\n` +
             `📞 *Contact:* +91 97080 59081\n` +
@@ -18608,7 +19434,9 @@ if (localStorage.getItem('prism_unlocked') === '1') {
         const dateStr = (row && row[8]) ? formatDateDMY(row[8]) : formatDateDMY(new Date());
         const remaining = getRemainingSessions(p);
         const isPending = mode === 'Pending';
-        const patientName = stripSalutation(p.name || selectedPatientName || 'Patient');
+        const patientName = typeof getFormalPatientNameWithTitle === 'function' 
+            ? getFormalPatientNameWithTitle(p, p.name || selectedPatientName || 'Patient')
+            : (p.name || selectedPatientName || 'Patient');
 
         let msg = `Hello ${patientName},\n\nReceipt for your session on *${dateStr}*:\n\nAmount Paid: ₹${paid.toLocaleString()}\nPayment Mode: ${mode}\n`;
         if (p.purchased > 0) msg += `Remaining Sessions: *${remaining}*\n`;
@@ -18637,14 +19465,15 @@ if (localStorage.getItem('prism_unlocked') === '1') {
         if (!p || !getWhatsAppNumber(p.phone)) { showToast('Invalid phone number', 'warning'); return; }
         const due = p.outstandingDue;
         const sessions = p.dueSessionCount || 0;
+        const formalName = typeof getFormalPatientNameWithTitle === 'function' ? getFormalPatientNameWithTitle(p, name) : name;
 
-        const msg = `Hello ${name},\n\nGentle reminder from *Prism Physiotherapy & Rehabilitation Center*.\n\n*Outstanding Amount:* ₹${due.toLocaleString()}\n*Pending for:* ${sessions} session(s)\n\nPay via UPI: *dr.raviphysio01@oksbi*\n\nShare screenshot once paid, or pay at the clinic.\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
+        const msg = `Hello ${formalName},\n\nGentle reminder from *Prism Physiotherapy & Rehabilitation Center*.\n\n*Outstanding Amount:* ₹${due.toLocaleString()}\n*Pending for:* ${sessions} session(s)\n\nPay via UPI: *dr.raviphysio01@oksbi*\n\nShare screenshot once paid, or pay at the clinic.\n\nWarm regards,\nPrism Physiotherapy & Rehabilitation Center`;
 
         openWaPopup(
             p.phone,
             'Due Reminder',
             '#e11d48',
-            name,
+            formalName,
             [
                 { label: 'Outstanding', value: `₹${due.toLocaleString()}` },
                 { label: 'Sessions Pending', value: `${sessions}` }
@@ -18679,7 +19508,9 @@ if (localStorage.getItem('prism_unlocked') === '1') {
             ? (newWallet > 0 ? `All dues cleared. Wallet: ₹${newWallet.toLocaleString()}` : `All dues cleared (₹0 Due)`)
             : `₹${newDue.toLocaleString()} still outstanding`;
 
-        const msg = `Hello ${stripSalutation(name)},\n\nWe have received your payment of ₹${amount.toLocaleString()} via ${mode}.\n\n` +
+        const formalName = typeof getFormalPatientNameWithTitle === 'function' ? getFormalPatientNameWithTitle(p, name) : name;
+
+        const msg = `Hello ${formalName},\n\nWe have received your payment of ₹${amount.toLocaleString()} via ${mode}.\n\n` +
             `*Date:* ${formatDateDMY(getLocalISOString())}\n` +
             `*Amount Received:* ₹${amount.toLocaleString()}\n` +
             `*Payment Mode:* ${mode}\n` +
@@ -18693,7 +19524,7 @@ if (localStorage.getItem('prism_unlocked') === '1') {
             p.phone,
             'Payment Received',
             '#059669',
-            stripSalutation(name),
+            formalName,
             [
                 { label: 'Amount Received', value: `₹${amount.toLocaleString()}` },
                 { label: 'Payment Mode', value: mode },
