@@ -40,6 +40,38 @@
         .hidden { display: none !important; }
         #patient-workspace { scroll-margin-top: 1.5rem; }
 
+        /* Notification Bell & Floating Corner Badge */
+        #notif-badge {
+            position: absolute !important;
+            top: -4px !important;
+            right: -4px !important;
+            min-width: 18px !important;
+            height: 18px !important;
+            padding: 0 4px !important;
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+            color: #ffffff !important;
+            font-size: 9.5px !important;
+            font-weight: 900 !important;
+            border-radius: 9999px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1 !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 2px 6px rgba(225, 29, 72, 0.45) !important;
+            pointer-events: none !important;
+            z-index: 20 !important;
+            box-sizing: border-box !important;
+            letter-spacing: -0.2px !important;
+        }
+        #notif-badge.hidden {
+            display: none !important;
+        }
+        .dark #notif-badge {
+            border-color: #0f172a !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+        }
+
         /* Exercise Tab Patient Searchable Combobox Core Styling */
         #ex-patient-combobox-wrap { position: relative !important; width: 100% !important; }
         .ex-combobox-input-inner { position: relative !important; width: 100% !important; display: flex !important; align-items: center !important; }
@@ -2689,14 +2721,20 @@ html.dark .instruction-modal-footer {
                         <span id="connection-text" class="text-emerald-600">Online</span>
                     </div>
 
+                    <!-- ADMIN HUB EXECUTIVE TRIGGER (Admin Only) -->
+                    <button id="header-admin-hub-btn" onclick="openAdminHubModal()" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white shadow-sm hover:shadow active:scale-95 transition-all text-xs font-black uppercase cursor-pointer" title="Clinic Administrator Command Center">
+                        <i data-lucide="shield" class="w-4 h-4 text-indigo-200"></i>
+                        <span>Admin Hub</span>
+                    </button>
+
                     <!-- 🔔 NOTIFICATION HISTORY BELL (sits left of settings) -->
                     <div class="relative">
                         <button id="notif-bell-btn" onclick="toggleNotifPanel(event)"
-                            class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all flex items-center justify-center text-slate-700 dark:text-slate-300 cursor-pointer relative"
+                            class="p-2.5 bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow hover:border-indigo-300 active:scale-95 transition-all flex items-center justify-center text-slate-700 dark:text-slate-300 cursor-pointer relative group"
                             title="Notifications" aria-label="Notifications">
-                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <i data-lucide="bell" class="w-5 h-5 transition-transform group-hover:rotate-12 text-slate-700 dark:text-slate-300"></i>
                             <!-- Unread badge -->
-                            <span id="notif-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[9px] font-black rounded-full flex items-center justify-center leading-none shadow-sm">0</span>
+                            <span id="notif-badge" class="hidden" style="position: absolute; top: -4px; right: -4px;">0</span>
                         </button>
                     </div>
 
@@ -2779,6 +2817,17 @@ html.dark .instruction-modal-footer {
                                     <span>Audit Trail</span>
                                 </div>
                                 <span class="text-[9px] px-2 py-0.5 rounded-lg bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 font-black uppercase">Logs</span>
+                            </button>
+
+                            <!-- Option: Admin Command Center (Admin Only) -->
+                            <button id="settings-btn-admin-hub" onclick="toggleMobileSettingsMenu(); openAdminHubModal();" class="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="shield" class="w-4 h-4"></i>
+                                    </div>
+                                    <span>Admin Command Center</span>
+                                </div>
+                                <span class="text-[9px] px-2 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-black uppercase">Hub</span>
                             </button>
 
                             <!-- Option: User Management (Admin Only) -->
@@ -2909,16 +2958,22 @@ html.dark .instruction-modal-footer {
       </div>
     </div>
 
-    <!-- Total Collection Hero Card -->
-    <div class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center gap-3.5 sm:gap-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 text-white shadow-md shadow-indigo-600/30 transition-all border-none" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%) !important;">
-      <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center flex-shrink-0 text-white shadow-sm">
-        <i data-lucide="indian-rupee" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+    <!-- Total Collection Hero Card (Clickable to view Month-wise Breakdown) -->
+    <button type="button" onclick="openTotalIncomeModal()" class="glass-card p-4 sm:p-5 rounded-2xl sm:rounded-3xl flex items-center justify-between gap-3.5 sm:gap-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 text-white shadow-md shadow-indigo-600/30 transition-all border-none cursor-pointer hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] group text-left w-full" style="background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%) !important;" title="Click to view Month-wise Breakdown & Top Patients">
+      <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center flex-shrink-0 text-white shadow-sm group-hover:bg-white/30 transition-colors">
+          <i data-lucide="indian-rupee" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5 truncate">Total Collection</p>
+          <h3 id="stat-revenue" class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-none">₹0</h3>
+        </div>
       </div>
-      <div class="min-w-0">
-        <p class="text-[10px] sm:text-xs font-black uppercase text-indigo-200 tracking-wider mb-0.5 truncate">Total Collection</p>
-        <h3 id="stat-revenue" class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-none">₹0</h3>
+      <div class="flex items-center gap-1 text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-indigo-100 bg-white/15 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full backdrop-blur-sm border border-white/20 group-hover:bg-white/25 transition-all flex-shrink-0">
+        <span class="hidden xs:inline">Monthly</span>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"></i>
       </div>
-    </div>
+    </button>
   </div>
 
   <!-- ── 2. BRANCH + ACTIVE + DUES ROW ── -->
@@ -3369,8 +3424,8 @@ html.dark .instruction-modal-footer {
                                             <select id="en-payment-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-sm focus:border-indigo-500 cursor-pointer appearance-none pr-9 transition-all">
                                                 <option value="" disabled selected>Select Mode</option>
                                                 <option value="Cash">Cash</option>
-                                                <option value="UPI">UPI</option>
-                                                <option value="Card">Card</option>
+                                                <option value="UPI">UPI / Online</option>
+                                                <option value="Card">Card / POS</option>
                                                 <option value="Split">Split (Cash + UPI)</option>
                                                 <option value="Package">Package (Wallet / Pre-paid)</option>
                                                 <option value="Advance">Advance (Wallet / Pre-paid)</option>
@@ -3794,8 +3849,8 @@ html.dark .instruction-modal-footer {
                                     <select id="session-payment-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none text-xs focus:border-indigo-500 cursor-pointer">
                                         <option value="" disabled selected>Select Mode</option>
                                         <option value="Cash">Cash</option>
-                                        <option value="UPI">UPI</option>
-                                        <option value="Card">Card</option>
+                                        <option value="UPI">UPI / Online</option>
+                                        <option value="Card">Card / POS</option>
                                         <option value="Split">Split (Cash + UPI)</option>
                                         <option value="Package">Package (Wallet / Pre-paid)</option>
                                         <option value="Advance">Advance (Wallet / Pre-paid)</option>
@@ -3976,8 +4031,8 @@ html.dark .instruction-modal-footer {
             <!-- RECORDS / PATIENTS -->
             <section id="tab-patients" class="section-hidden animate-slide">
                 <div class="max-w-7xl mx-auto space-y-6">
-                    <!-- SMART SEARCH BAR FOR PATIENTS -->
-                    <div class="glass-card p-4 md:p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 sticky top-2 z-20 border-slate-200/70 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl">
+                    <!-- SMART SEARCH BAR FOR PATIENTS (Movable / Non-Sticky) -->
+                    <div class="glass-card p-4 md:p-6 rounded-[2.5rem] shadow-xl flex items-center gap-4 border-slate-200/70 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90">
                         <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 hidden md:flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm flex-shrink-0">
                             <i data-lucide="search" class="w-5 h-5"></i>
                         </div>
@@ -3988,6 +4043,64 @@ html.dark .instruction-modal-footer {
                                 class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-all cursor-pointer" title="Clear search">
                             <i data-lucide="x" class="w-5 h-5"></i>
                         </button>
+                    </div>
+
+                    <!-- PATIENT SORT & QUICK RANKING TOOLBAR -->
+                    <div class="glass-card p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200/70 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                            <span class="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider mr-1 flex items-center gap-1">
+                                <i data-lucide="arrow-down-up" class="w-3.5 h-3.5 text-indigo-500"></i>
+                                <span>Sort:</span>
+                            </span>
+
+                            <!-- Highest Paid -->
+                            <button type="button" onclick="setPatientSort('highest_paid')" id="btn-sort-highest_paid" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-amber-400 hover:text-amber-600" title="Sort patients by Highest Paid first">
+                                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
+                                <span>Highest Paid</span>
+                            </button>
+
+                            <!-- Most Sessions -->
+                            <button type="button" onclick="setPatientSort('highest_sessions')" id="btn-sort-highest_sessions" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-indigo-400 hover:text-indigo-600" title="Sort patients by Most Sessions Attended first">
+                                <i data-lucide="award" class="w-3.5 h-3.5 text-indigo-500"></i>
+                                <span>Most Sessions</span>
+                            </button>
+
+                            <!-- Highest Dues -->
+                            <button type="button" onclick="setPatientSort('highest_dues')" id="btn-sort-highest_dues" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-rose-400 hover:text-rose-600" title="Sort patients by Highest Outstanding Dues first">
+                                <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-500"></i>
+                                <span>Highest Dues</span>
+                            </button>
+
+                            <!-- Newest First -->
+                            <button type="button" onclick="setPatientSort('newest')" id="btn-sort-newest" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-indigo-600 text-white border-indigo-600 shadow-indigo-500/20" title="Sort patients by Newest Registration first">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-indigo-200"></i>
+                                <span>Newest First</span>
+                            </button>
+
+                            <!-- Oldest First -->
+                            <button type="button" onclick="setPatientSort('oldest')" id="btn-sort-oldest" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-400" title="Sort patients by Oldest Registration first">
+                                <i data-lucide="history" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <span>Oldest First</span>
+                            </button>
+
+                            <!-- Name A-Z -->
+                            <button type="button" onclick="setPatientSort('name_asc')" id="btn-sort-name_asc" 
+                                    class="patient-sort-pill px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer border flex items-center gap-1.5 shadow-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:text-emerald-600" title="Sort patients Alphabetically (A to Z)">
+                                <i data-lucide="arrow-down-a-z" class="w-3.5 h-3.5 text-emerald-500"></i>
+                                <span>Name (A–Z)</span>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-2 self-start md:self-auto">
+                            <span id="patient-sort-active-label" class="text-[9px] sm:text-[10px] font-extrabold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-full border border-indigo-100 dark:border-indigo-900/40 whitespace-nowrap">
+                                Newest First
+                            </span>
+                        </div>
                     </div>
 
                     <!-- PATIENTS TABLE CONTAINER -->
@@ -4691,6 +4804,71 @@ html.dark .instruction-modal-footer {
             </div>
         </div>
 
+        <!-- TOTAL INCOME & MONTH-WISE BREAKDOWN MODAL -->
+        <div id="total-income-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-3 sm:p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-7 max-w-3xl w-full shadow-2xl flex flex-col max-h-[90vh] border border-slate-200/80 dark:border-slate-800">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-start mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0 shadow-xs">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Total Income & Monthly Breakdown</h3>
+                            <p class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">Month-wise performance, branch revenue & patient milestones</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeTotalIncomeModal()" class="p-2 sm:p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer text-slate-500 dark:text-slate-400" title="Close"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <!-- Scrollable Body -->
+                <div class="overflow-y-auto pr-1 table-scroll space-y-4">
+                    <!-- Top Summary Trio Cards -->
+                    <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/40">
+                            <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-0.5">Total Revenue</span>
+                            <span id="tim-total-revenue" class="text-base sm:text-xl font-black text-indigo-950 dark:text-indigo-100 leading-tight">₹0</span>
+                        </div>
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                            <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-0.5">Total Sessions</span>
+                            <span id="tim-total-sessions" class="text-base sm:text-xl font-black text-slate-900 dark:text-white leading-tight">0</span>
+                        </div>
+                        <div class="p-3 sm:p-3.5 rounded-2xl bg-purple-50/70 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/40">
+                            <span class="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-purple-600 dark:text-purple-400 block mb-0.5">Monthly Avg</span>
+                            <span id="tim-avg-month" class="text-base sm:text-xl font-black text-purple-950 dark:text-purple-100 leading-tight">₹0</span>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Month-Wise Collection Breakdown Table -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">Month-Wise Collection & Sessions</span>
+                            <div class="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm border-collapse">
+                                    <thead class="bg-slate-50 dark:bg-slate-800/80 text-[10px] uppercase font-black text-slate-500 dark:text-slate-400 sticky top-0 border-b border-slate-200 dark:border-slate-800">
+                                        <tr>
+                                            <th class="p-3.5 sm:p-4">Month</th>
+                                            <th class="p-3.5 sm:p-4 text-center">Sessions</th>
+                                            <th class="p-3.5 sm:p-4 text-right">POC (₹)</th>
+                                            <th class="p-3.5 sm:p-4 text-right">PHC (₹)</th>
+                                            <th class="p-3.5 sm:p-4 text-right">Total (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tim-table-body" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium"></tbody>
+                                    <tfoot id="tim-table-foot"></tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- MID-PACKAGE MODAL -->
         <div id="pkg-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-6">
             <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-md w-full shadow-2xl border border-slate-200/80 dark:border-slate-800">
@@ -4721,8 +4899,8 @@ html.dark .instruction-modal-footer {
                         <select id="mi-mode" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-500 text-sm cursor-pointer">
                             <option value="" disabled selected>Select Mode</option>
                             <option value="Cash">Cash</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Card">Card</option>
+                            <option value="UPI">UPI / Online</option>
+                            <option value="Card">Card / POS</option>
                             <option value="Split">Split (Cash + UPI)</option>
                             <option value="Pending">Pending / Due</option>
                         </select>
@@ -4736,72 +4914,140 @@ html.dark .instruction-modal-footer {
         </div>
 
         <!-- PATIENT DETAIL MODAL -->
-        <div id="patient-detail-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-6">
-            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 max-w-2xl w-full shadow-2xl flex flex-col max-h-[85vh] border border-slate-200/80 dark:border-slate-800">
-                <div class="flex justify-between items-center mb-6 pb-2 border-b border-slate-100 dark:border-slate-800">
+        <div id="patient-detail-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-4 sm:p-6">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 max-w-3xl w-full shadow-2xl flex flex-col max-h-[90vh] border border-slate-200/80 dark:border-slate-800">
+                <div class="flex justify-between items-start mb-5 pb-3 border-b border-slate-100 dark:border-slate-800">
                     <div>
-                        <h3 id="pd-name" class="text-xl font-black uppercase truncate pr-4 text-slate-900 dark:text-white"></h3>
-                        <p id="pd-id-badge" class="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider mt-1"></p>
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <h3 id="pd-name" class="text-xl sm:text-2xl font-black uppercase text-slate-900 dark:text-white"></h3>
+                            <span id="pd-financial-badge" class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border tracking-wider"></span>
+                        </div>
+                        <div class="flex items-center gap-2 sm:gap-3 mt-1.5 text-xs flex-wrap">
+                            <span id="pd-id-badge" class="text-xs font-black text-indigo-500 dark:text-indigo-400 uppercase tracking-wider"></span>
+                            <span class="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+                            <span id="pd-demo" class="text-xs font-bold text-slate-600 dark:text-slate-300"></span>
+                        </div>
                     </div>
-                    <button onclick="closePatientDetailModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full flex-shrink-0 cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-500"></i></button>
+                    <button onclick="closePatientDetailModal()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full flex-shrink-0 cursor-pointer text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
 
-                <div class="overflow-y-auto pr-2 flex-1 space-y-5">
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="p-4 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl text-center border border-indigo-100 dark:border-indigo-900">
-                            <span class="block text-[9px] font-black uppercase text-indigo-500 dark:text-indigo-400 mb-1">Sessions</span>
-                            <span id="pd-sessions" class="text-lg font-black text-indigo-700 dark:text-indigo-300"></span>
+                <div class="overflow-y-auto pr-1 flex-1 space-y-4 custom-scrollbar">
+                    <!-- 1. EXECUTIVE FINANCIAL KPI CARDS -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                        <!-- Total Paid -->
+                        <div class="p-3.5 sm:p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-100 dark:border-emerald-900 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">Total Paid</span>
+                                <i data-lucide="credit-card" class="w-3.5 h-3.5 text-emerald-500"></i>
+                            </div>
+                            <div>
+                                <span id="pd-payment" class="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-300 leading-tight">₹0</span>
+                                <span id="pd-payment-subtext" class="block text-[9px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5 truncate"></span>
+                            </div>
                         </div>
-                        <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl text-center border border-emerald-100 dark:border-emerald-900">
-                            <span class="block text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-1">Total Paid</span>
-                            <span id="pd-payment" class="text-lg font-black text-emerald-700 dark:text-emerald-300"></span>
+
+                        <!-- Outstanding Due -->
+                        <div id="pd-due-card" class="p-3.5 sm:p-4 bg-rose-50 dark:bg-rose-950/40 rounded-2xl border border-rose-100 dark:border-rose-900 flex flex-col justify-between transition-all">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[9px] font-black uppercase text-rose-500 dark:text-rose-400 tracking-wider">Outstanding Due</span>
+                                <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-500"></i>
+                            </div>
+                            <div>
+                                <span id="pd-due" class="text-base sm:text-lg font-black text-rose-700 dark:text-rose-300 leading-tight">₹0</span>
+                                <span id="pd-due-subtext" class="block text-[9px] text-rose-600 dark:text-rose-400 font-bold mt-0.5 truncate">0 Overdue Sessions</span>
+                            </div>
                         </div>
-                        <div id="pd-due-card" class="p-4 bg-rose-50 dark:bg-rose-950/40 rounded-2xl text-center hidden border border-rose-100 dark:border-rose-900">
-                            <span class="block text-[9px] font-black uppercase text-rose-500 dark:text-rose-400 mb-1">Due</span>
-                            <span id="pd-due" class="text-lg font-black text-rose-700 dark:text-rose-300"></span>
+
+                        <!-- Wallet Balance -->
+                        <div id="pd-wallet-card" class="p-3.5 sm:p-4 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[9px] font-black uppercase text-indigo-500 dark:text-indigo-400 tracking-wider">Wallet Balance</span>
+                                <i data-lucide="wallet" class="w-3.5 h-3.5 text-indigo-500"></i>
+                            </div>
+                            <div>
+                                <span id="pd-wallet-amt" class="text-base sm:text-lg font-black text-indigo-700 dark:text-indigo-300 leading-tight">₹0</span>
+                                <span id="pd-wallet-subtext" class="block text-[9px] text-indigo-500 dark:text-indigo-400 font-bold mt-0.5 truncate">Pre-paid Credit</span>
+                            </div>
+                        </div>
+
+                        <!-- Session Rate & Plan -->
+                        <div id="pd-rate-card" class="p-3.5 sm:p-4 bg-purple-50 dark:bg-purple-950/40 rounded-2xl border border-purple-100 dark:border-purple-900 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-[9px] font-black uppercase text-purple-600 dark:text-purple-400 tracking-wider">Rate &amp; Package</span>
+                                <i data-lucide="package" class="w-3.5 h-3.5 text-purple-500"></i>
+                            </div>
+                            <div>
+                                <span id="pd-rate-amt" class="text-base sm:text-lg font-black text-purple-700 dark:text-purple-300 leading-tight">₹0 / ses</span>
+                                <span id="pd-package-subtext" class="block text-[9px] text-purple-600 dark:text-purple-400 font-bold mt-0.5 truncate"></span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-100 dark:border-slate-800">
-                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Demographics</p>
-                            <p id="pd-demo" class="text-sm font-bold text-slate-800 dark:text-slate-100"></p>
+                    <!-- 2. FINANCIAL MANAGEMENT ACTIONS TOOLBAR -->
+                    <div class="bg-gradient-to-r from-slate-50 via-indigo-50/20 to-slate-50 dark:from-slate-800/80 dark:via-indigo-950/20 dark:to-slate-800/80 rounded-2xl p-2.5 sm:p-3 border border-slate-200/80 dark:border-slate-700/80 shadow-xs">
+                        <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5">
+                            <!-- Clear Due Button -->
+                            <button id="pd-btn-clear-due" onclick="openMarkPaidPrompt(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 truncate">
+                                <i data-lucide="check-check" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">Clear Due</span>
+                            </button>
+                            <!-- Top-Up Wallet Button -->
+                            <button onclick="promptTopupForPatient(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 truncate">
+                                <i data-lucide="wallet" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">Top-up</span>
+                            </button>
+                            <!-- Add Package Button -->
+                            <button onclick="openMidPackageFromDetail(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 truncate">
+                                <i data-lucide="package-plus" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">+Package</span>
+                            </button>
+                            <!-- WhatsApp Statement Button -->
+                            <button onclick="sendPatientFinancialStatement(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-[#25D366] hover:bg-[#20BA5F] text-white rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 truncate" title="Send Itemized Financial Statement on WhatsApp">
+                                <i data-lucide="send" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">Statement</span>
+                            </button>
                         </div>
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-100 dark:border-slate-800">
-                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Phone</p>
-                            <p id="pd-phone" class="text-sm font-bold text-slate-800 dark:text-slate-100"></p>
+                    </div>
+
+                    <!-- 3. CLINICAL PROFILE & CASE DETAILS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Clinical Diagnosis &amp; Condition</p>
+                            <p id="pd-diag" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100"></p>
                         </div>
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl col-span-2 border border-slate-100 dark:border-slate-800">
-                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Address</p>
-                            <p id="pd-address" class="text-sm font-bold text-slate-800 dark:text-slate-100"></p>
-                        </div>
-                        <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl col-span-2 border border-slate-100 dark:border-slate-800">
-                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Clinical Diagnosis</p>
-                            <p id="pd-diag" class="text-sm font-bold text-slate-800 dark:text-slate-100"></p>
-                        </div>
-                        <div class="p-4 bg-indigo-50/60 dark:bg-indigo-950/40 rounded-2xl col-span-2 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-between">
+                        <div class="p-3.5 bg-indigo-50/60 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-between">
                             <div>
                                 <p class="text-[9px] font-black uppercase text-indigo-600 dark:text-indigo-400 mb-0.5">Assigned Doctor</p>
-                                <p id="pd-doctor" class="text-sm font-bold text-slate-800 dark:text-slate-100">—</p>
+                                <p id="pd-doctor" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100">—</p>
                             </div>
-                            <button id="pd-reassign-btn" onclick="openReassignDoctorModal(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="hidden px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] font-black uppercase shadow-xs transition-all cursor-pointer">Reassign</button>
+                            <button id="pd-reassign-btn" onclick="openReassignDoctorModal(document.getElementById('pd-name').dataset.fullName || document.getElementById('pd-name').innerText)" class="hidden px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[9px] font-black uppercase shadow-xs transition-all cursor-pointer">Reassign</button>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Residential Address</p>
+                            <p id="pd-address" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100"></p>
+                        </div>
+                        <div class="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <p class="text-[9px] font-black uppercase text-slate-500 dark:text-slate-400 mb-1">Mobile Number</p>
+                                <p id="pd-phone" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100">—</p>
+                            </div>
+                            <div id="pd-phone-action"></div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-blue-50 dark:bg-blue-950/40 rounded-2xl border border-blue-100 dark:border-blue-900">
-                            <p class="text-[9px] font-black uppercase text-blue-600 dark:text-blue-400 mb-1">Package</p>
-                            <p id="pd-package" class="text-sm font-bold text-blue-800 dark:text-blue-200"></p>
-                        </div>
-                        <div class="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-100 dark:border-amber-900">
-                            <p class="text-[9px] font-black uppercase text-amber-600 dark:text-amber-400 mb-1">Status</p>
-                            <p id="pd-status" class="text-sm font-bold text-amber-800 dark:text-amber-200"></p>
-                        </div>
+                    <!-- Hidden legacy bridge elements so no external scripts fail -->
+                    <div class="hidden">
+                        <span id="pd-sessions"></span>
+                        <span id="pd-package"></span>
+                        <span id="pd-status"></span>
                     </div>
 
+                    <!-- 3. SESSION & PAYMENT HISTORY LEDGER -->
                     <div>
-                        <h5 class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2 px-1">Session History</h5>
-                        <div id="pd-dates-list" class="space-y-1"></div>
+                        <div class="flex items-center justify-between mb-2 px-1">
+                            <h5 class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <i data-lucide="receipt" class="w-3.5 h-3.5 text-indigo-500"></i>
+                                <span>Session &amp; Payment History</span>
+                            </h5>
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">Sessions, Dues Cleared &amp; Top-ups</span>
+                        </div>
+                        <div id="pd-dates-list" class="space-y-2 max-h-[340px] overflow-y-auto pr-1 custom-scrollbar"></div>
                     </div>
                 </div>
             </div>
@@ -4925,6 +5171,205 @@ html.dark .instruction-modal-footer {
                 <div class="flex gap-3 pt-5 border-t border-slate-100 dark:border-slate-800">
                     <button onclick="closeEditPatientModal()" class="flex-1 py-3.5 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer text-xs">Cancel</button>
                     <button onclick="saveEditPatient()" class="flex-[2] py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-indigo-600/30 active:scale-95 transition-all cursor-pointer">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLINIC ADMINISTRATOR COMMAND CENTER MODAL (ADMIN ONLY) -->
+        <div id="admin-hub-modal" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-md z-[500] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-5 sm:p-8 max-w-5xl w-full shadow-2xl border border-slate-100 dark:border-slate-800 flex flex-col max-h-[92vh] my-auto">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-600/30 flex-shrink-0">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Admin Command Center</h3>
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">Executive</span>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Comprehensive clinic governance, data integrity, financials & clinician performance</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAdminHubModal()" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer" title="Close">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Body (Scrollable) -->
+                <div class="flex-1 overflow-y-auto pr-1 space-y-6 custom-scrollbar">
+                    <!-- 1. Executive Snapshot / KPI Strip -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-50/70 to-white dark:from-slate-800/80 dark:to-slate-800/40 border border-indigo-100/80 dark:border-slate-700">
+                            <span class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-wider">Total Patients</span>
+                            <div id="ah-stat-patients" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">0</div>
+                            <div class="text-[10px] font-bold text-slate-400 mt-0.5">Lifetime Registered</div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-white dark:from-slate-800/80 dark:to-slate-800/40 border border-emerald-100/80 dark:border-slate-700">
+                            <span class="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-wider">Active In-Care</span>
+                            <div id="ah-stat-active" class="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1">0</div>
+                            <div class="text-[10px] font-bold text-slate-400 mt-0.5">Ongoing Therapy</div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-sky-50/70 to-white dark:from-slate-800/80 dark:to-slate-800/40 border border-sky-100/80 dark:border-slate-700">
+                            <span class="text-[10px] font-black uppercase text-sky-600 dark:text-sky-400 tracking-wider">Total Revenue</span>
+                            <div id="ah-stat-revenue" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">₹0</div>
+                            <div class="text-[10px] font-bold text-slate-400 mt-0.5">Gross Clinic Inflow</div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-rose-50/70 to-white dark:from-slate-800/80 dark:to-slate-800/40 border border-rose-100/80 dark:border-slate-700">
+                            <span class="text-[10px] font-black uppercase text-rose-600 dark:text-rose-400 tracking-wider">Pending Dues</span>
+                            <div id="ah-stat-dues" class="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400 mt-1">₹0</div>
+                            <div class="text-[10px] font-bold text-slate-400 mt-0.5">Outstanding Collectibles</div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Core Administrative Operations (6 Tool Cards) -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="sliders" class="w-4 h-4 text-indigo-600"></i> Executive Administration Tools
+                            </h4>
+                            <span class="text-[10px] font-bold text-slate-400">Governance & Controls</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                            <!-- Tool 1: Full Database Backup (JSON) -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="hard-drive-download" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">Clinic Backup (JSON)</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Download complete snapshot of patients, logs, accounts, and system configuration for offline recovery.</p>
+                                    </div>
+                                </div>
+                                <button onclick="exportClinicBackupJSON()" class="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Download Full Backup
+                                </button>
+                            </div>
+
+                            <!-- Tool 2: Master Patient Registry Export (CSV) -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-emerald-300 dark:hover:border-emerald-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">Export Registry (CSV)</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Export formatted Excel/Sheets compatible roster with demographics, contact, doctors, sessions, dues & totals.</p>
+                                    </div>
+                                </div>
+                                <button onclick="exportPatientRegistryCSV()" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Patients CSV
+                                </button>
+                            </div>
+
+                            <!-- Tool 3: Financial Reconcile & Force Sync -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-sky-300 dark:hover:border-sky-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/70 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="scale" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">Financial Reconcile</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Force recompute all patient ledger balances, flush offline queues, and verify cloud sheet consistency.</p>
+                                    </div>
+                                </div>
+                                <button onclick="adminForceReconcile()" class="w-full py-2 px-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reconcile Ledgers
+                                </button>
+                            </div>
+
+                            <!-- Tool 4: System User & Account Management -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-indigo-300 dark:hover:border-indigo-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="user-cog" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">User Accounts & Roles</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Manage clinicians, staff logins, branch permissions, and set secure 6-digit mPINs.</p>
+                                    </div>
+                                </div>
+                                <button onclick="closeAdminHubModal(); openUserManagementModal();" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="settings" class="w-3.5 h-3.5"></i> Manage Accounts
+                                </button>
+                            </div>
+
+                            <!-- Tool 5: Security & Activity Audit Trail -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-purple-300 dark:hover:border-purple-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/70 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">Audit Trail & Activity</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Review staff logins, session entries, bill issuances, and security-sensitive clinic actions.</p>
+                                    </div>
+                                </div>
+                                <button onclick="closeAdminHubModal(); switchTab('audit');" class="w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Open Audit Logs
+                                </button>
+                            </div>
+
+                            <!-- Tool 6: Bulk Payment Dues Reminders -->
+                            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-700/80 hover:border-rose-300 dark:hover:border-rose-600 transition-all flex flex-col justify-between gap-3">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/70 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0">
+                                        <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-black text-slate-800 dark:text-slate-100 uppercase">Bulk Dues Reminders</h5>
+                                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5 leading-relaxed">Instantly review all patients with pending balances and dispatch WhatsApp or SMS payment links.</p>
+                                    </div>
+                                </div>
+                                <button onclick="closeAdminHubModal(); if (typeof openBatchReminderModal === 'function') openBatchReminderModal(); else switchTab('patients');" class="w-full py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer">
+                                    <i data-lucide="send" class="w-3.5 h-3.5"></i> Batch Reminders
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Clinician / Doctor Performance Roster -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-black uppercase text-slate-800 dark:text-slate-200 tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="user-check" class="w-4 h-4 text-indigo-600"></i> Doctor & Clinician Performance Overview
+                            </h4>
+                            <span class="text-[10px] font-bold text-slate-400">Live Clinical Load</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">
+                                        <th class="p-3.5">Doctor / Clinician</th>
+                                        <th class="p-3.5 text-center">Active Patients</th>
+                                        <th class="p-3.5 text-center">Delivered Sessions</th>
+                                        <th class="p-3.5 text-right">Revenue Generated</th>
+                                        <th class="p-3.5 text-right">Pending Dues</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ah-clinician-performance-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                                    <tr>
+                                        <td colspan="5" class="p-6 text-center text-slate-400 italic">Calculating clinician statistics...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0">
+                    <span class="text-[10px] font-bold text-slate-400">ClinioSphere PMS Enterprise • Administrator Suite</span>
+                    <button onclick="closeAdminHubModal()" class="py-2.5 px-5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 font-bold text-slate-600 dark:text-slate-300 rounded-xl text-xs uppercase cursor-pointer">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -5489,8 +5934,8 @@ html.dark .instruction-modal-footer {
                         <select id="mp-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all cursor-pointer">
                             <option value="" disabled selected>Select Mode</option>
                             <option value="Cash">Cash</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Card">Card</option>
+                            <option value="UPI">UPI / Online</option>
+                            <option value="Card">Card / POS</option>
                             <option value="Split">Split (Cash + UPI)</option>
                             <option value="Advance">Advance (Pre-paid / Wallet)</option>
                         </select>
@@ -5498,6 +5943,64 @@ html.dark .instruction-modal-footer {
                     <div class="flex gap-3 pt-3">
                         <button onclick="closeMarkPaidModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer">Cancel</button>
                         <button onclick="confirmMarkPaid()" class="flex-[2] py-4 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition-all cursor-pointer">Confirm Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WALLET TOP-UP MODAL -->
+        <div id="wallet-topup-modal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[200] flex items-center justify-center p-4 sm:p-6" onclick="if(event.target===this)closeWalletTopupModal()">
+            <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm flex-shrink-0">
+                            <i data-lucide="wallet" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black tracking-tight text-slate-900 dark:text-white">Wallet Top-Up</h3>
+                            <p id="wtu-patient-name" class="text-xs font-bold text-indigo-500 uppercase tracking-wider mt-0.5"></p>
+                        </div>
+                    </div>
+                    <button onclick="closeWalletTopupModal()" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                
+                <div class="p-4 bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 rounded-2xl mb-5">
+                    <p class="text-xs text-slate-600 dark:text-slate-300 font-bold flex items-center justify-between">
+                        <span>Current Wallet Balance:</span>
+                        <span id="wtu-current-balance" class="font-black text-indigo-600 dark:text-indigo-400 text-base">₹0</span>
+                    </p>
+                    <p class="text-[11px] text-slate-400 dark:text-slate-500 font-semibold mt-1">
+                        Pre-paid credit will be added to this patient's balance
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Top-up Amount (₹)</label>
+                        <input type="number" id="wtu-amount" value="1000" min="1" step="100" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                        <div class="flex gap-1.5 mt-2 flex-wrap">
+                            <button type="button" onclick="document.getElementById('wtu-amount').value = 500" class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-all active:scale-95">+₹500</button>
+                            <button type="button" onclick="document.getElementById('wtu-amount').value = 1000" class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-all active:scale-95">+₹1,000</button>
+                            <button type="button" onclick="document.getElementById('wtu-amount').value = 2000" class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-all active:scale-95">+₹2,000</button>
+                            <button type="button" onclick="document.getElementById('wtu-amount').value = 5000" class="px-2.5 py-1 rounded-xl text-[10px] font-bold bg-slate-100 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer transition-all active:scale-95">+₹5,000</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Payment Mode</label>
+                        <select id="wtu-mode" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-800 dark:text-slate-100 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all cursor-pointer">
+                            <option value="Cash" selected>Cash</option>
+                            <option value="UPI">UPI / Online</option>
+                            <option value="Card">Card / POS</option>
+                            <option value="Split">Split (Cash + UPI)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider ml-1 block mb-1.5">Notes / Reference (Optional)</label>
+                        <input type="text" id="wtu-note" placeholder="e.g. Advance deposit / UPI Txn ID" class="w-full p-3.5 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl font-medium text-slate-800 dark:text-slate-100 text-xs outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all">
+                    </div>
+                    <div class="flex gap-3 pt-3">
+                        <button type="button" onclick="closeWalletTopupModal()" class="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer">Cancel</button>
+                        <button type="button" id="wtu-submit-btn" onclick="confirmWalletTopup()" class="flex-[2] py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-2xl font-black uppercase text-xs tracking-wider shadow-lg shadow-indigo-600/30 active:scale-95 transition-all cursor-pointer">Confirm Top-Up</button>
                     </div>
                 </div>
             </div>
@@ -5755,6 +6258,18 @@ html.dark .instruction-modal-footer {
                     <div class="text-[9px] font-bold text-purple-600 dark:text-purple-400 uppercase truncate">Logins, Sessions & Activity Logs</div>
                 </div>
                 <i data-lucide="chevron-right" class="w-4 h-4 text-purple-400"></i>
+            </button>
+
+            <!-- Admin Command Center Tile (Admin Only) -->
+            <button id="more-sheet-admin-hub" onclick="closeMobileMoreSheet(); openAdminHubModal();" class="more-sheet-item col-span-2 p-3.5 rounded-2xl bg-gradient-to-r from-indigo-50/80 via-purple-50/60 to-indigo-50/80 dark:from-slate-800/90 dark:via-indigo-950/40 dark:to-slate-800/90 border border-indigo-200/80 dark:border-indigo-800/60 flex items-center gap-3 text-left active:scale-[0.98] transition-all cursor-pointer">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-700 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="shield" class="w-5 h-5"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-black uppercase text-slate-800 dark:text-slate-100 truncate">Admin Command Center</div>
+                    <div class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase truncate">Backups, Registry Export, Sync & Reports</div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-indigo-400"></i>
             </button>
 
             <!-- User Management Tile (Admin Only) -->
@@ -6091,6 +6606,11 @@ async function checkLockPassword() {
             localStorage.setItem('prism_device_user', user);
             localStorage.setItem('prism_mpin_user', user);
             localStorage.setItem('prism_user_pass_' + normUser, val);
+            const userProfRaw = localStorage.getItem('prism_user_profile_' + normUser);
+            if (userProfRaw) {
+                localStorage.setItem('prism_user_profile', userProfRaw);
+                sessionStorage.setItem('prism_user_profile', userProfRaw);
+            }
         } catch (e) {}
         if (typeof startNewSession === 'function') {
             startNewSession(user, 'Password', activeSess, true);
@@ -6162,6 +6682,7 @@ async function checkLockPassword() {
                 }
                 if (result.user) {
                     localStorage.setItem('prism_user_profile', JSON.stringify(result.user));
+                    localStorage.setItem('prism_user_profile_' + normUser, JSON.stringify(result.user));
                     sessionStorage.setItem('prism_user_profile', JSON.stringify(result.user));
                 }
             } catch (e) {}
@@ -6364,7 +6885,25 @@ let mpinVisible = false;
             const savedUser = localStorage.getItem('prism_device_user') || localStorage.getItem('prism_mpin_user');
             const displayEl = document.getElementById('lock-mpin-username-display');
             if (displayEl) {
-                displayEl.innerText = savedUser ? `Device linked to @${savedUser}` : 'Enter 4-Digit Device PIN (No ID needed)';
+                let cleanDisplayName = '';
+                if (savedUser) {
+                    try {
+                        const cachedProf = localStorage.getItem('prism_user_profile_' + String(savedUser).toLowerCase().trim()) || localStorage.getItem('prism_user_profile');
+                        if (cachedProf) {
+                            const parsed = JSON.parse(cachedProf);
+                            if (parsed && (parsed.displayName || parsed.name)) {
+                                cleanDisplayName = parsed.displayName || parsed.name;
+                            }
+                        }
+                    } catch(e) {}
+                }
+                if (cleanDisplayName) {
+                    displayEl.innerText = `${cleanDisplayName} • Quick PIN Access`;
+                } else if (savedUser && savedUser !== 'admin') {
+                    displayEl.innerText = `@${savedUser} • Quick PIN Access`;
+                } else {
+                    displayEl.innerText = 'Enter 4-Digit Device PIN • Instant Access';
+                }
             }
             const pwdPanel = document.getElementById('lock-password-panel');
             if (pwdPanel) pwdPanel.classList.add('hidden');
@@ -6416,6 +6955,13 @@ let mpinVisible = false;
                 try { 
                     sessionStorage.setItem('prism_user', savedDeviceUser); 
                     localStorage.setItem('prism_user', savedDeviceUser);
+                    localStorage.setItem('prism_device_user', savedDeviceUser);
+                    localStorage.setItem('prism_mpin_user', savedDeviceUser);
+                    const userProfRaw = localStorage.getItem('prism_user_profile_' + savedDeviceUser.toLowerCase());
+                    if (userProfRaw) {
+                        localStorage.setItem('prism_user_profile', userProfRaw);
+                        sessionStorage.setItem('prism_user_profile', userProfRaw);
+                    }
                 } catch (e) {}
                 if (typeof startNewSession === 'function') {
                     startNewSession(savedDeviceUser, 'Device PIN', activeSess, true);
@@ -6447,6 +6993,12 @@ let mpinVisible = false;
                 try { 
                     sessionStorage.setItem('prism_user', savedDeviceUser); 
                     localStorage.setItem('prism_user', savedDeviceUser);
+                    localStorage.setItem('prism_mpin_user', savedDeviceUser);
+                    const userProfRaw = localStorage.getItem('prism_user_profile_' + savedDeviceUser.toLowerCase());
+                    if (userProfRaw) {
+                        localStorage.setItem('prism_user_profile', userProfRaw);
+                        sessionStorage.setItem('prism_user_profile', userProfRaw);
+                    }
                 } catch (e) {}
                 if (typeof startNewSession === 'function') {
                     startNewSession(savedDeviceUser, 'Device PIN', activeSess, true);
@@ -7810,14 +8362,23 @@ document.addEventListener('click', function(e) {
         function updateNotifBadge() {
             try {
                 const badge = document.getElementById('notif-badge');
+                const bellBtn = document.getElementById('notif-bell-btn');
                 if (!badge) return;
                 const notifs = getNotifications24h();
                 const unreadCount = notifs.filter(n => !n.read).length;
                 if (unreadCount > 0) {
                     badge.innerText = unreadCount > 9 ? '9+' : String(unreadCount);
                     badge.classList.remove('hidden');
+                    if (bellBtn) {
+                        bellBtn.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                        bellBtn.classList.remove('text-slate-700', 'dark:text-slate-300');
+                    }
                 } else {
                     badge.classList.add('hidden');
+                    if (bellBtn) {
+                        bellBtn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                        bellBtn.classList.add('text-slate-700', 'dark:text-slate-300');
+                    }
                 }
             } catch (e) {}
         }
@@ -7951,13 +8512,13 @@ document.addEventListener('click', function(e) {
                 let notifs = getNotifications24h();
                 const beforeLen = notifs.length;
                 if (id) {
-                    notifs = notifs.filter((n, idx) => {
-                        if (n.id && n.id === id) return false;
-                        if (n.timestamp && String(n.timestamp) === String(id)) return false;
-                        if (index !== undefined && idx === index) return false;
+                    notifs = notifs.filter(n => {
+                        if (n && n.id && String(n.id) === String(id)) return false;
+                        if (n && n.timestamp && String(n.timestamp) === String(id)) return false;
                         return true;
                     });
                 }
+                // Fallback by index if id did not match
                 if (notifs.length === beforeLen && typeof index === 'number' && index >= 0 && index < notifs.length) {
                     notifs.splice(index, 1);
                 }
@@ -7980,9 +8541,7 @@ document.addEventListener('click', function(e) {
                 saveNotifications([]);
                 renderNotifList();
                 updateNotifBadge();
-                setTimeout(() => {
-                    closeNotifPanel();
-                }, 180);
+                // Keep the notification panel open in empty state ("No events found") without minimizing
             } catch (err) {
                 console.error('clearAllNotifications error:', err);
             }
@@ -8407,18 +8966,91 @@ document.addEventListener('click', function(e) {
         }
 
         function getCurrentUserProfile() {
+            const user = getCurrentUser();
+            const normUser = String(user || '').toLowerCase().trim();
+
+            // 1. Live look up from Google Sheets doctorsList
+            if (window.doctorsList && Array.isArray(window.doctorsList)) {
+                const doc = window.doctorsList.find(d => 
+                    d && String(d.username || '').toLowerCase().trim() === normUser
+                );
+                if (doc && (doc.displayName || doc.name)) {
+                    const profile = {
+                        username: doc.username || user,
+                        displayName: doc.displayName || doc.name,
+                        name: doc.displayName || doc.name,
+                        role: doc.role || (normUser === 'admin' ? 'Admin' : 'Doctor'),
+                        registrationNo: doc.registrationNo || ''
+                    };
+                    try {
+                        localStorage.setItem('prism_user_profile', JSON.stringify(profile));
+                        localStorage.setItem('prism_user_profile_' + normUser, JSON.stringify(profile));
+                    } catch (e) {}
+                    return profile;
+                }
+            }
+
+            // 2. Live look up from window.rawUsers (Users sheet rows)
+            if (window.rawUsers && Array.isArray(window.rawUsers)) {
+                for (const u of window.rawUsers) {
+                    if (Array.isArray(u)) {
+                        if (String(u[0] || '').toLowerCase().trim() === normUser) {
+                            const profile = {
+                                username: u[0],
+                                displayName: u[3] || u[0],
+                                name: u[3] || u[0],
+                                role: u[2] || (normUser === 'admin' ? 'Admin' : 'Doctor'),
+                                registrationNo: u[8] || ''
+                            };
+                            try {
+                                localStorage.setItem('prism_user_profile', JSON.stringify(profile));
+                                localStorage.setItem('prism_user_profile_' + normUser, JSON.stringify(profile));
+                            } catch (e) {}
+                            return profile;
+                        }
+                    } else if (u && typeof u === 'object') {
+                        if (String(u.username || '').toLowerCase().trim() === normUser) {
+                            const profile = {
+                                username: u.username,
+                                displayName: u.displayName || u.name || u.username,
+                                name: u.name || u.displayName || u.username,
+                                role: u.role || (normUser === 'admin' ? 'Admin' : 'Doctor'),
+                                registrationNo: u.registrationNo || ''
+                            };
+                            try {
+                                localStorage.setItem('prism_user_profile', JSON.stringify(profile));
+                                localStorage.setItem('prism_user_profile_' + normUser, JSON.stringify(profile));
+                            } catch (e) {}
+                            return profile;
+                        }
+                    }
+                }
+            }
+
+            // 3. User-specific cached profile in localStorage
             try {
+                const userRaw = localStorage.getItem('prism_user_profile_' + normUser);
+                if (userRaw) {
+                    const parsed = JSON.parse(userRaw);
+                    if (parsed && typeof parsed === 'object') return parsed;
+                }
                 const raw = localStorage.getItem('prism_user_profile') || sessionStorage.getItem('prism_user_profile');
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    if (parsed && typeof parsed === 'object') return parsed;
+                    if (parsed && typeof parsed === 'object') {
+                        // Ensure profile matches active user
+                        if (!parsed.username || String(parsed.username).toLowerCase().trim() === normUser) {
+                            return parsed;
+                        }
+                    }
                 }
             } catch (e) {}
-            const user = getCurrentUser();
+
+            // 4. Default fallback: capitalize active username
             return {
                 username: user,
                 displayName: user.charAt(0).toUpperCase() + user.slice(1),
-                role: user.toLowerCase() === 'admin' ? 'Admin' : 'Clinician'
+                role: normUser === 'admin' ? 'Admin' : 'Clinician'
             };
         }
 
@@ -8467,13 +9099,23 @@ document.addEventListener('click', function(e) {
                 const moreUsers = document.getElementById('more-sheet-users');
                 if (moreUsers) moreUsers.style.display = userIsAdmin ? 'flex' : 'none';
 
-                // 3. If currently on audit tab and not admin, kick back to overview
+                // 3. Admin Command Center Hub Triggers (Admin Only)
+                const headerAdminHub = document.getElementById('header-admin-hub-btn');
+                if (headerAdminHub) headerAdminHub.style.display = userIsAdmin ? 'inline-flex' : 'none';
+
+                const settingsAdminHub = document.getElementById('settings-btn-admin-hub');
+                if (settingsAdminHub) settingsAdminHub.style.display = userIsAdmin ? 'flex' : 'none';
+
+                const moreAdminHub = document.getElementById('more-sheet-admin-hub');
+                if (moreAdminHub) moreAdminHub.style.display = userIsAdmin ? 'flex' : 'none';
+
+                // 4. If currently on audit tab and not admin, kick back to overview
                 const auditTab = document.getElementById('tab-audit');
                 if (!userIsAdmin && auditTab && !auditTab.classList.contains('section-hidden')) {
                     if (typeof switchTab === 'function') switchTab('overview');
                 }
 
-                // 4. Update Role-Based Doctor Dropdowns in Billing & Enrollment
+                // 5. Update Role-Based Doctor Dropdowns in Billing & Enrollment
                 if (typeof updateDoctorDropdowns === 'function') updateDoctorDropdowns();
             } catch (e) {
                 console.warn('applyRolePermissions error:', e);
@@ -8848,9 +9490,9 @@ document.addEventListener('click', function(e) {
         function updateUserGreeting() {
             try {
                 const profile = getCurrentUserProfile();
-                const user = profile.displayName || profile.username || getCurrentUser();
+                const user = profile.displayName || profile.name || profile.username || getCurrentUser();
                 const username = profile.username || getCurrentUser();
-                const role = profile.role || 'Clinician';
+                const role = profile.role || (username.toLowerCase() === 'admin' ? 'Admin' : 'Clinician');
                 const sessId = getCurrentSessionId();
 
                 const hour = new Date().getHours();
@@ -8891,12 +9533,17 @@ document.addEventListener('click', function(e) {
                 const settingsRole = document.getElementById('settings-user-role-badge');
                 const settingsSess = document.getElementById('settings-session-id');
                 const settingsInit = document.getElementById('settings-user-initial');
-                if (settingsId) settingsId.innerText = username;
+                if (settingsId) settingsId.innerText = user;
                 if (settingsRole) settingsRole.innerText = role;
                 if (settingsSess) settingsSess.innerText = sessId;
                 if (settingsInit) settingsInit.innerText = (user.charAt(0) || 'U').toUpperCase();
 
-                // 4. Role-based element visibility
+                // 4. Update all .logged-in-user-name elements across desktop sidebar, mobile header, settings
+                document.querySelectorAll('.logged-in-user-name, #logged-in-user-name, #sidebar-user-name, #mobile-user-name').forEach(el => {
+                    el.innerText = user;
+                });
+
+                // 5. Role-based element visibility
                 applyRolePermissions();
 
             } catch (e) {
@@ -9598,6 +10245,7 @@ document.addEventListener('click', function(e) {
             if (result.doctorsList && Array.isArray(result.doctorsList)) window.doctorsList = result.doctorsList;
             else if (result.usersList && Array.isArray(result.usersList)) window.doctorsList = result.usersList;
             if (typeof updateDoctorDropdowns === 'function') updateDoctorDropdowns();
+            if (typeof updateUserGreeting === 'function') updateUserGreeting();
 
             // Assign SOAP Notes
             progressNotes = {};
@@ -9635,8 +10283,8 @@ document.addEventListener('click', function(e) {
             }
 
             // Assign Inquiries (from Inquiry_Registry sheet)
-            window.iqRegistry = [];
-            if (result.inquiries && Array.isArray(result.inquiries)) {
+            if (result.inquiries && Array.isArray(result.inquiries) && result.inquiries.length > 0) {
+                const sheetInquiries = [];
                 result.inquiries.forEach((row, origIdx) => {
                     const statusStr = String(row[7] || '').trim().toLowerCase();
                     const isConfirmed = statusStr === 'confirmed' || statusStr === 'yes';
@@ -9649,7 +10297,7 @@ document.addEventListener('click', function(e) {
                             try { dateStr = formatDateDMY(new Date(rawDate)); } catch(e) { dateStr = String(rawDate); }
                         }
                     }
-                    window.iqRegistry.push({
+                    sheetInquiries.push({
                         id: 'iq_' + origIdx + '_' + (rawDate || Date.now()),
                         date: dateStr || formatDateDMY(new Date()),
                         rawDate: rawDate,
@@ -9665,7 +10313,23 @@ document.addEventListener('click', function(e) {
                     });
                 });
                 // Sort by latest entry first
-                window.iqRegistry.reverse();
+                sheetInquiries.reverse();
+
+                // Merge with unsynced local inquiries so newly recorded inquiries are never lost
+                const currentLocal = (typeof window.loadInquiriesFromStorage === 'function') 
+                    ? window.loadInquiriesFromStorage() 
+                    : (window.iqRegistry || []);
+                const unsynced = currentLocal.filter(loc => {
+                    if (!loc || !loc.name) return false;
+                    const locPhone = String(loc.phone || '').replace(/\D/g, '');
+                    const alreadyInSheet = sheetInquiries.some(s => {
+                        const sPhone = String(s.phone || '').replace(/\D/g, '');
+                        return s.name.toLowerCase() === loc.name.toLowerCase() && (!locPhone || sPhone === locPhone);
+                    });
+                    return !alreadyInSheet;
+                });
+
+                window.iqRegistry = unsynced.concat(sheetInquiries);
                 // Update local storage cache with live sheets data
                 if (window.saveInquiriesToStorage) {
                     window.saveInquiriesToStorage(window.iqRegistry);
@@ -9676,6 +10340,16 @@ document.addEventListener('click', function(e) {
                 const activeExSection = document.getElementById('tab-exercises');
                 if (activeExSection && !activeExSection.classList.contains('section-hidden') && typeof initExerciseTab === 'function') {
                     initExerciseTab();
+                }
+            } else {
+                // Keep locally cached inquiries intact if sheets returned empty or undefined
+                if (!window.iqRegistry || window.iqRegistry.length === 0) {
+                    if (typeof window.loadInquiriesFromStorage === 'function') {
+                        window.iqRegistry = window.loadInquiriesFromStorage();
+                    }
+                }
+                if (typeof renderIqTable === 'function') {
+                    renderIqTable();
                 }
             }
 
@@ -9829,12 +10503,14 @@ document.addEventListener('click', function(e) {
 
             renderTables();
             renderDuesWidget();
+            if (typeof updateDashboardMilestones === 'function') updateDashboardMilestones();
             if (typeof renderIqTable === 'function') {
                 const iqTab = document.getElementById('tab-inquiry');
                 if (iqTab && !iqTab.classList.contains('section-hidden')) renderIqTable();
             }
             if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog(true);
             if (typeof updateAuditTelemetryDisplay === 'function') updateAuditTelemetryDisplay();
+            if (typeof updateUserGreeting === 'function') updateUserGreeting();
             if (typeof renderAuditTable === 'function') {
                 const auditTab = document.getElementById('tab-audit');
                 if (auditTab && !auditTab.classList.contains('section-hidden')) renderAuditTable();
@@ -10911,6 +11587,7 @@ renderTables();
 
             if (statEl.activeCount) statEl.activeCount.innerText = activeCount;
             statEl.registered.innerText = Object.keys(patientLookup).length;
+            if (typeof updateDashboardMilestones === 'function') updateDashboardMilestones();
             const regTab = document.getElementById('tab-visit-registry');
             if (regTab && !regTab.classList.contains('section-hidden')) {
                 renderDailyRegistry();
@@ -11409,6 +12086,217 @@ renderTables();
             document.getElementById('branch-detail-modal').classList.add('hidden');
         }
 
+        function updateDashboardMilestones() {
+            try {
+                const seenPatients = new Set();
+                const uniquePatients = [];
+                Object.values(patientLookup || {}).forEach(p => {
+                    if (!p) return;
+                    const pid = p.id ? String(p.id).trim().toUpperCase() : (p.name ? String(p.name).trim().toLowerCase() : '');
+                    if (!pid || seenPatients.has(pid)) return;
+                    seenPatients.add(pid);
+                    uniquePatients.push(p);
+                });
+
+                uniquePatients.forEach(p => {
+                    const paid = (p.logs || []).reduce((sum, l) => {
+                        const type = String(l[7] || '').trim().toLowerCase();
+                        if (type === 'case closed' || type === 'case restarted' || type === 'bill issued') return sum;
+                        return sum + toNum(l[9]);
+                    }, 0);
+
+                    const sessions = (p.logs || []).filter(l => {
+                        const type = String(l[7] || '').trim().toLowerCase();
+                        if (['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(type)) return false;
+                        return toNum(l[9]) > 0 || type.includes('session') || type.includes('rehab');
+                    }).length;
+
+                    p._computedPaid = paid;
+                    p._computedSessions = sessions;
+                });
+
+                const sortedByPaid = [...uniquePatients].filter(p => (p._computedPaid || 0) > 0).sort((a, b) => (b._computedPaid - a._computedPaid) || (b._computedSessions - a._computedSessions));
+                const topPayer = sortedByPaid[0] || null;
+
+                const sortedBySessions = [...uniquePatients].filter(p => (p._computedSessions || 0) > 0).sort((a, b) => (b._computedSessions - a._computedSessions) || (b._computedPaid - a._computedPaid));
+                const topSessions = sortedBySessions[0] || null;
+
+                const payerNameEl = document.getElementById('dash-top-payer-name');
+                const payerBadgeEl = document.getElementById('dash-top-payer-badge');
+                const payerAmtEl = document.getElementById('dash-top-payer-amount');
+                const payerSessEl = document.getElementById('dash-top-payer-sessions');
+
+                if (topPayer) {
+                    window._dashTopPayerName = topPayer.name;
+                    if (payerNameEl) payerNameEl.innerText = stripSalutation(topPayer.name);
+                    if (payerBadgeEl) payerBadgeEl.innerText = topPayer.id || 'POC/PHC';
+                    if (payerAmtEl) payerAmtEl.innerText = '₹' + (topPayer._computedPaid || 0).toLocaleString('en-IN');
+                    if (payerSessEl) payerSessEl.innerText = `${topPayer._computedSessions || 0} sessions`;
+                } else {
+                    window._dashTopPayerName = null;
+                    if (payerNameEl) payerNameEl.innerText = 'No records yet';
+                    if (payerBadgeEl) payerBadgeEl.innerText = '--';
+                    if (payerAmtEl) payerAmtEl.innerText = '₹0';
+                    if (payerSessEl) payerSessEl.innerText = '0 sessions';
+                }
+
+                const sessNameEl = document.getElementById('dash-top-sessions-name');
+                const sessBadgeEl = document.getElementById('dash-top-sessions-badge');
+                const sessCountEl = document.getElementById('dash-top-sessions-count');
+                const sessAmtEl = document.getElementById('dash-top-sessions-amount');
+
+                if (topSessions) {
+                    window._dashTopSessionsName = topSessions.name;
+                    if (sessNameEl) sessNameEl.innerText = stripSalutation(topSessions.name);
+                    if (sessBadgeEl) sessBadgeEl.innerText = topSessions.id || 'POC/PHC';
+                    if (sessCountEl) sessCountEl.innerText = `${topSessions._computedSessions || 0} sessions`;
+                    if (sessAmtEl) sessAmtEl.innerText = '₹' + (topSessions._computedPaid || 0).toLocaleString('en-IN');
+                } else {
+                    window._dashTopSessionsName = null;
+                    if (sessNameEl) sessNameEl.innerText = 'No records yet';
+                    if (sessBadgeEl) sessBadgeEl.innerText = '--';
+                    if (sessCountEl) sessCountEl.innerText = '0 sessions';
+                    if (sessAmtEl) sessAmtEl.innerText = '₹0';
+                }
+            } catch (err) {
+                console.error("updateDashboardMilestones error:", err);
+            }
+        }
+
+        function openTopPatientProfile(type) {
+            const targetName = type === 'payer' ? window._dashTopPayerName : window._dashTopSessionsName;
+            if (targetName && typeof viewPatientDetail === 'function') {
+                viewPatientDetail(targetName);
+            } else {
+                openTotalIncomeModal();
+            }
+        }
+
+        function openTopPatientFromModal(patientName) {
+            closeTotalIncomeModal();
+            if (patientName && typeof viewPatientDetail === 'function') {
+                viewPatientDetail(patientName);
+            }
+        }
+
+        function openTotalIncomeModal() {
+            try {
+                // 1. Month-wise Aggregation from globalData
+                const monthly = {};
+                let grandTotalFee = 0;
+                let grandTotalSessions = 0;
+                let grandPocFee = 0;
+                let grandPhcFee = 0;
+
+                (globalData || []).forEach(r => {
+                    const id = String(r[1] || '').trim().toUpperCase();
+                    const type = String(r[7] || '').trim().toLowerCase();
+                    const dateStr = r[8];
+                    const fee = toNum(r[9]);
+                    if (type === 'case closed' || type === 'case restarted' || type === 'bill issued' || !dateStr) return;
+
+                    const isSession = fee > 0 || type.includes('session') || type.includes('rehab');
+                    if (!isSession && fee <= 0) return;
+
+                    const mKey = String(dateStr).substring(0, 7);
+                    if (!monthly[mKey]) {
+                        monthly[mKey] = { poc: 0, phc: 0, other: 0, total: 0, sessions: 0 };
+                    }
+
+                    if (fee > 0) {
+                        monthly[mKey].total += fee;
+                        grandTotalFee += fee;
+                        if (id.startsWith('POC')) {
+                            monthly[mKey].poc += fee;
+                            grandPocFee += fee;
+                        } else if (id.startsWith('PHC')) {
+                            monthly[mKey].phc += fee;
+                            grandPhcFee += fee;
+                        } else {
+                            monthly[mKey].other += fee;
+                        }
+                    }
+
+                    if (isSession) {
+                        monthly[mKey].sessions++;
+                        grandTotalSessions++;
+                    }
+                });
+
+                const months = Object.keys(monthly).sort().reverse();
+                const monthCount = months.length || 1;
+                const avgMonthly = Math.round(grandTotalFee / monthCount);
+
+                // 2. Populate Summary KPIs in Modal
+                const revEl = document.getElementById('tim-total-revenue');
+                if (revEl) revEl.innerText = '₹' + grandTotalFee.toLocaleString('en-IN');
+                const sessEl = document.getElementById('tim-total-sessions');
+                if (sessEl) sessEl.innerText = grandTotalSessions.toLocaleString('en-IN');
+                const avgEl = document.getElementById('tim-avg-month');
+                if (avgEl) avgEl.innerText = '₹' + avgMonthly.toLocaleString('en-IN');
+
+                // 3. Populate Month-wise Table
+                const tbody = document.getElementById('tim-table-body');
+                const tfoot = document.getElementById('tim-table-foot');
+                if (!months.length) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 italic">No revenue recorded yet.</td></tr>`;
+                    if (tfoot) tfoot.innerHTML = '';
+                } else {
+                    tbody.innerHTML = months.map(mKey => {
+                        const parts = mKey.split('-');
+                        const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1);
+                        const label = !isNaN(d.getTime())
+                            ? d.toLocaleString('default', { month: 'long', year: 'numeric' })
+                            : mKey;
+                        const m = monthly[mKey];
+                        return `<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                            <td class="p-3.5 sm:p-4 font-black text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                                    <span>${label}</span>
+                                </div>
+                            </td>
+                            <td class="p-3.5 sm:p-4 text-center font-bold text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
+                                <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-extrabold text-slate-700 dark:text-slate-300">${m.sessions}</span>
+                            </td>
+                            <td class="p-3.5 sm:p-4 text-right font-bold text-blue-600 dark:text-blue-400 text-xs sm:text-sm">₹${m.poc.toLocaleString('en-IN')}</td>
+                            <td class="p-3.5 sm:p-4 text-right font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">₹${m.phc.toLocaleString('en-IN')}</td>
+                            <td class="p-3.5 sm:p-4 text-right font-black text-indigo-600 dark:text-indigo-400 text-xs sm:text-sm">₹${m.total.toLocaleString('en-IN')}</td>
+                        </tr>`;
+                    }).join('');
+
+                    if (tfoot) {
+                        tfoot.innerHTML = `<tr class="bg-slate-100/80 dark:bg-slate-800/90 font-black text-xs sm:text-sm border-t-2 border-slate-200 dark:border-slate-700">
+                            <td class="p-3.5 sm:p-4 text-slate-900 dark:text-white uppercase tracking-wider">Total (${months.length} Months)</td>
+                            <td class="p-3.5 sm:p-4 text-center text-slate-900 dark:text-white">${grandTotalSessions}</td>
+                            <td class="p-3.5 sm:p-4 text-right text-blue-600 dark:text-blue-400">₹${grandPocFee.toLocaleString('en-IN')}</td>
+                            <td class="p-3.5 sm:p-4 text-right text-emerald-600 dark:text-emerald-400">₹${grandPhcFee.toLocaleString('en-IN')}</td>
+                            <td class="p-3.5 sm:p-4 text-right text-indigo-600 dark:text-indigo-400 text-sm sm:text-base">₹${grandTotalFee.toLocaleString('en-IN')}</td>
+                        </tr>`;
+                    }
+                }
+
+                // Also sync dashboard milestone strip
+                updateDashboardMilestones();
+
+                document.getElementById('total-income-modal').classList.remove('hidden');
+                if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
+            } catch (err) {
+                console.error("openTotalIncomeModal error:", err);
+            }
+        }
+
+        function closeTotalIncomeModal() {
+            const modal = document.getElementById('total-income-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        window.openTotalIncomeModal = openTotalIncomeModal;
+        window.closeTotalIncomeModal = closeTotalIncomeModal;
+        window.updateDashboardMilestones = updateDashboardMilestones;
+        window.openTopPatientProfile = openTopPatientProfile;
+        window.openTopPatientFromModal = openTopPatientFromModal;
+
         function openAdvanceModal() {
             const tbody = document.getElementById('advance-list-body');
             tbody.innerHTML = "";
@@ -11528,12 +12416,48 @@ renderTables();
         window.closePatientCase = closePatientCase;
 
         
-        function toggleRecordSort() {
-            recordSortLatest = !recordSortLatest;
-            const btnSpan = document.querySelector('#record-sort-btn span');
-            btnSpan.innerText = recordSortLatest ? 'Sort: Newest First' : 'Sort: Oldest First';
+        let currentPatientSortMode = 'newest';
+
+        function setPatientSort(mode) {
+            currentPatientSortMode = mode || 'newest';
+            recordSortLatest = (mode !== 'oldest');
+
+            // Update UI pills styling
+            document.querySelectorAll('.patient-sort-pill').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600', 'shadow-indigo-500/20');
+                btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border-slate-200', 'dark:border-slate-700');
+            });
+
+            const activeBtn = document.getElementById(`btn-sort-${mode}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border-slate-200', 'dark:border-slate-700');
+                activeBtn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600', 'shadow-indigo-500/20');
+            }
+
+            const labels = {
+                'highest_paid': 'Highest Paid (Desc)',
+                'highest_sessions': 'Most Sessions (Desc)',
+                'highest_dues': 'Highest Dues (Desc)',
+                'newest': 'Newest First',
+                'oldest': 'Oldest First',
+                'name_asc': 'Name (A–Z)'
+            };
+            const labelEl = document.getElementById('patient-sort-active-label');
+            if (labelEl) {
+                labelEl.innerText = labels[mode] || 'Sorted';
+            }
+
             renderTables();
+            if (typeof filterRecordTable === 'function') filterRecordTable();
+            if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
         }
+
+        function toggleRecordSort() {
+            setPatientSort(currentPatientSortMode === 'newest' ? 'oldest' : 'newest');
+        }
+
+        window.setPatientSort = setPatientSort;
+        window.currentPatientSortMode = currentPatientSortMode;
 
         let filterRecordDebounce = null;
         function filterRecordTable() {
@@ -12306,45 +13230,9 @@ function showEnrollmentSuccessPopup(patient) {
         }
 
         async function openTopupBalance() {
-    if (!selectedPatientName) return;
-    const p = patientLookup[selectedPatientName];
-    const amount = prompt(`Enter Topup Amount for ${selectedPatientName}:`, "1000");
-    if (!amount) return;
-    const topup = Number(amount);
-    if (isNaN(topup) || topup <= 0) {
-        showToast("Please enter a valid amount", "warning");
-        return;
-    }
-    const dateStr = getLocalISOString();
-
-    // ── OPTIMISTIC LOCAL UPDATE ──
-    const prevWallet = p.walletBalance || 0;
-    p.walletBalance = prevWallet + topup;
-    updatePatientWorkspaceUI(selectedPatientName, p, false);
-    renderTables();
-    renderDuesWidget();
-    showToast(`Topup of ₹${topup.toLocaleString()} added to wallet for ${selectedPatientName}`, "success");
-
-    syncToBackend({
-        action: "markAsPaid",
-        id: p.id,
-        name: selectedPatientName,
-        phone: p.phone,
-        condition: p.diag,
-        amountPaid: topup,
-        paymentMode: "Cash",
-        billNo: "",
-        requestId: "TOPUP-" + Date.now()
-    }).then(() => {
-        scheduleBackgroundReconcile(3000);
-    }).catch(e => {
-        p.walletBalance = prevWallet;
-        updatePatientWorkspaceUI(selectedPatientName, p, false);
-        renderTables();
-        renderDuesWidget();
-        showToast('Topup failed to sync — ' + e.message, 'error');
-    });
-}
+            if (!selectedPatientName) return;
+            promptTopupForPatient(selectedPatientName);
+        }
 
 function openMidPackage() {
     if (!selectedPatientName) return;
@@ -13690,37 +14578,106 @@ function openMidPackage() {
                 names.push(name);
             });
 
+            // Pre-calculate financial and session metrics on patients
+            names.forEach(name => {
+                const p = patientLookup[name];
+                if (!p) return;
+                p._calcPaid = (p.logs || []).reduce((sum, l) => {
+                    const type = String(l[7] || '').trim().toLowerCase();
+                    if (type === 'case closed' || type === 'case restarted' || type === 'bill issued') return sum;
+                    return sum + toNum(l[9]);
+                }, 0);
+                p._calcSessions = (p.logs || []).filter(l => {
+                    const type = String(l[7] || '').trim().toLowerCase();
+                    if (['enrollment', 'package added', 'case closed', 'case restarted', 'bill issued'].includes(type)) return false;
+                    return toNum(l[9]) > 0 || type.includes('session') || type.includes('rehab');
+                }).length;
+            });
+
             function getPatientSortOrder(p) {
                 if (!p) return { idNum: 0, time: 0 };
                 let idNum = 0;
                 if (p.id) {
-                    const m = String(p.id).match(/\/(\d+)\b/);
-                    if (m) idNum = parseInt(m[1], 10);
+                    const m = String(p.id).match(/(\d+)(?!.*\d)/);
+                    if (m) idNum = parseInt(m[1], 10) || 0;
                 }
-                const time = Number(p.enrollTime) || 0;
+                let time = Number(p.enrollTime) || 0;
+                if (!time || isNaN(time)) {
+                    const rawDate = p.enrollDate || (p.logs && p.logs[0] && (p.logs[0][8] || p.logs[0][0])) || '';
+                    if (rawDate) {
+                        try {
+                            const ymd = typeof normDateYMD === 'function' ? normDateYMD(rawDate) : '';
+                            if (ymd) {
+                                const parsed = new Date(ymd).getTime();
+                                if (!isNaN(parsed) && parsed > 0) time = parsed;
+                            }
+                            if (!time) {
+                                const parsedDirect = new Date(rawDate).getTime();
+                                if (!isNaN(parsedDirect) && parsedDirect > 0) time = parsedDirect;
+                            }
+                        } catch (e) {}
+                    }
+                }
                 return { idNum, time };
             }
 
             names.sort((a, b) => {
                 const pa = patientLookup[a];
                 const pb = patientLookup[b];
+                if (!pa || !pb) return 0;
+
+                if (currentPatientSortMode === 'highest_paid') {
+                    const diffPaid = (pb._calcPaid || 0) - (pa._calcPaid || 0);
+                    if (diffPaid !== 0) return diffPaid;
+                    const diffSess = (pb._calcSessions || 0) - (pa._calcSessions || 0);
+                    if (diffSess !== 0) return diffSess;
+                } else if (currentPatientSortMode === 'highest_sessions') {
+                    const diffSess = (pb._calcSessions || 0) - (pa._calcSessions || 0);
+                    if (diffSess !== 0) return diffSess;
+                    const diffPaid = (pb._calcPaid || 0) - (pa._calcPaid || 0);
+                    if (diffPaid !== 0) return diffPaid;
+                } else if (currentPatientSortMode === 'highest_dues') {
+                    const diffDues = toNum(pb.outstandingDue || 0) - toNum(pa.outstandingDue || 0);
+                    if (diffDues !== 0) return diffDues;
+                } else if (currentPatientSortMode === 'name_asc') {
+                    const nameA = stripSalutation(pa.name || a).toLowerCase();
+                    const nameB = stripSalutation(pb.name || b).toLowerCase();
+                    return nameA.localeCompare(nameB);
+                } else if (currentPatientSortMode === 'oldest') {
+                    const sa = getPatientSortOrder(pa);
+                    const sb = getPatientSortOrder(pb);
+                    if (sa.idNum && sb.idNum && sa.idNum !== sb.idNum) return sa.idNum - sb.idNum;
+                    if (sa.time && sb.time && sa.time !== sb.time) return sa.time - sb.time;
+                    return (sa.idNum || 0) - (sb.idNum || 0);
+                }
+
+                // Default: newest (highest sequence ID first, e.g. POC26/1012 > POC26/1011 > POC26/1009, or latest enrollment date)
                 const sa = getPatientSortOrder(pa);
                 const sb = getPatientSortOrder(pb);
                 if (sa.idNum && sb.idNum && sa.idNum !== sb.idNum) {
-                    return recordSortLatest ? (sb.idNum - sa.idNum) : (sa.idNum - sb.idNum);
+                    return sb.idNum - sa.idNum;
                 }
-                return recordSortLatest ? (sb.time - sa.time) : (sa.time - sb.time);
+                if (sa.time && sb.time && sa.time !== sb.time) {
+                    return sb.time - sa.time;
+                }
+                if (sa.idNum || sb.idNum) {
+                    return (sb.idNum || 0) - (sa.idNum || 0);
+                }
+                return (sb.time || 0) - (sa.time || 0);
             });
 
+            let visibleIndex = 0;
             names.forEach(name => {
                 const p = patientLookup[name];
                 // UPDATED: Calculate using wallet helper
                 const rem = getRemainingSessions(p);
-                const totalAmount = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+                const totalAmount = p._calcPaid !== undefined ? p._calcPaid : p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+                const sessionsCount = p._calcSessions !== undefined ? p._calcSessions : 0;
 
                 const pidUpper = String(p.id || '').toUpperCase();
                 const matchesBranch = (currentBranchFilter === 'ALL' || pidUpper.startsWith(currentBranchFilter) || (!pidUpper && currentBranchFilter === 'ALL'));
                 if (matchesBranch) {
+                    visibleIndex++;
                     let statusBadge;
                     const wallet = p.walletBalance || 0;
                     const commonCls = "inline-flex items-center justify-center px-3 py-1 rounded-full text-[10px] font-extrabold tracking-tight transition-all border shadow-sm w-fit min-w-[80px]";
@@ -13737,10 +14694,30 @@ function openMidPackage() {
                         statusBadge = `<span class="${commonCls} bg-emerald-50 text-emerald-600 border-emerald-100">OPEN</span>`;
                     }
 
+                    // Rank badge for ranked modes (#1, #2, #3, ...)
+                    let rankBadge = '';
+                    if (['highest_paid', 'highest_sessions', 'highest_dues'].includes(currentPatientSortMode)) {
+                        const rCls = visibleIndex === 1 ? 'bg-amber-100 dark:bg-amber-900/70 text-amber-800 dark:text-amber-300 font-black border border-amber-300/80 shadow-xs'
+                                   : visibleIndex === 2 ? 'bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-black border border-slate-300 dark:border-slate-600'
+                                   : visibleIndex === 3 ? 'bg-orange-100 dark:bg-orange-900/70 text-orange-800 dark:text-orange-300 font-black border border-orange-300/80'
+                                   : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold border border-slate-200 dark:border-slate-700';
+                        rankBadge = `<span class="inline-flex items-center justify-center text-[9px] px-1.5 py-0.2 rounded-md ${rCls} mr-1.5">#${visibleIndex}</span>`;
+                    }
+
                     const cleanName = stripSalutation(p.name || name);
+                    const paidClass = currentPatientSortMode === 'highest_paid' ? 'text-amber-600 dark:text-amber-400 font-black' : 'text-slate-400 dark:text-slate-500 font-bold';
+                    const sessClass = currentPatientSortMode === 'highest_sessions' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-slate-400 dark:text-slate-500 font-bold';
+
                     pHtml += `<tr class="hover:bg-slate-50/50 ${p.closed ? 'bg-slate-50/40' : ''}" data-search-tag="${String(cleanName).toUpperCase()} ${String(p.name || name).toUpperCase()} ${String(p.id || '').toUpperCase()} ${String(p.phone || '').toUpperCase()} ${String(p.diag || '').toUpperCase()}">
-                                <td class="p-5 font-black text-indigo-500 text-xs col-reg-no whitespace-nowrap">${p.id}</td>
-                                <td class="p-5 font-bold uppercase text-xs cursor-pointer hover:text-indigo-600 hover:underline" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${cleanName}</td>
+                                <td class="p-5 font-black text-indigo-500 text-xs col-reg-no whitespace-nowrap">${rankBadge}${p.id}</td>
+                                <td class="p-5 text-xs">
+                                    <div class="font-bold uppercase cursor-pointer hover:text-indigo-600 hover:underline inline-block" onclick="viewPatientDetail('${name.replace(/'/g, "\\'")}')" title="Click to view sessions">${cleanName}</div>
+                                    <div class="flex items-center gap-1.5 mt-0.5 text-[10px]">
+                                        <span class="${paidClass}">₹${totalAmount.toLocaleString('en-IN')} paid</span>
+                                        <span class="text-slate-300 dark:text-slate-600">•</span>
+                                        <span class="${sessClass}">${sessionsCount} sessions</span>
+                                    </div>
+                                </td>
                                 <td class="p-5 text-xs font-bold text-slate-600 italic col-desktop-extra">${p.age || '—'}Y / ${p.gender || '—'}</td>
                                 <td class="p-5 text-xs font-black text-slate-700 dark:text-slate-300 col-desktop-extra">${p.phone ? `<a href="tel:${p.phone}" class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline transition-colors" title="Call patient">${p.phone}</a>` : '—'}</td>
                                 <td class="p-5 italic text-slate-600 text-xs truncate max-w-[150px] col-desktop-extra">${p.diag || '—'}</td>
@@ -13806,10 +14783,75 @@ function openMidPackage() {
 function renderPatientDetailModal(name) {
     const p = patientLookup[name];
     if (!p) return;
-    // Calculate total fees
-    const totalFees = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
 
-    // Find the most recent actual payment (Advance packages, settlements, or direct payment)
+    // 1. Core Financial Aggregations across logs
+    let grossIncurred = 0;
+    let totalDiscount = Number(p.discount) || 0;
+    let cashTotal = 0;
+    let upiTotal = 0;
+    let cardTotal = 0;
+    let walletUsedTotal = 0;
+
+    const validLogs = (p.logs || []).filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return !['case closed', 'case restarted', 'bill issued'].includes(t);
+    });
+
+    validLogs.forEach(l => {
+        const fee = toNum(l[9]);
+        const adv = toNum(l[11]);
+        const disc = toNum(l[12]);
+        const paidVal = toNum(l[15]);
+        const origMode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
+        const modeLower = origMode.toLowerCase();
+        const t = String(l[7] || '').trim().toLowerCase();
+        const noteStr = String(l[6] || '').trim().toLowerCase();
+
+        // Accumulate discounts
+        if (disc > 0) totalDiscount += disc;
+
+        // Gross Incurred: fees charged for clinical sessions and treatments
+        if (fee > 0) {
+            grossIncurred += fee;
+        } else if (t.includes('package') && adv > 0) {
+            grossIncurred += adv;
+        }
+
+        // Identify transaction amount received
+        const isDuePay = t.includes('due payment') || t.includes('due cleared') || t.includes('settlement') || 
+                         noteStr.includes('due payment') || noteStr.includes('balance credit') || noteStr.includes('due cleared') || noteStr.includes('due paid');
+        const isTopup = !isDuePay && (t.includes('wallet topup') || t.includes('topup') || noteStr.includes('topup') || (t.includes('advance') && fee === 0 && adv > 0));
+        const isPkg = !isDuePay && !isTopup && (t === 'package added' || (t.includes('package') && !t.includes('session')));
+        const isEnroll = !isDuePay && !isTopup && !isPkg && t.includes('enrollment');
+
+        // Cash / Online money received
+        let collectedAmt = 0;
+        if (isDuePay || isTopup || isPkg || isEnroll) {
+            collectedAmt = adv > 0 ? adv : (paidVal > 0 ? paidVal : (fee > 0 ? fee : 0));
+        } else if (origMode !== 'Pending' && origMode !== 'Advance' && origMode !== 'Package') {
+            // Daily session direct payment
+            collectedAmt = fee > 0 ? fee : (paidVal > 0 ? paidVal : adv);
+        }
+
+        if (modeLower.includes('cash')) {
+            cashTotal += collectedAmt;
+        } else if (modeLower.includes('upi') || modeLower.includes('online') || modeLower.includes('gpay') || modeLower.includes('phonepe') || modeLower.includes('paytm') || modeLower.includes('qr')) {
+            upiTotal += collectedAmt;
+        } else if (modeLower.includes('card') || modeLower.includes('pos') || modeLower.includes('bank') || modeLower.includes('transfer') || modeLower.includes('neft') || modeLower.includes('rtgs')) {
+            cardTotal += collectedAmt;
+        } else if (origMode === 'Advance' || origMode === 'Package' || modeLower.includes('wallet')) {
+            walletUsedTotal += (fee > 0 ? fee : 0);
+        } else if (collectedAmt > 0) {
+            cashTotal += collectedAmt;
+        }
+    });
+
+    // Total actual collected
+    const totalFees = p.logs.reduce((sum, l) => sum + toNum(l[9]), 0);
+    const totalPaidAmount = p._calcPaid !== undefined ? p._calcPaid : (cashTotal + upiTotal + cardTotal || totalFees);
+    const netPayable = Math.max(0, grossIncurred - totalDiscount);
+
+    // Find the most recent actual payment
     const paymentLogs = (p.logs || []).filter(l => {
         const adv = toNum(l[11]);
         const paid = toNum(l[15]);
@@ -13826,96 +14868,297 @@ function renderPatientDetailModal(name) {
         const paid = toNum(lastPayEntry[15]);
         const lastAmount = adv > 0 ? adv : paid;
         const lastDate = formatDateDMY(lastPayEntry[8] || lastPayEntry[0]);
-        lastPayDisplay = `Last: ₹${lastAmount.toLocaleString()} | ${lastDate}`;
+        const t = String(lastPayEntry[7] || '').trim().toLowerCase();
+        const noteL = String(lastPayEntry[6] || '').trim().toLowerCase();
+        let reasonTag = '';
+        if (t.includes('due') || noteL.includes('due')) reasonTag = ' (Due Cleared)';
+        else if (t.includes('topup') || noteL.includes('topup')) reasonTag = ' (Wallet Top-up)';
+        else if (t.includes('package')) reasonTag = ' (Package)';
+        else if (t.includes('enroll')) reasonTag = ' (Enrollment)';
+        lastPayDisplay = `Last: ₹${lastAmount.toLocaleString()}${reasonTag} on ${lastDate}`;
     }
 
     const remaining = getRemainingSessions(p);
+    const wallet = Number(p.walletBalance) || 0;
+    const due = Number(p.outstandingDue) || 0;
+    const dueCount = Number(p.dueSessionCount) || (due > 0 ? 1 : 0);
+    const baseRate = Math.round(toNum(p.baseRate)) || 0;
 
+    // Header & Demographics
     document.getElementById('pd-name').innerText = stripSalutation(p.name || name);
     document.getElementById('pd-name').dataset.fullName = name;
-    document.getElementById('pd-id-badge').innerText = p.id;
-    const consumed = p.logs.filter(l => {
-    const t = String(l[7] || '').trim().toLowerCase();
-    return !['enrollment','package added','case closed','case restarted','bill issued'].includes(t) && toNum(l[9]) > 0;
-}).length;
-document.getElementById('pd-sessions').innerText = consumed;
-
-    // Update the Total Paid card to show both Total and the Last Payment Date
-    document.getElementById('pd-payment').innerHTML = `
-        <span class="block">₹${totalFees.toLocaleString()}</span>
-        <span class="block text-[10px] text-emerald-500 mt-1 font-black">${lastPayDisplay}</span>
-    `;
-
-    const dueCard = document.getElementById('pd-due-card');
-    if (p.outstandingDue > 0) {
-        dueCard.classList.remove('hidden');
-        document.getElementById('pd-due').innerText = '₹' + p.outstandingDue.toLocaleString();
-    } else {
-        dueCard.classList.add('hidden');
-    }
-
+    document.getElementById('pd-id-badge').innerText = p.id || 'N/A';
     document.getElementById('pd-demo').innerText = `${p.age || '—'} yrs / ${p.gender || '—'}`;
+
     const pdPhoneEl = document.getElementById('pd-phone');
+    const pdPhoneAction = document.getElementById('pd-phone-action');
     if (pdPhoneEl) {
         if (p.phone) {
-            pdPhoneEl.innerHTML = `<a href="tel:${p.phone}" class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline inline-flex items-center gap-1 transition-colors" title="Click to call patient"><i data-lucide="phone" class="w-3.5 h-3.5 inline"></i><span>${p.phone}</span></a>`;
+            const cleanPhone = String(p.phone).replace(/\D/g, '');
+            const waNumber = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
+            pdPhoneEl.innerHTML = `<a href="tel:${p.phone}" class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline inline-flex items-center gap-1.5 transition-colors" title="Click to call patient"><i data-lucide="phone" class="w-3.5 h-3.5 text-indigo-500"></i><span>${p.phone}</span></a>`;
+            if (pdPhoneAction) {
+                pdPhoneAction.innerHTML = `
+                    <div class="flex items-center gap-1.5">
+                        <a href="tel:${p.phone}" class="p-1.5 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-xl transition-all cursor-pointer" title="Call ${p.phone}">
+                            <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?phone=${waNumber}" target="_blank" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900 text-[#25D366] rounded-xl transition-all cursor-pointer" title="WhatsApp Message">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                `;
+            }
         } else {
             pdPhoneEl.innerText = '—';
+            if (pdPhoneAction) pdPhoneAction.innerHTML = '';
         }
     }
-    document.getElementById('pd-address').innerText = p.address || '—';
+
+    // Financial Status Badge in Header
+    const finBadge = document.getElementById('pd-financial-badge');
+    if (finBadge) {
+        if (p.closed) {
+            finBadge.className = 'px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700';
+            finBadge.innerText = 'Case Closed';
+        } else if (due > 0) {
+            finBadge.className = 'px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border tracking-wider bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800 animate-pulse';
+            finBadge.innerText = `₹${due.toLocaleString()} Due Pending`;
+        } else if (wallet > 0) {
+            finBadge.className = 'px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border tracking-wider bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
+            finBadge.innerText = `₹${wallet.toLocaleString()} Wallet Credit`;
+        } else {
+            finBadge.className = 'px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase border tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700';
+            finBadge.innerText = 'Fully Settled';
+        }
+    }
+
+    // 1. KPI STRIP BINDING
+    const payEl = document.getElementById('pd-payment');
+    if (payEl) payEl.innerText = `₹${totalPaidAmount.toLocaleString()}`;
+    const paySubEl = document.getElementById('pd-payment-subtext');
+    if (paySubEl) paySubEl.innerText = lastPayDisplay;
+
+    const dueEl = document.getElementById('pd-due');
+    if (dueEl) dueEl.innerText = `₹${due.toLocaleString()}`;
+    const dueSubEl = document.getElementById('pd-due-subtext');
+    if (dueSubEl) dueSubEl.innerText = due > 0 ? `${dueCount} Overdue Session${dueCount === 1 ? '' : 's'}` : 'No Pending Dues';
+    const dueCard = document.getElementById('pd-due-card');
+    if (dueCard) {
+        if (due > 0) {
+            dueCard.className = 'p-3.5 sm:p-4 bg-rose-50 dark:bg-rose-950/40 rounded-2xl border border-rose-200 dark:border-rose-900 flex flex-col justify-between transition-all ring-1 ring-rose-300/40';
+        } else {
+            dueCard.className = 'p-3.5 sm:p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between opacity-80';
+        }
+    }
+
+    const walletAmtEl = document.getElementById('pd-wallet-amt');
+    if (walletAmtEl) walletAmtEl.innerText = `₹${wallet.toLocaleString()}`;
+    const walletSubEl = document.getElementById('pd-wallet-subtext');
+    if (walletSubEl) walletSubEl.innerText = wallet > 0 ? 'Pre-paid Credit Available' : 'No Pre-paid Balance';
+
+    const rateAmtEl = document.getElementById('pd-rate-amt');
+    if (rateAmtEl) rateAmtEl.innerText = `₹${baseRate} / ses`;
+    const pkgSubEl = document.getElementById('pd-package-subtext');
+    if (pkgSubEl) {
+        pkgSubEl.innerText = p.purchased > 0 
+            ? `${remaining} of ${p.purchased} package sessions left`
+            : 'Regular Pay-Per-Session';
+    }
+
+    // Clear Due Action Button in Toolbar
+    const clearDueBtn = document.getElementById('pd-btn-clear-due');
+    if (clearDueBtn) {
+        if (due > 0) {
+            clearDueBtn.innerHTML = `<i data-lucide="check-check" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">Clear Due (₹${due.toLocaleString()})</span>`;
+            clearDueBtn.className = 'w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 animate-pulse truncate';
+        } else {
+            clearDueBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 flex-shrink-0"></i> <span class="truncate">Clear Due</span>`;
+            clearDueBtn.className = 'w-full py-2 sm:py-2.5 px-1 sm:px-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 hover:bg-slate-300 truncate';
+        }
+    }
+
+    // 2. CLINICAL & CONTACT DETAILS
     document.getElementById('pd-diag').innerText = p.diag || '—';
     const pdDoc = document.getElementById('pd-doctor');
     if (pdDoc) pdDoc.innerText = p.doctor || 'Not Assigned';
     const pdReassign = document.getElementById('pd-reassign-btn');
     if (pdReassign) pdReassign.classList.toggle('hidden', !isAdmin());
-    const wallet = p.walletBalance || 0;
-    document.getElementById('pd-package').innerText = p.purchased > 0
-        ? `${remaining} of ${p.purchased} sessions left @ ₹${Math.round(toNum(p.baseRate))}/session | Wallet: ₹${wallet.toLocaleString()}`
-        : `Regular @ ₹${Math.round(toNum(p.baseRate))}/session | Wallet: ₹${wallet.toLocaleString()}`;
+    document.getElementById('pd-address').innerText = p.address || '—';
 
-    const statusEl = document.getElementById('pd-status');
-    statusEl.innerText = p.closed
-        ? `Closed${p.closedDate ? ' on ' + formatDateDMY(p.closedDate) : ''}`
-        : 'Active';
-
-    const datesList = document.getElementById('pd-dates-list');
-    const validDetailLogs = (p.logs || []).filter(l => {
+    // Legacy Bridge Elements (Prevent breakage of any external callers)
+    const consumed = p.logs.filter(l => {
         const t = String(l[7] || '').trim().toLowerCase();
-        return !['case closed', 'case restarted', 'bill issued'].includes(t);
-    });
-    const sortedLogs = validDetailLogs.slice().sort((a, b) => new Date(b[8] || b[0]) - new Date(a[8] || a[0]));
-    datesList.innerHTML = sortedLogs.length
-        ? sortedLogs.map(l => {
-            const mode = l[13] || (isNaN(Number(l[15])) ? l[15] : '') || 'Cash';
-            const badgeColor = mode === 'Pending' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600';
-            const note = l[6] ? `<span class="text-slate-400 italic ml-2">"${l[6]}"</span>` : '';
-            return `<div class="p-3 bg-slate-50 rounded-xl text-[10px] font-bold text-slate-600 flex justify-between items-center gap-2">
-                <span class="truncate">${formatDateDMY(l[8])}${note}</span>
-                <span class="flex items-center gap-2 flex-shrink-0">
-                    <span class="${badgeColor} px-2 py-0.5 rounded text-[9px] font-black uppercase">${mode}</span>
-                    <span class="text-indigo-500">₹${toNum(l[9])}</span>
-                </span>
-            </div>`;
-        }).join('')
-        : `<p class="text-xs text-slate-600 italic">No sessions logged yet.</p>`;
+        return !['enrollment','package added','case closed','case restarted','bill issued'].includes(t) && toNum(l[9]) > 0;
+    }).length;
+    const pdSessionsLegacy = document.getElementById('pd-sessions');
+    if (pdSessionsLegacy) pdSessionsLegacy.innerText = consumed;
+    const pdPkgLegacy = document.getElementById('pd-package');
+    if (pdPkgLegacy) {
+        pdPkgLegacy.innerText = p.purchased > 0
+            ? `${remaining} of ${p.purchased} sessions left @ ₹${baseRate}/session | Wallet: ₹${wallet.toLocaleString()}`
+            : `Regular @ ₹${baseRate}/session | Wallet: ₹${wallet.toLocaleString()}`;
+    }
+    const pdStatusLegacy = document.getElementById('pd-status');
+    if (pdStatusLegacy) {
+        pdStatusLegacy.innerText = p.closed ? `Closed${p.closedDate ? ' on ' + formatDateDMY(p.closedDate) : ''}` : 'Active';
+    }
 
+    // 3. TRANSACTION & SESSION LEDGER
+    const datesList = document.getElementById('pd-dates-list');
+    if (datesList) {
+        const sortedLogs = validLogs.slice().sort((a, b) => {
+            const dateA = new Date(normDateYMD(a[8] || a[0]) || a[0] || 0);
+            const dateB = new Date(normDateYMD(b[8] || b[0]) || b[0] || 0);
+            return dateB - dateA;
+        });
+
+        const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+        datesList.innerHTML = sortedLogs.length
+            ? sortedLogs.map(l => {
+                const rawDate = l[8] || l[0];
+                const dateStr = formatDateDMY(rawDate) || (l[0] ? formatDateDMY(l[0]) : '');
+
+                const t = String(l[7] || '').trim().toLowerCase();
+                const noteStr = String(l[6] || '').trim();
+                const noteLower = noteStr.toLowerCase();
+                const origMode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || 'Cash').trim();
+                const fee = toNum(l[9]);
+                const adv = toNum(l[11]);
+                const paidVal = toNum(l[15]);
+
+                // Categorize transaction type accurately:
+                const isDuePay = t.includes('due payment') || t.includes('due cleared') || t.includes('settlement') || 
+                                 noteLower.includes('due payment') || noteLower.includes('balance credit') || noteLower.includes('due cleared') || noteLower.includes('due paid');
+                const isTopup = !isDuePay && (t.includes('wallet topup') || t.includes('topup') || noteLower.includes('topup') || noteLower.includes('wallet top-up') || (t.includes('advance') && fee === 0 && adv > 0));
+                const isPkg = !isDuePay && !isTopup && (t === 'package added' || (t.includes('package') && !t.includes('session')));
+                const isEnroll = !isDuePay && !isTopup && !isPkg && t.includes('enrollment');
+
+                let title = '';
+                let badgesHtml = '';
+                let amountHtml = '';
+                let subText = '';
+                let borderCls = 'border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/50';
+
+                if (isDuePay) {
+                    const amt = adv > 0 ? adv : (paidVal > 0 ? paidVal : (fee > 0 ? fee : 0));
+                    title = 'Due Cleared';
+                    subText = 'Outstanding Due Payment Received';
+                    if (noteStr && !noteLower.includes('due payment') && !noteLower.includes('balance credit') && !noteLower.includes('due cleared')) {
+                        subText += ` • ${esc(noteStr)}`;
+                    } else if (p.diag) {
+                        subText += ` • ${esc(p.diag)}`;
+                    }
+                    badgesHtml = `
+                        <span class="bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded text-[9px] font-black uppercase flex items-center gap-1">
+                            <i data-lucide="check-check" class="w-3 h-3 text-emerald-600"></i> Due Cleared
+                        </span>
+                        <span class="bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded text-[9px] font-black uppercase">${esc(origMode || 'Cash')}</span>
+                    `;
+                    amountHtml = `<span class="text-emerald-600 dark:text-emerald-400 font-black text-xs">+₹${amt.toLocaleString()}</span>`;
+                    borderCls = 'border-emerald-200/80 dark:border-emerald-900/60 bg-emerald-50/50 dark:bg-emerald-950/20';
+                } else if (isTopup) {
+                    const amt = adv > 0 ? adv : (paidVal > 0 ? paidVal : (fee > 0 ? fee : 0));
+                    title = 'Wallet Top-Up';
+                    subText = 'Balance credited to patient wallet';
+                    if (noteStr && !noteLower.includes('topup') && !noteLower.includes('wallet')) {
+                        subText += ` • ${esc(noteStr)}`;
+                    }
+                    badgesHtml = `
+                        <span class="bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 px-2 py-0.5 rounded text-[9px] font-black uppercase flex items-center gap-1">
+                            <i data-lucide="wallet" class="w-3 h-3 text-indigo-600"></i> Wallet Top-Up
+                        </span>
+                        <span class="bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded text-[9px] font-black uppercase">${esc(origMode || 'Cash')}</span>
+                    `;
+                    amountHtml = `<span class="text-indigo-600 dark:text-indigo-400 font-black text-xs">+₹${amt.toLocaleString()}</span>`;
+                    borderCls = 'border-indigo-200/80 dark:border-indigo-900/60 bg-indigo-50/50 dark:bg-indigo-950/20';
+                } else if (isPkg) {
+                    const amt = adv > 0 ? adv : (fee > 0 ? fee : 0);
+                    const pkgCount = toNum(l[10]);
+                    title = 'Package Added';
+                    subText = pkgCount > 0 ? `${pkgCount} Sessions Treatment Package Added` : 'Treatment Package Purchased';
+                    badgesHtml = `
+                        <span class="bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 px-2 py-0.5 rounded text-[9px] font-black uppercase flex items-center gap-1">
+                            <i data-lucide="package-plus" class="w-3 h-3 text-purple-600"></i> Package Added
+                        </span>
+                        <span class="bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded text-[9px] font-black uppercase">${esc(origMode || 'Advance')}</span>
+                    `;
+                    amountHtml = `<span class="text-purple-600 dark:text-purple-400 font-black text-xs">+₹${amt.toLocaleString()}</span>`;
+                    borderCls = 'border-purple-200/80 dark:border-purple-900/60 bg-purple-50/50 dark:bg-purple-950/20';
+                } else if (isEnroll) {
+                    const amt = adv > 0 ? adv : (fee > 0 ? fee : 0);
+                    title = 'Enrollment';
+                    subText = 'Patient Registration & Admission';
+                    badgesHtml = `
+                        <span class="bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800 px-2 py-0.5 rounded text-[9px] font-black uppercase flex items-center gap-1">
+                            <i data-lucide="user-plus" class="w-3 h-3 text-sky-600"></i> Enrollment
+                        </span>
+                        <span class="bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-200 px-2 py-0.5 rounded text-[9px] font-black uppercase">${esc(origMode || 'Cash')}</span>
+                    `;
+                    amountHtml = `<span class="text-sky-600 dark:text-sky-400 font-black text-xs">₹${amt.toLocaleString()}</span>`;
+                    borderCls = 'border-sky-200/80 dark:border-sky-900/60 bg-sky-50/50 dark:bg-sky-950/20';
+                } else {
+                    // Clinical Session
+                    title = 'Physiotherapy Session';
+                    subText = noteStr ? `"${esc(noteStr)}"` : (p.diag ? `"${esc(p.diag)}"` : '');
+                    const isPending = origMode === 'Pending';
+                    const isAdvance = origMode === 'Advance' || origMode === 'Package';
+
+                    let badgeCls = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800';
+                    let modeText = origMode;
+                    if (isPending) {
+                        badgeCls = 'bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200 dark:border-rose-900';
+                        modeText = 'Pending Due';
+                    } else if (isAdvance) {
+                        badgeCls = 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800';
+                        modeText = 'From Wallet';
+                    }
+
+                    badgesHtml = `<span class="${badgeCls} px-2 py-0.5 rounded text-[9px] font-black uppercase">${esc(modeText)}</span>`;
+                    const amtColor = isPending ? 'text-rose-600 dark:text-rose-400' : (isAdvance ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-800 dark:text-slate-100');
+                    amountHtml = `<span class="${amtColor} font-black text-xs">₹${fee.toLocaleString()}</span>`;
+                    if (isPending) {
+                        borderCls = 'border-rose-200/80 dark:border-rose-900/60 bg-rose-50/40 dark:bg-rose-950/20';
+                    }
+                }
+
+                return `
+                    <div class="p-3 rounded-2xl text-[10px] font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center gap-3 border shadow-xs transition-colors ${borderCls}">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-extrabold text-slate-900 dark:text-white text-xs">${dateStr || '—'}</span>
+                                <span class="font-black text-indigo-600 dark:text-indigo-400 uppercase text-[9.5px]">${title}</span>
+                            </div>
+                            ${subText ? `<p class="text-[9.5px] text-slate-500 dark:text-slate-400 italic mt-0.5 truncate">${subText}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                            ${badgesHtml}
+                            ${amountHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('')
+            : `<p class="text-xs text-slate-500 dark:text-slate-400 italic p-4 text-center bg-slate-50 dark:bg-slate-800/40 rounded-2xl">No transaction records found.</p>`;
+
+        if (window.lucide) {
+            lucide.createIcons({ root: datesList });
+        }
+    }
+
+    // Bottom Action Buttons
     const modal = document.getElementById('patient-detail-modal');
     let actionButtons = modal.querySelector('.detail-action-buttons');
     if (actionButtons) actionButtons.remove();
 
     actionButtons = document.createElement('div');
-    actionButtons.className = 'detail-action-buttons grid grid-cols-2 sm:flex sm:flex-wrap gap-2 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 w-full';
+    actionButtons.className = 'detail-action-buttons grid grid-cols-2 sm:flex sm:flex-wrap gap-2 pt-4 mt-3 border-t border-slate-100 dark:border-slate-800 flex-shrink-0 w-full';
     actionButtons.innerHTML = `
-        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">🏃 Exercise Plan</button>
-        <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">✏️ Edit Details</button>
-        <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[110px] bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">📄 View Bill</button>
+        <button onclick="openExercisePlanModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[100px] bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">🏃 Exercise Plan</button>
+        <button onclick="closePatientDetailModal(); openEditPatientModal('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[100px] bg-blue-500 hover:bg-blue-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">✏️ Edit Details</button>
+        <button onclick="closePatientDetailModal(); generateBill('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[100px] bg-indigo-500 hover:bg-indigo-600 text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">📄 View Bill</button>
+        <button onclick="sendPatientPortalLink('${name.replace(/'/g, "\\'")}')" class="w-full sm:flex-1 sm:min-w-[100px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95">💬 Portal</button>
     `;
-    const portalBtn = document.createElement('button');
-    portalBtn.className = 'w-full sm:flex-1 sm:min-w-[110px] bg-[#25D366] hover:bg-[#20BA5F] text-white py-2.5 px-2 rounded-xl text-[10px] font-black uppercase transition-all cursor-pointer text-center flex items-center justify-center gap-1 shadow-sm active:scale-95';
-    portalBtn.innerHTML = '💬 Send Portal';
-    portalBtn.onclick = () => sendPatientPortalLink(name);
-    actionButtons.appendChild(portalBtn);
 
     const modalBody = modal.querySelector('.bg-white') || modal.querySelector('div[class*="rounded"]');
     if (modalBody) modalBody.appendChild(actionButtons);
@@ -13925,6 +15168,221 @@ document.getElementById('pd-sessions').innerText = consumed;
         lucide.createIcons({ root: modal });
     }
 }
+
+function filterPatientLedger() {}
+
+let walletTopupContext = null;
+
+function promptTopupForPatient(name) {
+    if (!name) return;
+    const p = patientLookup[name];
+    if (!p) return;
+    const cleanName = stripSalutation(name);
+    walletTopupContext = { name, p };
+
+    const modal = document.getElementById('wallet-topup-modal');
+    if (!modal) return;
+
+    document.getElementById('wtu-patient-name').innerText = cleanName;
+    document.getElementById('wtu-current-balance').innerText = `₹${(Number(p.walletBalance) || 0).toLocaleString()}`;
+    document.getElementById('wtu-amount').value = '1000';
+    document.getElementById('wtu-mode').value = 'Cash';
+    document.getElementById('wtu-note').value = '';
+
+    modal.classList.remove('hidden');
+    if (window.lucide) {
+        lucide.createIcons({ root: modal });
+    }
+    setTimeout(() => {
+        const amtEl = document.getElementById('wtu-amount');
+        if (amtEl) {
+            amtEl.focus();
+            amtEl.select();
+        }
+    }, 60);
+}
+
+function closeWalletTopupModal() {
+    const modal = document.getElementById('wallet-topup-modal');
+    if (modal) modal.classList.add('hidden');
+    walletTopupContext = null;
+}
+
+async function confirmWalletTopup() {
+    if (!walletTopupContext || !walletTopupContext.p) {
+        showToast("No active patient selected", "error");
+        return;
+    }
+    const { name, p } = walletTopupContext;
+    const cleanName = stripSalutation(name);
+
+    const amountInput = document.getElementById('wtu-amount');
+    const topup = Number(amountInput ? amountInput.value : 0);
+    if (isNaN(topup) || topup <= 0) {
+        showToast("Please enter a valid numeric amount greater than 0", "warning");
+        if (amountInput) amountInput.focus();
+        return;
+    }
+
+    const modeSelect = document.getElementById('wtu-mode');
+    const mode = (modeSelect && modeSelect.value) ? modeSelect.value : "Cash";
+    const noteInput = document.getElementById('wtu-note');
+    const userNote = (noteInput && noteInput.value) ? noteInput.value.trim() : '';
+
+    const btn = document.getElementById('wtu-submit-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+    }
+
+    try {
+        const prevWallet = Number(p.walletBalance) || 0;
+        const newWallet = prevWallet + topup;
+        const today = getLocalISOString();
+        const now = Date.now();
+
+        p._recentSettlementTime = now;
+        p.walletBalance = newWallet;
+        if (patientLookup[name]) patientLookup[name].walletBalance = newWallet;
+        if (p.name && patientLookup[p.name]) patientLookup[p.name].walletBalance = newWallet;
+
+        const noteText = userNote ? `Wallet Top-Up: ${userNote}` : 'Wallet Top-Up / Advance Balance';
+
+        const topupRow = [
+            new Date().toISOString(),
+            p.id,
+            name,
+            p.phone || '',
+            p.age || '',
+            p.gender || '',
+            noteText,
+            'Wallet Topup',
+            today,
+            0,      // fee
+            0,      // purchased
+            topup,  // advance
+            0,      // discount
+            mode,   // paymentMode
+            p.address || '',
+            p.doctor || '',
+            topup   // amountPaid
+        ];
+
+        if (!p.logs) p.logs = [];
+        p.logs.push(topupRow);
+        globalData.push(topupRow);
+        if (typeof markRecentOptimisticLog === 'function') {
+            markRecentOptimisticLog(topupRow);
+        }
+
+        const detailModal = document.getElementById('patient-detail-modal');
+        if (detailModal && !detailModal.classList.contains('hidden')) {
+            renderPatientDetailModal(name);
+        }
+        if (typeof updatePatientWorkspaceUI === 'function') {
+            updatePatientWorkspaceUI(name, p, false);
+        }
+        renderTables();
+        if (typeof renderDuesWidget === 'function') renderDuesWidget();
+        if (typeof updateGlobalStats === 'function') updateGlobalStats();
+
+        closeWalletTopupModal();
+        showToast(`₹${topup.toLocaleString()} credited to wallet for ${cleanName} (${mode})`, 'success');
+
+        syncToBackend({
+            action: "markAsPaid",
+            id: p.id,
+            name: name,
+            phone: p.phone,
+            condition: p.diag,
+            fee: 0,
+            date: today,
+            advance: topup,
+            amountPaid: topup,
+            paymentMode: mode,
+            notes: noteText,
+            type: "Wallet Topup",
+            address: p.address || '',
+            doctor: p.doctor || '',
+            billNo: "",
+            requestId: "TOPUP-" + Date.now()
+        }).then(() => {
+            if (typeof scheduleBackgroundReconcile === 'function') {
+                scheduleBackgroundReconcile(3000);
+            }
+        }).catch(err => {
+            console.error("Topup background sync error:", err);
+        });
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "Confirm Top-Up";
+        }
+    }
+}
+
+function openMidPackageFromDetail(name) {
+    selectedPatientName = name;
+    closePatientDetailModal();
+    openMidPackage();
+}
+
+function sendPatientFinancialStatement(name) {
+    const p = patientLookup[name];
+    if (!p) {
+        showToast('Patient not found', 'error');
+        return;
+    }
+    const waNumber = getWhatsAppNumber(p.phone);
+    if (!waNumber) {
+        showToast('Valid phone number required for WhatsApp', 'warning');
+        return;
+    }
+    const formalName = getFormalPatientNameWithTitle(p, name);
+    const totalPaid = p._calcPaid !== undefined ? p._calcPaid : (p.logs || []).reduce((s, l) => s + toNum(l[9]), 0);
+    const due = Number(p.outstandingDue) || 0;
+    const wallet = Number(p.walletBalance) || 0;
+    const remSessions = getRemainingSessions(p);
+    const totalSessions = (p.logs || []).filter(l => {
+        const t = String(l[7] || '').trim().toLowerCase();
+        return !['enrollment','package added','case closed','case restarted','bill issued'].includes(t) && toNum(l[9]) > 0;
+    }).length;
+    
+    const now = new Date();
+    const dateFormatted = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()}`;
+    
+    const dueStatus = due > 0 ? `⚠️ *Outstanding Due:* ₹${due.toLocaleString()}` : `✅ *Dues Status:* Fully Cleared (₹0 Due)`;
+    const walletStatus = wallet > 0 ? `👛 *Available Wallet Credit:* ₹${wallet.toLocaleString()}` : `👛 *Wallet Balance:* ₹0`;
+    const packageStatus = p.purchased > 0 ? `📦 *Package:* ${remSessions} of ${p.purchased} sessions remaining` : `📋 *Plan:* Regular Sessions (@ ₹${Math.round(toNum(p.baseRate)) || 0}/session)`;
+
+    const msg = encodeURIComponent(
+        `*PRISM PHYSIOTHERAPY & REHABILITATION CENTER*\n` +
+        `*Patient Financial & Clinical Summary Statement*\n\n` +
+        `*Patient Name:* ${formalName}\n` +
+        `*Registration No:* ${p.id || 'N/A'}\n` +
+        `*Date:* ${dateFormatted}\n\n` +
+        `📊 *TREATMENT & FINANCIAL OVERVIEW:*\n` +
+        `• *Sessions Attended:* ${totalSessions}\n` +
+        `• ${packageStatus}\n` +
+        `• *Total Amount Paid:* ₹${totalPaid.toLocaleString()}\n` +
+        `• ${walletStatus}\n` +
+        `• ${dueStatus}\n\n` +
+        `*For detailed session bills or inquiries, please contact clinic reception at +91 97080 59081.*\n\n` +
+        `Thank you for choosing Prism Healthcare!\n` +
+        `*Team Prism Physiotherapy*`
+    );
+    const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${msg}`;
+    window.open(waUrl, '_blank');
+    showToast('Financial statement generated for WhatsApp', 'success');
+}
+
+window.renderPatientDetailModal = renderPatientDetailModal;
+window.filterPatientLedger = filterPatientLedger;
+window.promptTopupForPatient = promptTopupForPatient;
+window.closeWalletTopupModal = closeWalletTopupModal;
+window.confirmWalletTopup = confirmWalletTopup;
+window.openMidPackageFromDetail = openMidPackageFromDetail;
+window.sendPatientFinancialStatement = sendPatientFinancialStatement;
 
         function closePatientDetailModal() {
             document.getElementById('patient-detail-modal').classList.add('hidden');
@@ -14191,7 +15649,12 @@ document.getElementById('pd-sessions').innerText = consumed;
 
             // ── 2. UPDATE GLOBAL DATABASE & SESSION ROWS ──
             globalData.forEach(r => {
-                if (String(r[1]) === oldId || (oldName && String(r[2] || '').toLowerCase() === oldName.toLowerCase())) {
+                const rowId = String(r[1] || '').trim();
+                const rowName = String(r[2] || '').trim();
+                const isMatch = (oldId && rowId) 
+                    ? (rowId.toLowerCase() === oldId.toLowerCase() || normId(rowId) === normId(oldId))
+                    : (oldName && (rowName.toLowerCase() === oldName.toLowerCase() || stripSalutation(rowName).toLowerCase() === stripSalutation(oldName).toLowerCase()));
+                if (isMatch) {
                     r[1] = newId;
                     r[2] = newName;
                     r[3] = newPhone;
@@ -16171,6 +17634,10 @@ async function confirmMarkPaid() {
     }
     renderTables();
     renderDuesWidget();
+    const curDetailModal = document.getElementById('patient-detail-modal');
+    if (curDetailModal && !curDetailModal.classList.contains('hidden')) {
+        renderPatientDetailModal(name);
+    }
     if (typeof updateGlobalStats === 'function') {
         updateGlobalStats();
     }
@@ -16216,6 +17683,10 @@ async function confirmMarkPaid() {
             }
             renderTables();
             renderDuesWidget();
+            const curDetailModal2 = document.getElementById('patient-detail-modal');
+            if (curDetailModal2 && !curDetailModal2.classList.contains('hidden')) {
+                renderPatientDetailModal(name);
+            }
         }
         scheduleBackgroundReconcile(3000);
     }).catch(e => {
@@ -18641,6 +20112,9 @@ window.shareExTabViaWhatsApp = function() {
     if (!window.iqRegistry || !window.iqRegistry.length) {
         window.iqRegistry = window.loadInquiriesFromStorage();
     }
+    setTimeout(() => {
+        if (typeof renderIqTable === 'function') renderIqTable();
+    }, 100);
 
     // Attach phone formatter to inquiry input
     function initIqPhone() {
@@ -18681,9 +20155,11 @@ window.shareExTabViaWhatsApp = function() {
         let fullName = finalSalutation ? `${finalSalutation} ${cleanName}` : cleanName;
 
         const now = new Date();
+        const dateStr = formatDateDMY(now);
+        const isoDate = now.toISOString().split('T')[0];
         const newInquiry = {
             id: 'iq_' + Date.now(),
-            date: formatDateDMY(now),
+            date: dateStr,
             rawDate: now.toISOString(),
             name: fullName,
             phone: phone,
@@ -18728,18 +20204,22 @@ window.shareExTabViaWhatsApp = function() {
         syncToBackend({
             action: "saveInquiry",
             name: fullName,
+            patientName: fullName,
             phone: phone,
             diagnosis: diagnosis,
+            note: note,
             notes: note,
             age: age,
             gender: gender,
+            date: isoDate,
+            entryDate: dateStr,
             status: "New"
         }).then(result => {
             if (result && result.rowIndex) {
                 newInquiry.rowIndex = result.rowIndex;
                 window.saveInquiriesToStorage(window.iqRegistry);
             }
-            scheduleBackgroundReconcile(3000);
+            scheduleBackgroundReconcile(2500);
         }).catch(e => {
             console.error("Inquiry cloud sync error:", e);
             showToast("Inquiry saved locally (Cloud sync failed: " + e.message + ")", "warning");
@@ -20072,6 +21552,13 @@ function syncModalHistoryOnClose() {
 
 // 1. HELPER: Close whatever overlay/modal/drawer is currently open (one step at a time)
 function closeActiveOverlay() {
+    // A00. Activity Notifications slide-over panel
+    const notifPanel = document.getElementById('notif-panel');
+    if (notifPanel && !notifPanel.classList.contains('hidden') && notifPanel.classList.contains('open')) {
+        if (typeof closeNotifPanel === 'function') closeNotifPanel();
+        return true;
+    }
+
     // A0. Mobile More modules bottom sheet
     const moreSheet = document.getElementById('mobile-more-sheet');
     if (moreSheet && !moreSheet.classList.contains('hidden')) {
@@ -20150,10 +21637,12 @@ function closeActiveOverlay() {
 
     // J. Topmost Standard Dialog Modals (in z-index / layered order)
     const modals = [
+        'admin-hub-modal',
         'user-mgmt-modal',
         'edit-patient-modal',
         'bill-selection-modal',
         'bill-modal',
+        'wallet-topup-modal',
         'markpaid-modal',
         'batch-reminder-modal',
         'advance-modal',
@@ -20163,6 +21652,7 @@ function closeActiveOverlay() {
         'patient-detail-modal',
         'case-modal',
         'branch-detail-modal',
+        'total-income-modal',
         'registry-download-modal'
     ];
 
@@ -20214,10 +21704,10 @@ window.switchTab = function(id, btn, isBackStep = false) {
 // 3. INTERCEPT MODAL OPENING FUNCTIONS: Push modal history entry
 const modalFunctionsToWrap = [
     'generateBill', 'viewPatientDetail', 'openMarkPaidPrompt', 
-    'openExercisePlanModal', 'openCaseModal', 'openBranchDetailModal', 
+    'openExercisePlanModal', 'openCaseModal', 'openBranchDetailModal', 'openTotalIncomeModal',
     'openTopupBalance', 'openMidPackage', 'openEditPatientModal',
     'openProgressNotesModal', 'openRegistryDownloadModal', 'openCustomExerciseModal',
-    'openDueSessionsModal', 'openUserManagementModal'
+    'openDueSessionsModal', 'openUserManagementModal', 'openAdminHubModal'
 ];
 
 modalFunctionsToWrap.forEach(fnName => {
@@ -20273,6 +21763,8 @@ document.addEventListener('click', function(e) {
         oc.includes('.classList.add(\'hidden\')') || 
         oc.includes('closePatientDetailModal') || 
         oc.includes('closeCustomExerciseModal') || 
+        oc.includes('closeAdminHubModal') || 
+        oc.includes('closeUserManagementModal') || 
         oc.includes('closeModal()') || 
         oc.includes('toggleSessionDrawer(false)') || 
         oc.includes('toggleExDrawer(false)')
@@ -20814,6 +22306,367 @@ window.unlockApp = function() {
             console.error("deleteUserAccount error:", err);
             if (typeof showToast === 'function') {
                 showToast("Failed to delete user: " + (err.message || 'Error'), "error");
+            }
+        }
+    };
+})();
+
+// ─── CLINIC ADMINISTRATOR COMMAND CENTER MODULE (ADMIN ONLY) ───
+(function() {
+    const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    window.openAdminHubModal = function() {
+        if (typeof isAdmin === 'function' && !isAdmin()) {
+            if (typeof showToast === 'function') {
+                showToast("Access Denied: Only administrators have access to the Admin Command Center.", "error");
+            }
+            return;
+        }
+        const modal = document.getElementById('admin-hub-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            if (window.lucide) lucide.createIcons({ root: modal });
+        }
+        refreshAdminHubData();
+    };
+
+    window.closeAdminHubModal = function() {
+        const modal = document.getElementById('admin-hub-modal');
+        if (modal) modal.classList.add('hidden');
+    };
+
+    window.refreshAdminHubData = function() {
+        try {
+            const rawNames = Object.keys(window.patientLookup || {});
+            const seenIds = new Set();
+            const uniquePatients = [];
+
+            rawNames.forEach(name => {
+                const p = window.patientLookup[name];
+                if (!p) return;
+                const idKey = (p.id ? String(p.id).trim().toUpperCase() : '') || String(p.name || name).trim().toLowerCase();
+                if (!seenIds.has(idKey)) {
+                    seenIds.add(idKey);
+                    uniquePatients.push(p);
+                }
+            });
+
+            // 1. Calculate Metrics
+            let totalPatients = uniquePatients.length;
+            let activeCount = 0;
+            let totalRevenue = 0;
+            let totalDues = 0;
+
+            const docStats = {};
+
+            uniquePatients.forEach(p => {
+                if (!p.closed) activeCount++;
+                totalDues += toNum(p.outstandingDue || 0);
+
+                const primaryDoc = cleanDoctorName(p.doctor) || 'Unassigned Clinician';
+                if (!docStats[primaryDoc]) {
+                    docStats[primaryDoc] = {
+                        name: primaryDoc,
+                        activePatients: 0,
+                        totalSessions: 0,
+                        revenue: 0,
+                        dues: 0
+                    };
+                }
+                if (!p.closed) docStats[primaryDoc].activePatients++;
+                docStats[primaryDoc].dues += toNum(p.outstandingDue || 0);
+
+                // Logs analysis
+                (p.logs || []).forEach(l => {
+                    const type = String(l[7] || '').trim().toLowerCase();
+                    const fee = toNum(l[9]);
+                    if (type !== 'case closed' && type !== 'case restarted' && type !== 'bill issued') {
+                        totalRevenue += fee;
+                    }
+
+                    // Doctor attribution for this log
+                    const logDoc = cleanDoctorName(l[16]) || primaryDoc;
+                    if (!docStats[logDoc]) {
+                        docStats[logDoc] = {
+                            name: logDoc,
+                            activePatients: 0,
+                            totalSessions: 0,
+                            revenue: 0,
+                            dues: 0
+                        };
+                    }
+
+                    if (type !== 'enrollment' && type !== 'package added' && type !== 'case closed' && type !== 'case restarted' && type !== 'bill issued') {
+                        if (fee > 0 || type.includes('session') || type.includes('rehab')) {
+                            docStats[logDoc].totalSessions++;
+                        }
+                    }
+                    if (type !== 'case closed' && type !== 'case restarted' && type !== 'bill issued') {
+                        docStats[logDoc].revenue += fee;
+                    }
+                });
+            });
+
+            // 2. Update KPI cards in Admin Hub
+            const pEl = document.getElementById('ah-stat-patients');
+            if (pEl) pEl.innerText = totalPatients.toLocaleString();
+
+            const actEl = document.getElementById('ah-stat-active');
+            if (actEl) actEl.innerText = activeCount.toLocaleString();
+
+            const revEl = document.getElementById('ah-stat-revenue');
+            if (revEl) revEl.innerText = '₹' + Math.round(totalRevenue).toLocaleString();
+
+            const duesEl = document.getElementById('ah-stat-dues');
+            if (duesEl) duesEl.innerText = '₹' + Math.round(totalDues).toLocaleString();
+
+            // 3. Render Doctor & Clinician Performance Table
+            const tbody = document.getElementById('ah-clinician-performance-body');
+            if (tbody) {
+                const docArray = Object.values(docStats).sort((a, b) => (b.revenue - a.revenue) || (b.totalSessions - a.totalSessions));
+                if (docArray.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 italic">No clinician performance data recorded yet.</td></tr>`;
+                } else {
+                    let html = '';
+                    docArray.forEach(d => {
+                        const isPrimaryAdmin = d.name.toLowerCase().includes('admin');
+                        const badgeColor = isPrimaryAdmin ? 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300';
+                        html += `
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="p-3.5">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center font-black text-xs flex-shrink-0">
+                                            ${esc((d.name.charAt(0) || 'D').toUpperCase())}
+                                        </div>
+                                        <div>
+                                            <div class="font-extrabold text-slate-800 dark:text-slate-100">${esc(d.name)}</div>
+                                            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${badgeColor}">Clinician</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3.5 text-center font-black text-slate-700 dark:text-slate-300">
+                                    <span class="px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-xs font-black">
+                                        ${d.activePatients}
+                                    </span>
+                                </td>
+                                <td class="p-3.5 text-center font-black text-indigo-600 dark:text-indigo-400 text-xs">
+                                    ${d.totalSessions.toLocaleString()}
+                                </td>
+                                <td class="p-3.5 text-right font-black text-slate-900 dark:text-white text-xs">
+                                    ₹${Math.round(d.revenue).toLocaleString()}
+                                </td>
+                                <td class="p-3.5 text-right font-black ${d.dues > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-400'} text-xs">
+                                    ${d.dues > 0 ? '₹' + Math.round(d.dues).toLocaleString() : '₹0'}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    tbody.innerHTML = html;
+                }
+            }
+
+            const modal = document.getElementById('admin-hub-modal');
+            if (modal && window.lucide) lucide.createIcons({ root: modal });
+        } catch (e) {
+            console.error('refreshAdminHubData error:', e);
+        }
+    };
+
+    window.exportClinicBackupJSON = function() {
+        if (typeof isAdmin === 'function' && !isAdmin()) {
+            if (typeof showToast === 'function') showToast("Access Denied: Only administrators can export backups.", "error");
+            return;
+        }
+
+        try {
+            const dateStr = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+            const backupPayload = {
+                clinic: "Prism Healthcare & Physio Clinics",
+                system: "ClinioSphere PMS Enterprise",
+                exportTimestamp: new Date().toISOString(),
+                exportedBy: typeof getCurrentUser === 'function' ? getCurrentUser() : 'Administrator',
+                meta: {
+                    totalPatients: Object.keys(window.patientLookup || {}).length,
+                    activeBranch: typeof currentBranchFilter !== 'undefined' ? currentBranchFilter : 'ALL'
+                },
+                patients: window.patientLookup || {},
+                users: window.rawUsers || [],
+                auditLogs: window.auditLogs || []
+            };
+
+            const jsonStr = JSON.stringify(backupPayload, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+            const filename = `prism_clinic_backup_${dateStr}.json`;
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            if (typeof showToast === 'function') {
+                showToast(`Full Clinic Database Backup exported (${filename})`, "success");
+            }
+            if (typeof recordAuditLog === 'function') {
+                recordAuditLog('EXPORT_BACKUP', 'Database Backup', `Downloaded JSON backup (${filename})`, 'Success');
+            }
+        } catch (err) {
+            console.error('exportClinicBackupJSON error:', err);
+            if (typeof showToast === 'function') {
+                showToast("Failed to export backup: " + (err.message || 'Error'), "error");
+            }
+        }
+    };
+
+    window.exportPatientRegistryCSV = function() {
+        if (typeof isAdmin === 'function' && !isAdmin()) {
+            if (typeof showToast === 'function') showToast("Access Denied: Only administrators can export registry.", "error");
+            return;
+        }
+
+        try {
+            const rawNames = Object.keys(window.patientLookup || {});
+            const seenIds = new Set();
+            const uniquePatients = [];
+
+            rawNames.forEach(name => {
+                const p = window.patientLookup[name];
+                if (!p) return;
+                const idKey = (p.id ? String(p.id).trim().toUpperCase() : '') || String(p.name || name).trim().toLowerCase();
+                if (!seenIds.has(idKey)) {
+                    seenIds.add(idKey);
+                    uniquePatients.push(p);
+                }
+            });
+
+            // Sort newest first by default in export too
+            uniquePatients.sort((a, b) => {
+                let idNumA = 0, idNumB = 0;
+                if (a.id) {
+                    const m = String(a.id).match(/(\d+)(?!.*\d)/);
+                    if (m) idNumA = parseInt(m[1], 10) || 0;
+                }
+                if (b.id) {
+                    const m = String(b.id).match(/(\d+)(?!.*\d)/);
+                    if (m) idNumB = parseInt(m[1], 10) || 0;
+                }
+                if (idNumA && idNumB && idNumA !== idNumB) return idNumB - idNumA;
+                return (Number(b.enrollTime) || 0) - (Number(a.enrollTime) || 0);
+            });
+
+            const escapeCSV = (str) => {
+                if (str === null || str === undefined) return '""';
+                const s = String(str).replace(/"/g, '""');
+                return `"${s}"`;
+            };
+
+            const headers = [
+                "Registration No",
+                "Patient Name",
+                "Age",
+                "Gender",
+                "Phone",
+                "Address",
+                "Clinical Condition",
+                "Assigned Doctor",
+                "Enrollment Date",
+                "Remaining Sessions",
+                "Total Sessions Delivered",
+                "Total Paid (INR)",
+                "Outstanding Due (INR)",
+                "Wallet Balance (INR)",
+                "Case Status"
+            ];
+
+            const rows = [headers.join(",")];
+
+            uniquePatients.forEach(p => {
+                const rem = typeof getRemainingSessions === 'function' ? getRemainingSessions(p) : 0;
+                const totalPaid = p._calcPaid !== undefined ? p._calcPaid : (p.logs || []).reduce((sum, l) => sum + toNum(l[9]), 0);
+                const sessionsCount = p._calcSessions !== undefined ? p._calcSessions : (p.logs || []).filter(l => toNum(l[9]) > 0 || String(l[7]).toLowerCase().includes('session')).length;
+                const statusStr = p.closed ? "Closed" : (p.outstandingDue > 0 ? "Due Pending" : "Active In-Care");
+
+                const rowData = [
+                    escapeCSV(p.id || ''),
+                    escapeCSV(p.name || ''),
+                    escapeCSV(p.age || ''),
+                    escapeCSV(p.gender || ''),
+                    escapeCSV(p.phone || ''),
+                    escapeCSV(p.address || ''),
+                    escapeCSV(p.diag || 'General Rehab'),
+                    escapeCSV(cleanDoctorName(p.doctor) || 'Unassigned'),
+                    escapeCSV(p.enrollDate || ''),
+                    rem,
+                    sessionsCount,
+                    Math.round(totalPaid),
+                    Math.round(toNum(p.outstandingDue || 0)),
+                    Math.round(toNum(p.walletBalance || 0)),
+                    escapeCSV(statusStr)
+                ];
+                rows.push(rowData.join(","));
+            });
+
+            const csvContent = "\uFEFF" + rows.join("\r\n");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const dateStr = new Date().toISOString().slice(0, 10);
+            const filename = `prism_patient_registry_${dateStr}.csv`;
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            if (typeof showToast === 'function') {
+                showToast(`Master Patient Registry exported (${uniquePatients.length} patients)`, "success");
+            }
+            if (typeof recordAuditLog === 'function') {
+                recordAuditLog('EXPORT_CSV', 'Patient Registry', `Exported ${uniquePatients.length} patient records to CSV`, 'Success');
+            }
+        } catch (err) {
+            console.error('exportPatientRegistryCSV error:', err);
+            if (typeof showToast === 'function') {
+                showToast("Failed to export registry: " + (err.message || 'Error'), "error");
+            }
+        }
+    };
+
+    window.adminForceReconcile = async function() {
+        if (typeof isAdmin === 'function' && !isAdmin()) {
+            if (typeof showToast === 'function') showToast("Access Denied: Only administrators can reconcile ledgers.", "error");
+            return;
+        }
+
+        const confirmed = await showPopupConfirm({
+            badge: 'Admin Reconciliation',
+            type: 'info',
+            title: 'Reconcile Financial Ledgers?',
+            message: 'This will perform a deep force-sync across all patient wallets, outstanding dues, and Google Sheets transaction records.',
+            confirmText: 'Reconcile Now',
+            cancelText: 'Cancel'
+        });
+        if (!confirmed) return;
+
+        try {
+            if (typeof showToast === 'function') showToast("Reconciling financial ledgers & syncing cloud sheets...", "info");
+            if (typeof loadAdminData === 'function') {
+                await loadAdminData(true);
+            }
+            refreshAdminHubData();
+            if (typeof showToast === 'function') {
+                showToast("Financial ledgers reconciled & data synchronized successfully!", "success");
+            }
+            if (typeof recordAuditLog === 'function') {
+                recordAuditLog('FINANCIAL_RECONCILE', 'Ledgers & Balances', 'Force reconciled all patient balances & synced sheet cache', 'Success');
+            }
+        } catch (err) {
+            console.error('adminForceReconcile error:', err);
+            if (typeof showToast === 'function') {
+                showToast("Reconciliation encountered an issue: " + (err.message || 'Error'), "error");
             }
         }
     };
