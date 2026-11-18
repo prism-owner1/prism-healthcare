@@ -153,6 +153,10 @@
                 <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-50 rounded-bl-full pointer-events-none"></div>
                 <div class="relative z-10 text-center">
                     <img src="https://prismhealthcare.in/prism1.png" class="h-12 mx-auto mb-6" alt="Prism">
+                    <div class="flex items-center justify-center p-1 bg-slate-100 rounded-2xl border border-slate-200/80 shadow-xs w-fit mx-auto mb-5">
+                        <button type="button" onclick="setPortalLanguage('en')" id="portal-lang-en-a" class="px-3 py-1.5 rounded-xl font-black text-[11px] uppercase transition-all bg-white text-indigo-600 shadow-sm cursor-pointer">🇬🇧 EN</button>
+                        <button type="button" onclick="setPortalLanguage('hi')" id="portal-lang-hi-a" class="px-3 py-1.5 rounded-xl font-black text-[11px] uppercase transition-all text-slate-500 hover:text-slate-900 cursor-pointer">🇮🇳 हिन्दी</button>
+                    </div>
                     <h2 class="text-2xl font-black tracking-tight mb-2 text-slate-800">Clinical Portal</h2>
                     <p class="text-slate-400 text-sm mb-8 font-medium">Identify yourself to access medical records</p>
                     
@@ -232,17 +236,47 @@
 
     <!-- MAIN DASHBOARD -->
     <div id="app-content" class="hidden min-h-screen">
-        <header class="glass-card sticky top-0 z-[100] px-4 md:px-6 py-3.5 sm:py-4 flex justify-between items-center border-b border-slate-200/60 shadow-xs">
-            <div class="flex items-center">
-                <img src="https://prismhealthcare.in/prism1.png" class="h-7 sm:h-8" alt="Prism Healthcare Logo">
+        <header class="glass-card sticky top-0 z-[100] px-3 sm:px-5 md:px-6 py-2.5 sm:py-3.5 flex justify-between items-center gap-2 border-b border-slate-200/60 shadow-xs">
+            <div class="flex items-center shrink-0 min-w-0">
+                <img src="https://prismhealthcare.in/prism1.png" class="h-6 sm:h-8 w-auto object-contain" alt="Prism Healthcare Logo">
             </div>
-            <div class="flex items-center gap-2">
-                <button id="patient-header-install-btn" onclick="promptPatientInstall()" class="inline-flex items-center gap-1.5 text-xs font-black text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/90 px-3.5 py-1.5 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95 cursor-pointer" title="Install App or Add Shortcut">
-                    <i data-lucide="download" class="w-3.5 h-3.5 text-indigo-600"></i>
-                    <span>Install App / Shortcut</span>
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <!-- Language Switcher (Compact Single-Line) -->
+                <div class="flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl border border-slate-200/80 shadow-xs shrink-0">
+                    <button type="button" onclick="setPortalLanguage('en')" id="portal-lang-en-b" class="px-2 sm:px-2.5 py-1 rounded-lg font-black text-[10px] uppercase whitespace-nowrap transition-all bg-white text-indigo-600 shadow-sm cursor-pointer">EN</button>
+                    <button type="button" onclick="setPortalLanguage('hi')" id="portal-lang-hi-b" class="px-2 sm:px-2.5 py-1 rounded-lg font-black text-[10px] whitespace-nowrap transition-all text-slate-500 hover:text-slate-900 cursor-pointer">हिन्दी</button>
+                </div>
+                <!-- Notification Bell -->
+                <div class="relative shrink-0">
+                    <button id="notif-bell-btn" onclick="toggleNotifPanel()" class="relative inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/90 shadow-xs transition-all active:scale-95 cursor-pointer" title="Notifications" aria-label="Notifications">
+                        <i data-lucide="bell" class="w-4 h-4 text-slate-700"></i>
+                        <span id="notif-badge" class="hidden absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[9px] font-black leading-none rounded-full flex items-center justify-center ring-2 ring-white shadow-sm">0</span>
+                    </button>
+                    <!-- Notification Dropdown Panel (Full-width centered on mobile, right-anchored on desktop) -->
+                    <div id="notif-panel" class="hidden fixed left-3 right-3 top-[60px] sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 bg-white rounded-2xl border border-slate-200/90 shadow-2xl z-[200] overflow-hidden">
+                        <div class="px-4 py-3 bg-slate-50/80 border-b border-slate-100 flex items-center justify-between">
+                            <h4 class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1.5">
+                                <i data-lucide="bell" class="w-3.5 h-3.5 text-indigo-600"></i> Notifications
+                            </h4>
+                            <button onclick="clearAllNotifs()" class="text-[10px] font-black text-slate-400 hover:text-rose-500 transition-colors cursor-pointer uppercase tracking-wide">Clear All</button>
+                        </div>
+                        <div id="notif-list" class="max-h-72 overflow-y-auto divide-y divide-slate-100">
+                            <div class="px-4 py-6 text-center text-xs text-slate-400 font-semibold">
+                                <i data-lucide="bell-off" class="w-5 h-5 mx-auto text-slate-300 mb-1.5"></i>
+                                <p>No new notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Compact Install App Button (Icon on mobile, crisp single-line pill on desktop) -->
+                <button id="patient-header-install-btn" onclick="promptPatientInstall()" class="inline-flex items-center justify-center gap-1.5 h-9 w-9 sm:w-auto sm:px-3 text-[11px] font-black text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200/90 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95 cursor-pointer whitespace-nowrap shrink-0" title="Install App / Add Shortcut" aria-label="Install App">
+                    <i data-lucide="download" class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-indigo-600 shrink-0"></i>
+                    <span class="hidden sm:inline">Install App</span>
                 </button>
-                <button onclick="logoutPatient()" class="inline-flex items-center gap-1.5 text-xs font-black text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/90 px-3.5 py-1.5 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95">
-                    Logout <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-600"></i>
+                <!-- Compact Logout Button (Icon on mobile, crisp pill on desktop) -->
+                <button onclick="logoutPatient()" class="inline-flex items-center justify-center gap-1.5 h-9 w-9 sm:w-auto sm:px-3 text-[11px] font-black text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/90 rounded-xl shadow-xs transition-all uppercase tracking-wider active:scale-95 cursor-pointer whitespace-nowrap shrink-0" title="Logout" aria-label="Logout">
+                    <span class="hidden sm:inline">Logout</span>
+                    <i data-lucide="log-out" class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-rose-600 shrink-0"></i>
                 </button>
             </div>
         </header>
@@ -321,28 +355,28 @@
             </div>
 
 
-            <!-- Dynamic Home Screen Prescribed Instructions Section (Shown ONLY if doctor has prescribed instructions) -->
+            <!-- Doctor's Notes from Your Treating Physician (Shown ONLY if doctor has prescribed instructions) -->
             <div id="home-instructions-section" class="hidden space-y-3">
                 <div class="flex items-center justify-between px-1 flex-wrap gap-2">
                     <div class="flex items-center gap-2">
-                        <div class="p-1.5 bg-indigo-50 text-indigo-600 rounded-xl">
-                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                        <div class="p-1.5 bg-teal-50 text-teal-600 rounded-xl">
+                            <i data-lucide="message-square-text" class="w-4 h-4"></i>
                         </div>
                         <div>
                             <h3 id="inst-header-title" class="text-xs sm:text-sm font-black uppercase text-slate-800 tracking-wide">
-                                Clinical Instructions & Directives
+                                Doctor's Notes
                             </h3>
                             <p id="inst-header-subtitle" class="text-[10px] text-slate-500 font-bold">
-                                Prescribed by treating physiotherapist
+                                Personal notes & guidance from your doctor
                             </p>
                         </div>
                     </div>
                     <!-- Bilingual Language Toggle -->
                     <div class="flex items-center p-1 bg-slate-100 rounded-2xl border border-slate-200/80 shadow-xs">
-                        <button type="button" onclick="setInstructionLanguage('en')" id="inst-lang-btn-en" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm">
+                        <button type="button" onclick="setPortalLanguage('en')" id="inst-lang-btn-en" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm">
                             🇬🇧 EN
                         </button>
-                        <button type="button" onclick="setInstructionLanguage('hi')" id="inst-lang-btn-hi" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900">
+                        <button type="button" onclick="setPortalLanguage('hi')" id="inst-lang-btn-hi" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900">
                             🇮🇳 हिन्दी
                         </button>
                     </div>
@@ -411,10 +445,10 @@
 
                     <!-- Bilingual Language Toggle Switch -->
                     <div class="flex items-center p-1 bg-slate-100 rounded-2xl border border-slate-200/80 shadow-xs">
-                        <button type="button" onclick="setExerciseLanguage('en')" id="ex-lang-btn-en" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm cursor-pointer">
+                        <button type="button" onclick="setPortalLanguage('en')" id="ex-lang-btn-en" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all bg-white text-indigo-600 shadow-sm cursor-pointer">
                             🇬🇧 EN
                         </button>
-                        <button type="button" onclick="setExerciseLanguage('hi')" id="ex-lang-btn-hi" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900 cursor-pointer">
+                        <button type="button" onclick="setPortalLanguage('hi')" id="ex-lang-btn-hi" class="px-2.5 py-1 rounded-xl font-black text-[10px] uppercase transition-all text-slate-500 hover:text-slate-900 cursor-pointer">
                             🇮🇳 हिन्दी
                         </button>
                     </div>
@@ -454,6 +488,7 @@
         
         let globalData = [];
         let exerciseData = [];
+        let expiredExerciseData = [];
         let billsData = [];
         let doctorsData = [];
         let loggedInPatient = null;
@@ -621,7 +656,7 @@
             
             if(!userInput || !idLast4) {
                 if (errEl) {
-                    errEl.innerText = "Please enter both fields to access your portal.";
+                    errEl.innerText = tPortal("Please enter both fields to access your portal.");
                     errEl.classList.remove('hidden');
                 }
                 return;
@@ -635,6 +670,7 @@
                 
                 globalData = response.adminData || [];
                 exerciseData = response.exercises || response.exercisePlans || [];
+                expiredExerciseData = response.expiredExercises || [];
                 billsData = response.bills || [];
                 doctorsData = response.doctorsList || [];
 
@@ -667,6 +703,7 @@
                             patientLogs: patientLogs,
                             globalData: globalData,
                             exerciseData: exerciseData,
+                            expiredExerciseData: expiredExerciseData,
                             billsData: billsData,
                             doctorsData: doctorsData,
                             timestamp: Date.now()
@@ -695,7 +732,7 @@
                         .catch(balErr => console.warn("Background patient balance update notice:", balErr));
                 } else {
                     if (errEl) {
-                        errEl.innerText = "Access denied. Please check your name/mobile and ID.";
+                        errEl.innerText = tPortal("Access denied. Please check your name/mobile and ID.");
                         errEl.classList.remove('hidden');
                     }
                     recordAuditLog(
@@ -707,7 +744,7 @@
                 }
             } catch (e) { 
                 console.error(e);
-                alert("Secure Connection Failed. Please try again."); 
+                alert(tPortal("Secure Connection Failed. Please try again.")); 
             }
             btn.disabled = false;
             btn.innerHTML = `Unlock Portal <i data-lucide="shield-check" class="w-5 h-5"></i>`;
@@ -716,6 +753,7 @@
 
         let currentPatientInstructions = [];
         let currentPatientExercises = [];
+        let currentPatientExpiredExercises = [];
 
         function getDeviceLanguage() {
             try {
@@ -912,11 +950,11 @@
             const instSub = document.getElementById('inst-header-subtitle');
             if (instTitle && instSub) {
                 if (currentInstructionLang === 'hi') {
-                    instTitle.innerText = "चिकित्सकीय निर्देश एवं सावधानियां";
-                    instSub.innerText = "डॉ. रवि कुमार द्वारा निर्देशित व्यक्तिगत सावधानियां";
+                    instTitle.innerText = "डॉक्टर के नोट्स";
+                    instSub.innerText = "आपके डॉक्टर से व्यक्तिगत मार्गदर्शन";
                 } else {
-                    instTitle.innerText = "Clinical Instructions & Directives";
-                    instSub.innerText = "Prescribed by treating physiotherapist";
+                    instTitle.innerText = "Doctor's Notes";
+                    instSub.innerText = "Personal notes & guidance from your doctor";
                 }
             }
 
@@ -926,7 +964,320 @@
         }
 
         function setInstructionLanguage(lang) {
-            setExerciseLanguage(lang);
+            setPortalLanguage(lang);
+        }
+
+        // ===== FULL PORTAL LANGUAGE (2026-11-14) =====
+        // One toggle for the whole portal: the dictionary below holds every UI
+        // string (nav, login card, hero, stats, tabs, passbook, bills, install
+        // steps). applyPortalLanguage() walks the page and replaces exact
+        // text-node matches, so it covers static HTML and anything rendered
+        // later — call it after a render. Data values (names, dates, amounts)
+        // are untouched; only exact UI phrases translate. Exercise names and
+        // instructions keep their own translator (translateExerciseText).
+        // Generated PDFs (bills, treatment certificate) stay in English:
+        // they are formal documents.
+        const PORTAL_I18N = {
+            "Home": "होम",
+            "About": "हमारे बारे में",
+            "Services": "सेवाएँ",
+            "Careers": "करियर",
+            "Patient Login": "रोगी लॉगिन",
+            "Install App / Shortcut": "ऐप इंस्टॉल करें / शॉर्टकट",
+            "Install App & Add Shortcut": "ऐप इंस्टॉल करें और शॉर्टकट जोड़ें",
+            "Make Appointment": "अपॉइंटमेंट लें",
+            "Clinical Portal": "क्लिनिकल पोर्टल",
+            "Identify yourself to access medical records": "अपने मेडिकल रिकॉर्ड देखने के लिए अपनी पहचान बताएं",
+            "Full Name or Mobile No.": "पूरा नाम या मोबाइल नंबर",
+            "Patient ID or Last 4 Digits": "रोगी ID या अंतिम 4 अंक",
+            "Unlock Portal": "पोर्टल खोलें",
+            "Access denied. Please check your name/mobile and ID.": "प्रवेश नहीं मिला। कृपया अपना नाम/मोबाइल और ID जांचें।",
+            "Please enter both fields to access your portal.": "कृपया पोर्टल खोलने के लिए दोनों फ़ील्ड भरें।",
+            "24/7 Patient Guidance & Doctor Profiles": "24/7 रोगी मार्गदर्शन और डॉक्टर प्रोफ़ाइल",
+            "Ask AI": "AI से पूछें",
+            "Login / ID Help": "लॉगिन / ID सहायता",
+            "WhatsApp": "व्हाट्सऐप",
+            "1-Tap": "1-टैप",
+            "Place icon on phone home screen / desktop": "फ़ोन की होम स्क्रीन / डेस्कटॉप पर आइकन लगाएं",
+            "1-Tap Install App on Device": "डिवाइस पर 1-टैप में ऐप इंस्टॉल करें",
+            "1-Tap Instant Launch": "1-टैप में तुरंत खोलें",
+            "Full Screen App": "फुल स्क्रीन ऐप",
+            "PWA Standalone": "PWA स्टैंडअलोन",
+            "Offline Records Access": "ऑफ़लाइन रिकॉर्ड देखें",
+            "Verified Web App": "सत्यापित वेब ऐप",
+            "No App Store Needed": "ऐप स्टोर की ज़रूरत नहीं",
+            "Install to your phone home screen or desktop for instant 1-tap access": "तुरंत 1-टैप एक्सेस के लिए फ़ोन की होम स्क्रीन या डेस्कटॉप पर इंस्टॉल करें",
+            "How to Add Shortcut": "शॉर्टकट कैसे जोड़ें",
+            "Android": "एंड्रॉइड",
+            "iPhone / iPad": "आईफ़ोन / आईपैड",
+            "PC / Mac": "पीसी / मैक",
+            "Patient Portal App": "रोगी पोर्टल ऐप",
+            "Logout": "लॉगआउट",
+            "Consultant:": "सलाहकार:",
+            "Reg No: 1045": "रजि. नं.: 1045",
+            "Sessions Remaining": "शेष सत्र",
+            "Age/Gender": "उम्र / लिंग",
+            "Wallet Balance": "वॉलेट बैलेंस",
+            "Live Balance": "लाइव बैलेंस",
+            "Last Payment": "अंतिम भुगतान",
+            "Phone No.": "फ़ोन नंबर",
+            "Attended": "उपस्थित सत्र",
+            "Book Session": "सत्र बुक करें",
+            "Support": "सहायता",
+            "Rate Us": "हमें रेट करें",
+            "Hotline": "हॉटलाइन",
+            "Clinical Instructions & Directives": "चिकित्सकीय निर्देश एवं सावधानियां",
+            "Prescribed by treating physiotherapist": "इलाज करने वाले फिजियोथेरेपिस्ट द्वारा निर्धारित",
+            "Doctor's Notes": "डॉक्टर के नोट्स",
+            "Personal notes & guidance from your doctor": "आपके डॉक्टर से व्यक्तिगत मार्गदर्शन",
+            "Notifications": "सूचनाएं",
+            "Clear All": "सभी हटाएं",
+            "No new notifications": "कोई नई सूचना नहीं",
+            "Payment Received": "भुगतान प्राप्त हुआ",
+            "New Bill Issued": "नया बिल जारी",
+            "Exercise Plan Active": "व्यायाम योजना सक्रिय",
+            "Doctor's Notes Updated": "डॉक्टर के नोट्स अपडेट",
+            "Install App": "ऐप इंस्टॉल",
+            "Clinical": "क्लिनिकल",
+            "Passbook": "पासबुक",
+            "Billing": "बिलिंग",
+            "Section": "अनुभाग",
+            "Prescribed": "निर्धारित",
+            "Exercises": "व्यायाम",
+            "Clinical Passbook & Attendance Ledger": "क्लिनिकल पासबुक और उपस्थिति विवरण",
+            "All Months": "सभी महीने",
+            "Show All Months": "सभी महीने दिखाएं",
+            "Issued Documents & Bills": "जारी दस्तावेज़ और बिल",
+            "Request Latest Bill": "नवीनतम बिल मांगें",
+            "Prescribed Home Exercises": "निर्धारित घरेलू व्यायाम",
+            "Follow sequential order": "क्रमानुसार नियमित रूप से करें",
+            "Download Bill": "बिल डाउनलोड करें",
+            "No official bills generated yet": "अभी तक कोई आधिकारिक बिल जारी नहीं हुआ है",
+            "You can request your latest statement & official bill from the clinic administration.": "आप क्लिनिक प्रशासन से अपना नवीनतम विवरण और आधिकारिक बिल मांग सकते हैं।",
+            "No history recorded yet.": "अभी तक कोई रिकॉर्ड नहीं है।",
+            "Recent Sessions": "हाल के सत्र",
+            "Rehab Visit": "पुनर्वास सत्र",
+            "Statement": "विवरण",
+            "No payments": "कोई भुगतान नहीं",
+            "No payments recorded": "कोई भुगतान दर्ज नहीं है",
+            "Secure Connection Failed. Please try again.": "सुरक्षित कनेक्शन विफल। कृपया पुनः प्रयास करें।",
+            "Download PDF": "PDF डाउनलोड करें",
+            "Close": "बंद करें",
+            "Cash": "नकद",
+            "Card": "कार्ड",
+            "Pending": "लंबित",
+            "Advance": "एडवांस",
+            "Package": "पैकेज",
+            "Complimentary": "निःशुल्क",
+            "Due": "बकाया",
+            "Pending Fee": "बकाया शुल्क",
+            "Pending Due": "लंबित बकाया",
+            "Cleared": "चुकता",
+            "Paid in full": "पूर्ण भुगतान",
+            "Due cleared": "बकाया चुकता",
+            "on": "को",
+            "cleared past dues": "पुराना बकाया चुकता",
+            "Partially paid": "आंशिक भुगतान",
+            "You have an outstanding balance. Please clear it at your next visit, or pay now via WhatsApp.": "आपका बकाया शेष है। कृपया इसे अपनी अगली विज़िट पर चुकाएं, या व्हाट्सऐप से अभी भुगतान करें।",
+            "Pay via WhatsApp": "व्हाट्सऐप से भुगतान करें",
+            "Pay Now via UPI": "UPI द्वारा अभी भुगतान करें",
+            "Pay Now": "अभी भुगतान करें",
+            "Scan with GPay / PhonePe / Paytm": "GPay / PhonePe / Paytm से स्कैन करें",
+            "Copy": "कॉपी करें",
+            "Copied!": "कॉपी हो गया!",
+            "Share Receipt on WhatsApp": "व्हाट्सऐप पर रसीद भेजें",
+            "Remind Me Later": "बाद में याद दिलाएं",
+            "Available Credit": "उपलब्ध क्रेडिट",
+            "Settled": "चुकता",
+            "Overdrawn": "अधिक निकासी",
+            "Paid": "पेड",
+            "Wallet": "वॉलेट",
+            "e.g. Prism Physio or 9708059081": "जैसे Prism Physio या 9708059081",
+            "e.g. 1062 or PHC26/1062": "जैसे 1062 या PHC26/1062",
+            "🎉 Patient Portal installed successfully! You can now launch it directly from your home screen or desktop shortcut.": "🎉 रोगी पोर्टल सफलतापूर्वक इंस्टॉल हो गया! अब आप इसे सीधे अपनी होम स्क्रीन या डेस्कटॉप शॉर्टकट से खोल सकते हैं।",
+            "Follow the quick step-by-step shortcut instructions shown below for your browser.": "अपने ब्राउज़र के लिए नीचे दिए गए त्वरित चरण-दर-चरण शॉर्टकट निर्देशों का पालन करें।"
+        };
+        let PORTAL_I18N_REV = null;
+        function portalLang() {
+            try { return (typeof currentExerciseLang !== 'undefined' && currentExerciseLang) ? currentExerciseLang : 'en'; } catch (e) { return 'en'; }
+        }
+        function tPortal(str) {
+            if (!str) return str;
+            if (portalLang() !== 'hi') return str;
+            return PORTAL_I18N[str] || str;
+        }
+        // Recursive text-node translator (no DOM TreeWalker needed, so it is
+        // unit-testable). Only whole text nodes that exactly match a key are
+        // replaced, so data values and sentences are never half-translated.
+        function translateTextNodes(root, map) {
+            if (!root) return;
+            if (root.nodeType === 3) {
+                const raw = root.nodeValue;
+                if (raw && raw.trim()) {
+                    const trimmed = raw.trim();
+                    if (map[trimmed]) root.nodeValue = raw.replace(trimmed, map[trimmed]);
+                }
+                return;
+            }
+            if (root.nodeType === 1) {
+                const tag = String(root.tagName || '').toLowerCase();
+                if (tag === 'script' || tag === 'style' || tag === 'textarea') return;
+                const kids = root.childNodes || [];
+                for (let i = 0; i < kids.length; i++) translateTextNodes(kids[i], map);
+            }
+        }
+        function applyPortalLanguage(lang) {
+            try {
+                const target = (lang === 'hi') ? 'hi' : 'en';
+                if (!PORTAL_I18N_REV) {
+                    PORTAL_I18N_REV = {};
+                    Object.keys(PORTAL_I18N).forEach(k => { PORTAL_I18N_REV[PORTAL_I18N[k]] = k; });
+                }
+                const map = target === 'hi' ? PORTAL_I18N : PORTAL_I18N_REV;
+                translateTextNodes(document.body, map);
+                document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(el => {
+                    const ph = el.getAttribute('placeholder');
+                    if (ph && map[ph]) el.setAttribute('placeholder', map[ph]);
+                });
+                document.documentElement.setAttribute('lang', target === 'hi' ? 'hi' : 'en');
+            } catch (e) {}
+        }
+        function updatePortalLangButtons(lang) {
+            const target = (lang === 'hi') ? 'hi' : 'en';
+            const active = "px-3 py-1.5 rounded-xl font-black text-[11px] uppercase whitespace-nowrap transition-all bg-white text-indigo-600 shadow-sm cursor-pointer";
+            const inactive = "px-3 py-1.5 rounded-xl font-black text-[11px] uppercase whitespace-nowrap transition-all text-slate-500 hover:text-slate-900 cursor-pointer";
+            const activeSm = "px-2 sm:px-2.5 py-1 rounded-lg font-black text-[10px] uppercase whitespace-nowrap transition-all bg-white text-indigo-600 shadow-sm cursor-pointer";
+            const inactiveSm = "px-2 sm:px-2.5 py-1 rounded-lg font-black text-[10px] uppercase whitespace-nowrap transition-all text-slate-500 hover:text-slate-900 cursor-pointer";
+            const setPair = (enId, hiId, aCls, iCls) => {
+                const enBtn = document.getElementById(enId);
+                const hiBtn = document.getElementById(hiId);
+                if (enBtn && hiBtn) {
+                    if (target === 'hi') { hiBtn.className = aCls; enBtn.className = iCls; }
+                    else { enBtn.className = aCls; hiBtn.className = iCls; }
+                }
+            };
+            setPair('portal-lang-en-a', 'portal-lang-hi-a', active, inactive);
+            setPair('portal-lang-en-b', 'portal-lang-hi-b', activeSm, inactiveSm);
+        }
+        // One toggle for everything: exercises, instructions, passbook, bills.
+        function setPortalLanguage(lang) {
+            const target = (lang === 'hi') ? 'hi' : 'en';
+            try { localStorage.setItem('prism_portal_lang', target); } catch (e) {}
+            try { sessionStorage.setItem('prism_preferred_lang', target); } catch (e) {}
+            setExerciseLanguage(target);
+            if (loggedInPatient && typeof renderPassbook === 'function') renderPassbook(currentPassbookFilter);
+            if (loggedInPatient && typeof renderWalletStatusLine === 'function') renderWalletStatusLine();
+            if (loggedInPatient && typeof renderNotifications === 'function') renderNotifications();
+            applyPortalLanguage(target);
+            updatePortalLangButtons(target);
+            if (window.lucide) lucide.createIcons();
+        }
+        // Init: saved choice wins, else the phone's language.
+        (function initPortalLanguage() {
+            let saved = null;
+            try { saved = localStorage.getItem('prism_portal_lang') || sessionStorage.getItem('prism_preferred_lang'); } catch (e) {}
+            const initial = (saved === 'hi' || saved === 'en') ? saved : getDeviceLanguage();
+            setPortalLanguage(initial);
+        })();
+
+        // EXERCISE EXPIRY (2026-11-14): days left before this patient's routine is
+        // archived. Anchor = last attended session (same session-type rule as the
+        // staff app), else earliest log date. Null when there is no routine or
+        // no date evidence. The routine expires 15 days after the anchor.
+        function getPatientExerciseExpiry() {
+            try {
+                const exercises = currentPatientExercises || [];
+                if (!exercises.length) return null;
+                const toYMD = v => {
+                    if (!v) return '';
+                    if (v instanceof Date) {
+                        if (isNaN(v.getTime())) return '';
+                        return v.getFullYear() + '-' + String(v.getMonth() + 1).padStart(2, '0') + '-' + String(v.getDate()).padStart(2, '0');
+                    }
+                    const str = String(v).trim();
+                    if (!str) return '';
+                    const m = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                    if (m) return m[1] + '-' + m[2] + '-' + m[3];
+                    const d = new Date(str);
+                    if (!isNaN(d.getTime())) return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                    return '';
+                };
+                const isSessionType = t => {
+                    t = String(t || '').trim().toLowerCase();
+                    if (!t) return false;
+                    if (t === 'rehab session' || t === 'enrollment + session 1') return true;
+                    if (t.indexOf('rehab') !== -1 || t.indexOf('session') !== -1) {
+                        return ['case closed', 'case restarted', 'bill issued', 'due payment', 'wallet topup', 'enrollment (package)'].indexOf(t) === -1;
+                    }
+                    return false;
+                };
+                let lastSession = '';
+                let earliest = '';
+                (patientLogs || []).forEach(r => {
+                    if (!r) return;
+                    const d = toYMD(r[8]) || toYMD(r[0]);
+                    if (!d) return;
+                    if (!earliest || d < earliest) earliest = d;
+                    if (isSessionType(r[7]) && (!lastSession || d > lastSession)) lastSession = d;
+                });
+                const anchor = lastSession || earliest;
+                if (!anchor) return null;
+                const now = new Date();
+                const todayYMD = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+                const daysSince = Math.round((Date.UTC(+todayYMD.slice(0, 4), +todayYMD.slice(5, 7) - 1, +todayYMD.slice(8, 10)) - Date.UTC(+anchor.slice(0, 4), +anchor.slice(5, 7) - 1, +anchor.slice(8, 10))) / 86400000);
+                const exp = new Date(Date.UTC(+anchor.slice(0, 4), +anchor.slice(5, 7) - 1, +anchor.slice(8, 10)) + 15 * 86400000);
+                const expiredOn = exp.getUTCFullYear() + '-' + String(exp.getUTCMonth() + 1).padStart(2, '0') + '-' + String(exp.getUTCDate()).padStart(2, '0');
+                return { anchorDate: anchor, anchorKind: lastSession ? 'last session' : 'enrollment', daysSince: daysSince, daysLeft: 15 - daysSince, expiredOn: expiredOn };
+            } catch (e) { return null; }
+        }
+
+        // WhatsApp booking link for an expired routine (same clinic number and
+        // message style as the portal's existing Book Session button).
+        function expiredBookUrl(expiredOn) {
+            if (!loggedInPatient) return '#';
+            const msg =
+`Hello Prism Team,
+This is *Patient Name:* ${loggedInPatient.name}, *Patient ID:* ${loggedInPatient.id}.
+My home exercises expired on ${formatDate(expiredOn)}. I would like to book my next physiotherapy session for a fresh exercise plan. Please share available appointment slots.
+Thank you!`;
+            return 'https://wa.me/919708059081?text=' + encodeURIComponent(msg);
+        }
+
+        // Shown above the list when the routine is past its 15 days but the
+        // nightly archive has not run yet: the old plan is still visible.
+        function expiredBannerHtml(info, isHi) {
+            return `
+                    <div class="col-span-1 md:col-span-2 bg-rose-50 p-5 sm:p-6 rounded-3xl border border-rose-200 shadow-sm text-center">
+                        <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-black text-rose-800 text-base mb-1">${isHi ? 'आपके व्यायाम समाप्त हो गए हैं' : 'Your exercises have expired'}</h4>
+                        <p class="text-xs text-rose-700 max-w-md mx-auto mb-4 leading-relaxed">${isHi ? ('आपकी अंतिम सत्र तिथि ' + formatDate(info.anchorDate) + ' थी। नया व्यायाम प्लान पाने के लिए अगला सत्र बुक करें।') : ('Your last session was on ' + formatDate(info.anchorDate) + '. Book your next session to get a fresh exercise plan.')}</p>
+                        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                            <a href="${expiredBookUrl(info.expiredOn)}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-5 py-3 rounded-2xl text-xs font-black uppercase shadow-sm active:scale-95 transition-all"><i data-lucide="calendar-plus" class="w-4 h-4"></i> ${isHi ? 'सत्र बुक करें' : 'Book Session'}</a>
+                            <a href="appointment.html" class="inline-flex items-center justify-center gap-2 bg-white border border-rose-200 text-rose-700 px-5 py-3 rounded-2xl text-xs font-black uppercase shadow-sm active:scale-95 transition-all"><i data-lucide="calendar-check" class="w-4 h-4"></i> ${isHi ? 'अपॉइंटमेंट लें' : 'Make Appointment'}</a>
+                        </div>
+                    </div>`;
+        }
+
+        // Shown instead of the empty state when the patient's routine was
+        // archived: their expired exercises, greyed out, with booking buttons.
+        function expiredRoutineHtml(isHi) {
+            const archived = currentPatientExpiredExercises || [];
+            let expiredOn = '';
+            archived.forEach(ex => { const d = String(ex[9] || ''); if (d && (!expiredOn || d > expiredOn)) expiredOn = d; });
+            return `
+                    <div class="col-span-1 md:col-span-2 bg-white p-8 rounded-3xl border border-rose-200 text-center shadow-sm">
+                        <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="font-black text-slate-800 text-base mb-1">${isHi ? 'आपके घरेलू व्यायाम समाप्त हो गए हैं' : 'Your home exercises have expired'}</h4>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto mb-4 leading-relaxed">${isHi ? ('आपका पिछला रूटीन ' + (expiredOn ? formatDate(expiredOn) : '') + ' को समाप्त हुआ। नया व्यायाम प्लान पाने के लिए अगला सत्र बुक करें।') : ('Your previous routine expired' + (expiredOn ? ' on ' + formatDate(expiredOn) : '') + '. Book your next session to get a fresh exercise plan from your physiotherapist.')}</p>
+                        <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                            <a href="${expiredBookUrl(expiredOn)}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-2xl text-xs font-black uppercase shadow-md active:scale-95 transition-all"><i data-lucide="calendar-plus" class="w-4 h-4"></i> ${isHi ? 'सत्र बुक करें' : 'Book Session'}</a>
+                            <a href="appointment.html" class="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-5 py-3 rounded-2xl text-xs font-black uppercase shadow-sm active:scale-95 transition-all"><i data-lucide="calendar-check" class="w-4 h-4"></i> ${isHi ? 'अपॉइंटमेंट लें' : 'Make Appointment'}</a>
+                        </div>
+                    </div>`;
         }
 
         function renderExerciseList() {
@@ -939,8 +1290,12 @@
 
             const isHi = currentExerciseLang === 'hi';
 
+            // EXERCISE EXPIRY (2026-11-14): no badge, and an expired routine is
+            // never shown to the patient — only the booking prompt below.
+            const expInfo = getPatientExerciseExpiry();
+
             if (exercises.length > 0) {
-                listEl.innerHTML = exercises.map((ex, idx) => {
+                listEl.innerHTML = (expInfo && expInfo.daysLeft < 0) ? expiredBannerHtml(expInfo, isHi) : exercises.map((ex, idx) => {
                     const rawName = ex[2] || 'Physiotherapy Routine';
                     const rawCat = ex[3] || 'Prescribed Routine';
                     const rawFreq = ex[6] || '';
@@ -999,6 +1354,8 @@
                     </div>
                     `;
                 }).join('');
+            } else if ((currentPatientExpiredExercises || []).length > 0) {
+                listEl.innerHTML = expiredRoutineHtml(isHi);
             } else {
                 listEl.innerHTML = `
                     <div class="col-span-1 md:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 text-center shadow-sm">
@@ -1131,11 +1488,11 @@
 
                 return `
                     <div class="bg-white p-4 sm:p-5 rounded-2xl md:rounded-[1.75rem] border border-indigo-100 shadow-sm relative overflow-hidden group hover:border-indigo-300 transition-all">
-                        <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-500 to-purple-600"></div>
+                        <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-teal-500 to-emerald-600"></div>
                         
                         <!-- Top Metadata Row -->
                         <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="bg-indigo-50 text-indigo-700 text-[10px] sm:text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider flex items-center gap-1.5 border border-indigo-100/60">
+                            <span class="bg-teal-50 text-teal-700 text-[10px] sm:text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider flex items-center gap-1.5 border border-teal-100/60">
                                 <i data-lucide="stethoscope" class="w-3.5 h-3.5"></i> ${doctorName}
                             </span>
                             ${prescribedDate ? `<span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-lg">${formatDate(prescribedDate)}</span>` : ''}
@@ -1144,14 +1501,14 @@
                         <!-- Clickable Header: Title + Points Count Badge + Collapse Chevron (Default: Showing) -->
                         <div class="flex items-center justify-between gap-2 py-1 cursor-pointer select-none group/title" onclick="toggleInstructionCard(${idx})">
                             <h4 class="font-black text-slate-900 text-xs sm:text-sm flex items-center gap-1.5 min-w-0">
-                                <i data-lucide="alert-circle" class="w-4 h-4 text-indigo-600 flex-shrink-0"></i>
+                                <i data-lucide="pen-line" class="w-4 h-4 text-teal-600 flex-shrink-0"></i>
                                 <span class="truncate group-hover/title:text-indigo-600 transition-colors">
                                     ${isHi ? translateClinicalText(title, 'hi') : title}
                                 </span>
                             </h4>
                             <div class="flex items-center gap-1.5 shrink-0">
-                                <span class="bg-indigo-50 text-indigo-600 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full border border-indigo-100/70 uppercase">
-                                    ${rawItems.length} ${isHi ? 'निर्देश' : (rawItems.length === 1 ? 'Point' : 'Points')}
+                                <span class="bg-teal-50 text-teal-600 text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full border border-teal-100/70 uppercase">
+                                    ${rawItems.length} ${isHi ? 'नोट्स' : (rawItems.length === 1 ? 'Note' : 'Notes')}
                                 </span>
                                 <button type="button" class="w-6 h-6 rounded-lg bg-slate-100 group-hover/title:bg-indigo-100 group-hover/title:text-indigo-600 text-slate-500 flex items-center justify-center transition-all cursor-pointer" aria-label="Toggle collapse">
                                     <i data-lucide="${isCollapsed ? 'chevron-down' : 'chevron-up'}" id="inst-card-chevron-${idx}" class="w-3.5 h-3.5"></i>
@@ -1202,6 +1559,244 @@
             }).join('');
 
             if (window.lucide) lucide.createIcons();
+        }
+
+        // ===== NOTIFICATION BELL SYSTEM =====
+        let portalNotifications = [];
+
+        function loadNotifications() {
+            try {
+                const saved = localStorage.getItem('prism_notifications_' + (loggedInPatient ? loggedInPatient.id : ''));
+                portalNotifications = saved ? JSON.parse(saved) : [];
+            } catch(e) { portalNotifications = []; }
+        }
+
+        function saveNotifications() {
+            try {
+                localStorage.setItem('prism_notifications_' + (loggedInPatient ? loggedInPatient.id : ''), JSON.stringify(portalNotifications));
+            } catch(e) {}
+        }
+
+        function addNotification(type, title, message, icon) {
+            const notif = {
+                id: Date.now() + '_' + Math.random().toString(36).slice(2,6),
+                type: type,
+                title: title,
+                message: message,
+                icon: icon || 'info',
+                time: new Date().toISOString(),
+                read: false
+            };
+            portalNotifications.unshift(notif);
+            if (portalNotifications.length > 20) portalNotifications = portalNotifications.slice(0, 20);
+            saveNotifications();
+            renderNotifications();
+        }
+
+        function renderNotifications() {
+            const badge = document.getElementById('notif-badge');
+            const list = document.getElementById('notif-list');
+            if (!badge || !list) return;
+
+            const unread = portalNotifications.filter(n => !n.read).length;
+            if (unread > 0) {
+                badge.textContent = unread > 9 ? '9+' : unread;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (portalNotifications.length === 0) {
+                list.innerHTML = `<div class="px-4 py-6 text-center text-xs text-slate-400 font-semibold">
+                    <i data-lucide="bell-off" class="w-5 h-5 mx-auto text-slate-300 mb-1.5"></i>
+                    <p>No new notifications</p>
+                </div>`;
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            const iconMap = {
+                'payment': 'indian-rupee',
+                'bill': 'receipt',
+                'exercise': 'dumbbell',
+                'session': 'calendar-check',
+                'note': 'message-square-text',
+                'info': 'info'
+            };
+            const colorMap = {
+                'payment': 'text-emerald-600 bg-emerald-50',
+                'bill': 'text-indigo-600 bg-indigo-50',
+                'exercise': 'text-purple-600 bg-purple-50',
+                'session': 'text-blue-600 bg-blue-50',
+                'note': 'text-teal-600 bg-teal-50',
+                'info': 'text-slate-600 bg-slate-50'
+            };
+
+            list.innerHTML = portalNotifications.map(n => {
+                const ico = iconMap[n.type] || 'info';
+                const col = colorMap[n.type] || 'text-slate-600 bg-slate-50';
+                const timeAgo = getTimeAgo(n.time);
+                const unreadDot = n.read ? '' : '<span class="w-2 h-2 rounded-full bg-indigo-500 shrink-0"></span>';
+                return `<div class="px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer flex items-start gap-3" onclick="markNotifRead('${n.id}')">
+                    <div class="w-8 h-8 rounded-xl ${col} flex items-center justify-center shrink-0 mt-0.5">
+                        <i data-lucide="${ico}" class="w-4 h-4"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[11px] font-black text-slate-800 leading-snug">${n.title}</p>
+                        <p class="text-[10px] text-slate-500 font-semibold mt-0.5 leading-snug">${n.message}</p>
+                        <p class="text-[9px] text-slate-400 font-bold mt-1">${timeAgo}</p>
+                    </div>
+                    ${unreadDot}
+                </div>`;
+            }).join('');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function getTimeAgo(isoDate) {
+            const parsed = new Date(isoDate);
+            if (isNaN(parsed.getTime())) return 'Recently';
+            const diff = Date.now() - parsed.getTime();
+            const mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'Just now';
+            if (mins < 60) return mins + 'm ago';
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + 'h ago';
+            const days = Math.floor(hrs / 24);
+            if (days < 7) return days + 'd ago';
+            return parsed.toLocaleDateString(typeof portalLang === 'function' && portalLang() === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'short' });
+        }
+
+        function toggleNotifPanel() {
+            const panel = document.getElementById('notif-panel');
+            if (panel) panel.classList.toggle('hidden');
+        }
+
+        function markNotifRead(id) {
+            const n = portalNotifications.find(x => x.id === id);
+            if (n) {
+                n.read = true;
+                const panel = document.getElementById('notif-panel');
+                if (panel) panel.classList.add('hidden');
+                if (n.type === 'bill' && typeof switchDashboardTab === 'function') {
+                    switchDashboardTab('bills');
+                } else if (n.type === 'exercise' && typeof switchDashboardTab === 'function') {
+                    switchDashboardTab('exercises');
+                } else if ((n.type === 'payment' || n.type === 'session') && typeof switchDashboardTab === 'function') {
+                    switchDashboardTab('records');
+                } else if (n.type === 'note') {
+                    const notesSec = document.getElementById('home-instructions-section');
+                    if (notesSec) notesSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            saveNotifications();
+            renderNotifications();
+        }
+
+        function clearAllNotifs() {
+            portalNotifications = [];
+            saveNotifications();
+            renderNotifications();
+        }
+
+        // Close notification panel when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('notif-panel');
+            const btn = document.getElementById('notif-bell-btn');
+            if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.add('hidden');
+            }
+        });
+
+        function generateAutoNotifications() {
+            if (!loggedInPatient) return;
+            loadNotifications();
+            const prevKeys = new Set(portalNotifications.map(n => n.id.split('_auto_')[1]).filter(Boolean));
+
+            // Payment notifications from actual payment history
+            const paymentHistory = typeof getActualPaymentHistory === 'function' ? getActualPaymentHistory(patientLogs) : {};
+            const latestPay = paymentHistory.latestAdvance || paymentHistory.latestPayment;
+            if (latestPay && toNum(latestPay.amount) > 0) {
+                const p = latestPay;
+                const ymd = typeof normDateYMD === 'function' ? normDateYMD(p.date) : '';
+                const parsedDt = ymd ? new Date(ymd + 'T00:00:00') : new Date(p.date || Date.now());
+                const safeIso = !isNaN(parsedDt.getTime()) ? parsedDt.toISOString() : new Date().toISOString();
+                const amtStr = '₹' + Math.round(Number(p.amount)).toLocaleString('en-IN');
+                const key = 'pay_' + (ymd || p.date) + '_' + Math.round(Number(p.amount));
+                if (!prevKeys.has(key) && !portalNotifications.some(n => n.message && n.message.includes(amtStr) && n.type === 'payment')) {
+                    portalNotifications.unshift({
+                        id: Date.now() + '_auto_' + key,
+                        type: 'payment',
+                        title: 'Payment Received',
+                        message: amtStr + ' payment confirmed on ' + formatDate(p.date),
+                        icon: 'indian-rupee',
+                        time: safeIso,
+                        read: false
+                    });
+                }
+            }
+
+            // Bill issued notification
+            if (typeof billsData !== 'undefined' && billsData && billsData.length > 0) {
+                const patIdLower = String(loggedInPatient.id || '').trim().toLowerCase();
+                const patNameLower = String(loggedInPatient.name || '').trim().toLowerCase();
+                const myBills = billsData.filter(b => {
+                    const bPid = String(b[2] || '').trim().toLowerCase();
+                    const bName = String(b[3] || '').trim().toLowerCase();
+                    return bPid === patIdLower || bName === patNameLower;
+                });
+                if (myBills.length > 0) {
+                    const latestBill = myBills[myBills.length - 1];
+                    const billNo = String(latestBill[1] || '').trim();
+                    const key = 'bill_' + billNo;
+                    if (billNo && !portalNotifications.some(n => n.message && n.message.includes(billNo) && n.type === 'bill')) {
+                        portalNotifications.unshift({
+                            id: Date.now() + '_auto_' + key,
+                            type: 'bill',
+                            title: 'New Bill Issued',
+                            message: 'Statement ' + billNo + ' is ready for download',
+                            icon: 'receipt',
+                            time: new Date().toISOString(),
+                            read: false
+                        });
+                    }
+                }
+            }
+
+            // Exercise plan notification
+            if (typeof currentPatientExercises !== 'undefined' && currentPatientExercises && currentPatientExercises.length > 0) {
+                const key = 'exercise_' + currentPatientExercises.length;
+                if (!portalNotifications.some(n => n.type === 'exercise' && n.message && n.message.includes(currentPatientExercises.length + ' exercise'))) {
+                    portalNotifications.unshift({
+                        id: Date.now() + '_auto_' + key,
+                        type: 'exercise',
+                        title: 'Exercise Plan Active',
+                        message: currentPatientExercises.length + ' exercise(s) prescribed for your home routine',
+                        icon: 'dumbbell',
+                        time: new Date().toISOString(),
+                        read: false
+                    });
+                }
+            }
+
+            // Doctor's notes notification
+            if (typeof currentPatientInstructions !== 'undefined' && currentPatientInstructions && currentPatientInstructions.length > 0) {
+                const key = 'notes_' + currentPatientInstructions.length;
+                if (!portalNotifications.some(n => n.type === 'note' && n.message && n.message.includes('doctor'))) {
+                    portalNotifications.unshift({
+                        id: Date.now() + '_auto_' + key,
+                        type: 'note',
+                        title: "Doctor's Notes Updated",
+                        message: currentPatientInstructions.length + ' note(s) from your doctor — review on home screen',
+                        icon: 'message-square-text',
+                        time: new Date().toISOString(),
+                        read: false
+                    });
+                }
+            }
+
+            if (portalNotifications.length > 20) portalNotifications = portalNotifications.slice(0, 20);
+            saveNotifications();
+            renderNotifications();
         }
 
         function renderUI() {
@@ -1317,26 +1912,12 @@
             
             // Display remaining advance wallet balance (formatted in Indian currency)
             document.getElementById('p-advance').innerText = "₹" + Math.round(Number(walletBalance)).toLocaleString('en-IN');
-            const walletStatusEl = document.getElementById('p-wallet-status');
-            if (walletStatusEl) {
-                const outstanding = (patientBalance && typeof patientBalance.outstandingDue === 'number') ? patientBalance.outstandingDue : 0;
-                if (outstanding > 0) {
-                    walletStatusEl.innerText = "Due: ₹" + Math.round(outstanding).toLocaleString('en-IN');
-                    walletStatusEl.className = "text-[9px] font-bold text-rose-500 truncate mt-0.5";
-                    walletStatusEl.title = `Outstanding Pending Fee: ₹${Math.round(outstanding).toLocaleString('en-IN')}`;
-                } else if (walletBalance > 0) {
-                    walletStatusEl.innerText = "Available Credit";
-                    walletStatusEl.className = "text-[9px] font-bold text-indigo-500 truncate mt-0.5";
-                    walletStatusEl.title = `Active Advance Balance: ₹${Math.round(walletBalance).toLocaleString('en-IN')}`;
-                } else if (walletBalance === 0) {
-                    walletStatusEl.innerText = "Settled";
-                    walletStatusEl.className = "text-[9px] font-bold text-slate-400 truncate mt-0.5";
-                    walletStatusEl.title = "All payments settled";
-                } else {
-                    walletStatusEl.innerText = "Overdrawn";
-                    walletStatusEl.className = "text-[9px] font-bold text-rose-500 truncate mt-0.5";
-                    walletStatusEl.title = `Account overdrawn by ₹${Math.abs(Math.round(walletBalance)).toLocaleString('en-IN')}`;
-                }
+            lastPortalWallet = walletBalance;
+            lastPortalOutstanding = (patientBalance && typeof patientBalance.outstandingDue === 'number') ? patientBalance.outstandingDue : 0;
+            renderWalletStatusLine();
+            // Due reminder popup: triggers every time the patient logs in, opens, or reopens with dues
+            if (lastPortalOutstanding > 0) {
+                showDuePopup();
             }
 
             // Display Last Payment Amount and Actual Payment Date
@@ -1352,8 +1933,8 @@
             } else {
                 lastPayAmtEl.innerText = "₹0";
                 if (lastPayDateEl) {
-                    lastPayDateEl.innerText = "No payments";
-                    lastPayDateEl.title = "No payments recorded";
+                    lastPayDateEl.innerText = tPortal("No payments");
+                    lastPayDateEl.title = tPortal("No payments recorded");
                 }
             }
 
@@ -1380,6 +1961,15 @@
 
             currentPatientInstructions = myInstructions;
             currentPatientExercises = myExercises;
+
+            // EXERCISE EXPIRY (2026-11-14): this patient's archived (expired)
+            // routine, from the Expired_Exercises sheet (needs the redeployed backend).
+            currentPatientExpiredExercises = (expiredExerciseData || []).filter(ex => {
+                const rowId = String(ex[0] || '').trim().toLowerCase();
+                const rowName = String(ex[1] || '').trim().toLowerCase();
+                return (patId && (rowId === patId || rowId.endsWith(patId.slice(-4)) || rowName === patId || rowName.endsWith(patId.slice(-4)))) ||
+                       (patName && (rowName === patName || rowId === patName));
+            });
 
             // Render Both Prescribed Exercises and Clinical Directives with Phone-detected / Saved Language
             setExerciseLanguage(currentExerciseLang);
@@ -1513,7 +2103,7 @@ Thank you!`;
                 return `
                 <div class="bg-white p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 hover:border-indigo-100 transition-all">
                     <div>
-                        <span class="text-[10px] font-black text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-1.5">Statement #${stmt}</span>
+                        <span class="text-[10px] font-black text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-1.5">${tPortal('Statement')} #${stmt}</span>
                         <h4 class="font-black text-slate-800 text-sm md:text-base flex items-center gap-1.5">
                             <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i> ${formatDate(b.date)}
                         </h4>
@@ -1552,7 +2142,10 @@ Thank you!`;
             window.currentPatientBills = myBills;
             window.currentTreatingDoctor = currentTreatingDoctor;
 
+            applyPortalLanguage(portalLang());
             if (window.lucide) lucide.createIcons();
+            // Generate & render notifications
+            generateAutoNotifications();
             if (window.PrismAI && typeof window.PrismAI.refreshContext === 'function') {
                 window.PrismAI.refreshContext();
             }
@@ -1568,6 +2161,464 @@ Thank you!`;
             renderPassbook(month);
         }
 
+        // PMS-ALIGNED SESSION SETTLEMENT & DUE CLEARANCE LEDGER:
+        // Reconciles session fees against payments FIFO, exactly matching PMS:
+        // 1. Dedicated 'Due Payment' / 'Wallet Topup' rows
+        // 2. Excess payments on regular sessions (initialPaid > fee clears prior unpaid sessions)
+        // 3. Reconciles with backend patientBalance.outstandingDue
+        let lastPortalWallet = 0;
+        let lastPortalOutstanding = 0;
+
+        function normDateYMD(val) {
+            if (!val) return '';
+            if (val instanceof Date) {
+                if (isNaN(val.getTime())) return '';
+                const y = val.getFullYear();
+                const m = String(val.getMonth() + 1).padStart(2, '0');
+                const d = String(val.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+            const str = String(val).trim();
+            if (!str) return '';
+            if (str.includes('T') || str.endsWith('Z')) {
+                const dt = new Date(str);
+                if (!isNaN(dt.getTime())) {
+                    const y = dt.getFullYear();
+                    const m = String(dt.getMonth() + 1).padStart(2, '0');
+                    const d = String(dt.getDate()).padStart(2, '0');
+                    return `${y}-${m}-${d}`;
+                }
+            }
+            const ymd = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+            if (ymd) {
+                return `${ymd[1]}-${String(ymd[2]).padStart(2, '0')}-${String(ymd[3]).padStart(2, '0')}`;
+            }
+            const dmy = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
+            if (dmy) {
+                return `${dmy[3]}-${String(dmy[2]).padStart(2, '0')}-${String(dmy[1]).padStart(2, '0')}`;
+            }
+            const d = new Date(str);
+            if (!isNaN(d.getTime())) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const dt = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${dt}`;
+            }
+            return str;
+        }
+
+        function computeSessionSettlements() {
+            const out = {};
+            try {
+                const totalDue = (patientBalance && typeof patientBalance.outstandingDue === 'number') ? patientBalance.outstandingDue : null;
+                const isExcluded = (t) => ['case closed', 'case restarted', 'bill issued', 'package added', 'due payment', 'wallet topup', 'topup', 'enrollment', 'enrollment (package)'].includes(t);
+
+                // 1. Candidate clinical sessions
+                const sessions = [];
+                (patientLogs || []).forEach((l, idx) => {
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    if (isExcluded(t) || t.includes('due payment') || t === 'enrollment' || t === 'enrollment (package)') return;
+                    const fee = toNum(l[9]);
+                    if (fee <= 0) return;
+                    const mode = String(l[13] || (isNaN(Number(l[15])) ? l[15] : '') || '').trim();
+                    const paidRaw = (l[15] !== undefined && l[15] !== null && l[15] !== '' && !isNaN(Number(l[15])))
+                        ? toNum(l[15])
+                        : ((l[11] !== undefined && l[11] !== null && l[11] !== '' && !isNaN(Number(l[11]))) ? toNum(l[11]) : (mode === 'Pending' ? 0 : fee));
+                    const initialPaid = (paidRaw !== undefined && !isNaN(paidRaw)) ? paidRaw : (mode === 'Pending' ? 0 : fee);
+                    const gap = Math.max(0, fee - initialPaid);
+                    const sObj = {
+                        idx: idx,
+                        log: l,
+                        timestamp: l[0],
+                        date: normDateYMD(l[8]) || (l[0] ? normDateYMD(l[0]) : ''),
+                        fee: fee,
+                        initialMode: mode,
+                        initialPaid: initialPaid,
+                        gap: gap,
+                        actualDue: gap,
+                        isCleared: gap === 0,
+                        clearedAmount: 0,
+                        clearanceDate: null,
+                        clearanceMode: null,
+                        settled: gap === 0,
+                        pendingAmt: gap,
+                        mode: (mode && mode.toLowerCase() !== 'pending') ? mode : (gap === 0 ? 'Paid' : 'Pending'),
+                        cleared: null
+                    };
+                    sessions.push(sObj);
+                    l._st = sObj;
+                });
+
+                // 2. Collect all payment credits chronologically
+                const paymentCredits = [];
+                (patientLogs || []).forEach((l, idx) => {
+                    const t = String(l[7] || '').trim().toLowerCase();
+                    if (t === 'due payment' || t.includes('due payment') || t === 'wallet topup' || t === 'topup') {
+                        const amt = toNum(l[11]) || toNum(l[15]) || toNum(l[16]) || toNum(l[9]) || 0;
+                        const mode = String(l[13] || 'Cash').trim() || 'Cash';
+                        const date = normDateYMD(l[8]) || (l[0] ? normDateYMD(l[0]) : '');
+                        if (amt > 0) {
+                            paymentCredits.push({
+                                idx: idx,
+                                timestamp: l[0],
+                                date: date,
+                                amount: amt,
+                                remaining: amt,
+                                mode: mode,
+                                type: 'due_payment'
+                            });
+                        }
+                    }
+                });
+
+                // Also collect excess payments from regular session rows (initialPaid > fee)
+                sessions.forEach(sess => {
+                    if (sess.initialPaid > sess.fee) {
+                        const excess = sess.initialPaid - sess.fee;
+                        paymentCredits.push({
+                            idx: sess.idx,
+                            timestamp: sess.timestamp,
+                            date: sess.date,
+                            amount: excess,
+                            remaining: excess,
+                            mode: sess.initialMode || 'Cash',
+                            type: 'session_excess'
+                        });
+                    }
+                });
+
+                // Sort payment credits chronologically
+                paymentCredits.sort((a, b) => {
+                    const da = a.date || '', db = b.date || '';
+                    if (da !== db) return da.localeCompare(db);
+                    return a.idx - b.idx;
+                });
+
+                // 3. FIFO allocation of payment credits to sessions with gap > 0
+                sessions.forEach(sess => {
+                    if (sess.gap > 0) {
+                        let need = sess.gap;
+                        for (const pc of paymentCredits) {
+                            if (pc.remaining > 0) {
+                                const pay = Math.min(need, pc.remaining);
+                                need -= pay;
+                                pc.remaining -= pay;
+                                sess.clearedAmount += pay;
+                                sess.clearanceDate = pc.date;
+                                sess.clearanceMode = pc.mode;
+                                if (need <= 0) break;
+                            }
+                        }
+                        sess.actualDue = need;
+                        sess.pendingAmt = need;
+                        if (need <= 0) {
+                            sess.isCleared = true;
+                            sess.settled = true;
+                            sess.mode = sess.clearanceMode || 'Paid';
+                            sess.cleared = {
+                                amt: sess.clearedAmount,
+                                date: sess.clearanceDate,
+                                mode: sess.clearanceMode
+                            };
+                        }
+                    }
+                });
+
+                // 4. Reconcile with authoritative patientBalance.outstandingDue
+                if (totalDue === 0) {
+                    // Patient has NO overall dues in backend ledger - ALL sessions are cleared!
+                    let settlementDate = null;
+                    let settlementMode = null;
+
+                    if (paymentCredits.length > 0) {
+                        const lastPc = paymentCredits[paymentCredits.length - 1];
+                        settlementDate = lastPc.date;
+                        settlementMode = lastPc.mode;
+                    } else {
+                        const closedRow = (patientLogs || []).find(r => String(r[7] || '').trim().toLowerCase() === 'case closed');
+                        if (closedRow) {
+                            settlementDate = normDateYMD(closedRow[8]) || (closedRow[0] ? normDateYMD(closedRow[0]) : '');
+                            settlementMode = 'Settled';
+                        }
+                    }
+
+                    sessions.forEach(sess => {
+                        if (sess.gap > 0) {
+                            sess.actualDue = 0;
+                            sess.pendingAmt = 0;
+                            sess.isCleared = true;
+                            sess.settled = true;
+                            if (!sess.clearanceDate) {
+                                sess.clearanceDate = settlementDate || sess.date;
+                                sess.clearanceMode = settlementMode || 'Settled';
+                            }
+                            sess.mode = sess.clearanceMode || 'Paid';
+                            sess.cleared = {
+                                amt: sess.clearedAmount || sess.fee,
+                                date: sess.clearanceDate,
+                                mode: sess.clearanceMode
+                            };
+                        }
+                    });
+                } else if (totalDue !== null && totalDue > 0) {
+                    // Allocate totalDue from newest to oldest
+                    let unallocatedDue = totalDue;
+                    for (let i = sessions.length - 1; i >= 0; i--) {
+                        const sess = sessions[i];
+                        if (sess.gap > 0) {
+                            const alloc = Math.min(sess.gap, unallocatedDue);
+                            sess.actualDue = alloc;
+                            sess.pendingAmt = alloc;
+                            sess.isCleared = (alloc === 0);
+                            sess.settled = (alloc === 0);
+                            unallocatedDue -= alloc;
+                            if (sess.isCleared && !sess.clearanceDate) {
+                                if (paymentCredits.length > 0) {
+                                    sess.clearanceDate = paymentCredits[paymentCredits.length - 1].date;
+                                    sess.clearanceMode = paymentCredits[paymentCredits.length - 1].mode;
+                                } else {
+                                    sess.clearanceDate = null;
+                                    sess.clearanceMode = 'Settled';
+                                }
+                                sess.mode = sess.clearanceMode || 'Paid';
+                                sess.cleared = {
+                                    amt: sess.clearedAmount || sess.fee,
+                                    date: sess.clearanceDate,
+                                    mode: sess.clearanceMode
+                                };
+                            } else if (!sess.isCleared) {
+                                sess.mode = 'Pending';
+                            }
+                        }
+                    }
+                    if (unallocatedDue > 0 && sessions.length) {
+                        const newest = sessions[sessions.length - 1];
+                        if (newest.actualDue === 0) {
+                            newest.actualDue = unallocatedDue;
+                            newest.pendingAmt = unallocatedDue;
+                            newest.isCleared = false;
+                            newest.settled = false;
+                            newest.mode = 'Pending';
+                        }
+                    }
+                }
+
+                // 5. Index session statuses
+                sessions.forEach(sess => {
+                    out[sess.idx] = sess;
+                    if (sess.timestamp) out[sess.timestamp] = sess;
+                    if (sess.date) {
+                        const dateKey = 'date_' + normDateYMD(sess.date);
+                        if (!out[dateKey]) out[dateKey] = sess;
+                    }
+                });
+            } catch (e) {
+                console.warn('computeSessionSettlements error:', e);
+            }
+            return out;
+        }
+        // Bold due line under the wallet balance (single source of truth for
+        // that line; re-run on language switch so it follows the toggle).
+        function renderWalletStatusLine() {
+            const el = document.getElementById('p-wallet-status');
+            if (!el) return;
+            const outstanding = lastPortalOutstanding, walletBalance = lastPortalWallet;
+            if (outstanding > 0) {
+                el.innerHTML = `<span class="font-black text-xs sm:text-[13px] text-rose-600 tracking-tight leading-none">${tPortal('Due')}: ₹${Math.round(outstanding).toLocaleString('en-IN')}</span><span class="bg-rose-600 hover:bg-rose-700 text-white font-black text-[9px] px-2 py-0.5 rounded-md uppercase tracking-wider ml-1.5 shadow-xs transition-all">PAY UPI</span>`;
+                el.className = "mt-1 cursor-pointer flex items-center justify-center flex-wrap gap-1 transition-all hover:opacity-90 font-black";
+                el.title = `Outstanding Pending Fee: ₹${Math.round(outstanding).toLocaleString('en-IN')} - Click to Pay via UPI`;
+                el.onclick = () => showDuePopup();
+            } else if (walletBalance > 0) {
+                el.innerText = tPortal('Available Credit');
+                el.className = "text-[9px] font-bold text-indigo-500 truncate mt-0.5";
+                el.title = `Active Advance Balance: ₹${Math.round(walletBalance).toLocaleString('en-IN')}`;
+                el.onclick = null;
+            } else if (walletBalance === 0) {
+                el.innerText = tPortal('Settled');
+                el.className = "text-[9px] font-bold text-slate-400 truncate mt-0.5";
+                el.title = "All payments settled";
+                el.onclick = null;
+            } else {
+                el.innerText = tPortal('Overdrawn');
+                el.className = "text-[9px] font-bold text-rose-500 truncate mt-0.5";
+                el.title = `Account overdrawn by ₹${Math.abs(Math.round(walletBalance)).toLocaleString('en-IN')}`;
+                el.onclick = null;
+            }
+        }
+        // Due reminder popup: displays outstanding balance, Full Due / Custom Amount switcher, ready-to-pay UPI intent link (dr.raviphysio01@oksbi), QR code & WhatsApp receipt
+        let duePopupFullAmount = 0;
+        let duePopupMode = 'full'; // 'full' | 'custom'
+        let dueQrDebounceTimer = null;
+
+        function showDuePopup() {
+            try {
+                const amt = (patientBalance && typeof patientBalance.outstandingDue === 'number') ? Math.round(patientBalance.outstandingDue) : (lastPortalOutstanding || 0);
+                if (!(amt > 0)) return;
+                duePopupFullAmount = amt;
+                duePopupMode = 'full';
+
+                const amtEl = document.getElementById('due-popup-amount');
+                if (amtEl) amtEl.innerText = amt.toLocaleString('en-IN');
+
+                const customInput = document.getElementById('due-custom-input');
+                if (customInput) customInput.value = '';
+
+                setDuePayMode('full');
+
+                const modal = document.getElementById('due-popup');
+                if (modal) modal.classList.remove('hidden');
+                if (window.lucide) lucide.createIcons();
+            } catch (e) {
+                console.warn("showDuePopup error:", e);
+            }
+        }
+
+        function setDuePayMode(mode) {
+            duePopupMode = (mode === 'custom') ? 'custom' : 'full';
+            const fullBtn = document.getElementById('due-mode-full');
+            const customBtn = document.getElementById('due-mode-custom');
+            const customBox = document.getElementById('due-custom-amount-box');
+            const customInput = document.getElementById('due-custom-input');
+
+            const activeCls = "py-2 px-3 rounded-xl text-[11px] font-black transition-all bg-white text-indigo-700 shadow-xs cursor-pointer";
+            const inactiveCls = "py-2 px-3 rounded-xl text-[11px] font-bold transition-all text-slate-500 hover:text-slate-800 cursor-pointer";
+
+            if (fullBtn && customBtn) {
+                if (duePopupMode === 'custom') {
+                    customBtn.className = activeCls;
+                    fullBtn.className = inactiveCls;
+                } else {
+                    fullBtn.className = activeCls;
+                    customBtn.className = inactiveCls;
+                }
+            }
+
+            if (customBox) {
+                if (duePopupMode === 'custom') {
+                    customBox.classList.remove('hidden');
+                    if (customInput) setTimeout(() => customInput.focus(), 60);
+                } else {
+                    customBox.classList.add('hidden');
+                }
+            }
+
+            const payAmt = (duePopupMode === 'custom')
+                ? Math.max(0, Math.round(Number(customInput ? customInput.value : 0) || 0))
+                : duePopupFullAmount;
+
+            applyDuePaymentAmount(payAmt, true);
+        }
+
+        function setQuickCustomAmount(val) {
+            const customInput = document.getElementById('due-custom-input');
+            const amount = (val === 'half')
+                ? Math.max(100, Math.round((duePopupFullAmount / 2) / 50) * 50)
+                : (val === 'full' ? duePopupFullAmount : Math.max(1, Math.round(Number(val) || 0)));
+            if (customInput) customInput.value = amount;
+            applyDuePaymentAmount(amount, true);
+        }
+
+        function onCustomDueInput(val) {
+            const parsed = Math.max(0, Math.round(Number(val) || 0));
+            applyDuePaymentAmount(parsed, false);
+        }
+
+        function applyDuePaymentAmount(payAmt, immediateQr) {
+            const patientName = (loggedInPatient && loggedInPatient.name) ? loggedInPatient.name : 'Patient';
+            const patientId = (loggedInPatient && loggedInPatient.id) ? loggedInPatient.id : '';
+            const upiVpa = "dr.raviphysio01@oksbi";
+            const payeeName = "Dr Ravi Kumar";
+
+            const hasAmt = payAmt > 0;
+            const cleanUpiUri = hasAmt
+                ? `upi://pay?pa=${upiVpa}&pn=${encodeURIComponent(payeeName)}&am=${payAmt}&cu=INR`
+                : `upi://pay?pa=${upiVpa}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
+
+            const upiBtn = document.getElementById('due-popup-upi');
+            const upiLabel = document.getElementById('due-popup-upi-label');
+            if (upiBtn) upiBtn.href = cleanUpiUri;
+            if (upiLabel) {
+                upiLabel.innerText = hasAmt
+                    ? `Pay ₹${payAmt.toLocaleString('en-IN')} via UPI`
+                    : 'Pay Custom Amount via UPI';
+            }
+
+            const qrAmtBadge = document.getElementById('due-qr-amt-badge');
+            if (qrAmtBadge) {
+                qrAmtBadge.innerText = hasAmt ? `₹${payAmt.toLocaleString('en-IN')}` : 'Any Amount';
+            }
+
+            // Update QR (debounced while typing so it doesn't flicker)
+            if (dueQrDebounceTimer) clearTimeout(dueQrDebounceTimer);
+            if (immediateQr) {
+                updateQrImage(payAmt);
+            } else {
+                dueQrDebounceTimer = setTimeout(() => updateQrImage(payAmt), 350);
+            }
+
+            // Update WhatsApp confirmation message
+            const wa = document.getElementById('due-popup-wa');
+            if (wa) {
+                const amtText = hasAmt ? `₹${payAmt.toLocaleString('en-IN')}` : `my fee (Due: ₹${duePopupFullAmount.toLocaleString('en-IN')})`;
+                const msg = `Hi Prism, I have paid ${amtText} via UPI (to ${upiVpa}). My name is ${patientName}, ID ${patientId}.`;
+                wa.href = 'https://wa.me/919708059081?text=' + encodeURIComponent(msg);
+            }
+        }
+
+        function updateQrImage(amt) {
+            const qrImg = document.getElementById('due-popup-qr-img');
+            if (!qrImg) return;
+            const upiVpa = "dr.raviphysio01@oksbi";
+            const payeeName = "Dr Ravi Kumar";
+            const currentAmt = (typeof amt === 'number') ? amt : duePopupFullAmount;
+            const qrUri = currentAmt > 0
+                ? `upi://pay?pa=${upiVpa}&pn=${encodeURIComponent(payeeName)}&am=${currentAmt}&cu=INR`
+                : `upi://pay?pa=${upiVpa}&pn=${encodeURIComponent(payeeName)}&cu=INR`;
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrUri)}`;
+        }
+
+        function hideDuePopup() {
+            const modal = document.getElementById('due-popup');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function copyUpiId(btn) {
+            const upiId = "dr.raviphysio01@oksbi";
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(upiId).then(() => {
+                    markCopied(btn);
+                }).catch(() => fallbackCopy(upiId, btn));
+            } else {
+                fallbackCopy(upiId, btn);
+            }
+        }
+
+        function fallbackCopy(text, btn) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                markCopied(btn);
+            } catch(e) {
+                prompt("UPI ID:", text);
+            }
+        }
+
+        function markCopied(btn) {
+            if (!btn) return;
+            const original = btn.innerText;
+            btn.innerText = "✓ " + tPortal("Copied!");
+            btn.classList.add("bg-emerald-100", "text-emerald-700");
+            setTimeout(() => {
+                btn.innerText = original;
+                btn.classList.remove("bg-emerald-100", "text-emerald-700");
+            }, 2000);
+        }
         function renderPassbook(selectedMonth = currentPassbookFilter) {
             const sessions = patientLogs.filter(r => toNum(r[9]) > 0 && !['package added', 'bill issued', 'case closed', 'case restarted', 'enrollment', 'enrollment (package)', 'due payment', 'wallet topup', 'topup'].includes(String(r[7]).toLowerCase().trim()));
             const sortedSessions = [...sessions].sort((a, b) => new Date(b[8] || b[0]) - new Date(a[8] || a[0]));
@@ -1577,8 +2628,8 @@ Thank you!`;
                 const rawDate = s[8] || s[0];
                 const d = new Date(rawDate);
                 const monthKey = !isNaN(d.getTime()) 
-                    ? d.toLocaleString('en-US', { month: 'long', year: 'numeric' })
-                    : 'Recent Sessions';
+                    ? d.toLocaleString(currentExerciseLang === 'hi' ? 'hi-IN' : 'en-US', { month: 'long', year: 'numeric' })
+                    : tPortal('Recent Sessions');
                 if (!monthGroups[monthKey]) monthGroups[monthKey] = [];
                 monthGroups[monthKey].push(s);
             });
@@ -1617,13 +2668,14 @@ Thank you!`;
             if (!activeKeys.length) {
                 listEl.innerHTML = `
                     <div class="p-8 text-center text-slate-400 bg-white rounded-3xl border border-dashed">
-                        <p class="text-xs font-semibold mb-2">No records found for ${selectedMonth}.</p>
+                        <p class="text-xs font-semibold mb-2">${currentExerciseLang === 'hi' ? `माह ${selectedMonth} का कोई रिकॉर्ड नहीं मिला।` : `No records found for ${selectedMonth}.`}</p>
                         <button onclick="applyPassbookFilter('all')" class="text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl hover:bg-indigo-100 transition-colors">Show All Months</button>
                     </div>
                 `;
                 return;
             }
 
+            const settlements = computeSessionSettlements();
             listEl.innerHTML = activeKeys.map(mKey => {
                 const mSessions = monthGroups[mKey] || [];
                 return `
@@ -1638,12 +2690,12 @@ Thank you!`;
                         ${mSessions.map(s => {
                             const fee = Math.round(toNum(s[9]));
                             const doc = String(s[16] || currentTreatingDoctor || '').trim();
-                            let payMode = String(s[13] || '').trim();
-                            if (!payMode || payMode.includes('/')) {
-                                const val15 = String(s[15] || '').trim();
-                                if (val15 && isNaN(Number(val15))) payMode = val15;
-                            }
-                            if (payMode === '0' || !isNaN(Number(payMode))) payMode = '';
+                            const origMode = String(s[13] || (isNaN(Number(s[15])) ? s[15] : '') || '').trim();
+                            const st = s._st || settlements[patientLogs.indexOf(s)] || settlements[s[0]] || settlements['date_' + normDateYMD(s[8])] || {};
+
+                            const actualDue = (st.actualDue !== undefined) ? st.actualDue : (origMode === 'Pending' ? fee : 0);
+                            const isCleared = !!st.isCleared || (actualDue === 0 && (origMode === 'Pending' || (st.clearedAmount && st.clearedAmount > 0)));
+                            const isPending = actualDue > 0 && fee > 0;
 
                             const getModeClass = (m) => {
                                 const lm = String(m || '').toLowerCase();
@@ -1653,29 +2705,78 @@ Thank you!`;
                                 if (lm === 'package') return 'bg-purple-50 text-purple-700 border-purple-200/80';
                                 if (lm === 'card') return 'bg-sky-50 text-sky-700 border-sky-200/80';
                                 if (lm === 'pending') return 'bg-rose-50 text-rose-700 border-rose-200/80';
+                                if (lm === 'paid' || lm === 'cleared') return 'bg-emerald-50 text-emerald-700 border-emerald-200/80';
                                 if (lm === 'complimentary') return 'bg-slate-100 text-slate-600 border-slate-200';
                                 return 'bg-indigo-50 text-indigo-700 border-indigo-200/70';
                             };
 
+                            const modeBadge = (() => {
+                                if (origMode === 'Pending' || (st.clearedAmount && st.clearedAmount > 0)) {
+                                    if (isCleared) {
+                                        return `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider flex items-center gap-1 shadow-2xs"><i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i> ${tPortal('Cleared')}</span>`;
+                                    }
+                                    return `<span class="bg-rose-50 text-rose-700 border border-rose-200/80 px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider shadow-2xs">${tPortal('Pending Due')}</span>`;
+                                }
+                                const payMode = origMode || 'Cash';
+                                return `<span class="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider border shadow-2xs ${getModeClass(payMode)}">${tPortal(payMode)}</span>`;
+                            })();
+
+                            let feeDetailsHtml = '';
+                            if (isPending) {
+                                feeDetailsHtml = `
+                                    <span class="block text-[10px] font-black text-rose-600 tracking-tight leading-tight">₹${Math.round(actualDue).toLocaleString('en-IN')} ${tPortal('Due')}</span>
+                                    ${st.clearedAmount > 0 ? `<span class="block text-[8px] font-medium text-slate-500 leading-tight">(${tPortal('Partially paid')}: ₹${Math.round(st.clearedAmount).toLocaleString('en-IN')})</span>` : ''}
+                                `;
+                            } else if (origMode === 'Pending' || (st.clearedAmount && st.clearedAmount > 0)) {
+                                const cDate = st.clearanceDate ? formatDate(st.clearanceDate) : '';
+                                const cMode = st.clearanceMode ? ` (${tPortal(st.clearanceMode)})` : '';
+                                feeDetailsHtml = `
+                                    <span class="block text-[8.5px] font-bold text-emerald-600 uppercase tracking-tight leading-tight">${tPortal('Paid in full')}</span>
+                                    <span class="block text-[8px] font-medium text-emerald-600 leading-tight">${tPortal('Due cleared')}${cDate ? ` ${tPortal('on')} ${cDate}` : ''}${cMode}</span>
+                                `;
+                            } else if (st.initialPaid > fee) {
+                                feeDetailsHtml = `
+                                    <span class="block text-[8.5px] font-bold text-emerald-600 leading-tight">₹${Math.round(st.initialPaid).toLocaleString('en-IN')} ${tPortal('Paid')}</span>
+                                    <span class="block text-[8px] font-medium text-slate-500 leading-tight">(₹${Math.round(st.initialPaid - fee).toLocaleString('en-IN')} ${tPortal('cleared past dues')})</span>
+                                `;
+                            } else if (st.initialPaid > 0 && st.initialPaid < fee) {
+                                feeDetailsHtml = `
+                                    <span class="block text-[8.5px] font-bold text-emerald-600 leading-tight">₹${Math.round(st.initialPaid).toLocaleString('en-IN')} + ₹${Math.round(fee - st.initialPaid).toLocaleString('en-IN')} ${tPortal('Wallet')}</span>
+                                `;
+                            }
+
+                            const borderCls = isPending
+                                ? 'border-l-4 border-l-rose-500 bg-rose-50/15'
+                                : (origMode === 'Pending' && isCleared)
+                                    ? 'border-l-4 border-l-emerald-500 bg-emerald-50/15'
+                                    : 'border-slate-100 hover:border-indigo-100';
+
+                            const iconBoxCls = isPending
+                                ? 'bg-rose-50 text-rose-600'
+                                : (origMode === 'Pending' && isCleared)
+                                    ? 'bg-emerald-50 text-emerald-600'
+                                    : 'bg-indigo-50 text-indigo-600';
+
                             return `
-                            <div class="bg-white p-3.5 md:p-4 rounded-2xl border border-slate-100 flex items-center justify-between gap-2.5 shadow-xs hover:border-indigo-100 transition-all">
+                            <div class="bg-white p-3.5 md:p-4 rounded-2xl border ${borderCls} flex items-center justify-between gap-2.5 shadow-xs transition-all">
                                 <div class="flex items-start sm:items-center gap-3 min-w-0">
-                                    <div class="bg-indigo-50 text-indigo-600 p-2 md:p-2.5 rounded-xl flex-shrink-0 mt-0.5 sm:mt-0">
-                                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    <div class="${iconBoxCls} p-2 md:p-2.5 rounded-xl flex-shrink-0 mt-0.5 sm:mt-0">
+                                        <i data-lucide="${isPending ? 'clock' : 'check-circle'}" class="w-4 h-4"></i>
                                     </div>
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2 flex-wrap">
                                             <p class="text-xs md:text-sm font-black text-slate-800">${formatDate(s[8])}</p>
-                                            <span class="text-[9px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md truncate max-w-[200px]">${s[6] || 'Rehab Visit'}</span>
+                                            <span class="text-[9px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md truncate max-w-[200px]">${s[6] || tPortal('Rehab Visit')}</span>
                                         </div>
                                         <div class="flex items-center gap-2 flex-wrap mt-1 text-[10px]">
                                             ${doc && doc.toLowerCase() !== 'undefined' ? `<span class="inline-flex items-center gap-1 font-bold text-slate-600"><i data-lucide="stethoscope" class="w-3 h-3 text-indigo-500"></i> ${doc}</span>` : ''}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex flex-col items-end justify-center gap-1 flex-shrink-0">
+                                <div class="flex flex-col items-end justify-center gap-1 flex-shrink-0 text-right">
                                     <span class="text-xs md:text-sm font-black text-indigo-600 border border-indigo-100/80 bg-indigo-50/60 px-2.5 py-1 rounded-xl flex-shrink-0 shadow-2xs">₹${fee.toLocaleString('en-IN')}</span>
-                                    ${payMode ? `<span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${getModeClass(payMode)}">${payMode}</span>` : ''}
+                                    ${modeBadge}
+                                    ${feeDetailsHtml}
                                 </div>
                             </div>
                             `;
@@ -1686,6 +2787,7 @@ Thank you!`;
             }).join('');
 
             lucide.createIcons();
+            applyPortalLanguage(portalLang());
         }
 
         function generateOfficialDoc(stmtNo) {
@@ -1786,7 +2888,22 @@ Thank you!`;
                 window.PrismAI.openDoctorModal();
             }
         }
-        function formatDate(d) { if(!d) return '-'; return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
+        function formatDate(d) {
+            if (!d) return '-';
+            const ymd = normDateYMD(d);
+            if (ymd && ymd.length >= 10 && ymd.includes('-')) {
+                const p = ymd.split('-');
+                if (p.length === 3 && p[0].length === 4) {
+                    const dt = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+                    return dt.toLocaleDateString(portalLang() === 'hi' ? 'hi-IN' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                }
+            }
+            const dt = new Date(d);
+            if (!isNaN(dt.getTime())) {
+                return dt.toLocaleDateString(portalLang() === 'hi' ? 'hi-IN' : 'en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            }
+            return String(d);
+        }
 
         function toggleMask() {
             const input = document.getElementById('login-id');
@@ -1835,6 +2952,7 @@ Thank you!`;
                     patientLogs = session.patientLogs || [];
                     globalData = session.globalData || [];
                     exerciseData = session.exerciseData || [];
+                    expiredExerciseData = session.expiredExerciseData || [];
                     billsData = session.billsData || [];
                     doctorsData = session.doctorsData || [];
 
@@ -1860,6 +2978,7 @@ Thank you!`;
                 if (adminRes && adminRes.adminData) {
                     const freshAdminData = adminRes.adminData || [];
                     const freshExerciseData = adminRes.exercises || adminRes.exercisePlans || [];
+                    const freshExpiredData = adminRes.expiredExercises || [];
                     const freshBillsData = adminRes.bills || [];
                     const freshDoctorsData = adminRes.doctorsList || [];
 
@@ -1868,6 +2987,7 @@ Thank you!`;
                     if (match) {
                         globalData = freshAdminData;
                         exerciseData = freshExerciseData;
+                        expiredExerciseData = freshExpiredData;
                         billsData = freshBillsData;
                         doctorsData = freshDoctorsData;
                         loggedInPatient = { 
@@ -1897,6 +3017,7 @@ Thank you!`;
                                 patientLogs: patientLogs,
                                 globalData: globalData,
                                 exerciseData: exerciseData,
+                            expiredExerciseData: expiredExerciseData,
                                 billsData: billsData,
                                 doctorsData: doctorsData,
                                 timestamp: Date.now()
@@ -1943,7 +3064,7 @@ Thank you!`;
                 if (banner) banner.classList.add('hidden');
                 const headerBtn = document.getElementById('patient-header-install-btn');
                 if (headerBtn) {
-                    headerBtn.innerHTML = '<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i><span>Installed</span>';
+                    headerBtn.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 sm:w-3.5 sm:h-3.5 text-emerald-600 shrink-0"></i><span class="hidden sm:inline">Installed</span>';
                     headerBtn.classList.replace('text-indigo-700', 'text-emerald-700');
                     headerBtn.classList.replace('bg-indigo-50', 'bg-emerald-50');
                     headerBtn.classList.replace('border-indigo-200/90', 'border-emerald-200/90');
@@ -1972,7 +3093,7 @@ Thank you!`;
                 const banner = document.getElementById('patient-install-banner');
                 if (banner) banner.classList.add('hidden');
                 closePatientInstallModal();
-                alert('🎉 Patient Portal installed successfully! You can now launch it directly from your home screen or desktop shortcut.');
+                alert(tPortal('🎉 Patient Portal installed successfully! You can now launch it directly from your home screen or desktop shortcut.'));
             });
 
             // 6. Show top banner after 1.5 seconds if not dismissed
@@ -2046,7 +3167,7 @@ Thank you!`;
                     deferredPatientPrompt = null;
                 });
             } else {
-                alert('Follow the quick step-by-step shortcut instructions shown below for your browser.');
+                alert(tPortal('Follow the quick step-by-step shortcut instructions shown below for your browser.'));
             }
         }
 
@@ -2287,6 +3408,98 @@ Thank you!`;
         </div>
     </div>
 
+    <!-- Due reminder popup: shown on login and reopen when a due exists with direct UPI pay link & custom amount -->
+    <div id="due-popup" class="hidden fixed inset-0 z-[300] flex items-center justify-center p-3.5 sm:p-4 bg-slate-900/65 backdrop-blur-sm" onclick="if(event.target===this) hideDuePopup()">
+        <div class="bg-white w-full max-w-[365px] rounded-[28px] shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto relative">
+            <!-- Top Gradient Accent Bar -->
+            <div class="h-1.5 w-full bg-gradient-to-r from-rose-500 via-indigo-600 to-emerald-500"></div>
+
+            <!-- Close Button -->
+            <button type="button" onclick="hideDuePopup()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer" aria-label="Close">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="p-5 sm:p-6 text-center">
+                <!-- Header -->
+                <div class="w-11 h-11 mx-auto rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-2 border border-rose-100 shadow-2xs">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                </div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Pending Fee</p>
+                <p class="text-3xl font-black text-rose-600 tracking-tight leading-tight mt-0.5">₹<span id="due-popup-amount">0</span></p>
+                <p class="text-[11px] font-semibold text-slate-500 mt-1">Pay full due or any custom amount via UPI</p>
+
+                <!-- Payment Mode Switcher: Full Due vs Pay Custom Amount -->
+                <div class="grid grid-cols-2 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200/70 mt-3.5">
+                    <button type="button" id="due-mode-full" onclick="setDuePayMode('full')" class="py-2 px-3 rounded-xl text-[11px] font-black transition-all bg-white text-indigo-700 shadow-xs cursor-pointer">
+                        Pay Full Due
+                    </button>
+                    <button type="button" id="due-mode-custom" onclick="setDuePayMode('custom')" class="py-2 px-3 rounded-xl text-[11px] font-bold transition-all text-slate-500 hover:text-slate-800 cursor-pointer">
+                        Pay Custom Amount
+                    </button>
+                </div>
+
+                <!-- Custom Amount Input Box (Shown when 'Pay Custom Amount' is active) -->
+                <div id="due-custom-amount-box" class="hidden mt-2.5 text-left space-y-2">
+                    <div class="flex items-center bg-white border-2 border-indigo-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100 rounded-2xl px-3.5 py-2 transition-all shadow-2xs">
+                        <span class="text-base font-black text-indigo-600 mr-1.5">₹</span>
+                        <input id="due-custom-input" type="number" inputmode="numeric" min="1" step="1" placeholder="Enter amount (e.g. 500)" oninput="onCustomDueInput(this.value)" class="w-full text-sm font-black text-slate-900 placeholder:text-slate-400 placeholder:font-semibold outline-none bg-transparent">
+                    </div>
+                    <div class="grid grid-cols-4 gap-1.5">
+                        <button type="button" onclick="setQuickCustomAmount(500)" class="py-1.5 rounded-xl bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 text-[10px] font-black transition-colors cursor-pointer">₹500</button>
+                        <button type="button" onclick="setQuickCustomAmount(1000)" class="py-1.5 rounded-xl bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 text-[10px] font-black transition-colors cursor-pointer">₹1,000</button>
+                        <button type="button" onclick="setQuickCustomAmount('half')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-black transition-colors cursor-pointer">50%</button>
+                        <button type="button" onclick="setQuickCustomAmount('full')" class="py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-black transition-colors cursor-pointer">Full</button>
+                    </div>
+                </div>
+
+                <!-- Primary Instant UPI Pay Button -->
+                <div class="flex flex-col gap-2.5 mt-3.5">
+                    <a id="due-popup-upi" href="upi://pay?pa=dr.raviphysio01@oksbi&pn=Dr%20Ravi%20Kumar&am=0&cu=INR" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-200/80 active:scale-98">
+                        <i data-lucide="zap" class="w-4 h-4 text-amber-300 fill-amber-300 shrink-0"></i>
+                        <span id="due-popup-upi-label">Pay Now via UPI</span>
+                    </a>
+
+                    <!-- Unified QR Code & 1-Click Copy UPI Card -->
+                    <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3 space-y-2.5">
+                        <div class="flex flex-col items-center">
+                            <div class="relative bg-white p-2 rounded-2xl border border-slate-200/90 shadow-xs">
+                                <img id="due-popup-qr-img" src="" alt="UPI QR Code" class="w-32 h-32 rounded-lg object-contain">
+                            </div>
+                            <div class="flex items-center justify-center gap-2 mt-2">
+                                <span class="text-[10px] font-bold text-slate-500 flex items-center gap-1">
+                                    <i data-lucide="qr-code" class="w-3 h-3 text-indigo-600"></i>
+                                    Scan with GPay • PhonePe • Paytm
+                                </span>
+                                <span id="due-qr-amt-badge" class="text-[10px] font-black text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">₹0</span>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="border-t border-slate-200/70"></div>
+
+                        <!-- 1-Click Copy UPI ID Row -->
+                        <div class="flex items-center justify-between gap-2 text-left">
+                            <div class="min-w-0">
+                                <p class="text-[9px] font-black uppercase tracking-wider text-slate-400">UPI ID / VPA</p>
+                                <p class="font-mono text-xs font-black text-slate-800 truncate select-all">dr.raviphysio01@oksbi</p>
+                            </div>
+                            <button type="button" onclick="copyUpiId(this)" class="px-3 py-1.5 text-[10px] font-black text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200/80 rounded-xl transition-colors cursor-pointer shrink-0 shadow-2xs">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- WhatsApp Receipt Confirmation -->
+                    <a id="due-popup-wa" href="#" target="_blank" rel="noopener" class="w-full py-2.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-black uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>Share Receipt on WhatsApp</span>
+                    </a>
+
+                    <button type="button" onclick="hideDuePopup()" class="w-full py-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 text-[11px] font-black uppercase tracking-wide transition-colors cursor-pointer">
+                        Remind Me Later
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Prism Clinical AI Patient Assistant -->
     <script src="ai-patient-assistant.js"></script>
 </body>
