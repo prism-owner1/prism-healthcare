@@ -2707,7 +2707,7 @@ html.dark .instruction-modal-footer {
         <!-- SIDE NAVIGATION (Desktop Only) -->
         <aside id="sidebar" class="w-64 h-screen sticky top-0 bg-white border-r border-slate-100 flex flex-col p-5 z-50 overflow-hidden">
             <!-- SIDEBAR BRAND HEADER -->
-            <div class="sidebar-header-row flex items-center justify-between gap-2 mb-8 px-1 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <div class="sidebar-header-row flex items-center justify-between gap-2 mb-6 px-1 pb-4 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-3.5 min-w-0">
                     <div class="sidebar-logo-box w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-50 to-white dark:from-slate-800 dark:to-slate-900 p-2 shadow-sm border border-indigo-100/80 dark:border-slate-800 flex items-center justify-center flex-shrink-0 cursor-pointer" onclick="toggleSidebarCollapse()" title="Toggle sidebar">
                         <img src="prismapplogo.png" onerror="this.onerror=null; this.src='https://prismhealthcare.in/prism1.png';" class="h-full w-full object-contain" alt="Prism Logo">
@@ -2722,20 +2722,20 @@ html.dark .instruction-modal-footer {
                     <i data-lucide="chevron-right" class="w-4 h-4 sidebar-expand-icon"></i>
                 </button>
             </div>
-            <nav class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain pr-1 space-y-1.5 custom-scrollbar">
-                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 transition-all" title="Overview"><i data-lucide="layout-grid" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Overview</span></button>
-                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Enroll Patient"><i data-lucide="user-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Enroll Patient</span></button>
-                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Log Sessions"><i data-lucide="calendar-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Log Sessions</span></button>
-                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Daily Visit Registry"><i data-lucide="book-open" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Daily Visit Registry</span></button>
-                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Patient Records"><i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Patient Records</span></button>
-                <button onclick="switchTab('exercises', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Exercises"><i data-lucide="dumbbell" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Exercises</span></button>
-                <button id="nav-btn-billing" onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Billing"><i data-lucide="credit-card" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Billing</span></button>
-                <button onclick="switchTab('inquiry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Inquiries"><i data-lucide="clipboard-list" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Inquiries</span></button>
-                <button id="nav-btn-audit" onclick="switchTab('audit', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Audit Trail"><i data-lucide="shield-check" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Audit Trail</span></button>
-                <button id="nav-btn-finance" onclick="switchTab('finance', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Finance"><i data-lucide="wallet" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Finance</span></button>
-                <button id="nav-btn-users" onclick="openUserManagementModal()" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="User Management"><i data-lucide="user-cog" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">User Management</span></button>
+            <nav class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain pr-1 space-y-1 custom-scrollbar">
+                <button onclick="switchTab('overview', this)" class="nav-btn sidebar-active w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 transition-all" title="Overview"><i data-lucide="layout-grid" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Overview</span></button>
+                <button onclick="switchTab('enroll', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Enroll Patient"><i data-lucide="user-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Enroll Patient</span></button>
+                <button onclick="switchTab('log-session', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Log Sessions"><i data-lucide="calendar-plus" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Log Sessions</span></button>
+                <button onclick="switchTab('visit-registry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Daily Visit Registry"><i data-lucide="book-open" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Daily Visit Registry</span></button>
+                <button onclick="switchTab('patients', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Patient Records"><i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Patient Records</span></button>
+                <button onclick="switchTab('exercises', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Exercises"><i data-lucide="dumbbell" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Exercises</span></button>
+                <button id="nav-btn-billing" onclick="switchTab('billing', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Billing"><i data-lucide="credit-card" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Billing</span></button>
+                <button onclick="switchTab('inquiry', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Inquiries"><i data-lucide="clipboard-list" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Inquiries</span></button>
+                <button id="nav-btn-audit" onclick="switchTab('audit', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Audit Trail"><i data-lucide="shield-check" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Audit Trail</span></button>
+                <button id="nav-btn-finance" onclick="switchTab('finance', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="Finance"><i data-lucide="wallet" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">Finance</span></button>
+                <button id="nav-btn-users" onclick="openUserManagementModal()" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all" title="User Management"><i data-lucide="user-cog" class="w-5 h-5 flex-shrink-0"></i> <span class="nav-label whitespace-nowrap">User Management</span></button>
             </nav>
-            <div class="pt-4 mt-4 border-t border-slate-100/80 dark:border-slate-800/80">
+            <div id="sidebar-clock-wrap" class="pt-4 mt-4 border-t border-slate-100/80 dark:border-slate-800/80">
                 <!-- Expanded Telemetry Card -->
                 <div class="sidebar-bottom-expanded flex flex-col items-center justify-center p-3.5 bg-gradient-to-br from-indigo-50/60 via-slate-50 to-emerald-50/30 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/30 rounded-2xl border border-indigo-100/70 dark:border-slate-800 shadow-sm relative overflow-hidden">
                     <div class="flex items-center gap-1.5 mb-1">
@@ -3925,6 +3925,7 @@ html.dark .instruction-modal-footer {
                             </div>
                             <span id="active-cases-count" class="text-[10px] font-black bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 px-3.5 py-1.5 rounded-xl uppercase border border-indigo-100 dark:border-indigo-900 shadow-sm">0 Active</span>
                         </div>
+                        <div id="attendance-legend" class="flex flex-wrap items-center gap-1.5 mb-3"></div>
                         <div id="active-cases-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
                     </div>
 
@@ -3968,6 +3969,9 @@ html.dark .instruction-modal-footer {
 
                                 <!-- Red-Flag Safety Alert Strip (Shown automatically when patient has Implants/Pacemaker/Allergies) -->
                                 <div id="ws-redflag-banner" class="hidden mb-3 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-[10px] font-bold"></div>
+
+                                <!-- Closed Case Alert Strip (Interactive Restart CTA) -->
+                                <div id="ws-closed-banner" class="hidden mb-3 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-rose-50 dark:from-amber-950/40 dark:to-rose-950/40 border border-amber-200 dark:border-amber-800 shadow-sm"></div>
 
                                 <!-- Domiciliary Home Visit (PHC) Logistics Strip -->
                                 <div id="ws-phc-strip" class="hidden mb-3 p-3 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 text-[10px] font-bold"></div>
@@ -4238,13 +4242,19 @@ html.dark .instruction-modal-footer {
                     <!-- TELEMETRY STATS -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div class="glass-card p-6 rounded-[2.25rem] shadow-lg border-indigo-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 flex flex-col justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm flex-shrink-0">
-                                    <i data-lucide="user-check" class="w-7 h-7"></i>
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-4 min-w-0">
+                                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center border border-indigo-100 dark:border-indigo-900 shadow-sm flex-shrink-0">
+                                        <i data-lucide="user-check" class="w-7 h-7"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Total Daily Visits</p>
+                                        <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 leading-none">0</h3>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Total Daily Visits</p>
-                                    <h3 id="reg-total-visits" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 leading-none">0</h3>
+                                <div class="text-right shrink-0 border-l border-slate-100 dark:border-slate-800 pl-4">
+                                    <p class="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Total Fee</p>
+                                    <h3 id="reg-total-fee-visits" class="text-3xl font-black text-indigo-600 dark:text-indigo-400 leading-none">₹0</h3>
                                 </div>
                             </div>
                             <div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
@@ -4267,31 +4277,25 @@ html.dark .instruction-modal-footer {
                                         <span id="reg-active-filter-badge" class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 uppercase">All Payments</span>
                                     </div>
                                     <h3 id="reg-total-fee" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 leading-none">₹0</h3>
-                                    <p class="mt-1.5 text-[11px] font-bold text-slate-500 dark:text-slate-400">Total Fee <span id="reg-total-fee-day" class="text-indigo-600 dark:text-indigo-400 font-black">₹0</span></p>
                                 </div>
                             </div>
 
-                            <!-- Options: All Payment, Cash, UPI, and Wallet -->
-                            <div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 flex-wrap">
-                                <button type="button" id="reg-opt-all" onclick="setRegistryPaymentFilter('ALL')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 bg-emerald-600 text-white border border-emerald-600 shadow-sm shadow-emerald-600/30 cursor-pointer active:scale-95" title="View all payments">
-                                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-                                    <span>All Payment</span>
-                                    <span id="reg-amount-all" class="text-[10px] opacity-90 font-bold">(₹0)</span>
-                                </button>
-                                <button type="button" id="reg-opt-cash" onclick="setRegistryPaymentFilter('CASH')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer active:scale-95" title="Filter to Cash payments">
+                            <!-- Options: Cash, UPI, and Wallet — tap the active one again to show All -->
+                            <div class="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 flex-nowrap overflow-x-auto">
+                                <button type="button" id="reg-opt-cash" onclick="toggleRegistryPaymentFilter('CASH')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer shrink-0 active:scale-95" title="Filter to Cash payments">
                                     <i data-lucide="banknote" class="w-3.5 h-3.5"></i>
                                     <span>Cash</span>
-                                    <span id="reg-amount-cash" class="text-[10px] opacity-90 font-bold">(₹0)</span>
+                                    <span id="reg-amount-cash" class="opacity-80">(₹0)</span>
                                 </button>
-                                <button type="button" id="reg-opt-upi" onclick="setRegistryPaymentFilter('UPI')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer active:scale-95" title="Filter to UPI payments">
+                                <button type="button" id="reg-opt-upi" onclick="toggleRegistryPaymentFilter('UPI')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer shrink-0 active:scale-95" title="Filter to UPI payments">
                                     <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
                                     <span>UPI</span>
-                                    <span id="reg-amount-upi" class="text-[10px] opacity-90 font-bold">(₹0)</span>
+                                    <span id="reg-amount-upi" class="opacity-80">(₹0)</span>
                                 </button>
-                                <button type="button" id="reg-opt-wallet" onclick="setRegistryPaymentFilter('WALLET')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer active:scale-95" title="Filter to Wallet / Advance payments">
+                                <button type="button" id="reg-opt-wallet" onclick="toggleRegistryPaymentFilter('WALLET')" class="reg-payment-opt-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent transition-all flex items-center gap-1.5 cursor-pointer shrink-0 active:scale-95" title="Filter to Wallet / Advance payments">
                                     <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
                                     <span>Wallet</span>
-                                    <span id="reg-amount-wallet" class="text-[10px] opacity-90 font-bold">(₹0)</span>
+                                    <span id="reg-amount-wallet" class="opacity-80">(₹0)</span>
                                 </button>
                             </div>
                         </div>
@@ -8729,6 +8733,7 @@ document.addEventListener('click', function(e) {
             selectedPatientId = null,
             currentViewDate = new Date(),
             currentBranchFilter = 'ALL';
+        try { window.patientLookup = patientLookup; window.selectedDates = selectedDates; } catch(e) {}
         let myChart = null,
            dailyChartInstance = null,
             branchChartInstance = null,
@@ -9713,6 +9718,11 @@ document.addEventListener('click', function(e) {
 
                 const moreUsers = document.getElementById('more-sheet-users');
                 if (moreUsers) moreUsers.style.display = userIsAdmin ? 'flex' : 'none';
+
+                // 2b. Sidebar clock (Clinical Cloud Active + date/time): hidden for
+                // admins so the full menu fits without scrolling; staff keep it.
+                const sidebarClock = document.getElementById('sidebar-clock-wrap');
+                if (sidebarClock) sidebarClock.style.display = userIsAdmin ? 'none' : '';
 
                 // 3. Admin Command Center Hub Triggers (Admin Only)
                 const headerAdminHub = document.getElementById('header-admin-hub-btn');
@@ -12096,6 +12106,7 @@ function getAdvanceSessionLabel(r, p, explicitMode) {
         });
     }
     patientLookup = {};
+    try { window.patientLookup = patientLookup; } catch(e) {}
     globalBillCounter = 0;
     const today = getLocalISOString();
     const currMonth = today.substring(0, 7);
@@ -12794,18 +12805,18 @@ renderTables();
                 other: computedOther
             };
 
-            const amountAllEl = document.getElementById('reg-amount-all');
-            const amountCashEl = document.getElementById('reg-amount-cash');
-            const amountUpiEl = document.getElementById('reg-amount-upi');
-            const amountWalletEl = document.getElementById('reg-amount-wallet');
-            const dayFeeEl = document.getElementById('reg-total-fee-day');
+            // Payment pills show the total received per mode (hidden for non-admin staff)
+            const amtCashEl = document.getElementById('reg-amount-cash');
+            const amtUpiEl = document.getElementById('reg-amount-upi');
+            const amtWalletEl = document.getElementById('reg-amount-wallet');
+            if (amtCashEl) amtCashEl.textContent = hideFinancials ? '' : `(₹${(computedCash || 0).toLocaleString()})`;
+            if (amtUpiEl) amtUpiEl.textContent = hideFinancials ? '' : `(₹${(computedUpi || 0).toLocaleString()})`;
+            if (amtWalletEl) amtWalletEl.textContent = hideFinancials ? '' : `(₹${(computedAdvance || 0).toLocaleString()})`;
+
+            const dayFeeVisitsEl = document.getElementById('reg-total-fee-visits');
 
             if (hideFinancials) {
-                if (amountAllEl) amountAllEl.innerText = `(${visitCount} Visits)`;
-                if (amountCashEl) amountCashEl.innerText = ``;
-                if (amountUpiEl) amountUpiEl.innerText = ``;
-                if (amountWalletEl) amountWalletEl.innerText = ``;
-                if (dayFeeEl) dayFeeEl.innerText = `${visitCount} Visits`;
+                if (dayFeeVisitsEl) dayFeeVisitsEl.innerText = `${visitCount} Visits`;
 
                 if (totalFeeEl) totalFeeEl.innerText = `${visitCount} Visits`;
                 if (footerCollectionEl) footerCollectionEl.innerText = `${visitCount} Visits`;
@@ -12813,11 +12824,7 @@ renderTables();
                 if (footerCollectionMobileEl) footerCollectionMobileEl.innerText = `${visitCount} Visits`;
                 if (footerTotalMobileEl) footerTotalMobileEl.innerText = `${visitCount} Visits`;
             } else {
-                if (amountAllEl) amountAllEl.innerText = `(₹${finalAll.toLocaleString()})`;
-                if (amountCashEl) amountCashEl.innerText = `(₹${computedCash.toLocaleString()})`;
-                if (amountUpiEl) amountUpiEl.innerText = `(₹${computedUpi.toLocaleString()})`;
-                if (amountWalletEl) amountWalletEl.innerText = `(₹${computedAdvance.toLocaleString()})`;
-                if (dayFeeEl) dayFeeEl.innerText = feeStr;
+                if (dayFeeVisitsEl) dayFeeVisitsEl.innerText = feeStr;
 
                 if (totalFeeEl) totalFeeEl.innerText = cashInStr;
                 if (footerCollectionEl) footerCollectionEl.innerText = cashInStr;
@@ -13103,6 +13110,16 @@ renderTables();
                     const tbody = document.getElementById('registry-table-body');
                     if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-slate-600 italic">Failed to load registry.</td></tr>`;
                 }
+            }
+        }
+
+        // Tap the active mode pill again to go back to All (the All pill is removed)
+        function toggleRegistryPaymentFilter(mode) {
+            const m = (mode || 'ALL').toUpperCase();
+            if (currentRegistryPaymentFilter === m) {
+                setRegistryPaymentFilter('ALL');
+            } else {
+                setRegistryPaymentFilter(m);
             }
         }
 
@@ -13748,26 +13765,46 @@ renderTables();
         }
 
         async function submitSessionsFast() {
-    if (!selectedPatientName || selectedDates.length === 0) {
-        showToast('Select at least one date', 'warning');
-        return;
-    }
-    const p = patientLookup[selectedPatientName];
+    // 1. Resolve Patient Record flexibly
+    const p = (typeof patientLookup === 'object' && patientLookup ? patientLookup[selectedPatientName] : null) || (typeof findPatient === 'function' ? findPatient(selectedPatientName) : null);
     if (!p) {
-        showToast('Patient not found', 'error');
+        showToast('Patient record not found. Please select a patient first.', 'error');
         return;
     }
+    const actualPatientName = p.name || selectedPatientName;
+    selectedPatientName = actualPatientName;
+
+    // 2. Resolve Selected Session Dates (Auto-select today if no date picked)
+    if (!selectedDates || selectedDates.length === 0) {
+        const todayYMD = getLocalISOString();
+        selectedDates = [todayYMD];
+        if (typeof renderCalendar === 'function') renderCalendar();
+    }
+
     const btn = document.getElementById('submit-btn');
-    const paymentMode = document.getElementById('session-payment-mode').value;
+    if (btn) {
+        btn.innerText = "Saving to Google Sheet...";
+        btn.disabled = true;
+    }
+    // Early validation exits below must not leave the button stuck disabled.
+    const resetSubmitBtn = () => { if (btn) { btn.disabled = false; btn.innerText = "Submit Session(s)"; } };
+    
+    // 3. Resolve Payment Mode (Intelligently default to Wallet if package active, else Cash)
+    let paymentMode = document.getElementById('session-payment-mode')?.value;
+    const remSessions = getRemainingSessions(p);
+    const walletBal = Number(p.walletBalance) || 0;
+    const hasActivePkg = remSessions > 0 && walletBal > 0;
 
     if (!paymentMode || paymentMode === "" || paymentMode === "Select Mode") {
-        showToast('Please select a payment mode', 'warning');
-        return;
+        paymentMode = hasActivePkg ? "Wallet" : "Cash";
+        const modeEl = document.getElementById('session-payment-mode');
+        if (modeEl) modeEl.value = paymentMode;
     }
 
+    // 4. Resolve Base Rate & Fee Calculations
     let effectiveBaseRate = Number(p.baseRate) || 0;
     if (effectiveBaseRate <= 0) {
-        effectiveBaseRate = Number(document.getElementById('base-rate-display').value) || 0;
+        effectiveBaseRate = Number(document.getElementById('base-rate-display')?.value) || 0;
     }
     if (effectiveBaseRate <= 0 && p.packageBreakdown && p.packageBreakdown.packages) {
         const activePkg = p.packageBreakdown.packages.find(x => x.status === 'Active') || p.packageBreakdown.packages[0];
@@ -13775,8 +13812,8 @@ renderTables();
     }
     if (effectiveBaseRate > 0) p.baseRate = effectiveBaseRate;
 
-    const addOn = Number(document.getElementById('session-add-fee').value) || 0;
-    const addOnName = document.getElementById('session-add-fee-name').value.trim();
+    const addOn = Number(document.getElementById('session-add-fee')?.value) || 0;
+    const addOnName = (document.getElementById('session-add-fee-name')?.value || '').trim();
     const discPct = Number(document.getElementById('session-discount-pct')?.value) || 0;
     let feePerSession = effectiveBaseRate + addOn;
     if (discPct > 0) feePerSession = Math.round(feePerSession * (1 - discPct / 100));
@@ -13786,17 +13823,20 @@ renderTables();
     if (isWalletMode(paymentMode)) {
         if (typeof window.checkPackageExpiryBeforeSubmit === 'function') {
             if (!window.checkPackageExpiryBeforeSubmit(p)) {
+                resetSubmitBtn();
                 return;
             }
         }
         const wallet = p.walletBalance || 0;
-        const remSessions = p.sessionsRemaining || 0;
-        if (wallet <= 0 && remSessions <= 0) {
+        const remSess = p.sessionsRemaining || 0;
+        if (wallet <= 0 && remSess <= 0) {
             showToast(`No package or advance balance left for ${stripSalutation(selectedPatientName)}. Please use Cash/UPI or top up.`, 'warning');
+            resetSubmitBtn();
             return;
         }
-        if (wallet > 0 && wallet < totalNeeded && remSessions < selectedDates.length) {
+        if (wallet > 0 && wallet < totalNeeded && remSess < selectedDates.length) {
             showToast(`Wallet ₹${wallet.toLocaleString()} insufficient for ${selectedDates.length} session(s) at ₹${feePerSession} each (₹${totalNeeded.toLocaleString()} needed).`, 'warning');
+            resetSubmitBtn();
             return;
         }
     }
@@ -13807,39 +13847,51 @@ renderTables();
         splitUpi = Number(document.getElementById('split-upi')?.value) || 0;
         if (splitCash + splitUpi <= 0) {
             showToast('Enter at least one Split amount (Cash or UPI)', 'warning');
+            resetSubmitBtn();
             return;
         }
     }
 
-    const amountPaidVal = document.getElementById('session-amount-paid').value;
+    const amountPaidVal = document.getElementById('session-amount-paid')?.value;
     let refundAmt = 0;
     if (paymentMode === 'Refund') {
         refundAmt = Number(amountPaidVal) || 0;
         if (refundAmt <= 0) {
             showToast('Enter a valid refund amount', 'warning');
+            resetSubmitBtn();
             return;
         }
     }
 
     const datesToSubmit = [...selectedDates];
-    const rawSessionNote = document.getElementById('session-note').value || p.diag;
+    const rawSessionNote = document.getElementById('session-note')?.value || p.diag || '';
     const sessionNote = (typeof window.composeClinicalSessionNote === 'function')
         ? window.composeClinicalSessionNote(rawSessionNote)
         : rawSessionNote;
     if (typeof window.resetSessionClinicalExtras === 'function') window.resetSessionClinicalExtras();
 
-    // ── 0. AUTO-RESTART CASE IF CLOSED ──
+    // ── 0. AUTO-RESTART CASE IF CLOSED (Fully Synchronized) ──
     const wasCaseClosed = Boolean(p.closed);
     if (wasCaseClosed) {
         p.closed = false;
         p.closedDate = null;
+        p.lastRestartMs = Date.now();
         if (p.autoClosed) p.autoClosed = false;
         if (window._autoClosedSynced && window._autoClosedSynced.has(p.id)) {
             window._autoClosedSynced.delete(p.id);
         }
-        // Record Case Restarted in Audit Log (tracked from audit logs only)
-        recordAuditLog("Case Restarted", `${selectedPatientName} (${p.id})`, `Case auto-reopened via session logging`, "Success")
-            .catch(err => console.warn("Case auto-restart audit sync error:", err));
+        saveManualCaseStatus(p.id, 'Active', null);
+        if (actualPatientName) saveManualCaseStatus(actualPatientName, 'Active', null);
+        updateLocalSnapshotCaseStatus(p.id, 'Active', null);
+
+        const dateStr = getLocalISOString();
+        if (Array.isArray(globalData)) {
+            globalData.push([new Date().toISOString(), p.id, actualPatientName, p.phone||"", p.age||"", p.gender||"", p.diag||"", "Case Restarted", dateStr, 0,0,0,0,"","",0,""]);
+        }
+
+        // Backend handleLogSessionBatch in PRISM_BACKEND_CODE.gs ALREADY automatically logs "Case Restarted"
+        // and updates Patient_Database to Active in the same atomic transaction under a single lock.
+        // Firing a separate updateCaseStatus here caused script lock collisions that failed session recording.
     }
 
     // ── 1. INSTANT OPTIMISTIC STATE SNAPSHOT (0ms Latency) ──
@@ -13882,7 +13934,7 @@ renderTables();
         const row = [
             new Date().toISOString(),
             p.id,
-            selectedPatientName,
+            actualPatientName,
             p.phone || '',
             p.age || '',
             p.gender || '',
@@ -13923,67 +13975,68 @@ renderTables();
     }
 
     // Immediately clear form inputs
-    document.getElementById('session-note').value = "";
-    document.getElementById('session-amount-paid').value = "";
-    document.getElementById('session-add-fee-name').value = "";
-    document.getElementById('session-add-fee').value = 0;
+    const noteEl = document.getElementById('session-note');
+    if (noteEl) noteEl.value = "";
+    const amtEl = document.getElementById('session-amount-paid');
+    if (amtEl) amtEl.value = "";
+    const addFeeNameEl = document.getElementById('session-add-fee-name');
+    if (addFeeNameEl) addFeeNameEl.value = "";
+    const addFeeEl = document.getElementById('session-add-fee');
+    if (addFeeEl) addFeeEl.value = 0;
     const discEl = document.getElementById('session-discount-pct');
     if (discEl) discEl.value = 0;
     const splitCashEl = document.getElementById('split-cash');
     const splitUpiEl = document.getElementById('split-upi');
     if (splitCashEl) splitCashEl.value = 0;
     if (splitUpiEl) splitUpiEl.value = 0;
-    document.getElementById('split-payment-row').classList.add('hidden');
-    document.getElementById('session-discount-row').classList.add('hidden');
+    const splitRow = document.getElementById('split-payment-row');
+    if (splitRow) splitRow.classList.add('hidden');
+    const discRow = document.getElementById('session-discount-row');
+    if (discRow) discRow.classList.add('hidden');
 
-    // Immediately close drawer and reset date selection and payment form
+    // Immediately close drawer and reset date selection
     selectedDates = [];
     toggleSessionDrawer(false);
-    const modeEl = document.getElementById('session-payment-mode');
-    if (modeEl) {
-        modeEl.value = "";
-        const amountInput = document.getElementById('session-amount-paid');
-        if (amountInput) {
-            amountInput.value = "";
-            amountInput.placeholder = "Select payment mode";
-            amountInput.readOnly = true;
-        }
-    }
 
     // ── 2. INSTANT UI RE-RENDER (< 15ms) ──
-    updatePatientWorkspaceUI(selectedPatientName, p, false);
-    renderTables();
-    renderDuesWidget();
-    if (typeof renderEndingSoonWidget === 'function') renderEndingSoonWidget();
-    updateGlobalStats();
-    if (typeof applyLocalRevenueStats === 'function') applyLocalRevenueStats(statEl);
-    if (typeof window.applyRoleSpecificDashboard === 'function') window.applyRoleSpecificDashboard();
-    if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
-
-    showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) logged for ${p.name || selectedPatientName}` : `${datesToSubmit.length} session(s) logged for ${p.name || selectedPatientName} (${paymentMode})`, 'success');
-    if (btn) {
-        btn.innerText = "Saved ✓";
-        btn.disabled = false;
-        setTimeout(() => { if (btn) btn.innerText = "Submit Session(s)"; }, 1500);
+    // A render failure here must never stop the Google Sheet sync below.
+    try {
+        updatePatientWorkspaceUI(actualPatientName, p, false);
+        renderTables();
+        renderDuesWidget();
+        if (typeof renderEndingSoonWidget === 'function') renderEndingSoonWidget();
+        updateGlobalStats();
+        if (typeof applyLocalRevenueStats === 'function') applyLocalRevenueStats(statEl);
+        if (typeof window.applyRoleSpecificDashboard === 'function') window.applyRoleSpecificDashboard();
+        if (typeof renderActiveCasesForLog === 'function') renderActiveCasesForLog();
+    } catch (renderErr) {
+        console.warn('Session re-render notice (Sheet sync continues):', renderErr);
     }
+
+    showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) logged for ${p.name || actualPatientName}` : `${datesToSubmit.length} session(s) logged for ${p.name || actualPatientName} (${paymentMode})`, 'success');
 
     if (paymentMode === 'Refund') {
-        showToast(`Refund recorded for ${selectedPatientName}`, 'info');
+        showToast(`Refund recorded for ${actualPatientName}`, 'info');
     }
 
-    // ── Show update message / session receipt popup ──
-    if (typeof sendQuickSessionReceipt === 'function' && addedRows.length > 0) {
-        const totalPaidAmount = (isWalletMode(paymentMode) || paymentMode === 'Complimentary' || paymentMode === 'Pending')
-            ? 0
-            : (paymentMode === 'Split' ? (splitCash + splitUpi) : (paidValForLog * datesToSubmit.length));
-        sendQuickSessionReceipt(p, addedRows[0], totalPaidAmount);
+    // ── Show update message / session receipt popup (Skipped for Clinical Doctors) ──
+    const hideFinForUser = typeof window.shouldHideFinancialsForCurrentUser === 'function' && window.shouldHideFinancialsForCurrentUser();
+    if (!hideFinForUser && typeof sendQuickSessionReceipt === 'function' && addedRows.length > 0) {
+        try {
+            const totalPaidAmount = (isWalletMode(paymentMode) || paymentMode === 'Complimentary' || paymentMode === 'Pending')
+                ? 0
+                : (paymentMode === 'Split' ? (splitCash + splitUpi) : (paidValForLog * datesToSubmit.length));
+            sendQuickSessionReceipt(p, addedRows[0], totalPaidAmount);
+        } catch (receiptErr) {
+            console.warn("sendQuickSessionReceipt notice:", receiptErr);
+        }
     }
 
     // ── 3. NON-BLOCKING BACKGROUND SYNC TO GOOGLE APPS SCRIPT ──
     syncToBackend({
         action: "logSessionBatch",
         id: p.id,
-        name: selectedPatientName,
+        name: actualPatientName,
         doctor: cleanDoctorName(p.doctor) || '',
         assignedDoctor: cleanDoctorName(p.doctor) || '',
         baseRate: effectiveBaseRate,
@@ -14007,14 +14060,26 @@ renderTables();
         if (!result || result.status === 'error') {
             const errMsg = (result && (result.message || result.error)) || 'Google Sheet did not confirm save';
             console.error("logSessionBatch backend error:", result);
-            showToast(`⚠️ Session NOT saved to Google Sheet for ${p.name || selectedPatientName}: ${errMsg}`, 'error');
-            scheduleBackgroundReconcile(1500);
+            showToast(`⚠️ Session NOT saved to Google Sheet for ${p.name || actualPatientName}: ${errMsg}`, 'error');
+            if (btn) {
+                btn.innerText = "Submit Session(s)";
+                btn.disabled = false;
+            }
+            scheduleBackgroundReconcile(2000);
             return;
         }
+
+        if (btn) {
+            btn.innerText = "Saved to Sheet ✓";
+            btn.disabled = false;
+            setTimeout(() => { if (btn) btn.innerText = "Submit Session(s)"; }, 2500);
+        }
+        showToast(wasCaseClosed ? `Case restarted & ${datesToSubmit.length} session(s) saved to Google Sheet for ${p.name || actualPatientName}` : `${datesToSubmit.length} session(s) saved to Google Sheet for ${p.name || actualPatientName} (${paymentMode})`, 'success');
+
         if (result && result.newWalletBalance !== undefined) {
             p.walletBalance = result.newWalletBalance;
             if (selectedPatientName === p.name) {
-                updatePatientWorkspaceUI(selectedPatientName, p, false);
+                updatePatientWorkspaceUI(actualPatientName, p, false);
             }
         }
         if (result && result.balances && result.balances[p.id]) {
@@ -14026,7 +14091,7 @@ renderTables();
             if (bal.activePackageId !== undefined) p.activePackageId = bal.activePackageId;
             if (bal.packageBreakdown) p.packageBreakdown = bal.packageBreakdown;
             if (selectedPatientName === p.name) {
-                updatePatientWorkspaceUI(selectedPatientName, p, false);
+                updatePatientWorkspaceUI(actualPatientName, p, false);
             }
         }
         if (typeof renderDailyRegistry === 'function') {
@@ -14034,11 +14099,15 @@ renderTables();
             if (visitRegTab && !visitRegTab.classList.contains('section-hidden')) renderDailyRegistry();
         }
         // Quiet debounced background reconcile - runs once writes settle without lock contention
-        scheduleBackgroundReconcile(2500);
+        scheduleBackgroundReconcile(6000);
     }).catch(e => {
         console.error("logSessionBatch network/sync failure:", e);
-        showToast(`⚠️ Failed to record session to Google Sheet for ${p.name || selectedPatientName}. Please check connection & retry.`, 'error');
-        scheduleBackgroundReconcile(4000);
+        showToast(`⚠️ Failed to record session to Google Sheet for ${p.name || actualPatientName}. Please check connection & retry.`, 'error');
+        if (btn) {
+            btn.innerText = "Submit Session(s)";
+            btn.disabled = false;
+        }
+        scheduleBackgroundReconcile(8000);
     });
 }
 
@@ -14614,14 +14683,15 @@ function openMidPackage() {
         // SAFE-ONLY: dashboard numbers from the Database rows already on this
         // device (globalData) — the same source the branch modal sums — so
         // Total Collection and both charts match the branch totals. TODAY is
-        // cash collected today, exactly as the daily register defines it
-        // (Cash/UPI/Card paid today). No backend change.
+        // the total fee of today's sessions (all modes — Cash, UPI, Wallet,
+        // Pending — same fee basis as the monthly/yearly cards), not just the
+        // cash collected. No backend change.
         function applyLocalRevenueStats(statEl) {
             if (!Array.isArray(globalData) || !globalData.length || !statEl) return;
             const todayStr = new Date().toLocaleDateString('sv-SE');
             const currMonth = todayStr.substring(0, 7), currYear = todayStr.substring(0, 4);
             let totalRevenue = 0, sessionCount = 0, todaySessionCount = 0, todayPaymentCount = 0, pocRevenue = 0, phcRevenue = 0;
-            let dailyRevenue = 0, monthlyRevenue = 0, yearlyRevenue = 0;
+            let todayFeeTotal = 0, monthlyRevenue = 0, yearlyRevenue = 0;
             const chartData = {}, dailyMap = {};
             globalData.forEach(r => {
                 if (!r) return;
@@ -14641,6 +14711,7 @@ function openMidPackage() {
                     const mKey = date.substring(0, 7);
                     if (/^\d{4}-\d{2}$/.test(mKey)) chartData[mKey] = (chartData[mKey] || 0) + fee;
                     dailyMap[date] = (dailyMap[date] || 0) + fee;
+                    if (date === todayStr) todayFeeTotal += fee;
                 }
                 if (date === todayStr) {
                     const isSessionRow = !isNonSessionEntry &&
@@ -14651,7 +14722,6 @@ function openMidPackage() {
                         const paidVal = paidOfLog(r);
                         const cashVal = paidVal > 0 ? paidVal : (isNonSessionEntry ? 0 : fee);
                         if (cashVal > 0) {
-                            dailyRevenue += cashVal;
                             if (!isSessionRow) todayPaymentCount++;
                             if (fee <= 0 || isNonSessionEntry) dailyMap[todayStr] = (dailyMap[todayStr] || 0) + cashVal;
                         }
@@ -14661,7 +14731,7 @@ function openMidPackage() {
             const setR = (el, v) => { if (el) el.innerText = '₹' + Math.round(v).toLocaleString('en-IN'); };
             if (statEl.total) statEl.total.innerText = sessionCount;
             setR(statEl.revenue, totalRevenue); setR(statEl.pocRev, pocRevenue); setR(statEl.phcRev, phcRevenue);
-            setR(statEl.daily, dailyRevenue); setR(statEl.monthly, monthlyRevenue); setR(statEl.yearly, yearlyRevenue);
+            setR(statEl.daily, todayFeeTotal); setR(statEl.monthly, monthlyRevenue); setR(statEl.yearly, yearlyRevenue);
             const dailySessEl = document.getElementById('stat-daily-sessions');
             if (dailySessEl) {
                 const sLbl = `${todaySessionCount} session${todaySessionCount === 1 ? '' : 's'} today`;
@@ -14890,6 +14960,14 @@ function openMidPackage() {
             
             // Auto scroll main window back to top on switch for mobile readability
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+            // If a patient is already selected, opening Log Sessions should land
+            // on their calendar, not the top of the tab.
+            if (id === 'log-session' && typeof selectedPatientName === 'string' && selectedPatientName) {
+                const wsEl = document.getElementById('patient-workspace');
+                if (wsEl && !wsEl.classList.contains('hidden') && typeof scrollToPatientWorkspace === 'function') {
+                    scrollToPatientWorkspace();
+                }
+            }
             closeSidebar();
         }
 
@@ -15000,7 +15078,12 @@ function openMidPackage() {
                         const isClosed = p.closed;
                         const hideFinSearch = typeof window.shouldHideFinancialsForCurrentUser === 'function' && window.shouldHideFinancialsForCurrentUser();
                         const statusBadge = isClosed 
-                            ? '<div class="flex flex-col items-end gap-0.5"><span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-0.5 rounded-md uppercase">Case Closed</span><span class="text-[7px] font-bold text-slate-400">TAP TO RESTART</span></div>'
+                            ? `<div class="flex items-center gap-2">
+                                <button type="button" onclick="event.stopPropagation(); restartCaseFromSearch('${(p.id || name).replace(/'/g, "\\'")}', event);" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 active:scale-95 text-white text-[9px] font-black uppercase tracking-wider flex items-center gap-1 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0">
+                                    <i data-lucide="play" class="w-3 h-3 fill-current"></i> Restart Case
+                                </button>
+                                <span class="bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 text-[8px] font-black px-2 py-1 rounded-md uppercase shrink-0">Case Closed</span>
+                            </div>`
                             : (hideFinSearch
                                 ? ((p.sessionsRemaining > 0)
                                     ? `<span class="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 text-[8px] font-black px-2 py-1 rounded-md uppercase">${p.sessionsRemaining} Sessions Left</span>`
@@ -15013,8 +15096,12 @@ function openMidPackage() {
                             ? '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">POC</span>'
                             : ((p.id && p.id.startsWith('PHC')) ? '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">PHC</span>' : '');
 
+                        const rowOnClick = isClosed
+                            ? `restartCaseFromSearch('${(p.id || name).replace(/'/g, "\\'")}', event)`
+                            : `selectPatient('${name.replace(/'/g, "\\'")}')`;
+
                         return `
-                        <div onclick="selectPatient('${name.replace(/'/g, "\\'")}')" class="group flex items-center justify-between p-3.5 lg:p-4 hover:bg-indigo-50/80 dark:hover:bg-slate-800 rounded-2xl cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-none transition-all">
+                        <div onclick="${rowOnClick}" class="group flex items-center justify-between p-3.5 lg:p-4 hover:bg-indigo-50/80 dark:hover:bg-slate-800 rounded-2xl cursor-pointer border-b border-slate-100 dark:border-slate-800 last:border-none transition-all">
                             <div class="flex items-center gap-3">
                                 <div class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs flex-shrink-0">
                                     <i data-lucide="user" class="w-4 h-4"></i>
@@ -15049,6 +15136,69 @@ function openMidPackage() {
                 if (window.lucide) lucide.createIcons({ root: res });
             }, 100);
         }
+
+        async function restartCaseFromSearch(nameOrId, event) {
+            if (event && event.stopPropagation) event.stopPropagation();
+            const p = (typeof findPatient === 'function' ? findPatient(nameOrId) : null) || (typeof patientLookup === 'object' && patientLookup ? patientLookup[nameOrId] : null);
+            const targetName = p ? p.name : nameOrId;
+
+            // 1. Immediately restart the patient's case optimistically
+            if (p) {
+                p.closed = false;
+                p.closedDate = null;
+                p.lastRestartMs = Date.now();
+                if (p.autoClosed) p.autoClosed = false;
+            }
+            if (typeof restartPatientCase === 'function') {
+                try { restartPatientCase(targetName, event); } catch (e) { console.warn('restartPatientCase notice:', e); }
+            }
+
+            // 2. Select patient and open workspace
+            if (typeof selectPatient === 'function') {
+                try { selectPatient(targetName, true, true); } catch (e) { console.warn('selectPatient notice:', e); }
+            }
+
+            // 3. Auto-select today's date so clinician can log immediately without friction
+            const todayYMD = getLocalISOString();
+            selectedDates = [todayYMD];
+            if (typeof renderCalendar === 'function') renderCalendar();
+
+            // 4. Intelligently default payment mode and unfreeze inputs
+            if (p) {
+                const rem = (typeof getRemainingSessions === 'function') ? getRemainingSessions(p) : (p.sessionsRemaining || 0);
+                const wallet = p.walletBalance || 0;
+                const hasActivePkg = rem > 0 && wallet > 0;
+                const modeEl = document.getElementById('session-payment-mode');
+                if (modeEl) {
+                    modeEl.value = hasActivePkg ? "Wallet" : "Cash";
+                    const amountInput = document.getElementById('session-amount-paid');
+                    if (amountInput) {
+                        amountInput.value = hasActivePkg ? "0" : (p.baseRate || "");
+                        amountInput.placeholder = hasActivePkg ? "Wallet (Pre-paid)" : "Auto = Fee";
+                        amountInput.readOnly = hasActivePkg;
+                    }
+                }
+            }
+
+            // 5. Hide search dropdown and ensure workspace is visible
+            const res = document.getElementById('search-results');
+            if (res) res.classList.add('hidden');
+            const searchInput = document.getElementById('patient-search-input');
+            if (searchInput) searchInput.value = targetName;
+            const ws = document.getElementById('patient-workspace');
+            if (ws) ws.classList.remove('hidden');
+            const emptyState = document.getElementById('log-empty-workspace-state');
+            if (emptyState) emptyState.classList.add('hidden');
+            const activeContainer = document.getElementById('active-cases-container');
+            if (activeContainer) activeContainer.style.display = 'block';
+
+            if (typeof scrollToPatientWorkspace === 'function') {
+                scrollToPatientWorkspace();
+            }
+
+            showToast(`${stripSalutation(targetName)}'s case restarted. Today's date selected — ready to log!`, 'success');
+        }
+        window.restartCaseFromSearch = restartCaseFromSearch;
 
         // Close search results and restore background if user clicks outside
         document.addEventListener('click', function(e) {
@@ -15326,15 +15476,39 @@ function openMidPackage() {
             const badge = document.getElementById('workspace-remaining');
             const hideFinWs = typeof window.shouldHideFinancialsForCurrentUser === 'function' && window.shouldHideFinancialsForCurrentUser();
 
-            // Update Top Right Badge
+            // Update Top Right Badge & Closed Banner
+            const closedBanner = document.getElementById('ws-closed-banner');
             if (p.closed) {
                 badge.innerHTML = `<span class="flex items-center gap-1.5">🔒 CASE CLOSED <span class="underline font-bold ml-1 text-[9px] opacity-90">(Restart Case)</span></span>`;
                 badge.className = "bg-rose-600 hover:bg-rose-700 text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase cursor-pointer transition-colors shadow-sm";
                 badge.title = "Click to restart this case";
                 badge.onclick = (e) => restartPatientCase(n, e);
+                if (closedBanner) {
+                    closedBanner.classList.remove('hidden');
+                    closedBanner.innerHTML = `
+                        <div class="flex items-center justify-between gap-3 flex-wrap">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center font-black shrink-0">
+                                    <i data-lucide="lock" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[11px] font-black uppercase text-amber-900 dark:text-amber-200">Case is currently closed</p>
+                                    <p class="text-[9.5px] text-slate-600 dark:text-slate-400">Restart this case to resume active care and enable session logging.</p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="restartPatientCase('${(p.id || n).replace(/'/g, "\\'")}', event)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 active:scale-95 text-white text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md cursor-pointer shrink-0">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> Restart Case
+                            </button>
+                        </div>`;
+                    if (window.lucide) lucide.createIcons({ root: closedBanner });
+                }
             } else {
                 badge.onclick = null;
                 badge.title = "";
+                if (closedBanner) {
+                    closedBanner.classList.add('hidden');
+                    closedBanner.innerHTML = '';
+                }
                 if (rem > 0 && p.purchased > 0) {
                     const shortPkg = p.activePackageId ? (p.activePackageId.includes('PKG') ? ('PKG' + p.activePackageId.split('PKG').pop()) : p.activePackageId.replace('PKG-','')) : '';
                     const pkgTag = shortPkg ? ` | Pkg: ${shortPkg}` : '';
@@ -15512,25 +15686,29 @@ function openMidPackage() {
                 if (window.lucide) lucide.createIcons();
             }
 
-            // Trigger UI refreshes - ONLY reset payment mode if this is a brand new patient selection!
+            // Trigger UI refreshes - auto-default payment mode & date for instantaneous session logging!
             if (window._currentWorkspacePatient !== n) {
                 window._currentWorkspacePatient = n;
                 const modeEl = document.getElementById('session-payment-mode');
+                const hasActivePkg = rem > 0 && wallet > 0;
                 if (modeEl) {
-                    modeEl.value = "";
+                    modeEl.value = hasActivePkg ? "Wallet" : "Cash";
                     const amountInput = document.getElementById('session-amount-paid');
                     if (amountInput) {
-                        amountInput.value = "";
-                        amountInput.placeholder = "Select payment mode";
-                        amountInput.readOnly = true;
+                        amountInput.value = hasActivePkg ? "0" : (p.baseRate || "");
+                        amountInput.placeholder = hasActivePkg ? "Wallet (Pre-paid)" : "Auto = Fee";
+                        amountInput.readOnly = hasActivePkg;
                     }
                 }
+                const todayYMD = getLocalISOString();
+                const hasToday = (p.logs || []).some(l => normDateYMD(l[8]) === todayYMD);
+                selectedDates = hasToday ? [] : [todayYMD];
             }
             renderCalendar();
             renderActiveCasesForLog();
             updateAdvanceHint();
             if (typeof window.attachRecentSessionActions === 'function') {
-                window.attachRecentSessionActions(n, p);
+                try { window.attachRecentSessionActions(n, p); } catch (e) { console.warn('attachRecentSessionActions notice:', e); }
             }
             
             // Open the drawer on mobile
@@ -15553,14 +15731,21 @@ function openMidPackage() {
                 targetSection.classList.remove('section-hidden');
             }
 
+            // On desktop the calendar is the right-hand column, so scroll to the
+            // calendar itself — scrolling only to the workspace top leaves it below
+            // the fold. On mobile the calendar is a fixed bottom sheet, so the
+            // workspace (opened as a drawer by selectPatient) stays the target.
+            const cal = document.getElementById('session-form-container');
+            const target = (window.innerWidth >= 1024 && cal) ? cal : ws;
+
             setTimeout(() => {
                 if (ws.classList.contains('hidden')) return;
 
                 const mainEl = document.querySelector('main');
                 if (mainEl) {
                     const mainRect = mainEl.getBoundingClientRect();
-                    const wsRect = ws.getBoundingClientRect();
-                    const targetTop = mainEl.scrollTop + (wsRect.top - mainRect.top) - 24;
+                    const targetRect = target.getBoundingClientRect();
+                    const targetTop = mainEl.scrollTop + (targetRect.top - mainRect.top) - 24;
                     mainEl.scrollTo({
                         top: Math.max(0, targetTop),
                         behavior: 'smooth'
@@ -15568,7 +15753,7 @@ function openMidPackage() {
                 }
 
                 try {
-                    ws.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } catch (e) {}
             }, 60);
         }
@@ -15915,6 +16100,54 @@ function openMidPackage() {
             };
         }
 
+        // Attendance colour: whole card tinted by days since the last attended session.
+        // Green 0-2 days (regular) · Blue 3-4 days · Yellow 5 days · Red 6+ days · Grey = no session yet.
+        function getPatientAttendanceStatus(p) {
+            const nonSessTypes = ['enrollment (package)', 'package added', 'case closed', 'case restarted', 'bill issued', 'due payment', 'wallet topup', 'topup'];
+            let lastYMD = '';
+            (p && p.logs || []).forEach(l => {
+                const type = String(l[7] || '').trim().toLowerCase();
+                if (nonSessTypes.includes(type) || type.includes('due payment')) return;
+                if (!(type.includes('session') || type.includes('rehab'))) return;
+                const d = (typeof normDateYMD === 'function' ? normDateYMD(l[8]) : '') || (typeof normDateYMD === 'function' ? normDateYMD(l[0]) : '');
+                if (d && (!lastYMD || d > lastYMD)) lastYMD = d;
+            });
+            if (!lastYMD) {
+                return { days: null, label: 'New', lastText: 'No session yet',
+                    card: 'bg-slate-50 dark:bg-slate-900/90 border-slate-200/70 dark:border-slate-800' };
+            }
+            const today = (typeof getLocalISOString === 'function' ? getLocalISOString() : new Date().toISOString().slice(0, 10));
+            const days = Math.floor((new Date(today) - new Date(lastYMD)) / 86400000);
+            const lastText = days <= 0 ? 'Last session: today' : days === 1 ? 'Last session: yesterday' : `Last session: ${days} days ago`;
+            if (days <= 2) return { days, label: 'Regular', lastText, card: 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800/60' };
+            if (days <= 4) return { days, label: '3-4 days', lastText, card: 'bg-sky-50 dark:bg-sky-950/40 border-sky-200 dark:border-sky-800/60' };
+            if (days === 5) return { days, label: '5 days', lastText, card: 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800/60' };
+            return { days, label: '6+ days', lastText, card: 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60' };
+        }
+
+        function updateAttendanceLegend() {
+            const el = document.getElementById('attendance-legend');
+            if (!el) return;
+            const counts = { regular: 0, blue: 0, yellow: 0, red: 0, fresh: 0 };
+            Object.keys(patientLookup).forEach(n => {
+                const p = patientLookup[n];
+                if (!p || p.closed) return;
+                const a = getPatientAttendanceStatus(p);
+                if (a.days === null) counts.fresh++;
+                else if (a.days <= 2) counts.regular++;
+                else if (a.days <= 4) counts.blue++;
+                else if (a.days === 5) counts.yellow++;
+                else counts.red++;
+            });
+            const chip = (dot, bg, label, n) => `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8.5px] font-black ${bg}"><span class="w-1.5 h-1.5 rounded-full ${dot}"></span>${n} ${label}</span>`;
+            el.innerHTML =
+                chip('bg-emerald-500', 'bg-emerald-100 text-emerald-700', 'Regular', counts.regular) +
+                chip('bg-sky-500', 'bg-sky-100 text-sky-700', '3-4 days', counts.blue) +
+                chip('bg-amber-500', 'bg-amber-100 text-amber-700', '5 days', counts.yellow) +
+                chip('bg-rose-500', 'bg-rose-100 text-rose-700', '6+ days', counts.red) +
+                (counts.fresh ? chip('bg-slate-400', 'bg-slate-100 text-slate-600', 'New', counts.fresh) : '');
+        }
+
         function renderActiveCasesForLog(forceFullRebuild = false) {
             const grid = document.getElementById('active-cases-grid');
             const countBadge = document.getElementById('active-cases-count');
@@ -15934,51 +16167,41 @@ function openMidPackage() {
             if (!names.length) {
                 grid.innerHTML = `<p class="text-xs text-slate-400 italic col-span-full py-6 text-center">No active cases — enroll a patient to begin.</p>`;
                 grid.dataset.renderedNames = '';
+                updateAttendanceLegend();
                 return;
             }
 
             const namesKey = names.join('|');
             // If cards are already rendered and only active card selection changed, update classes & badges directly
             if (!forceFullRebuild && grid.dataset.renderedNames === namesKey) {
-                grid.querySelectorAll('[data-name]').forEach(card => {
+                Array.from(grid.children).filter(el => el.hasAttribute('data-name')).forEach(card => {
                     const n = card.dataset.name;
                     const p = patientLookup[n];
                     const active = selectedPatientName === n;
                     const st = getPatientCardStatus(p);
+                    const att = getPatientAttendanceStatus(p);
 
-                    card.classList.toggle('border-blue-500', active);
-                    card.classList.toggle('ring-2', active);
-                    card.classList.toggle('ring-blue-500/20', active);
-                    card.classList.toggle('bg-blue-50/70', active);
-                    card.classList.toggle('dark:bg-blue-950/40', active);
-                    card.classList.toggle('shadow-md', active);
-                    card.classList.toggle('scale-[0.98]', active);
-
-                    card.classList.toggle('bg-white', !active);
-                    card.classList.toggle('dark:bg-slate-900/90', !active);
-                    card.classList.toggle('border-slate-200/70', !active);
-                    card.classList.toggle('dark:border-slate-800', !active);
-
-                    const dot = card.querySelector('.status-dot-el');
-                    if (dot) {
-                        dot.className = `status-dot-el absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-blue-600' : st.color}`;
-                    }
+                    // Whole card keeps its attendance tint; selected card gets an indigo ring instead of blue
+                    card.className = `relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none ${att.card} ${active ? 'ring-2 ring-indigo-500/40 border-indigo-500 shadow-md scale-[0.98]' : 'hover:shadow-md'}`;
 
                     const badge = card.querySelector('.status-badge-el');
                     if (badge) {
                         badge.innerText = st.text;
-                        badge.className = `status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md ${active ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300' : st.badgeClass}`;
+                        badge.className = `status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md ${st.badgeClass}`;
                     }
 
                     const nameText = card.querySelector('.case-name-text');
                     if (nameText) {
-                        nameText.className = `case-name-text font-black text-[11px] uppercase truncate pr-4 ${active ? 'text-blue-950 dark:text-blue-200' : 'text-slate-800 dark:text-slate-100'} mb-0.5`;
+                        nameText.className = `case-name-text font-black text-[11px] uppercase truncate text-slate-800 dark:text-slate-100 mb-0.5`;
                     }
+                    const lastEl = card.querySelector('.last-visit-el');
+                    if (lastEl) lastEl.textContent = att.lastText;
                     const logBtn = card.querySelector('.log-case-btn');
                     if (logBtn) {
                         logBtn.className = `log-case-btn text-[9px] font-extrabold uppercase px-3 py-1 rounded-md transition-all cursor-pointer bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-sm inline-flex items-center justify-center`;
                     }
                 });
+                updateAttendanceLegend();
                 return;
             }
 
@@ -15988,26 +16211,21 @@ function openMidPackage() {
                 const active = selectedPatientName === n;
                 const safeName = n.replace(/"/g, '&quot;');
                 const st = getPatientCardStatus(p);
+                const att = getPatientAttendanceStatus(p);
 
                 return `<div data-name="${safeName}" 
-                    class="relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none
+                    class="relative p-3.5 rounded-2xl border cursor-pointer transition-all select-none ${att.card}
                     ${active 
-                        ? 'bg-blue-50/70 dark:bg-blue-950/40 border-blue-500 ring-2 ring-blue-500/20 shadow-md scale-[0.98]' 
-                        : 'bg-white dark:bg-slate-900/90 border-slate-200/70 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md'
+                        ? 'ring-2 ring-indigo-500/40 border-indigo-500 shadow-md scale-[0.98]' 
+                        : 'hover:shadow-md'
                     }">
-                    <!-- Status dot -->
-                    <span class="status-dot-el absolute top-3.5 right-3.5 w-2 h-2 rounded-full ${active ? 'bg-blue-600' : st.color}"></span>
-                    
-                    <p class="case-name-text font-black text-[11px] uppercase truncate pr-4 ${active ? 'text-blue-950 dark:text-blue-200' : 'text-slate-800 dark:text-slate-100'} mb-0.5">${stripSalutation(n)}</p>
+                    <p class="case-name-text font-black text-[11px] uppercase truncate text-slate-800 dark:text-slate-100 mb-0.5">${stripSalutation(n)}</p>
                     <p class="text-[8.5px] font-black text-indigo-500/80 dark:text-indigo-400/80 uppercase tracking-wider truncate mb-0.5">${p.id || ''}</p>
-                    <p class="text-[9px] font-bold truncate ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} mb-2">${p.diag || 'General Consultation'}</p>
+                    <p class="text-[9px] font-bold truncate text-slate-400 dark:text-slate-500 mb-0.5">${p.diag || 'General Consultation'}</p>
+                    <p class="last-visit-el text-[8.5px] font-bold text-slate-500 dark:text-slate-400 mb-2">${att.lastText}</p>
                     
                     <div class="flex items-center justify-between gap-1">
-                        <span class="status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md
-                            ${active 
-                                ? 'bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300' 
-                                : st.badgeClass
-                            }">${st.text}</span>
+                        <span class="status-badge-el text-[8px] font-black uppercase px-2 py-0.5 rounded-md ${st.badgeClass}">${st.text}</span>
                         <button type="button" data-name="${safeName}" 
                             class="log-case-btn text-[9px] font-extrabold uppercase px-3 py-1 rounded-md transition-all cursor-pointer bg-blue-600 hover:bg-blue-700 active:scale-95 text-white shadow-sm inline-flex items-center justify-center">
                             Log
@@ -16015,6 +16233,7 @@ function openMidPackage() {
                     </div>
                 </div>`;
             }).join('');
+            updateAttendanceLegend();
 
             if (!grid._hasDelegate) {
                 grid._hasDelegate = true;
@@ -21392,26 +21611,9 @@ async function confirmMarkPaid() {
             .then(() => {
                 scheduleBackgroundReconcile(2000);
             }).catch(e => {
-                console.error("Case restart sync error:", e);
-                p.closed = true;
-                p.closedDate = new Date().toISOString();
-                saveManualCaseStatus(p.id, 'Closed', p.closedDate);
-                if (actualName) saveManualCaseStatus(actualName, 'Closed', p.closedDate);
-                updateLocalSnapshotCaseStatus(p.id, 'Closed', p.closedDate);
-
-                if (statEl.activeCount) {
-                    statEl.activeCount.innerText = Object.values(patientLookup).filter(pt => !pt.closed).length;
-                }
-                renderActiveCasesForLog();
-                renderTables();
-                const m = document.getElementById('case-modal');
-                if (m && !m.classList.contains('hidden')) {
-                    openCaseModal();
-                }
-                if (selectedPatientName === actualName || selectedPatientName === cleanName) {
-                    updatePatientWorkspaceUI(actualName, p, false);
-                }
-                showToast('Restart failed to sync — ' + (e.message || 'please retry'), 'error');
+                console.warn("Case restart backend sync delayed/queued:", e);
+                // Preserve local active state so clinical logging is never blocked!
+                scheduleBackgroundReconcile(5000);
             });
         }
         window.restartPatientCase = restartPatientCase;
@@ -22997,6 +23199,7 @@ window.shareExTabViaWhatsApp = function() {
             if (!p) return;
             const container = document.getElementById('recent-logs-cards');
             if (!container) return;
+            const cards = container.querySelectorAll('.session-log-card');
             const isDupEnrollActions = (l) => {
                 const type = String(l[7] || '').trim().toLowerCase();
                 if (type !== 'enrollment') return false;
@@ -23294,7 +23497,7 @@ window.shareExTabViaWhatsApp = function() {
         window.selectPatient = function(name, openDrawer = true, autoScroll = true) {
             originalSelectPatient(name, openDrawer, autoScroll);
             const p = patientLookup[name];
-            if (p) attachRecentSessionActions(name, p);
+            if (p) { try { attachRecentSessionActions(name, p); } catch (e) { console.warn('attachRecentSessionActions notice:', e); } }
         };
     })();
 (function() {
@@ -27652,6 +27855,81 @@ window.unlockApp = function() {
                 }
                 if (prevProf === null) localStorage.removeItem('prism_user_profile');
                 else localStorage.setItem('prism_user_profile', prevProf);
+            }
+        });
+
+        // 9. Case Restart & Resilient Session Logging (2 tests)
+        test('Case Restart From Search', 'restartCaseFromSearch restarts closed patient, sets p.closed to false, and selects patient', () => {
+            const mockKey = '__TEST_SEARCH_RESTART_PATIENT';
+            const mockName = 'Restart Test Patient';
+            const prevSelected = selectedPatientName;
+            const prevSync = window.syncToBackend;
+            try {
+                window.syncToBackend = () => Promise.resolve({ status: 'ok' });
+                const mockPat = {
+                    id: 'POC26/9988', name: mockName, phone: '919876543288', age: '42', gender: 'Female',
+                    diag: 'Cervical Radiculopathy', address: 'Patna', doctor: 'Dr Supriya Kumari (PT)',
+                    baseRate: 500, purchased: 0, advance: 0, discount: 0, walletBalance: 0, outstandingDue: 0, closed: true,
+                    logs: [
+                        ['11/01/2026 10:00:00', 'POC26/9988', mockName, '919876543288', '42', 'Female', 'Cervical Radiculopathy', 'Enrollment', '2026-11-01', 500, 1, 0, 0, 'Cash', 'Patna', 500, 'Dr Supriya Kumari (PT)']
+                    ]
+                };
+                patientLookup[mockKey] = mockPat;
+                patientLookup[mockName] = mockPat;
+                if (typeof restartCaseFromSearch === 'function') {
+                    restartCaseFromSearch(mockKey);
+                } else if (typeof restartPatientCase === 'function') {
+                    restartPatientCase(mockKey);
+                }
+                const p = patientLookup[mockKey];
+                return p && p.closed === false && (selectedPatientName === mockName || selectedPatientName === mockKey);
+            } finally {
+                delete patientLookup[mockKey];
+                delete patientLookup[mockName];
+                selectedPatientName = prevSelected;
+                window.syncToBackend = prevSync;
+            }
+        });
+        test('Resilient Session Logging', 'submitSessionsFast auto-selects date, defaults payment mode, and reactivates closed case', () => {
+            const mockKey = '__TEST_FAST_LOG_PATIENT';
+            const mockName = 'Fast Log Patient';
+            const prevSelected = selectedPatientName;
+            const prevDates = selectedDates;
+            const prevSync = window.syncToBackend;
+            const modeEl = document.getElementById('session-payment-mode');
+            const prevModeVal = modeEl ? modeEl.value : '';
+            try {
+                window.syncToBackend = () => Promise.resolve({ status: 'ok' });
+                const mockPat = {
+                    id: 'POC26/9989', name: mockName, phone: '919876543289', age: '38', gender: 'Male',
+                    diag: 'Sciatica', address: 'Patna', doctor: 'Dr Ravi Kumar, PT',
+                    baseRate: 400, purchased: 0, advance: 0, discount: 0, walletBalance: 0, outstandingDue: 0, closed: true,
+                    logs: [
+                        ['10/01/2026 10:00:00', 'POC26/9989', mockName, '919876543289', '38', 'Male', 'Sciatica', 'Enrollment', '2026-10-01', 400, 1, 0, 0, 'Cash', 'Patna', 400, 'Dr Ravi Kumar, PT']
+                    ]
+                };
+                patientLookup[mockKey] = mockPat;
+                patientLookup[mockName] = mockPat;
+                selectedPatientName = mockName;
+                selectedDates = []; // simulate unselected dates
+                if (modeEl) modeEl.value = ''; // simulate unselected mode
+
+                if (typeof submitSessionsFast === 'function') {
+                    submitSessionsFast();
+                }
+
+                const p = patientLookup[mockName];
+                const hasNewLog = p && p.logs.length >= 2;
+                const isReactivated = p && p.closed === false;
+                const modeDefaulted = modeEl ? modeEl.value === 'Cash' : true;
+                return Boolean(p && isReactivated && hasNewLog && modeDefaulted);
+            } finally {
+                delete patientLookup[mockKey];
+                delete patientLookup[mockName];
+                selectedPatientName = prevSelected;
+                selectedDates = prevDates;
+                window.syncToBackend = prevSync;
+                if (modeEl) modeEl.value = prevModeVal;
             }
         });
 
